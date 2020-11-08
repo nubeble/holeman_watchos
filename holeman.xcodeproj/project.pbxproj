@@ -18,6 +18,9 @@
 		B923CCBB2546C5BD00E09B40 /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCBA2546C5BD00E09B40 /* CloudKitManager.swift */; };
 		B923CCD82547E1B500E09B40 /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCD72547E1B500E09B40 /* CloudKitHelper.swift */; };
 		B923CCDD2547E24D00E09B40 /* ListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCDC2547E24D00E09B40 /* ListElement.swift */; };
+		B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */; };
+		B98FF381255052D400CA1ECA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B98FF37625504DDC00CA1ECA /* UserNotifications.framework */; };
+		B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */; };
 		B9AA29E62535BA2A0057FA8D /* holeman WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B9AA29E52535BA2A0057FA8D /* holeman WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B9AA29EB2535BA2B0057FA8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9AA29EA2535BA2B0057FA8D /* Assets.xcassets */; };
 		B9AA29F22535BA2B0057FA8D /* holeman WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B9AA29F12535BA2B0057FA8D /* holeman WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -90,6 +93,10 @@
 		B923CCBA2546C5BD00E09B40 /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		B923CCD72547E1B500E09B40 /* CloudKitHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
 		B923CCDC2547E24D00E09B40 /* ListElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListElement.swift; sourceTree = "<group>"; };
+		B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationHelper.swift; sourceTree = "<group>"; };
+		B98FF37625504DDC00CA1ECA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.0.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
+		B98FF37825504E4F00CA1ECA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		B9AA29E12535BA2A0057FA8D /* holeman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = holeman.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9AA29E52535BA2A0057FA8D /* holeman WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "holeman WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9AA29EA2535BA2B0057FA8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -109,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B98FF381255052D400CA1ECA /* UserNotifications.framework in Frameworks */,
 				75F565A472792D5BC1C03446 /* Pods_holeman_WatchKit_Extension.framework in Frameworks */,
 				B923CCB62546AC3400E09B40 /* CloudKit.framework in Frameworks */,
 			);
@@ -136,6 +144,8 @@
 		5130AA064D336B415AEFDD0F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B98FF37625504DDC00CA1ECA /* UserNotifications.framework */,
+				B98FF37825504E4F00CA1ECA /* UserNotifications.framework */,
 				B923CCB52546AC3400E09B40 /* CloudKit.framework */,
 				65B35E43AAEA6C2CB3023E89 /* Pods_holeman.framework */,
 				5292857C5D6C05E66F95BBC5 /* Pods_holeman_WatchKit_App.framework */,
@@ -160,6 +170,7 @@
 		B9AA29DA2535BA2A0057FA8D = {
 			isa = PBXGroup;
 			children = (
+				B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */,
 				B923CCA8254671BF00E09B40 /* Article.swift */,
 				B923CCA6254671BF00E09B40 /* ArticleDetail.swift */,
 				B923CCA7254671BF00E09B40 /* ArticleFetcher.swift */,
@@ -202,6 +213,7 @@
 				B9AA29F62535BA2B0057FA8D /* ContentView.swift */,
 				B9AA29F82535BA2B0057FA8D /* holemanApp.swift */,
 				B9AA29FA2535BA2B0057FA8D /* ComplicationController.swift */,
+				B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */,
 				B9AA29FC2535BA2B0057FA8D /* Assets.xcassets */,
 				B9AA2A012535BA2B0057FA8D /* Info.plist */,
 				B9AA29FE2535BA2B0057FA8D /* Preview Content */,
@@ -438,6 +450,7 @@
 				B9AA29F92535BA2B0057FA8D /* holemanApp.swift in Sources */,
 				B9AA29F72535BA2B0057FA8D /* ContentView.swift in Sources */,
 				B923CCAA254671BF00E09B40 /* ArticlesView.swift in Sources */,
+				B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */,
 				B923CCAB254671BF00E09B40 /* ArticleDetail.swift in Sources */,
 				B923CCAD254671BF00E09B40 /* Article.swift in Sources */,
 				B9AA29FB2535BA2B0057FA8D /* ComplicationController.swift in Sources */,
@@ -445,6 +458,7 @@
 				B923CCAC254671BF00E09B40 /* ArticleFetcher.swift in Sources */,
 				B923CCDD2547E24D00E09B40 /* ListElement.swift in Sources */,
 				B923CCD82547E1B500E09B40 /* CloudKitHelper.swift in Sources */,
+				B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */,
 				B923CCBB2546C5BD00E09B40 /* CloudKitManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -585,6 +599,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "holeman WatchKit Extension/holeman WatchKit ExtensionDebug.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
@@ -597,6 +612,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;

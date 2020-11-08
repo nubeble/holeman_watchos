@@ -9,11 +9,19 @@ import SwiftUI
 
 @main
 struct holemanApp: App {
+    @WKExtensionDelegateAdaptor(ExtensionDelegate.self) var delegate
+    
     var body: some Scene {
         WindowGroup {
             NavigationView {
                 ContentView()
+            }.onAppear {
+                print("ContentView appeared!")
+                // WKExtension.shared().registerForRemoteNotifications()
+            }.onDisappear {
+                print("ContentView disappeared!")
             }
         }
     }
+    
 }

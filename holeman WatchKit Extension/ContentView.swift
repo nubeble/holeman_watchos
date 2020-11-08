@@ -11,6 +11,8 @@ struct ContentView: View {
     
     // private let manager = CloudKitManager()
     
+    // private let registration = RegistrationHelper()
+    
     var body: some View {
         
         // Text("Hello, \(Image(systemName: "globe"))!")
@@ -54,27 +56,47 @@ struct ContentView: View {
                  })
                  */
                 
+                /*
+                 let newItem = ListElement(text: "hello")
+                 CloudKitHelper.save(item: newItem) { (result) in
+                 
+                 switch result {
+                 case .success(let newItem):
+                 // self.listElements.items.insert(newItem, at: 0)
+                 print("Successfully added item")
+                 case .failure(let err):
+                 print(err.localizedDescription)
+                 }
+                 
+                 }
+                 */
                 
-                let newItem = ListElement(text: "hello")
-                CloudKitHelper.save(item: newItem) { (result) in
-                    
-                    switch result {
-                    case .success(let newItem):
-                        // self.listElements.items.insert(newItem, at: 0)
-                        print("Successfully added item")
-                    case .failure(let err):
-                        print(err.localizedDescription)
-                    }
-                    
-                }
+                
+                CloudKitHelper.subscribe()
+                
+                
+                // subscription
                 
             }, label: {
                 /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
             })
-        }
+        }.onAppear(perform: onCreate)
+        
+        
+    } // end of body
+    
+    private func onCreate() {
+        
+        // register your app for remote notifications
+        // RegistrationHelper.shared.registerForPushNotifications()
+        
+        // registration.registerForPushNotifications()
+        
         
         
     }
+
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -82,4 +104,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
