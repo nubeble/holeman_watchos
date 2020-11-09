@@ -95,6 +95,22 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                             
                             // 1. parse data
                             
+                            // values={ holeNumber=18, id=27, elevation=1608.613647460938, location=<+39.73915482,-104.98470306> +/- 0.00m (speed 0.00 mps / course 0.00) @ 2001/01/01 9:00:00 AM Korean Standard Time, timestamp=1604930511235 }
+                            
+                            let id = record["id"] as! Int64
+                            let holeNumber = record["holeNumber"] as! Int64
+                            let location = record["location"] as! CLLocation
+                            let elevation = record["elevation"] as! Double
+                            let timestamp = record["timestamp"] as! Int64
+                            
+                            print("id", id)
+                            print("holeNumber", holeNumber)
+                            print("location", location)
+                            print("elevation", elevation)
+                            print("timestamp", timestamp)
+                            
+                            
+                            
                             
                         }
                         

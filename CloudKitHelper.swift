@@ -63,19 +63,22 @@ struct CloudKitHelper {
                     // print("subscriptionType", subscription.subscriptionType)
                     
                     /*
-                    if let querySub = subscription as? CKQuerySubscription {
-                        let recordType = querySub.recordType! as String
-                        print("recordType", recordType)
-                        
-                        if (recordType == "Sensor") {
-                            print("already have subscription.")
-                            existance = true
-                            break
-                        }
-                    }
-                    */
-
+                     if let querySub = subscription as? CKQuerySubscription {
+                     let recordType = querySub.recordType! as String
+                     print("recordType", recordType)
+                     
+                     if (recordType == "Sensor") {
+                     print("already have subscription.")
+                     existance = true
+                     break
+                     }
+                     }
+                     */
+                    
                     // delete all subscriptions
+                    print("delete subscription...")
+                    
+                    // ToDo: sync call
                     db.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { string, error in
                         if error != nil {
                             // deletion of subscription failed, handle error here
@@ -83,22 +86,15 @@ struct CloudKitHelper {
                         }
                     })
                     
-                    /*
-                     CKContainer.default().publicCloudDatabase.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { string, error in
-                     if(error != nil) {
-                     // deletion of subscription failed, handle error here
-                     }
-                     })
-                     */
                     
                 } // end of for
                 
                 /*
-                if (existance == false) {
-                    print("save subscription...")
-                    CloudKitHelper.saveSubscription()
-                }
-                */
+                 if (existance == false) {
+                 print("save subscription...")
+                 CloudKitHelper.saveSubscription()
+                 }
+                 */
                 print("save subscription...")
                 CloudKitHelper.saveSubscription()
             }
@@ -145,9 +141,9 @@ struct CloudKitHelper {
         // predicate: You can customize this to only get notified when particular records are changed.
         
         // let sub = CKQuerySubscription(recordType: "Sensor", predicate: NSPredicate(value: true), options: [ .firesOnRecordUpdate, .firesOnRecordCreation, .firesOnRecordDeletion ])
-
-        let id: Int64 = 18
-        let predicate = NSPredicate(format: "id == %@", id)
+        
+        let id: Int64 = 27
+        let predicate = NSPredicate(format: "id == %d", id)
         let sub = CKQuerySubscription(recordType: "Sensor", predicate: predicate, options: [ .firesOnRecordUpdate, .firesOnRecordCreation, .firesOnRecordDeletion ])
         
         // specify what kind of notification we want to receive
