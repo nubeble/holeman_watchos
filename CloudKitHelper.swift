@@ -45,58 +45,16 @@ struct CloudKitHelper {
                 // end the function early
                 return
             }
-            
+
             if let subscriptions = subscriptions {
-                // var existance = false
-                
-                /*
-                 print("count", subscriptions.count)
-                 if (subscriptions.count == 0) {
-                 CloudKitHelper.saveSubscription()
-                 return
-                 }
-                 */
-                
-                for subscription in subscriptions {
-                    
-                    print("subscription", subscription)
-                    // print("subscriptionType", subscription.subscriptionType)
-                    
-                    /*
-                     if let querySub = subscription as? CKQuerySubscription {
-                     let recordType = querySub.recordType! as String
-                     print("recordType", recordType)
-                     
-                     if (recordType == "Sensor") {
-                     print("already have subscription.")
-                     existance = true
-                     break
-                     }
-                     }
-                     */
-                    
-                    // delete all subscriptions
-                    print("delete subscription...")
-                    
-                    // ToDo: sync call
-                    db.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { string, error in
-                        if error != nil {
-                            // deletion of subscription failed, handle error here
-                            // return
-                        }
-                    })
-                    
-                    
-                } // end of for
-                
-                /*
-                 if (existance == false) {
-                 print("save subscription...")
-                 CloudKitHelper.saveSubscription()
-                 }
-                 */
-                print("save subscription...")
-                CloudKitHelper.saveSubscription()
+                CloudKitHelper.deleteAllSubscriptions(subscriptions) { (count) in
+                    // ToDo:
+
+                    print("deleteAllSubscriptions count", count)
+
+                    print("save subscription...")
+                    CloudKitHelper.saveSubscription()
+                }
             }
         })
         
@@ -134,6 +92,47 @@ struct CloudKitHelper {
          }
          }
          */
+    }
+
+    static func deleteAllSubscriptions(subscriptions: [CKSubscription], handler: @escaping ((Int) -> Void)) {
+        for subscription in subscriptions {
+            print("subscription", subscription)
+
+            /*
+                print("subscriptionType", subscription.subscriptionType)
+                if let querySub = subscription as? CKQuerySubscription {
+                let recordType = querySub.recordType! as String
+                print("recordType", recordType)
+                
+                if (recordType == "Sensor") {
+                print("already have subscription.")
+                existance = true
+                break
+                }
+                }
+                */
+            
+            // delete all subscriptions
+            print("delete subscription...")
+
+            var index: Int = 0
+            
+            // ToDo: sync call
+            db.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { string, error in
+                index++
+
+                if error != nil {
+                    // deletion of subscription failed, handle error here
+                    // return
+                }
+
+                if (index == subscriptions.count) {
+                    // handler(result)
+                    handler(index)
+                }
+            })
+
+        } // end of for
     }
     
     static func saveSubscription() { // ToDo: parameter: id
