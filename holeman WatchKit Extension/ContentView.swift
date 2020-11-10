@@ -73,10 +73,6 @@ struct ContentView: View {
                 
                 
                 CloudKitHelper.subscribe()
-                
-                
-                // subscription
-                
             }, label: {
                 /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
             })
@@ -95,7 +91,7 @@ struct ContentView: View {
         
         
     }
-
+    
     
 }
 

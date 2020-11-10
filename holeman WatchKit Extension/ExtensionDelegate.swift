@@ -105,13 +105,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                             
                             print("id", id)
                             print("holeNumber", holeNumber)
-                            print("location", location)
+                            // print("location", location)
+                            print("latitude", location.coordinate.latitude)
+                            print("longitude", location.coordinate.longitude)
                             print("elevation", elevation)
                             print("timestamp", timestamp)
-                            
-                            
-                            
-                            
                         }
                         
                     }

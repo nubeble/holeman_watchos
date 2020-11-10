@@ -45,13 +45,17 @@ struct CloudKitHelper {
                 // end the function early
                 return
             }
-
+            
             if let subscriptions = subscriptions {
-                CloudKitHelper.deleteAllSubscriptions(subscriptions) { (count) in
-                    // ToDo:
-
+                if (subscriptions.count == 0) {
+                    print("no subscription exists.")
+                    print("save subscription...")
+                    CloudKitHelper.saveSubscription()
+                }
+                
+                CloudKitHelper.deleteAllSubscriptions(subscriptions: subscriptions) { (count) in
                     print("deleteAllSubscriptions count", count)
-
+                    
                     print("save subscription...")
                     CloudKitHelper.saveSubscription()
                 }
@@ -93,45 +97,48 @@ struct CloudKitHelper {
          }
          */
     }
-
+    
     static func deleteAllSubscriptions(subscriptions: [CKSubscription], handler: @escaping ((Int) -> Void)) {
+        let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+        
+        var index: Int = 0
+        
         for subscription in subscriptions {
+            
+            
             print("subscription", subscription)
-
+            
             /*
-                print("subscriptionType", subscription.subscriptionType)
-                if let querySub = subscription as? CKQuerySubscription {
-                let recordType = querySub.recordType! as String
-                print("recordType", recordType)
-                
-                if (recordType == "Sensor") {
-                print("already have subscription.")
-                existance = true
-                break
-                }
-                }
-                */
+             print("subscriptionType", subscription.subscriptionType)
+             if let querySub = subscription as? CKQuerySubscription {
+             let recordType = querySub.recordType! as String
+             print("recordType", recordType)
+             
+             if (recordType == "Sensor") {
+             print("already have subscription.")
+             existance = true
+             break
+             }
+             }
+             */
             
             // delete all subscriptions
             print("delete subscription...")
-
-            var index: Int = 0
             
-            // ToDo: sync call
             db.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { string, error in
-                index++
-
+                index += 1
+                
                 if error != nil {
                     // deletion of subscription failed, handle error here
                     // return
                 }
-
+                
                 if (index == subscriptions.count) {
                     // handler(result)
                     handler(index)
                 }
             })
-
+            
         } // end of for
     }
     
