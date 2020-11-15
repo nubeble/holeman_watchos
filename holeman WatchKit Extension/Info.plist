@@ -47,5 +47,9 @@
 	<string>$(PRODUCT_MODULE_NAME).ExtensionDelegate</string>
 	<key>WKWatchOnly</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+    	<string>Your location is required to calculate the distance.</string>
+    	<key>NSLocationWhenInUseUsageDescription</key>
+    	<string>Your location is required to calculate the distance.</string>
 </dict>
 </plist>

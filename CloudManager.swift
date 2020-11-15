@@ -1,5 +1,5 @@
 //
-//  CloudKitManager.swift
+//  CloudManager.swift
 //  holeman WatchKit Extension
 //
 //  Created by Jay Kim on 2020/10/26.
@@ -13,7 +13,7 @@ enum FetchError {
     case fetchingError, noRecords, none
 }
 
-struct CloudKitManager {
+struct CloudManager {
     
     private let RecordType = "Course"
     

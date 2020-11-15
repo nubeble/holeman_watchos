@@ -9,7 +9,17 @@ import SwiftUI
 
 struct ContentView: View {
     
-    // private let manager = CloudKitManager()
+    @ObservedObject var locationManager = LocationManager()
+    
+    var userLatitude: String {
+        return "\(locationManager.lastLocation?.coordinate.latitude ?? 0)"
+    }
+    
+    var userLongitude: String {
+        return "\(locationManager.lastLocation?.coordinate.longitude ?? 0)"
+    }
+    
+    // private let manager = CloudManager()
     
     // private let registration = RegistrationHelper()
     
@@ -58,7 +68,7 @@ struct ContentView: View {
                 
                 /*
                  let newItem = ListElement(text: "hello")
-                 CloudKitHelper.save(item: newItem) { (result) in
+                 CloudKitManager.save(item: newItem) { (result) in
                  
                  switch result {
                  case .success(let newItem):
@@ -72,10 +82,33 @@ struct ContentView: View {
                  */
                 
                 
-                CloudKitHelper.subscribe()
+                CloudKitManager.subscribe()
+                
+                
+                
             }, label: {
                 /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
             })
+            
+            
+            NavigationLink(destination: IntroView()) {
+                Text("IntroView")
+            }
+            .navigationBarTitle("")
+            .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true)
+            
+            /*
+             Text("location status: \(locationManager.statusString)")
+             HStack {
+             Text("latitude: \(userLatitude)")
+             Text("longitude: \(userLongitude)")
+             }
+             */
+            Text("status: \(locationManager.statusString)")
+            Text("latitude: \(userLatitude)")
+            Text("longitude: \(userLongitude)")
+            
         }.onAppear(perform: onCreate)
         
         

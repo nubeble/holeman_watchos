@@ -1,5 +1,5 @@
 //
-//  CloudKitHelper.swift
+//  CloudKitManager.swift
 //  SwiftUICloudKitDemo
 //
 //  Created by Alex Nagy on 23/09/2019.
@@ -20,7 +20,7 @@ import SwiftUI
 //
 // On your device (or in the simulator) you should make sure you are logged into iCloud and have iCloud Drive enabled.
 
-struct CloudKitHelper {
+struct CloudKitManager {
     
     // record type
     struct RecordType {
@@ -28,7 +28,7 @@ struct CloudKitHelper {
     }
     
     // MARK: - errors
-    enum CloudKitHelperError: Error {
+    enum CloudKitManagerError: Error {
         case recordFailure
         case recordIDFailure
         case castFailure
@@ -50,14 +50,14 @@ struct CloudKitHelper {
                 if (subscriptions.count == 0) {
                     print("no subscription exists.")
                     print("save subscription...")
-                    CloudKitHelper.saveSubscription()
+                    CloudKitManager.saveSubscription()
                 }
                 
-                CloudKitHelper.deleteAllSubscriptions(subscriptions: subscriptions) { (count) in
+                CloudKitManager.deleteAllSubscriptions(subscriptions: subscriptions) { (count) in
                     print("deleteAllSubscriptions count", count)
                     
                     print("save subscription...")
-                    CloudKitHelper.saveSubscription()
+                    CloudKitManager.saveSubscription()
                 }
             }
         })
@@ -194,14 +194,14 @@ struct CloudKitHelper {
                 }
                 
                 guard let record = record else {
-                    completion(.failure(CloudKitHelperError.recordFailure))
+                    completion(.failure(CloudKitManagerError.recordFailure))
                     return
                 }
                 
                 // means success
                 let id = record.recordID
                 guard let text = record["text"] as? String else {
-                    completion(.failure(CloudKitHelperError.castFailure))
+                    completion(.failure(CloudKitManagerError.castFailure))
                     return
                 }
                 
@@ -238,7 +238,7 @@ struct CloudKitHelper {
                     return
                 }
                 //                guard let cursor = cursor else {
-                //                    completion(.failure(CloudKitHelperError.cursorFailure))
+                //                    completion(.failure(CloudKitManagerError.cursorFailure))
                 //                    return
                 //                }
                 //                print("Cursor: \(String(describing: cursor))")
@@ -259,7 +259,7 @@ struct CloudKitHelper {
      return
      }
      guard let recordID = recordID else {
-     completion(.failure(CloudKitHelperError.recordIDFailure))
+     completion(.failure(CloudKitManagerError.recordIDFailure))
      return
      }
      completion(.success(recordID))
@@ -279,7 +279,7 @@ struct CloudKitHelper {
      }
      guard let record = record else {
      DispatchQueue.main.async {
-     completion(.failure(CloudKitHelperError.recordFailure))
+     completion(.failure(CloudKitManagerError.recordFailure))
      }
      return
      }
@@ -292,12 +292,12 @@ struct CloudKitHelper {
      return
      }
      guard let record = record else {
-     completion(.failure(CloudKitHelperError.recordFailure))
+     completion(.failure(CloudKitManagerError.recordFailure))
      return
      }
      let recordID = record.recordID
      guard let text = record["text"] as? String else {
-     completion(.failure(CloudKitHelperError.castFailure))
+     completion(.failure(CloudKitManagerError.castFailure))
      return
      }
      let listElement = ListElement(recordID: recordID, text: text)
