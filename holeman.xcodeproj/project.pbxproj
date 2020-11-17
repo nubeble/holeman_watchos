@@ -18,6 +18,7 @@
 		B923CCBB2546C5BD00E09B40 /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCBA2546C5BD00E09B40 /* CloudManager.swift */; };
 		B923CCD82547E1B500E09B40 /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCD72547E1B500E09B40 /* CloudKitManager.swift */; };
 		B923CCDD2547E24D00E09B40 /* ListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCDC2547E24D00E09B40 /* ListElement.swift */; };
+		B92DB505256409E100511383 /* CompassHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92DB504256409E100511383 /* CompassHeading.swift */; };
 		B956D2E8256031E00056007B /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956D2E7256031E00056007B /* IntroView.swift */; };
 		B956D2F625609A0E0056007B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956D2F525609A0E0056007B /* LocationManager.swift */; };
 		B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */; };
@@ -95,6 +96,7 @@
 		B923CCBA2546C5BD00E09B40 /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
 		B923CCD72547E1B500E09B40 /* CloudKitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		B923CCDC2547E24D00E09B40 /* ListElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListElement.swift; sourceTree = "<group>"; };
+		B92DB504256409E100511383 /* CompassHeading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompassHeading.swift; sourceTree = "<group>"; };
 		B956D2E7256031E00056007B /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		B956D2F525609A0E0056007B /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationHelper.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 			children = (
 				B923CCB12546AC0800E09B40 /* holeman WatchKit ExtensionDebug.entitlements */,
 				B9AA29F62535BA2B0057FA8D /* ContentView.swift */,
+				B92DB504256409E100511383 /* CompassHeading.swift */,
 				B956D2E7256031E00056007B /* IntroView.swift */,
 				B9AA29F82535BA2B0057FA8D /* holemanApp.swift */,
 				B9AA29FA2535BA2B0057FA8D /* ComplicationController.swift */,
@@ -458,6 +461,7 @@
 				B956D2F625609A0E0056007B /* LocationManager.swift in Sources */,
 				B923CCAA254671BF00E09B40 /* ArticlesView.swift in Sources */,
 				B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */,
+				B92DB505256409E100511383 /* CompassHeading.swift in Sources */,
 				B923CCAB254671BF00E09B40 /* ArticleDetail.swift in Sources */,
 				B923CCAD254671BF00E09B40 /* Article.swift in Sources */,
 				B9AA29FB2535BA2B0057FA8D /* ComplicationController.swift in Sources */,

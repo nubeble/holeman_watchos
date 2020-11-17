@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @ObservedObject var locationManager = LocationManager()
-
+    
     @ObservedObject var compassHeading = CompassHeading()
     
     var userLatitude: String {
@@ -37,84 +37,83 @@ struct ContentView: View {
          .font(Font.title.weight(.bold))
          }
          */
+        
+        
         VStack(alignment: .trailing)  {
-            Text("QuickNews")
-                .font(.title)
-                .fontWeight(.thin)
-            Text("Daily news, always on your wrist")
-                .fontWeight(.thin)
-            Spacer()
-            
             /*
-             NavigationLink(destination: ArticlesView()) {
-             Text("Start")
+             Text("QuickNews")
+             .font(.title)
+             .fontWeight(.thin)
+             Text("Daily news, always on your wrist")
+             .fontWeight(.thin)
+             Spacer()
+             
+             
+             Button(action: {
+             /*
+             manager.fetch(completion: { (records, error) in
+             guard error == .none, let records = records else {
+             print("error")
+             // Deal with error
+             return
+             }
+             
+             DispatchQueue.main.async {
+             // self.tableView.set(tasks: records)
+             
+             print(records)
+             }
+             })
+             */
+             
+             /*
+             let newItem = ListElement(text: "hello")
+             CloudKitManager.save(item: newItem) { (result) in
+             
+             switch result {
+             case .success(let newItem):
+             // self.listElements.items.insert(newItem, at: 0)
+             print("Successfully added item")
+             case .failure(let err):
+             print(err.localizedDescription)
+             }
+             
              }
              */
-            
-            Button(action: {
-                /*
-                 manager.fetch(completion: { (records, error) in
-                 guard error == .none, let records = records else {
-                 print("error")
-                 // Deal with error
-                 return
-                 }
-                 
-                 DispatchQueue.main.async {
-                 // self.tableView.set(tasks: records)
-                 
-                 print(records)
-                 }
-                 })
-                 */
-                
-                /*
-                 let newItem = ListElement(text: "hello")
-                 CloudKitManager.save(item: newItem) { (result) in
-                 
-                 switch result {
-                 case .success(let newItem):
-                 // self.listElements.items.insert(newItem, at: 0)
-                 print("Successfully added item")
-                 case .failure(let err):
-                 print(err.localizedDescription)
-                 }
-                 
-                 }
-                 */
-                
-                
-                CloudKitManager.subscribe()
-                
-                
-                
-            }, label: {
-                /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
-            })
-            
-            
-            NavigationLink(destination: IntroView()) {
-                Text("IntroView")
-            }
-            .navigationBarTitle("")
-            .navigationBarBackButtonHidden(true)
-            .navigationBarHidden(true)
-            
-            /*
+             
+             
+             CloudKitManager.subscribe()
+             
+             
+             
+             }, label: {
+             /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
+             })
+             
+             
+             NavigationLink(destination: IntroView()) {
+             Text("IntroView")
+             }
+             .navigationBarTitle("")
+             .navigationBarBackButtonHidden(true)
+             .navigationBarHidden(true)
+             
+             /*
              Text("location status: \(locationManager.statusString)")
              HStack {
              Text("latitude: \(userLatitude)")
              Text("longitude: \(userLongitude)")
              }
              */
-            Text("status: \(locationManager.statusString)")
-            Text("latitude: \(userLatitude)")
-            Text("longitude: \(userLongitude)")
-
-
-
+             Text("status: \(locationManager.statusString)")
+             Text("latitude: \(userLatitude)")
+             Text("longitude: \(userLongitude)")
+             */
+            
+            
+            
             Capsule().frame(width: 5, height: 50)
-
+            
             ZStack {
                 ForEach(Marker.markers(), id: \.self) { marker in
                     CompassMarkerView(marker: marker,
@@ -123,8 +122,11 @@ struct ContentView: View {
             }
             .frame(width: 300, height: 300)
             .rotationEffect(Angle(degrees: self.compassHeading.degrees))
-            .statusBar(hidden: true)
-
+            // .statusBar(hidden: true)
+            .navigationBarTitle("")
+            .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true)
+            
         }.onAppear(perform: onCreate)
         
         
@@ -147,16 +149,16 @@ struct ContentView: View {
 struct Marker: Hashable {
     let degrees: Double
     let label: String
-
+    
     init(degrees: Double, label: String = "") {
         self.degrees = degrees
         self.label = label
     }
-
+    
     func degreeText() -> String {
         return String(format: "%.0f", self.degrees)
     }
-
+    
     static func markers() -> [Marker] {
         return [
             Marker(degrees: 0, label: "N"),
@@ -178,7 +180,7 @@ struct Marker: Hashable {
 struct CompassMarkerView: View {
     let marker: Marker
     let compassDegress: Double
-
+    
     var body: some View {
         VStack {
             Text(marker.degreeText())
@@ -200,15 +202,15 @@ struct CompassMarkerView: View {
     private func capsuleWidth() -> CGFloat {
         return self.marker.degrees == 0 ? 7 : 3
     }
-
+    
     private func capsuleHeight() -> CGFloat {
         return self.marker.degrees == 0 ? 45 : 30
     }
-
+    
     private func capsuleColor() -> Color {
         return self.marker.degrees == 0 ? .red : .gray
     }
-
+    
     private func textAngle() -> Angle {
         return Angle(degrees: -self.compassDegress - self.marker.degrees)
     }
@@ -217,58 +219,5 @@ struct CompassMarkerView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-    }
-}
-
-
-
-
-
-
-
-
-// CompassHeading.swift
-
-//
-//  Compass.swift
-//  Compass
-//
-//  Created by ProgrammingWithSwift on 2019/10/06.
-//  Copyright © 2019 ProgrammingWithSwift. All rights reserved.
-//
-
-import Foundation
-import Combine
-import CoreLocation
-
-class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
-    var objectWillChange = PassthroughSubject<Void, Never>()
-    var degrees: Double = .zero {
-        didSet {
-            objectWillChange.send()
-        }
-    }
-    
-    private let locationManager: CLLocationManager
-    
-    override init() {
-        self.locationManager = CLLocationManager()
-        super.init()
-        
-        self.locationManager.delegate = self
-        self.setup()
-    }
-    
-    private func setup() {
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.headingAvailable() {
-            self.locationManager.startUpdatingLocation()
-            self.locationManager.startUpdatingHeading()
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        self.degrees = -1 * newHeading.magneticHeading
     }
 }
