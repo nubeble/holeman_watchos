@@ -10,6 +10,8 @@ import SwiftUI
 struct ContentView: View {
     
     @ObservedObject var locationManager = LocationManager()
+
+    @ObservedObject var compassHeading = CompassHeading()
     
     var userLatitude: String {
         return "\(locationManager.lastLocation?.coordinate.latitude ?? 0)"
@@ -109,17 +111,18 @@ struct ContentView: View {
             Text("latitude: \(userLatitude)")
             Text("longitude: \(userLongitude)")
 
+
+
             Capsule().frame(width: 5, height: 50)
 
-            // 1
             ZStack {
-                // 2
-                ForEach([0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330], id: \.self) { marker in
-                    // CompassViewMarker(still to come)
+                ForEach(Marker.markers(), id: \.self) { marker in
+                    CompassMarkerView(marker: marker,
+                                      compassDegress: self.compassHeading.degrees)
                 }
             }
             .frame(width: 300, height: 300)
-            .rotationEffect(Angle(degrees: 0)) // 3
+            .rotationEffect(Angle(degrees: self.compassHeading.degrees))
             .statusBar(hidden: true)
 
         }.onAppear(perform: onCreate)
@@ -150,6 +153,10 @@ struct Marker: Hashable {
         self.label = label
     }
 
+    func degreeText() -> String {
+        return String(format: "%.0f", self.degrees)
+    }
+
     static func markers() -> [Marker] {
         return [
             Marker(degrees: 0, label: "N"),
@@ -161,15 +168,107 @@ struct Marker: Hashable {
             Marker(degrees: 180, label: "S"),
             Marker(degrees: 210),
             Marker(degrees: 240),
-            Marker(degrees: 270, label: "w"),
+            Marker(degrees: 270, label: "W"),
             Marker(degrees: 300),
             Marker(degrees: 330)
         ]
     }
 }
 
+struct CompassMarkerView: View {
+    let marker: Marker
+    let compassDegress: Double
+
+    var body: some View {
+        VStack {
+            Text(marker.degreeText())
+                .fontWeight(.light)
+                .rotationEffect(self.textAngle())
+            
+            Capsule()
+                .frame(width: self.capsuleWidth(),
+                       height: self.capsuleHeight())
+                .foregroundColor(self.capsuleColor())
+            
+            Text(marker.label)
+                .fontWeight(.bold)
+                .rotationEffect(self.textAngle())
+                .padding(.bottom, 180)
+        }.rotationEffect(Angle(degrees: marker.degrees))
+    }
+    
+    private func capsuleWidth() -> CGFloat {
+        return self.marker.degrees == 0 ? 7 : 3
+    }
+
+    private func capsuleHeight() -> CGFloat {
+        return self.marker.degrees == 0 ? 45 : 30
+    }
+
+    private func capsuleColor() -> Color {
+        return self.marker.degrees == 0 ? .red : .gray
+    }
+
+    private func textAngle() -> Angle {
+        return Angle(degrees: -self.compassDegress - self.marker.degrees)
+    }
+}
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+
+
+
+
+
+
+
+// CompassHeading.swift
+
+//
+//  Compass.swift
+//  Compass
+//
+//  Created by ProgrammingWithSwift on 2019/10/06.
+//  Copyright © 2019 ProgrammingWithSwift. All rights reserved.
+//
+
+import Foundation
+import Combine
+import CoreLocation
+
+class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
+    var objectWillChange = PassthroughSubject<Void, Never>()
+    var degrees: Double = .zero {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    
+    private let locationManager: CLLocationManager
+    
+    override init() {
+        self.locationManager = CLLocationManager()
+        super.init()
+        
+        self.locationManager.delegate = self
+        self.setup()
+    }
+    
+    private func setup() {
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.headingAvailable() {
+            self.locationManager.startUpdatingLocation()
+            self.locationManager.startUpdatingHeading()
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        self.degrees = -1 * newHeading.magneticHeading
     }
 }
