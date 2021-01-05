@@ -14,13 +14,18 @@ struct holemanApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                ContentView()
+                // ContentView()
+                // ContentView().environmentObject(Course())
+                
+                SplashView()
+                
             }.onAppear {
                 print("ContentView appeared!")
                 // WKExtension.shared().registerForRemoteNotifications()
             }.onDisappear {
                 print("ContentView disappeared!")
             }
+            
         }
     }
     
