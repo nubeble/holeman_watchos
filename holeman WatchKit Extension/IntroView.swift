@@ -133,6 +133,7 @@ struct IntroView: View {
             // MainView()
             
             // ToDo: move to HoleSearch view
+            HoleSearchView()
             
             
             

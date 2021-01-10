@@ -22,6 +22,7 @@
 		B92DB50A2569F84000511383 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92DB5092569F84000511383 /* MainView.swift */; };
 		B956D2E8256031E00056007B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956D2E7256031E00056007B /* HomeView.swift */; };
 		B956D2F625609A0E0056007B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956D2F525609A0E0056007B /* LocationManager.swift */; };
+		B96885B925A9560900C046E8 /* HoleSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96885B825A9560900C046E8 /* HoleSearchView.swift */; };
 		B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */; };
 		B98FF381255052D400CA1ECA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B98FF37625504DDC00CA1ECA /* UserNotifications.framework */; };
 		B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */; };
@@ -104,6 +105,7 @@
 		B92DB5092569F84000511383 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		B956D2E7256031E00056007B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B956D2F525609A0E0056007B /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		B96885B825A9560900C046E8 /* HoleSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoleSearchView.swift; sourceTree = "<group>"; };
 		B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationHelper.swift; sourceTree = "<group>"; };
 		B98FF37625504DDC00CA1ECA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.0.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
 		B98FF37825504E4F00CA1ECA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -224,6 +226,7 @@
 			children = (
 				B923CCB12546AC0800E09B40 /* holeman WatchKit ExtensionDebug.entitlements */,
 				B9AA29F62535BA2B0057FA8D /* ContentView.swift */,
+				B96885B825A9560900C046E8 /* HoleSearchView.swift */,
 				B995311A2583094C001D5FBF /* IntroView.swift */,
 				B92DB5092569F84000511383 /* MainView.swift */,
 				B99531122581BE76001D5FBF /* SplashView.swift */,
@@ -484,6 +487,7 @@
 				B99531132581BE76001D5FBF /* SplashView.swift in Sources */,
 				B923CCAC254671BF00E09B40 /* ArticleFetcher.swift in Sources */,
 				B923CCDD2547E24D00E09B40 /* ListElement.swift in Sources */,
+				B96885B925A9560900C046E8 /* HoleSearchView.swift in Sources */,
 				B923CCD82547E1B500E09B40 /* CloudKitManager.swift in Sources */,
 				B995311B2583094C001D5FBF /* IntroView.swift in Sources */,
 				B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */,

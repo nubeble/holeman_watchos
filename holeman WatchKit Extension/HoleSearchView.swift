@@ -1,0 +1,109 @@
+//
+//  HoleSearchView.swift
+//  holeman WatchKit Extension
+//
+//  Created by Jay Kim on 2021/01/09.
+//
+
+import SwiftUI
+
+struct HoleSearchView: View {
+    
+    
+    
+    @State private var exercises = ["Unterarmstütz", "Dehnen", "Kopfstand", "Handstand"]
+    @State private var selectedExercise = "Plank"
+    // @State private var selectedTimeIndex = 60
+    
+    var body: some View {
+        
+        //use GeometryReader for height & weight//
+        GeometryReader { geometry in
+            ScrollView() {
+                VStack {
+                    Text("Select Course").font(.system(size: 20, weight: .semibold))
+                    Text("골프장을 선택하세요.").font(.system(size: 16, weight: .light)).padding(.bottom, 20)
+                    
+                    /*
+                     Picker(selection: self.$selectedTimeIndex, label: Text("select Time")) {
+                     Text("Option 1")
+                     Text("Option 2")
+                     Text("Option 3")
+                     }.frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
+                     */
+                    
+                    // add item with loop
+                    /*
+                     ForEach(self.exercises, id: \.self) { exercise in
+                     Button(action: {
+                     self.selectedExercise = exercise
+                     }) {
+                     HStack(spacing: 10) {
+                     VStack {
+                     Image(systemName: "magnifyingglass")
+                     .font(Font.system(size: 12, weight: .heavy))
+                     .foregroundColor(.white)
+                     }
+                     .padding(4)
+                     .background(Color.orange)
+                     .mask(Circle())
+                     
+                     Text(exercise)
+                     
+                     Spacer()
+                     }
+                     }
+                     }
+                     */
+                    
+                    // item 1
+                    Button(action: {
+                        // ToDo
+                    }) {
+                        HStack(spacing: 10) {
+                            VStack {
+                                Image(systemName: "magnifyingglass")
+                                    .font(Font.system(size: 12, weight: .heavy))
+                                    .foregroundColor(.white)
+                            }
+                            .padding(4)
+                            .background(Color.orange)
+                            .mask(Circle())
+                            
+                            Text("자동으로 검색")
+                            
+                            Spacer()
+                        }
+                    }
+                    
+                    // item 2
+                    Button(action: {
+                        // ToDo
+                    }) {
+                        HStack(spacing: 10) {
+                            VStack {
+                                Image(systemName: "list.bullet")
+                                    .font(Font.system(size: 12, weight: .heavy))
+                                    .foregroundColor(.white)
+                            }
+                            .padding(4)
+                            .background(Color.blue)
+                            .mask(Circle())
+                            
+                            Text("목록에서 선택")
+                            
+                            Spacer()
+                        }
+                    }
+                } // end of VStack
+            } // end of ScrollView
+        } // end of GeometryReader
+        
+    }
+}
+
+struct HoleSearchView_Previews: PreviewProvider {
+    static var previews: some View {
+        HoleSearchView()
+    }
+}
