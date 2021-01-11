@@ -61,16 +61,16 @@ struct HoleSearchView: View {
                         // ToDo
                     }) {
                         HStack(spacing: 10) {
-                            VStack {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.orange)
+                                    .frame(width: 24, height: 24)
+                                
                                 Image(systemName: "magnifyingglass")
-                                    .font(Font.system(size: 12, weight: .heavy))
-                                    .foregroundColor(.white)
+                                    .font(Font.system(size: 14, weight: .heavy))
                             }
-                            .padding(4)
-                            .background(Color.orange)
-                            .mask(Circle())
                             
-                            Text("자동으로 검색")
+                            Text("자동으로 검색").font(Font.system(size: 20, weight: .semibold))
                             
                             Spacer()
                         }
@@ -81,16 +81,16 @@ struct HoleSearchView: View {
                         // ToDo
                     }) {
                         HStack(spacing: 10) {
-                            VStack {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.blue)
+                                    .frame(width: 24, height: 24)
+                                
                                 Image(systemName: "list.bullet")
-                                    .font(Font.system(size: 12, weight: .heavy))
-                                    .foregroundColor(.white)
+                                    .font(Font.system(size: 13, weight: .heavy))
                             }
-                            .padding(4)
-                            .background(Color.blue)
-                            .mask(Circle())
                             
-                            Text("목록에서 선택")
+                            Text("목록에서 선택").font(Font.system(size: 20, weight: .semibold))
                             
                             Spacer()
                         }
