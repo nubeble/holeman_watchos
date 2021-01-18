@@ -25,9 +25,10 @@ struct SplashView: View {
                  Text("Awesome Splash Screen!")
                  .font(Font.largeTitle)
                  */
-                Image(systemName: "cloud.heavyrain.fill")
+                // Image(systemName: "cloud.heavyrain.fill")
+                Image("logo")
                     .resizable()
-                    .frame(width: 80, height: 80)
+                    .frame(width: 710/4.2, height: 239/4.2)
             }
         }
         // 5.

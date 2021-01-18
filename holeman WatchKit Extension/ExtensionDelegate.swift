@@ -82,6 +82,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                     
                     print("rid", rid)
                     
+                    // ToDo: check recordType - Sensor
+                    
                     let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
                     let recordID = CKRecord.ID.init(recordName: rid)
                     db.fetch(withRecordID: recordID) { record, error in
@@ -102,6 +104,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                             let location = record["location"] as! CLLocation
                             let elevation = record["elevation"] as! Double
                             let timestamp = record["timestamp"] as! Int64
+                            let battery = record["battery"] as! Int64
                             
                             print("id", id)
                             print("holeNumber", holeNumber)
@@ -109,6 +112,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                             print("latitude", location.coordinate.latitude)
                             print("longitude", location.coordinate.longitude)
                             print("elevation", elevation)
+                            print("battery", battery)
                             print("timestamp", timestamp)
                         }
                         

@@ -74,21 +74,33 @@ struct IntroView: View {
                             self.mode = 2
                         }
                     }) {
-                        VStack {
+                        /*
+                         VStack {
+                         Image(systemName: "arrow.right")
+                         .font(Font.system(size: 28, weight: .heavy))
+                         // .resizable()
+                         // .frame(width: 30, height: 30)
+                         // Text("Circle!")
+                         }
+                         .padding(14)
+                         .background(Color.green)
+                         .mask(Circle())
+                         */
+                        
+                        ZStack {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 54, height: 54)
+                            
                             Image(systemName: "arrow.right")
                                 .font(Font.system(size: 28, weight: .heavy))
-                            // .resizable()
-                            // .frame(width: 30, height: 30)
-                            // Text("Circle!")
                         }
-                        .padding(14)
-                        .background(Color.green)
-                        .mask(Circle())
+                        
                     }
                     .buttonStyle(PlainButtonStyle())
                     .padding(.bottom, 10)
                     .opacity(button1Opacity)
-
+                    
                     /*
                      Text("\(textValue)")
                      .opacity(opacity)
@@ -132,8 +144,8 @@ struct IntroView: View {
         } else if (self.mode == 2) {
             // MainView()
             
-            // ToDo: move to HoleSearch view
-            HoleSearchView()
+            // ToDo: move to course view
+            CourseView()
             
             
             
