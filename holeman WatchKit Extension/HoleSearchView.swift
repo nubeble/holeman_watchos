@@ -31,7 +31,6 @@ struct HoleSearchView: View {
                 // picker
                 Picker(selection: $selectedCourseIndex, label: Text("")) {
                     ForEach(0 ..< courses.count) {
-                        
                         let name = self.courses[$0].name
                         
                         let start1 = name.firstIndex(of: "(")
@@ -43,8 +42,6 @@ struct HoleSearchView: View {
                         let str1 = name[range1]
                         
                         let i2 = name.index(start1!, offsetBy: 1)
-                        // let i2 = name.index(start1!, offsetBy: 5) // ToDo: test
-                        // let i3 = name.index(end1!, offsetBy: -1)
                         
                         let range2 = i2..<end1!
                         let str2 = name[range2]
