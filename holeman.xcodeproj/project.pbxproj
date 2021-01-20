@@ -27,6 +27,7 @@
 		B975BBF525AE9A8C00EFD939 /* CourseSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BBF425AE9A8C00EFD939 /* CourseSearchView.swift */; };
 		B975BBFD25B292ED00EFD939 /* HoleSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BBFC25B292ED00EFD939 /* HoleSearchView.swift */; };
 		B975BC0225B2963200EFD939 /* CourseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BC0125B2963200EFD939 /* CourseModel.swift */; };
+		B975BC0A25B8E7F800EFD939 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BC0925B8E7F800EFD939 /* Util.swift */; };
 		B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */; };
 		B98FF381255052D400CA1ECA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B98FF37625504DDC00CA1ECA /* UserNotifications.framework */; };
 		B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */; };
@@ -114,6 +115,7 @@
 		B975BBF425AE9A8C00EFD939 /* CourseSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseSearchView.swift; sourceTree = "<group>"; };
 		B975BBFC25B292ED00EFD939 /* HoleSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoleSearchView.swift; sourceTree = "<group>"; };
 		B975BC0125B2963200EFD939 /* CourseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseModel.swift; sourceTree = "<group>"; };
+		B975BC0925B8E7F800EFD939 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationHelper.swift; sourceTree = "<group>"; };
 		B98FF37625504DDC00CA1ECA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.0.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
 		B98FF37825504E4F00CA1ECA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -248,6 +250,7 @@
 				B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */,
 				B923CCD72547E1B500E09B40 /* CloudKitManager.swift */,
 				B956D2F525609A0E0056007B /* LocationManager.swift */,
+				B975BC0925B8E7F800EFD939 /* Util.swift */,
 				B975BC0125B2963200EFD939 /* CourseModel.swift */,
 				B9BACF46256CB7DD00F7B07D /* Course.swift */,
 				B9AA29FC2535BA2B0057FA8D /* Assets.xcassets */,
@@ -490,6 +493,7 @@
 				B956D2F625609A0E0056007B /* LocationManager.swift in Sources */,
 				B923CCAA254671BF00E09B40 /* ArticlesView.swift in Sources */,
 				B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */,
+				B975BC0A25B8E7F800EFD939 /* Util.swift in Sources */,
 				B92DB505256409E100511383 /* CompassHeading.swift in Sources */,
 				B923CCAB254671BF00E09B40 /* ArticleDetail.swift in Sources */,
 				B923CCAD254671BF00E09B40 /* Article.swift in Sources */,

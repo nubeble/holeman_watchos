@@ -106,10 +106,8 @@ struct CourseView: View {
             
         } else if (self.mode == 1) {
             CourseSearchView()
-            
         } else if (self.mode == 2) {
             CourseListView()
-            
         }
         
     }

@@ -17,8 +17,8 @@ struct CourseSearchView: View {
     @ObservedObject var locationManager = LocationManager()
     
     @State var placemark: CLPlacemark?
-    @State var city: String?
-    @State var country: String?
+    // @State var city: String?
+    // @State var country: String?
     @State var countryCode: String?
     
     struct CourseData: Codable, Hashable {
