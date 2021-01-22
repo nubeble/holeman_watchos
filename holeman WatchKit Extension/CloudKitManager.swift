@@ -279,6 +279,31 @@ struct CloudKitManager {
         }
     }
     
+    static func fetchAllCourses(_ countryCode: String, onComplete: @escaping (_ records:[CKRecord]?) -> Void) {
+        // let p = NSPredicate(format: "distanceToLocation:fromLocation:(location, %@) < %@", location, NSNumber(value: radiusInKilometers))
+        let p = NSPredicate(format: "countryCode = %@ AND distanceToLocation:fromLocation:(location, %@) < %@", countryCode, location, NSNumber(value: radiusInKilometers))
+        let query = CKQuery(recordType: "Course", predicate: p)
+        // query.sortDescriptors = [CKLocationSortDescriptor(key: "location", relativeLocation: location)]
+        /*
+         let operation = CKQueryOperation(query: query)
+         operation.resultsLimit = 50
+         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.add(operation)
+         */
+        
+        // CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: nil) { (records, error) in
+        CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
+            
+            if let error = error {
+                DispatchQueue.main.async {
+                    print("Cloud Query Error - Fetch Locations: \(error)")
+                }
+            } else {
+                // print(records)
+                onComplete(records)
+            }
+        }
+    }
+    
     
     /*
      // MARK: - delete from CloudKit
