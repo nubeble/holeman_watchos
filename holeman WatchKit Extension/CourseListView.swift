@@ -126,10 +126,7 @@ struct CourseListView: View {
                 // call timer again
                 getCountryCodeTimer()
             } else {
-                // find the nearest course
-                // let l:CLLocation = CLLocation(latitude: 36.767056, longitude: 127.221505)
-                // CloudKitManager.fetchNearbyLocations(String(self.countryCode!), l) { records in
-                CloudKitManager.fetchNearbyLocations(String(self.countryCode!), location) { records in
+                CloudKitManager.fetchAllCourses(String(self.countryCode!)) { records in // ToDo
                     // print(#function, records)
                     if let records = records {
                         var count = 0
