@@ -21,7 +21,7 @@ struct CourseListView: View {
     
     @State var courses: [CourseModel] = []
     
-    @State var selectedCourseIndex = 0
+    @State var selectedCourseIndex: Int = 0
     
     var body: some View {
         
@@ -38,16 +38,18 @@ struct CourseListView: View {
             
             GeometryReader { geometry in
                 ScrollView() {
-                    
-                    VStack {
-                        ScrollViewReader { value in
+                    // VStack {
+                    ScrollViewReader { value in
+                        LazyVStack {
                             Text("Select Course").font(.system(size: 20, weight: .semibold))
-                            Text("골프장을 선택하세요.").font(.system(size: 16, weight: .light)).padding(.bottom, 20)
+                            Text("골프장을 선택하세요.").font(.system(size: 16, weight: .light)).padding(.bottom, 10)
                             
-                            // Divider()
+                            // Divider() // ToDo
                             
                             ForEach(0 ..< courses.count) {
-                                let name = self.courses[$0].name
+                                let index = $0
+                                
+                                let name = self.courses[index].name
                                 
                                 let start1 = name.firstIndex(of: "(")
                                 let end1 = name.firstIndex(of: ")")
@@ -63,10 +65,13 @@ struct CourseListView: View {
                                 let str2 = name[range2]
                                 
                                 Button(action: {
-                                    // ToDo
+                                    self.selectedCourseIndex = index
+                                    // print("button click", name)
                                     
-                                    // ToDo: test
-                                    value.scrollTo(0)
+                                    // move to CourseSearchView
+                                    withAnimation {
+                                        self.mode = 2
+                                    }
                                 }) {
                                     Text(str1 + "\n" + str2).font(.system(size: 18))
                                         .fixedSize(horizontal: false, vertical: true)
@@ -75,12 +80,45 @@ struct CourseListView: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }.id($0)
                             }
+                            
+                            Button(action: {
+                                withAnimation {
+                                    self.mode = 3
+                                }
+                            }) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                        .frame(width: 54, height: 54)
+                                    
+                                    Image(systemName: "xmark")
+                                        .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
+                                        .font(Font.system(size: 28, weight: .heavy))
+                                }
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .padding(.top, 10)
+                            .padding(.bottom, -20) // ToDo: check default padding
+                            
+                        }.onAppear {
+                            // ToDo: scroll
+                            // value.scrollTo(2)
                         }
                     }
-                }
+                    // }
+                } // end of ScrollView
             }
             
-        } // else if
+        } else if (self.mode == 2) {
+            
+            let c = self.courses[self.selectedCourseIndex]
+            HoleSearchView(course: c)
+            
+        } else if (self.mode == 3) { // go back
+            
+            CourseView()
+            
+        }
         
         
         
@@ -126,7 +164,7 @@ struct CourseListView: View {
                 // call timer again
                 getCountryCodeTimer()
             } else {
-                CloudKitManager.fetchAllCourses(String(self.countryCode!)) { records in // ToDo
+                CloudKitManager.fetchAllCourses(String(self.countryCode!)) { records in
                     // print(#function, records)
                     if let records = records {
                         var count = 0

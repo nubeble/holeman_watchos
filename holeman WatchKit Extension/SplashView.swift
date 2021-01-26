@@ -28,7 +28,7 @@ struct SplashView: View {
                 // Image(systemName: "cloud.heavyrain.fill")
                 Image("logo")
                     .resizable()
-                    .frame(width: 710/4.2, height: 239/4.2)
+                    .frame(width: 710 / 4.2, height: 239 / 4.2)
             }
         }
         // 5.

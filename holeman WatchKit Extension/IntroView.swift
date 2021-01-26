@@ -144,15 +144,9 @@ struct IntroView: View {
         } else if (self.mode == 2) {
             // MainView()
             
-            // ToDo: move to course view
+            // move to course view
             CourseView()
-            
-            
-            
-            
-            
-            
-            
+
         }
         
         

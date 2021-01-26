@@ -28,6 +28,8 @@
 		B975BBFD25B292ED00EFD939 /* HoleSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BBFC25B292ED00EFD939 /* HoleSearchView.swift */; };
 		B975BC0225B2963200EFD939 /* CourseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BC0125B2963200EFD939 /* CourseModel.swift */; };
 		B975BC0A25B8E7F800EFD939 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BC0925B8E7F800EFD939 /* Util.swift */; };
+		B975BC1225BEDECD00EFD939 /* TeeingGroundInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BC1125BEDECD00EFD939 /* TeeingGroundInfoModel.swift */; };
+		B975BC1725C0028E00EFD939 /* HoleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BC1625C0028E00EFD939 /* HoleModel.swift */; };
 		B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */; };
 		B98FF381255052D400CA1ECA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B98FF37625504DDC00CA1ECA /* UserNotifications.framework */; };
 		B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */; };
@@ -116,6 +118,8 @@
 		B975BBFC25B292ED00EFD939 /* HoleSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoleSearchView.swift; sourceTree = "<group>"; };
 		B975BC0125B2963200EFD939 /* CourseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseModel.swift; sourceTree = "<group>"; };
 		B975BC0925B8E7F800EFD939 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		B975BC1125BEDECD00EFD939 /* TeeingGroundInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeeingGroundInfoModel.swift; sourceTree = "<group>"; };
+		B975BC1625C0028E00EFD939 /* HoleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoleModel.swift; sourceTree = "<group>"; };
 		B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationHelper.swift; sourceTree = "<group>"; };
 		B98FF37625504DDC00CA1ECA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.0.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
 		B98FF37825504E4F00CA1ECA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -252,6 +256,8 @@
 				B956D2F525609A0E0056007B /* LocationManager.swift */,
 				B975BC0925B8E7F800EFD939 /* Util.swift */,
 				B975BC0125B2963200EFD939 /* CourseModel.swift */,
+				B975BC1125BEDECD00EFD939 /* TeeingGroundInfoModel.swift */,
+				B975BC1625C0028E00EFD939 /* HoleModel.swift */,
 				B9BACF46256CB7DD00F7B07D /* Course.swift */,
 				B9AA29FC2535BA2B0057FA8D /* Assets.xcassets */,
 				B9AA2A012535BA2B0057FA8D /* Info.plist */,
@@ -512,6 +518,8 @@
 				B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */,
 				B923CCBB2546C5BD00E09B40 /* CloudManager.swift in Sources */,
 				B975BBF025AE982C00EFD939 /* CourseListView.swift in Sources */,
+				B975BC1225BEDECD00EFD939 /* TeeingGroundInfoModel.swift in Sources */,
+				B975BC1725C0028E00EFD939 /* HoleModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

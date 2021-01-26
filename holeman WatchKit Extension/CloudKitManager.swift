@@ -1,9 +1,8 @@
 //
 //  CloudKitManager.swift
-//  SwiftUICloudKitDemo
+//  holeman WatchKit Extension
 //
-//  Created by Alex Nagy on 23/09/2019.
-//  Copyright © 2019 Alex Nagy. All rights reserved.
+//  Created by Jay Kim on 2021/01/13.
 //
 
 import Foundation
@@ -50,14 +49,14 @@ struct CloudKitManager {
                 if (subscriptions.count == 0) {
                     print("no subscription exists.")
                     print("save subscription...")
-                    CloudKitManager.saveSubscription()
+                    CloudKitManager.saveSubscription(27)
                 }
                 
                 CloudKitManager.deleteAllSubscriptions(subscriptions: subscriptions) { (count) in
                     print("deleteAllSubscriptions count", count)
                     
                     print("save subscription...")
-                    CloudKitManager.saveSubscription()
+                    CloudKitManager.saveSubscription(27)
                 }
             }
         })
@@ -142,13 +141,13 @@ struct CloudKitManager {
         } // end of for
     }
     
-    static func saveSubscription() { // ToDo: parameter: id
+    static func saveSubscription(_ id: Int64) { // id: course id
         // create subscription
         // predicate: You can customize this to only get notified when particular records are changed.
         
         // let sub = CKQuerySubscription(recordType: "Sensor", predicate: NSPredicate(value: true), options: [ .firesOnRecordUpdate, .firesOnRecordCreation, .firesOnRecordDeletion ])
         
-        let id: Int64 = 27
+        // let id: Int64 = 27
         let predicate = NSPredicate(format: "id == %d", id)
         let sub = CKQuerySubscription(recordType: "Sensor", predicate: predicate, options: [ .firesOnRecordUpdate, .firesOnRecordCreation, .firesOnRecordDeletion ])
         
@@ -267,7 +266,6 @@ struct CloudKitManager {
         
         // CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: nil) { (records, error) in
         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
-            
             if let error = error {
                 DispatchQueue.main.async {
                     print("Cloud Query Error - Fetch Locations: \(error)")
@@ -280,19 +278,28 @@ struct CloudKitManager {
     }
     
     static func fetchAllCourses(_ countryCode: String, onComplete: @escaping (_ records:[CKRecord]?) -> Void) {
-        // let p = NSPredicate(format: "distanceToLocation:fromLocation:(location, %@) < %@", location, NSNumber(value: radiusInKilometers))
-        let p = NSPredicate(format: "countryCode = %@ AND distanceToLocation:fromLocation:(location, %@) < %@", countryCode, location, NSNumber(value: radiusInKilometers))
+        let p = NSPredicate(format: "countryCode = %@", countryCode)
         let query = CKQuery(recordType: "Course", predicate: p)
-        // query.sortDescriptors = [CKLocationSortDescriptor(key: "location", relativeLocation: location)]
-        /*
-         let operation = CKQueryOperation(query: query)
-         operation.resultsLimit = 50
-         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.add(operation)
-         */
+        query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
-        // CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: nil) { (records, error) in
         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
-            
+            if let error = error {
+                DispatchQueue.main.async {
+                    print("Cloud Query Error - Fetch Locations: \(error)")
+                }
+            } else {
+                // print(records)
+                onComplete(records)
+            }
+        }
+    }
+    
+    static func getHole(_ groupId: Int64, onComplete: @escaping (_ records:[CKRecord]?) -> Void) {
+        let p = NSPredicate(format: "id = %d", groupId)
+        let query = CKQuery(recordType: "Hole", predicate: p)
+        // query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        
+        CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
             if let error = error {
                 DispatchQueue.main.async {
                     print("Cloud Query Error - Fetch Locations: \(error)")

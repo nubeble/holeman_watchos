@@ -23,7 +23,7 @@ struct CourseView: View {
                 ScrollView() {
                     VStack {
                         Text("Select Course").font(.system(size: 20, weight: .semibold))
-                        Text("골프장을 선택하세요.").font(.system(size: 16, weight: .light)).padding(.bottom, 20)
+                        Text("골프장을 선택하세요.").font(.system(size: 16, weight: .light)).padding(.bottom, 10)
                         
                         /*
                          Picker(selection: self.$selectedTimeIndex, label: Text("select Time")) {
