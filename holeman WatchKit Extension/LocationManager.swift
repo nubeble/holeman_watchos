@@ -16,7 +16,9 @@ class LocationManager: NSObject, ObservableObject {
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
+        
         self.locationManager.startUpdatingLocation()
+        if CLLocationManager.headingAvailable() { self.locationManager.startUpdatingHeading() }
     }
     
     @Published var locationStatus: CLAuthorizationStatus? {
@@ -30,6 +32,14 @@ class LocationManager: NSObject, ObservableObject {
             objectWillChange.send()
         }
     }
+    
+    @Published var degree: Double? {
+        willSet {
+            objectWillChange.send()
+        }
+    }
+    
+    var lastDegree: Double = 0
     
     var statusString: String {
         guard let status = locationStatus else {
@@ -56,13 +66,27 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         self.locationStatus = status
+        
         print(#function, statusString)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         self.lastLocation = location
+        
         print(#function, location)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        self.degree = -1 * newHeading.magneticHeading
+        
+        if let d = self.degree {
+            self.lastDegree = d
+        }
+        
+        
+        
+        // print("degrees", self.degree)
     }
     
 }

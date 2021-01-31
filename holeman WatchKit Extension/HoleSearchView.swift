@@ -10,10 +10,17 @@ import SwiftUI
 struct HoleSearchView: View {
     @State var mode: Int = 0
     
-    // @State var course: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
+    @ObservedObject var locationManager = LocationManager()
+    
     @State var course: CourseModel? = nil
     
     @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
+    @State var teeingGroundIndex: Int = -1
+    
+    @State var startHoles: [StartHole] = []
+    
+    @State var holeNumber: Int = 0
+    
     
     struct HoleData: Codable, Hashable {
         let number: Int
@@ -22,16 +29,12 @@ struct HoleSearchView: View {
         let distance: Dictionary<String, Int>
     }
     
-    // @State var selectedCourseIndex = 0
-    
-    // data to MainView
-    @State var teeingGroundIndex = -1
-    // @State var groupId = 0
-    // @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
-    
-    
-    
-    
+    struct StartHole {
+        var name: String
+        var number: Int
+        var latitude: Double
+        var longitude: Double
+    }
     
     
     var body: some View {
@@ -80,25 +83,72 @@ struct HoleSearchView: View {
             }
             .onAppear(perform: {
                 Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
-                    print(#function, "Timer fired.")
-                    
-                    // ToDo: getStartHole() // 1, 10, 19, ...
-                    
-                    // get holes data in db
-                    let groupId = self.course?.id
-                    getHoles(groupId!) {
-                        // ToDo:
-                        
-                        // startHoles
-                        
-                        // getSensor
-                        
-                    }
-                    
+                    getStartHole() // 1, 10, 19, ...
                 }
             })
             
         } else if (self.mode == 1) {
+            
+        } else if (self.mode == 2) { // show start hole list
+            
+            GeometryReader { geometry in
+                ScrollView() {
+                    // VStack {
+                    ScrollViewReader { value in
+                        LazyVStack {
+                            Text("Select Hole").font(.system(size: 20, weight: .semibold))
+                            Text("스타트 홀을 선택하세요.").font(.system(size: 16, weight: .light)).padding(.bottom, 10)
+                            
+                            ForEach(0 ..< self.startHoles.count) {
+                                let index = $0
+                                
+                                let name = self.startHoles[index].name
+                                
+                                Button(action: {
+                                    // ToDo
+                                    // move to MainView
+                                    withAnimation {
+                                        self.mode = 20
+                                    }
+                                }) {
+                                    Text(name).font(.system(size: 18))
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .lineLimit(2)
+                                        // .multilineTextAlignment(.leading)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }.id($0)
+                            }
+                            
+                            // back button
+                            /*
+                             Button(action: {
+                             withAnimation {
+                             // self.mode = 3
+                             }
+                             }) {
+                             ZStack {
+                             Circle()
+                             .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                             .frame(width: 54, height: 54)
+                             
+                             Image(systemName: "xmark")
+                             .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
+                             .font(Font.system(size: 28, weight: .heavy))
+                             }
+                             }
+                             .buttonStyle(PlainButtonStyle())
+                             .padding(.top, 10)
+                             .padding(.bottom, -20) // ToDo: check default padding
+                             */
+                            
+                        }.onAppear {
+                            // ToDo: scroll
+                            // value.scrollTo(2)
+                        }
+                    }
+                    // }
+                } // end of ScrollView
+            }
             
         } else if (self.mode == 10) { // go back
             
@@ -106,27 +156,28 @@ struct HoleSearchView: View {
             
         } else if (self.mode == 20) { // move to next (MainView)
             
-            // pass data
             // 1. teeingGroundIndex
-            // let teeingGroundIndex = self.teeingGroundIndex
+            let teeingGroundIndex = self.teeingGroundIndex
             
             // 2. holeNumber
+            let holeNumber = self.holeNumber
+            
             // 3. groupId
+            // let groupdId = self.course?.id
+            
             // 4. course
-            // let course = self.courses[self.selectedCourseIndex]
+            let course = self.course
+            
             // 5. teeingGroundInfo
+            let teeingGroundInfo = self.teeingGroundInfo
             
-            
-            
-            MainView()
-            
-            
+            MainView(course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundIndex: teeingGroundIndex, holeNumber: holeNumber)
         }
         
     }
     
     func getHoles(_ groupId: Int64, onComplete: @escaping () -> Void) {
-        CloudKitManager.getHole(groupId) { records in
+        CloudKitManager.getHoles(groupId) { records in
             if let records = records {
                 if (records.count == 1) {
                     let record = records[0]
@@ -223,23 +274,156 @@ struct HoleSearchView: View {
                     } // end of for
                     
                     self.teeingGroundInfo = info
-                    print("info", info)
+                    // print("info", info)
                     
                     onComplete()
                 } else { // records.count != 1
                     // ToDo: error handling
                 }
             }
-            
-        } // end of getHole
+        }
+    } // end of getHoles
+    
+    func getStartHole() -> Void {
+        // getHoles(groupId)
         
+        let groupId = self.course?.id
+        
+        getHoles(groupId!) {
+            // onGetHoles
+            
+            let courses = self.course?.courses
+            var i = 0
+            for course in courses! {
+                
+                let startHoleNumber = course.range[0]
+                
+                getSensor(groupId!, Int64(startHoleNumber)) {
+                    // onGetSensor
+                    
+                    i += 1
+                    
+                    if i == courses?.count {
+                        calcDistance()
+                    }
+                }
+            }
+        }
     }
     
+    func getSensor(_ groupId: Int64, _ holeNumber: Int64, onComplete: @escaping () -> Void) {
+        print("getSensor", groupId, holeNumber)
+        
+        CloudKitManager.getSensor(groupId, holeNumber) { record in
+            if let record = record {
+                // print(#function, record)
+                
+                // let id = record["id"] as! Int64
+                // let holeNumber = record["holeNumber"] as! Int64
+                let elevation = record["elevation"] as! Double
+                let location = record["location"] as! CLLocation
+                let battery = record["battery"] as! Int64
+                let timestamp = record["timestamp"] as! Int64
+                
+                let sensor = SensorModel(id: groupId, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
+                print("sensor", sensor)
+                
+                let startHole = StartHole(name: getHoleName(Int(holeNumber)), number: Int(holeNumber), latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                
+                self.startHoles.append(startHole)
+                
+                onComplete()
+            }
+        }
+    } // end of getHole
     
+    func getHoleName(_ number:Int) -> String {
+        var holeName: String = "";
+        
+        let courses = self.course?.courses
+        if (courses?.count == 0) {
+            holeName = Util.getOrdinalNumber(number) + " HOLE"
+        } else {
+            for course in courses! {
+                let name = course.name
+                let startNumber = course.range[0]
+                let endNumber = course.range[1]
+                
+                if (startNumber <= number && number <= endNumber) {
+                    var n = (number + 9) % 9
+                    if n == 0 { n = 9 }
+                    
+                    holeName = name + " " + Util.getOrdinalNumber(n)
+                    
+                    break
+                }
+                
+            }
+        }
+        
+        return holeName
+    }
     
+    func calcDistance() -> Void {
+        // print("calcDistance")
+        
+        if let location = locationManager.lastLocation {
+            let latitude = location.coordinate.latitude
+            let longitude = location.coordinate.longitude
+            let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
+            
+            var list: [Int] = []
+            
+            for startHole in self.startHoles {
+                let coordinate2 = CLLocation(latitude: startHole.latitude, longitude: startHole.longitude)
+                
+                let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                
+                var fullBack = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
+                
+                if (self.teeingGroundInfo?.unit == "Y") {
+                    let x = Double(fullBack!) * 0.9144
+                    fullBack = Int(x.rounded())
+                }
+                
+                print(#function, fullBack!, distance)
+                
+                let d = distance - Double(fullBack!)
+                if (d < 30) { // ToDo: 30m
+                    list.append(startHole.number)
+                }
+            }
+            
+            // update UI
+            if list.count == 1 {
+                let n = list[0]
+                
+                moveNext(n)
+            } else if list.count > 1 {
+                showList()
+            } else { // 0
+                // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
+                Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+                    calcDistance()
+                }
+            }
+        }
+    }
     
+    func showList() -> Void {
+        // show start hole list
+        withAnimation {
+            self.mode = 2
+        }
+    }
     
-    
+    func moveNext(_ holeNumber: Int) -> Void {
+        self.holeNumber = holeNumber
+        
+        withAnimation {
+            self.mode = 20
+        }
+    }
 }
 
 struct HoleSearchView_Previews: PreviewProvider {

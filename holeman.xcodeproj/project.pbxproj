@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6D1964B9CB1B3F298DDA6D09 /* Pods_holeman_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5292857C5D6C05E66F95BBC5 /* Pods_holeman_WatchKit_App.framework */; };
 		75F565A472792D5BC1C03446 /* Pods_holeman_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D7FDA89E2D64FA64417793 /* Pods_holeman_WatchKit_Extension.framework */; };
+		B91AB1E325C4E44A0050B157 /* SensorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91AB1E225C4E44A0050B157 /* SensorModel.swift */; };
 		B923CCA9254671BF00E09B40 /* ArticleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCA4254671BF00E09B40 /* ArticleRow.swift */; };
 		B923CCAA254671BF00E09B40 /* ArticlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCA5254671BF00E09B40 /* ArticlesView.swift */; };
 		B923CCAB254671BF00E09B40 /* ArticleDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCA6254671BF00E09B40 /* ArticleDetail.swift */; };
@@ -98,6 +99,7 @@
 		65B35E43AAEA6C2CB3023E89 /* Pods_holeman.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_holeman.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		77B069F833FCB46B26C43952 /* Pods-holeman WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-holeman WatchKit Extension.debug.xcconfig"; path = "Target Support Files/Pods-holeman WatchKit Extension/Pods-holeman WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		B0DF725CA6FF565437AAEB9B /* Pods-holeman WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-holeman WatchKit Extension.release.xcconfig"; path = "Target Support Files/Pods-holeman WatchKit Extension/Pods-holeman WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
+		B91AB1E225C4E44A0050B157 /* SensorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorModel.swift; sourceTree = "<group>"; };
 		B923CCA4254671BF00E09B40 /* ArticleRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleRow.swift; sourceTree = "<group>"; };
 		B923CCA5254671BF00E09B40 /* ArticlesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticlesView.swift; sourceTree = "<group>"; };
 		B923CCA6254671BF00E09B40 /* ArticleDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleDetail.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				B975BC0125B2963200EFD939 /* CourseModel.swift */,
 				B975BC1125BEDECD00EFD939 /* TeeingGroundInfoModel.swift */,
 				B975BC1625C0028E00EFD939 /* HoleModel.swift */,
+				B91AB1E225C4E44A0050B157 /* SensorModel.swift */,
 				B9BACF46256CB7DD00F7B07D /* Course.swift */,
 				B9AA29FC2535BA2B0057FA8D /* Assets.xcassets */,
 				B9AA2A012535BA2B0057FA8D /* Info.plist */,
@@ -497,6 +500,7 @@
 				B9AA29F92535BA2B0057FA8D /* holemanApp.swift in Sources */,
 				B9AA29F72535BA2B0057FA8D /* ContentView.swift in Sources */,
 				B956D2F625609A0E0056007B /* LocationManager.swift in Sources */,
+				B91AB1E325C4E44A0050B157 /* SensorModel.swift in Sources */,
 				B923CCAA254671BF00E09B40 /* ArticlesView.swift in Sources */,
 				B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */,
 				B975BC0A25B8E7F800EFD939 /* Util.swift in Sources */,

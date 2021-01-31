@@ -11,7 +11,7 @@ import SwiftUI
 struct ArticlesView: View {
     @ObservedObject var articleManager = ArticleFetcher()
     var body: some View {
-        VStack  {
+        VStack {
             if(self.articleManager.fetchError == true)  {
                 Text("There was an error while fetching your news")
                     .multilineTextAlignment(.center)

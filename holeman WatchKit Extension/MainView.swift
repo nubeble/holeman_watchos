@@ -8,30 +8,123 @@
 import SwiftUI
 
 struct MainView: View {
+    @State var mode: Int = 0
     
-    @ObservedObject var compassHeading = CompassHeading()
+    @ObservedObject var locationManager = LocationManager()
     
+    var angle: Double {
+        return locationManager.degree ?? locationManager.lastDegree
+    }
+    
+    @State var course: CourseModel? = nil
+    @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
+    @State var teeingGroundIndex: Int = -1
+    @State var holeNumber: Int = 0
+    
+    
+    
+    
+    
+    
+    // @ObservedObject var compassHeading = CompassHeading()
     
     var body: some View {
         
-        
-        // compass
-        
-        Capsule()
-            .frame(width: 5, height: 50)
-        
-        
-        ZStack {
-            ForEach(Marker.markers(), id: \.self) { marker in
-                CompassMarkerView(marker: marker, compassDegress: self.compassHeading.degrees)
+        if (self.mode == 0) {
+            
+            // compass //
+/*
+             // Capsule().frame(width: 5, height: 50)
+             
+             
+             ZStack {
+             ForEach(Marker.markers(), id: \.self) { marker in
+             CompassMarkerView(marker: marker, compassDegress: self.compassHeading.degrees)
+             }
+             }
+             .frame(width: 300, height: 300)
+             .rotationEffect(Angle(degrees: self.compassHeading.degrees))
+             // .statusBar(hidden: true)
+             .navigationBarTitle("")
+             .navigationBarBackButtonHidden(true)
+             .navigationBarHidden(true)
+*/
+            
+
+            ZStack {
+                VStack {
+                    Circle()
+                        .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
+                        .frame(width: 8, height: 8)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
             }
+            // .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            // .rotationEffect(Angle(degrees: self.compassHeading.degrees))
+            .rotationEffect(Angle(degrees: self.angle))
+            .edgesIgnoringSafeArea(.all)
+            .navigationBarTitle("")
+            .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true)
+
+        } else if (self.mode == 1) {
+            
+            // main //
+            
+            ZStack {
+                // circle
+                Circle()
+                    .strokeBorder(Color(red: 79/255, green: 79/255, blue: 79/255), lineWidth: 8)
+                // .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                // .edgesIgnoringSafeArea(.all)
+                /*
+                 Circle()
+                 .strokeBorder(Color.blue,lineWidth: 10)
+                 .background(Circle().foregroundColor(Color.red))
+                 */
+                
+                
+                // text 1
+                VStack(alignment: HorizontalAlignment.center, spacing: 2)  {
+                    Text("별우(STAR) 9TH").font(.system(size: 14)).padding(.top, 46)
+                    
+                    HStack(spacing: 4) {
+                        Text("PAR 4").font(.system(size: 14))
+                        Text("HDCP 12").font(.system(size: 14))
+                        Text("• 330").font(.system(size: 14))
+                    }
+                    // .padding(.horizontal, 12)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                // text 2
+                VStack(alignment: .center)  {
+                    HStack(alignment: .firstTextBaseline, spacing: 0) {
+                        Text("384").font(.system(size: 56))
+                        Text("m").font(.system(size: 14))
+                    }
+                }
+                
+                // text 3
+                VStack(alignment: .leading)  {
+                    Spacer().frame(maxHeight: .infinity)
+                    // Text("9").font(.system(size: 22)).padding(.bottom, 40)
+                    
+                    HStack(alignment: .firstTextBaseline, spacing: 0) {
+                        Text("-9").font(.system(size: 40))
+                        Text("m").font(.system(size: 10))
+                    }.padding(.bottom, 46)
+                }
+            }
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .edgesIgnoringSafeArea(.all)
+            .navigationBarTitle("")
+            .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true)
+            
         }
-        .frame(width: 300, height: 300)
-        .rotationEffect(Angle(degrees: self.compassHeading.degrees))
-        // .statusBar(hidden: true)
-        .navigationBarTitle("")
-        .navigationBarBackButtonHidden(true)
-        .navigationBarHidden(true)
         
         
     }

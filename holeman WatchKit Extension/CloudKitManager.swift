@@ -294,7 +294,7 @@ struct CloudKitManager {
         }
     }
     
-    static func getHole(_ groupId: Int64, onComplete: @escaping (_ records:[CKRecord]?) -> Void) {
+    static func getHoles(_ groupId: Int64, onComplete: @escaping (_ records:[CKRecord]?) -> Void) {
         let p = NSPredicate(format: "id = %d", groupId)
         let query = CKQuery(recordType: "Hole", predicate: p)
         // query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
@@ -307,6 +307,25 @@ struct CloudKitManager {
             } else {
                 // print(records)
                 onComplete(records)
+            }
+        }
+    }
+    
+    static func getSensor(_ groupId: Int64, _ holeNumber: Int64, onComplete: @escaping (_ record: CKRecord?) -> Void) {
+        // print(#function, groupId, holeNumber)
+
+        let rid = "sensor-" + String(groupId) + "-" + String(holeNumber)
+        let recordID = CKRecord.ID.init(recordName: rid)
+        
+        
+        CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
+            if let error = error {
+                DispatchQueue.main.async {
+                    print("Cloud Query Error - Fetch Locations: \(error)")
+                }
+            } else {
+                // print(record)
+                onComplete(record)
             }
         }
     }

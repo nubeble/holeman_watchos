@@ -46,7 +46,7 @@ struct CourseListView: View {
                             
                             // Divider() // ToDo
                             
-                            ForEach(0 ..< courses.count) {
+                            ForEach(0 ..< self.courses.count) {
                                 let index = $0
                                 
                                 let name = self.courses[index].name
@@ -91,7 +91,7 @@ struct CourseListView: View {
                                         .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
                                         .frame(width: 54, height: 54)
                                     
-                                    Image(systemName: "xmark")
+                                    Image(systemName: "arrow.left")
                                         .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
                                         .font(Font.system(size: 28, weight: .heavy))
                                 }
