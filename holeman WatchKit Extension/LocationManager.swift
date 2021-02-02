@@ -10,36 +10,33 @@ import CoreLocation
 import Combine
 
 class LocationManager: NSObject, ObservableObject {
+    // let objectWillChange = PassthroughSubject<Void, Never>()
     
-    override init() {
-        super.init()
-        self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        self.locationManager.startUpdatingLocation()
-        if CLLocationManager.headingAvailable() { self.locationManager.startUpdatingHeading() }
-    }
+    private let locationManager = CLLocationManager()
     
-    @Published var locationStatus: CLAuthorizationStatus? {
-        willSet {
-            objectWillChange.send()
-        }
-    }
+    /*
+     @Published var locationStatus: CLAuthorizationStatus? { // ToDo: @Published
+     willSet {
+     objectWillChange.send()
+     }
+     }
+     */
+    @Published var locationStatus: CLAuthorizationStatus?
     
-    @Published var lastLocation: CLLocation? {
-        willSet {
-            objectWillChange.send()
-        }
-    }
+    /*
+     @Published var lastLocation: CLLocation? { // ToDo: @Published
+     willSet {
+     objectWillChange.send()
+     }
+     }
+     */
+    @Published var lastLocation: CLLocation?
     
-    @Published var degree: Double? {
-        willSet {
-            objectWillChange.send()
-        }
-    }
+    @Published var heading: Double?
     
-    var lastDegree: Double = 0
+    
+    
+    
     
     var statusString: String {
         guard let status = locationStatus else {
@@ -54,16 +51,24 @@ class LocationManager: NSObject, ObservableObject {
         case .denied: return "denied"
         default: return "unknown"
         }
-        
     }
     
-    let objectWillChange = PassthroughSubject<Void, Never>()
-    
-    private let locationManager = CLLocationManager()
+    override init() {
+        super.init()
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        // self.locationManager.startUpdatingLocation()
+        
+        if CLLocationManager.headingAvailable() {
+            self.locationManager.startUpdatingLocation()
+            self.locationManager.startUpdatingHeading()
+        }
+    }
 }
 
 extension LocationManager: CLLocationManagerDelegate {
-    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         self.locationStatus = status
         
@@ -78,15 +83,6 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        self.degree = -1 * newHeading.magneticHeading
-        
-        if let d = self.degree {
-            self.lastDegree = d
-        }
-        
-        
-        
-        // print("degrees", self.degree)
+        self.heading = -1 * newHeading.magneticHeading
     }
-    
 }

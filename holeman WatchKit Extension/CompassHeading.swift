@@ -2,23 +2,45 @@
 //  CompassHeading.swift
 //  holeman WatchKit Extension
 //
-//  Created by Jay Kim on 2020/11/17.
+//  Created by Jay Kim on 2020/11/15.
 //
 
 import Foundation
-import Combine
 import CoreLocation
+import Combine
 
 class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
-    var objectWillChange = PassthroughSubject<Void, Never>()
+    // var objectWillChange = PassthroughSubject<Void, Never>()
+    
+    private let locationManager: CLLocationManager
+    /*
     var degrees: Double = .zero {
         didSet {
             objectWillChange.send()
         }
     }
+     */
     
-    private let locationManager: CLLocationManager
+    /*
+    var degrees: Double = 0 {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+ */
+    @Published var degree: Double?
     
+    /*
+    var degrees: Double? {
+        willSet {
+            // degree = newValue!
+            if let n = newValue {
+                degree = n
+            }
+            objectWillChange.send()
+        }
+    }
+    */
     override init() {
         self.locationManager = CLLocationManager()
         super.init()
@@ -33,8 +55,7 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        self.degrees = -1 * newHeading.magneticHeading
-        
-        print("degrees", self.degrees)
+        // self.degrees = -1 * newHeading.magneticHeading
+        self.degree = -1 * newHeading.magneticHeading
     }
 }

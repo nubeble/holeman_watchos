@@ -18,12 +18,14 @@ struct holemanApp: App {
                 // ContentView().environmentObject(Course())
                 
                 SplashView()
+                // MainView() // ToDo: test compass
+                
                 
             }.onAppear {
-                print("ContentView appeared!")
+                // print("ContentView appeared!")
                 // WKExtension.shared().registerForRemoteNotifications()
             }.onDisappear {
-                print("ContentView disappeared!")
+                // print("ContentView disappeared!")
             }
             
         }

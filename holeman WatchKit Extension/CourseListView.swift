@@ -10,7 +10,7 @@ import SwiftUI
 struct CourseListView: View {
     @State var mode: Int = 0
     
-    @ObservedObject var locationManager = LocationManager()
+    // @ObservedObject var locationManager = LocationManager()
     @State var placemark: CLPlacemark?
     @State var countryCode: String?
     
@@ -33,6 +33,9 @@ struct CourseListView: View {
                     .scaleEffect(1.5, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             }.onAppear(perform: onCreate)
+            .onDisappear {
+                // print(#function, "!!!")
+            }
             
         } else if (self.mode == 1) {
             
@@ -132,6 +135,8 @@ struct CourseListView: View {
     }
     
     private func getCountryCodeTimer() {
+        let locationManager = LocationManager()
+        
         // --
         var runCount = 0
         
@@ -140,10 +145,10 @@ struct CourseListView: View {
             print(#function, "Timer fired #\(runCount)")
             
             if let location = locationManager.lastLocation {
-                self.getCountryCode(location: location)
-                
                 print("Timer stopped")
                 timer.invalidate()
+                
+                self.getCountryCode(location: location)
             }
         }
         // --

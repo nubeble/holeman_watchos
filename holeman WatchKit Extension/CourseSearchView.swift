@@ -14,7 +14,7 @@ struct CourseSearchView: View {
     
     @State var text1: String = "정산컨트리클럽(JEONGSAN CC)"
     
-    @ObservedObject var locationManager = LocationManager()
+    // @ObservedObject var locationManager = LocationManager()
     
     @State var placemark: CLPlacemark?
     // @State var city: String?
@@ -115,95 +115,95 @@ struct CourseSearchView: View {
             } // end of ZStack
             
         } else if (self.mode == 3) {
-/*
-            ZStack {
-                VStack {
-                    // picker
-                    Picker(selection: $selectedCourseIndex, label: Text("")) {
-                        ForEach(0 ..< self.courses.count) {
-                            let name = self.courses[$0].name
-                            
-                            let start1 = name.firstIndex(of: "(")
-                            let end1 = name.firstIndex(of: ")")
-                            
-                            let i1 = name.index(start1!, offsetBy: -1)
-                            
-                            let range1 = name.startIndex..<i1
-                            let str1 = name[range1]
-                            
-                            let i2 = name.index(start1!, offsetBy: 1)
-                            
-                            let range2 = i2..<end1!
-                            let str2 = name[range2]
-                            
-                            Text(str1 + "\n" + str2).font(.system(size: 18))
-                                .fixedSize(horizontal: false, vertical: true)
-                                .lineLimit(2)
-                                // .multilineTextAlignment(.leading)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                    }
-                    .defaultWheelPickerItemHeight(48)
-                    .labelsHidden()
-                    .frame(height: 86)
-                    // .clipped()
-                    .padding(.top, 10)
-                    
-                    Spacer().frame(maxHeight: .infinity)
-                }
-                
-                VStack {
-                    Spacer().frame(maxHeight: .infinity)
-                    
-                    HStack(spacing: 40) {
-                        // button 1
-                        Button(action: {
-                            // go back
-                            withAnimation {
-                                self.mode = 10
-                            }
-                        }) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                    .frame(width: 54, height: 54)
-                                
-                                Image(systemName: "xmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
-                        // .opacity(button1Opacity)
-                        
-                        
-                        // button 2
-                        Button(action: {
-                            print("button click")
-                            
-                            // move to next
-                            withAnimation {
-                                self.mode = 20
-                            }
-                        }) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.green)
-                                    .frame(width: 54, height: 54)
-                                
-                                Image(systemName: "checkmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
-                        // .opacity(button1Opacity)
-                    }
-                }
-                .frame(maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.bottom)
-            }
-*/
+            /*
+             ZStack {
+             VStack {
+             // picker
+             Picker(selection: $selectedCourseIndex, label: Text("")) {
+             ForEach(0 ..< self.courses.count) {
+             let name = self.courses[$0].name
+             
+             let start1 = name.firstIndex(of: "(")
+             let end1 = name.firstIndex(of: ")")
+             
+             let i1 = name.index(start1!, offsetBy: -1)
+             
+             let range1 = name.startIndex..<i1
+             let str1 = name[range1]
+             
+             let i2 = name.index(start1!, offsetBy: 1)
+             
+             let range2 = i2..<end1!
+             let str2 = name[range2]
+             
+             Text(str1 + "\n" + str2).font(.system(size: 18))
+             .fixedSize(horizontal: false, vertical: true)
+             .lineLimit(2)
+             // .multilineTextAlignment(.leading)
+             .frame(maxWidth: .infinity, alignment: .leading)
+             }
+             }
+             .defaultWheelPickerItemHeight(48)
+             .labelsHidden()
+             .frame(height: 86)
+             // .clipped()
+             .padding(.top, 10)
+             
+             Spacer().frame(maxHeight: .infinity)
+             }
+             
+             VStack {
+             Spacer().frame(maxHeight: .infinity)
+             
+             HStack(spacing: 40) {
+             // button 1
+             Button(action: {
+             // go back
+             withAnimation {
+             self.mode = 10
+             }
+             }) {
+             ZStack {
+             Circle()
+             .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+             .frame(width: 54, height: 54)
+             
+             Image(systemName: "xmark")
+             .font(Font.system(size: 28, weight: .heavy))
+             }
+             }
+             .buttonStyle(PlainButtonStyle())
+             .padding(.bottom, 10)
+             // .opacity(button1Opacity)
+             
+             
+             // button 2
+             Button(action: {
+             print("button click")
+             
+             // move to next
+             withAnimation {
+             self.mode = 20
+             }
+             }) {
+             ZStack {
+             Circle()
+             .fill(Color.green)
+             .frame(width: 54, height: 54)
+             
+             Image(systemName: "checkmark")
+             .font(Font.system(size: 28, weight: .heavy))
+             }
+             }
+             .buttonStyle(PlainButtonStyle())
+             .padding(.bottom, 10)
+             // .opacity(button1Opacity)
+             }
+             }
+             .frame(maxHeight: .infinity)
+             .edgesIgnoringSafeArea(.bottom)
+             }
+             */
             // ToDo: change to List
             GeometryReader { geometry in
                 ScrollView() {
@@ -311,6 +311,8 @@ struct CourseSearchView: View {
     }
     
     private func getCountryCodeTimer() {
+        let locationManager = LocationManager()
+        
         // --
         var runCount = 0
         
@@ -319,10 +321,10 @@ struct CourseSearchView: View {
             print(#function, "Timer fired #\(runCount)")
             
             if let location = locationManager.lastLocation {
-                self.getCountryCode(location: location)
-                
                 print("Timer stopped")
                 timer.invalidate()
+                
+                self.getCountryCode(location: location)
             }
         }
         // --

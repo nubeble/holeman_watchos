@@ -12,10 +12,6 @@ struct MainView: View {
     
     @ObservedObject var locationManager = LocationManager()
     
-    var angle: Double {
-        return locationManager.degree ?? locationManager.lastDegree
-    }
-    
     @State var course: CourseModel? = nil
     @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
     @State var teeingGroundIndex: Int = -1
@@ -32,42 +28,60 @@ struct MainView: View {
         
         if (self.mode == 0) {
             
+            VStack {
+                
+                //Spacer()
+                //Capsule().frame(width: 5, height: 50)
+                
+                ZStack {
+                    ForEach(Marker.markers(), id: \.self) { marker in
+                        CompassMarkerView(marker: marker,
+                                          compassDegress: self.locationManager.heading ?? 0)
+                    }
+                }
+                .frame(width: 300, height: 300)
+                .rotationEffect(Angle(degrees: self.locationManager.heading ?? 0))
+                // .statusBar(hidden: true)
+            }
+            
             // compass //
-/*
-             // Capsule().frame(width: 5, height: 50)
+            /*
+             Capsule().frame(width: 5, height: 50)
              
              
              ZStack {
              ForEach(Marker.markers(), id: \.self) { marker in
              CompassMarkerView(marker: marker, compassDegress: self.compassHeading.degrees)
+             // CompassMarkerView(marker: marker, compassDegress: self.compassHeading.lastDegrees)
              }
              }
              .frame(width: 300, height: 300)
              .rotationEffect(Angle(degrees: self.compassHeading.degrees))
+             // .rotationEffect(Angle(degrees: self.compassHeading.lastDegrees))
              // .statusBar(hidden: true)
              .navigationBarTitle("")
              .navigationBarBackButtonHidden(true)
              .navigationBarHidden(true)
-*/
+             */
             
-
-            ZStack {
-                VStack {
-                    Circle()
-                        .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
-                        .frame(width: 8, height: 8)
-                    
-                    Spacer().frame(maxHeight: .infinity)
-                }
-            }
-            // .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-            // .rotationEffect(Angle(degrees: self.compassHeading.degrees))
-            .rotationEffect(Angle(degrees: self.angle))
-            .edgesIgnoringSafeArea(.all)
-            .navigationBarTitle("")
-            .navigationBarBackButtonHidden(true)
-            .navigationBarHidden(true)
-
+            /*
+             ZStack {
+             VStack {
+             Circle()
+             .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
+             .frame(width: 8, height: 8)
+             
+             Spacer().frame(maxHeight: .infinity)
+             }
+             }
+             // .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+             // .rotationEffect(Angle(degrees: self.compassHeading.degrees))
+             .rotationEffect(Angle(degrees: self.angle))
+             .edgesIgnoringSafeArea(.all)
+             .navigationBarTitle("")
+             .navigationBarBackButtonHidden(true)
+             .navigationBarHidden(true)
+             */
         } else if (self.mode == 1) {
             
             // main //
@@ -173,18 +187,15 @@ struct CompassMarkerView: View {
     
     var body: some View {
         VStack {
-            // text
             Text(marker.degreeText())
                 .fontWeight(.light)
                 .rotationEffect(self.textAngle())
             
-            // capsule
             Capsule()
                 .frame(width: self.capsuleWidth(),
                        height: self.capsuleHeight())
                 .foregroundColor(self.capsuleColor())
             
-            // text
             Text(marker.label)
                 .fontWeight(.bold)
                 .rotationEffect(self.textAngle())

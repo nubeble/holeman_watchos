@@ -10,7 +10,7 @@ import SwiftUI
 struct HoleSearchView: View {
     @State var mode: Int = 0
     
-    @ObservedObject var locationManager = LocationManager()
+    // @ObservedObject var locationManager = LocationManager()
     
     @State var course: CourseModel? = nil
     
@@ -367,47 +367,59 @@ struct HoleSearchView: View {
     func calcDistance() -> Void {
         // print("calcDistance")
         
-        if let location = locationManager.lastLocation {
-            let latitude = location.coordinate.latitude
-            let longitude = location.coordinate.longitude
-            let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
+        let locationManager = LocationManager()
+        
+        var runCount = 0
+        
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            runCount += 1
+            print(#function, "Timer fired #\(runCount)")
             
-            var list: [Int] = []
-            
-            for startHole in self.startHoles {
-                let coordinate2 = CLLocation(latitude: startHole.latitude, longitude: startHole.longitude)
+            if let location = locationManager.lastLocation {
+                print("Timer stopped")
+                timer.invalidate()
                 
-                let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                let latitude = location.coordinate.latitude
+                let longitude = location.coordinate.longitude
+                let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
                 
-                var fullBack = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
+                var list: [Int] = []
                 
-                if (self.teeingGroundInfo?.unit == "Y") {
-                    let x = Double(fullBack!) * 0.9144
-                    fullBack = Int(x.rounded())
+                for startHole in self.startHoles {
+                    let coordinate2 = CLLocation(latitude: startHole.latitude, longitude: startHole.longitude)
+                    
+                    let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                    
+                    var fullBack = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
+                    
+                    if (self.teeingGroundInfo?.unit == "Y") {
+                        let x = Double(fullBack!) * 0.9144
+                        fullBack = Int(x.rounded())
+                    }
+                    
+                    print(#function, fullBack!, distance)
+                    
+                    let d = distance - Double(fullBack!)
+                    if (d < 22600) { // ToDo: 30m
+                        list.append(startHole.number)
+                    }
                 }
                 
-                print(#function, fullBack!, distance)
-                
-                let d = distance - Double(fullBack!)
-                if (d < 30) { // ToDo: 30m
-                    list.append(startHole.number)
+                // update UI
+                if list.count == 1 {
+                    let n = list[0]
+                    
+                    moveNext(n)
+                } else if list.count > 1 {
+                    showList()
+                } else { // 0
+                    // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
+                    Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+                        calcDistance()
+                    }
                 }
-            }
-            
-            // update UI
-            if list.count == 1 {
-                let n = list[0]
-                
-                moveNext(n)
-            } else if list.count > 1 {
-                showList()
-            } else { // 0
-                // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
-                Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
-                    calcDistance()
-                }
-            }
-        }
+            } // end of if let
+        } // end of Timer
     }
     
     func showList() -> Void {
