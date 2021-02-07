@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import SwiftUI
 
 struct Util {
     
@@ -24,31 +25,47 @@ struct Util {
     }
     
     static func getOrdinalNumber(_ i: Int) -> String { // hole number
-        if (i == 1) { return "1ST"; }
-        else if (i == 2) { return "2ND"; }
-        else if (i == 3) { return "3TH"; }
+        if i == 1 { return "1ST"; }
+        else if i == 2 { return "2ND"; }
+        else if i == 3 { return "3TH"; }
         
-        else if (i == 11) { return "11ST"; }
-        else if (i == 12) { return "12ND"; }
-        else if (i == 13) { return "13TH"; }
+        else if i == 11 { return "11ST"; }
+        else if i == 12 { return "12ND"; }
+        else if i == 13 { return "13TH"; }
         
-        else if (i == 21) { return "21ST"; }
-        else if (i == 22) { return "22ND"; }
-        else if (i == 23) { return "23TH"; }
+        else if i == 21 { return "21ST"; }
+        else if i == 22 { return "22ND"; }
+        else if i == 23 { return "23TH"; }
         
-        else if (i == 31) { return "31ST"; }
-        else if (i == 32) { return "32ND"; }
-        else if (i == 33) { return "33TH"; }
+        else if i == 31 { return "31ST"; }
+        else if i == 32 { return "32ND"; }
+        else if i == 33 { return "33TH"; }
         
-        else if (i == 41) { return "41ST"; }
-        else if (i == 42) { return "42ND"; }
-        else if (i == 43) { return "43TH"; }
+        else if i == 41 { return "41ST"; }
+        else if i == 42 { return "42ND"; }
+        else if i == 43 { return "43TH"; }
         
-        else if (i == 51) { return "51ST"; }
-        else if (i == 52) { return "52ND"; }
-        else if (i == 53) { return "53TH"; }
+        else if i == 51 { return "51ST"; }
+        else if i == 52 { return "52ND"; }
+        else if i == 53 { return "53TH"; }
         
         else { return "\(i)" + "TH"; }
+    }
+    
+    static func getColor(_ c: String) -> Color {
+        var _c: Color = Color.white
+        
+        if c == "BLACK" { _c = Color.gray }
+        else if c == "BLUE" { _c = Color.blue }
+        else if c == "WHITE" { _c = Color.white }
+        else if c == "YELLOW" { _c = Color.yellow }
+        else if c == "RED" { _c = Color.red }
+        else if c == "GREEN" { _c = Color.green }
+        else if c == "GOLD" { _c = Color(red: 247, green: 182, blue: 0) }
+        else if c == "PINK" { _c = Color.pink }
+        else if c == "PURPLE" { _c = Color.purple }
+        
+        return _c
     }
     
 }

@@ -10,6 +10,7 @@
 		6D1964B9CB1B3F298DDA6D09 /* Pods_holeman_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5292857C5D6C05E66F95BBC5 /* Pods_holeman_WatchKit_App.framework */; };
 		75F565A472792D5BC1C03446 /* Pods_holeman_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D7FDA89E2D64FA64417793 /* Pods_holeman_WatchKit_Extension.framework */; };
 		B91AB1E325C4E44A0050B157 /* SensorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91AB1E225C4E44A0050B157 /* SensorModel.swift */; };
+		B91AB1FD25CA85EC0050B157 /* TeeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91AB1FC25CA85EC0050B157 /* TeeView.swift */; };
 		B923CCA9254671BF00E09B40 /* ArticleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCA4254671BF00E09B40 /* ArticleRow.swift */; };
 		B923CCAA254671BF00E09B40 /* ArticlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCA5254671BF00E09B40 /* ArticlesView.swift */; };
 		B923CCAB254671BF00E09B40 /* ArticleDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCA6254671BF00E09B40 /* ArticleDetail.swift */; };
@@ -44,6 +45,10 @@
 		B9AA29FB2535BA2B0057FA8D /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AA29FA2535BA2B0057FA8D /* ComplicationController.swift */; };
 		B9AA29FD2535BA2B0057FA8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9AA29FC2535BA2B0057FA8D /* Assets.xcassets */; };
 		B9AA2A002535BA2B0057FA8D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9AA29FF2535BA2B0057FA8D /* Preview Assets.xcassets */; };
+		B9AD0F8725CC160400CE247B /* HoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AD0F8625CC160400CE247B /* HoleView.swift */; };
+		B9AD0F9525CE0E9700CE247B /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AD0F9425CE0E9700CE247B /* Global.swift */; };
+		B9AD0F9A25CE21A500CE247B /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AD0F9925CE21A500CE247B /* ProgressBar.swift */; };
+		B9AD0F9F25CE4EBF00CE247B /* CourseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AD0F9E25CE4EBF00CE247B /* CourseData.swift */; };
 		B9BACF47256CB7DD00F7B07D /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BACF46256CB7DD00F7B07D /* Course.swift */; };
 		EFC7243C23315D3887F5CDA8 /* Pods_holeman.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65B35E43AAEA6C2CB3023E89 /* Pods_holeman.framework */; };
 /* End PBXBuildFile section */
@@ -100,6 +105,7 @@
 		77B069F833FCB46B26C43952 /* Pods-holeman WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-holeman WatchKit Extension.debug.xcconfig"; path = "Target Support Files/Pods-holeman WatchKit Extension/Pods-holeman WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		B0DF725CA6FF565437AAEB9B /* Pods-holeman WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-holeman WatchKit Extension.release.xcconfig"; path = "Target Support Files/Pods-holeman WatchKit Extension/Pods-holeman WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
 		B91AB1E225C4E44A0050B157 /* SensorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorModel.swift; sourceTree = "<group>"; };
+		B91AB1FC25CA85EC0050B157 /* TeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeeView.swift; sourceTree = "<group>"; };
 		B923CCA4254671BF00E09B40 /* ArticleRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleRow.swift; sourceTree = "<group>"; };
 		B923CCA5254671BF00E09B40 /* ArticlesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticlesView.swift; sourceTree = "<group>"; };
 		B923CCA6254671BF00E09B40 /* ArticleDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleDetail.swift; sourceTree = "<group>"; };
@@ -139,6 +145,10 @@
 		B9AA29FC2535BA2B0057FA8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B9AA29FF2535BA2B0057FA8D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B9AA2A012535BA2B0057FA8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B9AD0F8625CC160400CE247B /* HoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoleView.swift; sourceTree = "<group>"; };
+		B9AD0F9425CE0E9700CE247B /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		B9AD0F9925CE21A500CE247B /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		B9AD0F9E25CE4EBF00CE247B /* CourseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseData.swift; sourceTree = "<group>"; };
 		B9BACF46256CB7DD00F7B07D /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		C700C7FE490DB195F77C2FD8 /* Pods-holeman WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-holeman WatchKit App.debug.xcconfig"; path = "Target Support Files/Pods-holeman WatchKit App/Pods-holeman WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -249,6 +259,9 @@
 				B975BBEF25AE982C00EFD939 /* CourseListView.swift */,
 				B9AA29F62535BA2B0057FA8D /* ContentView.swift */,
 				B92DB5092569F84000511383 /* MainView.swift */,
+				B9AD0F9925CE21A500CE247B /* ProgressBar.swift */,
+				B91AB1FC25CA85EC0050B157 /* TeeView.swift */,
+				B9AD0F8625CC160400CE247B /* HoleView.swift */,
 				B956D2E7256031E00056007B /* HomeView.swift */,
 				B9AA29F82535BA2B0057FA8D /* holemanApp.swift */,
 				B9AA29FA2535BA2B0057FA8D /* ComplicationController.swift */,
@@ -257,7 +270,9 @@
 				B956D2F525609A0E0056007B /* LocationManager.swift */,
 				B92DB504256409E100511383 /* CompassHeading.swift */,
 				B975BC0925B8E7F800EFD939 /* Util.swift */,
+				B9AD0F9425CE0E9700CE247B /* Global.swift */,
 				B975BC0125B2963200EFD939 /* CourseModel.swift */,
+				B9AD0F9E25CE4EBF00CE247B /* CourseData.swift */,
 				B975BC1125BEDECD00EFD939 /* TeeingGroundInfoModel.swift */,
 				B975BC1625C0028E00EFD939 /* HoleModel.swift */,
 				B91AB1E225C4E44A0050B157 /* SensorModel.swift */,
@@ -496,6 +511,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9BACF47256CB7DD00F7B07D /* Course.swift in Sources */,
+				B9AD0F9A25CE21A500CE247B /* ProgressBar.swift in Sources */,
 				B975BC0225B2963200EFD939 /* CourseModel.swift in Sources */,
 				B9AA29F92535BA2B0057FA8D /* holemanApp.swift in Sources */,
 				B9AA29F72535BA2B0057FA8D /* ContentView.swift in Sources */,
@@ -508,18 +524,22 @@
 				B923CCAB254671BF00E09B40 /* ArticleDetail.swift in Sources */,
 				B923CCAD254671BF00E09B40 /* Article.swift in Sources */,
 				B9AA29FB2535BA2B0057FA8D /* ComplicationController.swift in Sources */,
+				B91AB1FD25CA85EC0050B157 /* TeeView.swift in Sources */,
 				B956D2E8256031E00056007B /* HomeView.swift in Sources */,
 				B975BBF525AE9A8C00EFD939 /* CourseSearchView.swift in Sources */,
 				B923CCA9254671BF00E09B40 /* ArticleRow.swift in Sources */,
 				B92DB50A2569F84000511383 /* MainView.swift in Sources */,
 				B99531132581BE76001D5FBF /* SplashView.swift in Sources */,
+				B9AD0F9F25CE4EBF00CE247B /* CourseData.swift in Sources */,
 				B923CCAC254671BF00E09B40 /* ArticleFetcher.swift in Sources */,
 				B975BBFD25B292ED00EFD939 /* HoleSearchView.swift in Sources */,
 				B923CCDD2547E24D00E09B40 /* ListElement.swift in Sources */,
 				B96885B925A9560900C046E8 /* CourseView.swift in Sources */,
 				B923CCD82547E1B500E09B40 /* CloudKitManager.swift in Sources */,
+				B9AD0F9525CE0E9700CE247B /* Global.swift in Sources */,
 				B995311B2583094C001D5FBF /* IntroView.swift in Sources */,
 				B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */,
+				B9AD0F8725CC160400CE247B /* HoleView.swift in Sources */,
 				B923CCBB2546C5BD00E09B40 /* CloudManager.swift in Sources */,
 				B975BBF025AE982C00EFD939 /* CourseListView.swift in Sources */,
 				B975BC1225BEDECD00EFD939 /* TeeingGroundInfoModel.swift in Sources */,

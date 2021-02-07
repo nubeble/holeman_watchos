@@ -125,7 +125,7 @@ struct ContentView: View {
         
     } // end of body
     
-    private func onCreate() {
+    func onCreate() {
         
         // register your app for remote notifications
         // RegistrationHelper.shared.registerForPushNotifications()

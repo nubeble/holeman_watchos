@@ -20,12 +20,6 @@ struct SplashView: View {
                 IntroView()
             } else {
                 // 4.
-                // ToDo: show image
-                /*
-                 Text("Awesome Splash Screen!")
-                 .font(Font.largeTitle)
-                 */
-                // Image(systemName: "cloud.heavyrain.fill")
                 Image("logo")
                     .resizable()
                     .frame(width: 710 / 4.2, height: 239 / 4.2)
@@ -44,7 +38,7 @@ struct SplashView: View {
         
         
         /*
-         if (self.isActive == true) {
+         if self.isActive == true {
          IntroView()
          } else {
          

@@ -46,17 +46,17 @@ struct CloudKitManager {
             }
             
             if let subscriptions = subscriptions {
-                if (subscriptions.count == 0) {
+                if subscriptions.count == 0 {
                     print("no subscription exists.")
                     print("save subscription...")
-                    CloudKitManager.saveSubscription(27)
+                    //CloudKitManager.saveSubscription(27)
                 }
                 
                 CloudKitManager.deleteAllSubscriptions(subscriptions: subscriptions) { (count) in
                     print("deleteAllSubscriptions count", count)
                     
                     print("save subscription...")
-                    CloudKitManager.saveSubscription(27)
+                    //CloudKitManager.saveSubscription(27)
                 }
             }
         })
@@ -113,7 +113,7 @@ struct CloudKitManager {
              let recordType = querySub.recordType! as String
              print("recordType", recordType)
              
-             if (recordType == "Sensor") {
+             if recordType == "Sensor" {
              print("already have subscription.")
              existance = true
              break
@@ -132,7 +132,7 @@ struct CloudKitManager {
                     // return
                 }
                 
-                if (index == subscriptions.count) {
+                if index == subscriptions.count {
                     // handler(result)
                     handler(index)
                 }
@@ -141,7 +141,7 @@ struct CloudKitManager {
         } // end of for
     }
     
-    static func saveSubscription(_ id: Int64) { // id: course id
+    static func saveSubscription(_ type: String, _ id: Int64) { // id: course id
         // create subscription
         // predicate: You can customize this to only get notified when particular records are changed.
         
@@ -149,7 +149,7 @@ struct CloudKitManager {
         
         // let id: Int64 = 27
         let predicate = NSPredicate(format: "id == %d", id)
-        let sub = CKQuerySubscription(recordType: "Sensor", predicate: predicate, options: [ .firesOnRecordUpdate, .firesOnRecordCreation, .firesOnRecordDeletion ])
+        let sub = CKQuerySubscription(recordType: type, predicate: predicate, options: [ .firesOnRecordUpdate, .firesOnRecordCreation, .firesOnRecordDeletion ])
         
         // specify what kind of notification we want to receive
         let notification = CKSubscription.NotificationInfo()
@@ -312,8 +312,6 @@ struct CloudKitManager {
     }
     
     static func getSensor(_ groupId: Int64, _ holeNumber: Int64, onComplete: @escaping (_ record: CKRecord?) -> Void) {
-        // print(#function, groupId, holeNumber)
-
         let rid = "sensor-" + String(groupId) + "-" + String(holeNumber)
         let recordID = CKRecord.ID.init(recordName: rid)
         
@@ -329,6 +327,51 @@ struct CloudKitManager {
             }
         }
     }
+    
+    static func getSensors(_ groupId: Int64, onComplete: @escaping (_ records:[CKRecord]?) -> Void) {
+        let p = NSPredicate(format: "id = %d", groupId)
+        let query = CKQuery(recordType: "Sensor", predicate: p)
+        // query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        
+        CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
+            if let error = error {
+                DispatchQueue.main.async {
+                    print("Cloud Query Error - Fetch Locations: \(error)")
+                }
+            } else {
+                // print(records)
+                onComplete(records)
+            }
+        }
+    }
+    
+    static func subscribeToSensors(_ groupId: Int64) {
+        let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+        
+        // check existance
+        db.fetchAllSubscriptions(completionHandler: { subscriptions, error in
+            if error != nil {
+                // failed to fetch all subscriptions, handle error here
+                // end the function early
+                return
+            }
+            
+            if let subscriptions = subscriptions {
+                if subscriptions.count == 0 {
+                    CloudKitManager.saveSubscription("Sensor", groupId)
+                } else {
+                    CloudKitManager.deleteAllSubscriptions(subscriptions: subscriptions) { (count) in
+                        print("deleteAllSubscriptions count", count)
+                        
+                        print("save subscription...")
+                        CloudKitManager.saveSubscription("Sensor", groupId)
+                    }
+                }
+            }
+        })
+    }
+    
+
     
     
     /*

@@ -16,7 +16,7 @@ struct CourseView: View {
     
     var body: some View {
         
-        if (self.mode == 0) {
+        if self.mode == 0 {
             
             //use GeometryReader for height & weight//
             GeometryReader { geometry in
@@ -104,10 +104,14 @@ struct CourseView: View {
                 } // end of ScrollView
             } // end of GeometryReader
             
-        } else if (self.mode == 1) {
+        } else if self.mode == 1 {
+            
             CourseSearchView()
-        } else if (self.mode == 2) {
+            
+        } else if self.mode == 2 {
+            
             CourseListView()
+            
         }
         
     }

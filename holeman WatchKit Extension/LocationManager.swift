@@ -15,7 +15,7 @@ class LocationManager: NSObject, ObservableObject {
     private let locationManager = CLLocationManager()
     
     /*
-     @Published var locationStatus: CLAuthorizationStatus? { // ToDo: @Published
+     @Published var locationStatus: CLAuthorizationStatus? {
      willSet {
      objectWillChange.send()
      }
@@ -24,7 +24,7 @@ class LocationManager: NSObject, ObservableObject {
     @Published var locationStatus: CLAuthorizationStatus?
     
     /*
-     @Published var lastLocation: CLLocation? { // ToDo: @Published
+     @Published var lastLocation: CLLocation? {
      willSet {
      objectWillChange.send()
      }
@@ -33,9 +33,6 @@ class LocationManager: NSObject, ObservableObject {
     @Published var lastLocation: CLLocation?
     
     @Published var heading: Double?
-    
-    
-    
     
     
     var statusString: String {
@@ -56,10 +53,9 @@ class LocationManager: NSObject, ObservableObject {
     override init() {
         super.init()
         self.locationManager.delegate = self
+        self.locationManager.distanceFilter = kCLDistanceFilterNone
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
-        
-        // self.locationManager.startUpdatingLocation()
         
         if CLLocationManager.headingAvailable() {
             self.locationManager.startUpdatingLocation()

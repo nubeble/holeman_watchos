@@ -7,44 +7,418 @@
 
 import SwiftUI
 
+extension Notification.Name {
+    static let sensorUpdated = Notification.Name("SensorUpdated")
+}
+
 struct MainView: View {
     @State var mode: Int = 0
     
+    let sensorUpdatedNotification = NotificationCenter.default.publisher(for: .sensorUpdated)
+    
+    @State var textHoleName: String = "별우(STAR) 9TH"
+    @State var textPar: String = "PAR 4"
+    @State var textHandicap: String = "HDCP 12"
+    @State var textUnit: String = "m"
+    @State var textTeeDistance: String = "• 330"
+    @State var colorTeeDistance: Color = Color.white
+    // @State var textDistance: String = "384"
+    // @State var textHeight: String = "-9"
+    @State var textMessage: String = ""
+    @State var progressValue: Float = 0.0
+    
     @ObservedObject var locationManager = LocationManager()
+    
+    var distance: String {
+        if let location = locationManager.lastLocation {
+            // ToDo: check hole pass (or use 1 sec timer)
+            // print(#function, location)
+            if self.latitude != nil && self.longitude != nil {
+                self.checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
+            }
+            
+            if self.latitude == nil || self.longitude == nil { return "0.0" }
+            
+            let latitude = location.coordinate.latitude
+            let longitude = location.coordinate.longitude
+            let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
+            
+            let coordinate2 = CLLocation(latitude: self.latitude!, longitude: self.longitude!)
+            
+            let distance = coordinate1.distance(from: coordinate2) // result is in meters
+            
+            var returnValue: Double
+            if self.distanceUnit == 0 {
+                returnValue = round(distance * 10) / 10
+                
+                if returnValue > 999 { returnValue = 999 }
+            } else {
+                let tmp = distance * 1.09361
+                returnValue = round(tmp * 10) / 10
+                
+                if returnValue > 999 { returnValue = 999 }
+            }
+            
+            return "\(returnValue)"
+        } else {
+            return "0.0"
+        }
+    }
+    
+    var height: String {
+        if let location = locationManager.lastLocation {
+            if MainView.elevationDiff == nil || self.elevation == nil { return "0.0" }
+            
+            let altitude = location.altitude
+            
+            let height = altitude + MainView.elevationDiff!
+            let d = self.elevation! - height
+            
+            var returnValue: Double
+            if self.distanceUnit == 0 {
+                returnValue = round(d * 10) / 10
+                
+                if returnValue > 999 { returnValue = 999 }
+            } else {
+                let tmp = d * 1.09361
+                returnValue = round(tmp * 10) / 10
+                
+                if returnValue > 999 { returnValue = 999 }
+            }
+            
+            return "\(returnValue)"
+        } else {
+            return "0.0"
+        }
+    }
+    
+    static var getUserElevationTimerStarted = false
+    static var elevationDiff: Double?
+    
+    
     
     @State var course: CourseModel? = nil
     @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
-    @State var teeingGroundIndex: Int = -1
-    @State var holeNumber: Int = 0
+    @State var teeingGroundIndex: Int?
+    @State var holeNumber: Int? // current hole number
+    @State var distanceUnit: Int = 0 // 0: meter, 1: yard
+    @State var sensors: [SensorModel] = []
+    @State var latitude: Double?
+    @State var longitude: Double?
+    @State var elevation: Double? // hole elevation
+    // 3.
+    @State var userElevation: Double? // user elevation (mElevation) - meter
     
-    
-    
-    
-    
+    struct HoleName: ButtonStyle {
+        func makeBody(configuration: Self.Configuration) -> some View {
+            configuration.label
+                .padding(2)
+                .background(configuration.isPressed ? Color.green : Color.green.opacity(0))
+                .cornerRadius(2)
+        }
+    }
     
     // @ObservedObject var compassHeading = CompassHeading()
     
+    // pass to TeeView & HoleView
+    @State var names: [String] = []
+    @State var color: [Color] = []
+    @State var distances: [String] = []
+    
     var body: some View {
         
-        if (self.mode == 0) {
+        if self.mode == 0 {
             
-            VStack {
+            // message //
+            ZStack {
+                /*
+                 Color.yellow
+                 .opacity(0.1)
+                 .edgesIgnoringSafeArea(.all)
+                 */
                 
-                //Spacer()
-                //Capsule().frame(width: 5, height: 50)
+                VStack {
+                    Text(self.textMessage).font(.system(size: 24)).bold()
+                    // .frame(maxWidth: .infinity, alignment: .leading)
+                }
                 
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    ProgressBar(progress: self.$progressValue)
+                        .frame(width: 54, height: 54)
+                        .padding(10.0)
+                        .onAppear(perform: {
+                            self.progressValue = 0.0
+                            
+                            Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { timer in
+                                let randomValue = Float([0.012, 0.022, 0.034, 0.016, 0.11].randomElement()!)
+                                self.progressValue += randomValue
+                                
+                                if self.progressValue >= 1 {
+                                    timer.invalidate()
+                                    print(#function, "timer stopped.")
+                                    // self.progressValue = 0.0
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                        withAnimation {
+                                            self.mode = 1
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            .onAppear(perform: {
+                let holeName = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
+                
+                self.textMessage = holeName
+            })
+            
+        } else if self.mode == 1 {
+            
+            // main //
+            GeometryReader { geometry in
                 ZStack {
-                    ForEach(Marker.markers(), id: \.self) { marker in
-                        CompassMarkerView(marker: marker,
-                                          compassDegress: self.locationManager.heading ?? 0)
+                    VStack {
+                        Circle()
+                            .strokeBorder(Color(red: 51/255, green: 51/255, blue: 51/255), lineWidth: 8)
+                            .frame(width: geometry.size.width, height: geometry.size.width)
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+                    
+                    VStack {
+                        Circle()
+                            .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
+                            // .frame(width: geometry.size.width, height: geometry.size.width)
+                            .frame(width: 8, height: 8)
+                        Spacer().frame(height: geometry.size.width - 8)
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+                    .rotationEffect(Angle(degrees: self.locationManager.heading ?? 0))
+                    
+                    
+                    // text 1
+                    VStack(alignment: HorizontalAlignment.center, spacing: 0)  {
+                        // Text("별우(STAR) 9TH").font(.system(size: 14)).padding(.top, 46)
+                        
+                        Button(action: {
+                            getHoleViewInfo()
+                            
+                            // go to HoleView
+                            withAnimation {
+                                self.mode = 2
+                            }
+                        }) {
+                            Text(self.textHoleName).font(.system(size: 14))
+                        }
+                        .padding(.top, 46)
+                        
+                        //.buttonStyle(PlainButtonStyle())
+                        .buttonStyle(HoleName())
+                        
+                        
+                        HStack(spacing: 4) {
+                            Text(self.textPar).font(.system(size: 14))
+                            Text(self.textHandicap).font(.system(size: 14))
+                            // Text("• 330").font(.system(size: 14))
+                            
+                            
+                            Button(action: {
+                                getTeeViewInfo()
+                                
+                                // go to TeeView
+                                withAnimation {
+                                    self.mode = 3
+                                }
+                            }) {
+                                Text(self.textTeeDistance).font(.system(size: 14)).foregroundColor(self.colorTeeDistance)
+                            }
+                            .buttonStyle(HoleName())
+                        }
+                        
+                        Spacer().frame(maxHeight: .infinity)
+                    }
+                    
+                    // text 2
+                    VStack(alignment: .center)  {
+                        HStack(alignment: .firstTextBaseline, spacing: 0) {
+                            Text(self.distance).font(.system(size: 56))
+                                .onTapGesture {
+                                    toggleUnit()
+                                    setTeeDistance()
+                                }
+                            
+                            Text(self.textUnit).font(.system(size: 14))
+                                .onTapGesture {
+                                    toggleUnit()
+                                    setTeeDistance()
+                                }
+                        }
+                    }
+                    
+                    // text 3
+                    VStack(alignment: .leading)  {
+                        Spacer().frame(maxHeight: .infinity)
+                        // Text("9").font(.system(size: 22)).padding(.bottom, 40)
+                        
+                        HStack {
+                            Image("hills")
+                                .resizable()
+                                .frame(width: 28, height: 28)
+                            // .padding(.trailing, 2)
+                            
+                            HStack(alignment: .firstTextBaseline, spacing: 0) {
+                                Text(self.height).font(.system(size: 32))
+                                    .onTapGesture {
+                                        toggleUnit()
+                                        setTeeDistance()
+                                    }
+                                
+                                Text(self.textUnit).font(.system(size: 8))
+                                    .onTapGesture {
+                                        toggleUnit()
+                                        setTeeDistance()
+                                    }
+                            }
+                        }
+                        .padding(.bottom, 48)
                     }
                 }
-                .frame(width: 300, height: 300)
-                .rotationEffect(Angle(degrees: self.locationManager.heading ?? 0))
-                // .statusBar(hidden: true)
+            }
+            // .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .edgesIgnoringSafeArea(.all)
+            .navigationBarTitle("")
+            .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true)
+            .onAppear {
+                // update UI
+                self.textHoleName = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
+                self.textPar = "PAR " + String(self.teeingGroundInfo?.holes[self.holeNumber! - 1].par ?? 0)
+                self.textHandicap = "HDCP " + String(self.teeingGroundInfo?.holes[self.holeNumber! - 1].handicap ?? 0)
+                /*
+                 if self.teeingGroundInfo?.unit == "M" {
+                 self.textUnit = "m"
+                 
+                 self.distanceUnit = 0
+                 } else {
+                 self.textUnit = "yd"
+                 
+                 self.distanceUnit = 1
+                 }
+                 */
+                // set tee distance
+                setTeeDistance()
+                
+                // set hole distance
+                if self.sensors.count == 0 {
+                    // get sensors (& subscribe)
+                    
+                    let groupId = self.course?.id
+                    
+                    CloudKitManager.subscribeToSensors(groupId!)
+                    
+                    getSensors(groupId!) {
+                        for sensor in self.sensors {
+                            if sensor.holeNumber == self.holeNumber! {
+                                
+                                self.latitude = sensor.location.coordinate.latitude
+                                self.longitude = sensor.location.coordinate.longitude
+                                self.elevation = sensor.elevation
+                                
+                                break
+                            }
+                        }
+                    }
+                } else {
+                    for sensor in self.sensors {
+                        if sensor.holeNumber == self.holeNumber! {
+                            
+                            self.latitude = sensor.location.coordinate.latitude
+                            self.longitude = sensor.location.coordinate.longitude
+                            self.elevation = sensor.elevation
+                            
+                            break
+                        }
+                    }
+                }
+                
+                // set height
+                print("MainView.getUserElevationTimerStarted ==", MainView.getUserElevationTimerStarted)
+                if MainView.getUserElevationTimerStarted == false {
+                    getUserElevationTimer()
+                    MainView.getUserElevationTimerStarted = true
+                }
+            }
+            .onReceive(sensorUpdatedNotification) { notification in
+                // print(#function, notification)
+                
+                let s: SensorModel = notification.object as! SensorModel
+                
+                // let id = s.id
+                let holeNumber = s.holeNumber
+                let location = s.location
+                let elevation = s.elevation
+                let timestamp = s.timestamp
+                let battery = s.battery
+                
+                for (index, item) in self.sensors.enumerated() {
+                    if item.holeNumber == holeNumber {
+                        self.sensors[index].location = location
+                        self.sensors[index].elevation = elevation
+                        self.sensors[index].timestamp = timestamp
+                        self.sensors[index].battery = battery
+                        
+                        break
+                    }
+                }
+                
+                // print(#function, self.sensors)
             }
             
+        } else if self.mode == 2 { // open HoleView
+            
+            HoleView(names: self.names, selectedIndex: self.holeNumber! - 1,
+                     // backup
+                     __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundIndex: self.teeingGroundIndex,
+                     /*__holeNumber: self.holeNumber,*/ __distanceUnit: self.distanceUnit,
+                     __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
+                     __userElevation: self.userElevation
+            )
+            
+        } else if self.mode == 3 { // open TeeView
+            
+            TeeView(names: self.names, color: self.color, distances: self.distances, selectedIndex: self.teeingGroundIndex!,
+                    // backup
+                    __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, /*__teeingGroundIndex: self.teeingGroundIndex,*/
+                    __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
+                    __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
+                    __userElevation: self.userElevation
+            )
+            
+        } else if self.mode == 99 {
+            
             // compass //
+            /*
+             VStack {
+             //Spacer()
+             //Capsule().frame(width: 5, height: 50)
+             
+             ZStack {
+             ForEach(Marker.markers(), id: \.self) { marker in
+             CompassMarkerView(marker: marker,
+             compassDegress: self.locationManager.heading ?? 0)
+             }
+             }
+             .frame(width: 300, height: 300)
+             .rotationEffect(Angle(degrees: self.locationManager.heading ?? 0))
+             // .statusBar(hidden: true)
+             }
+             */
+            
             /*
              Capsule().frame(width: 5, height: 50)
              
@@ -64,75 +438,17 @@ struct MainView: View {
              .navigationBarHidden(true)
              */
             
-            /*
-             ZStack {
-             VStack {
-             Circle()
-             .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
-             .frame(width: 8, height: 8)
-             
-             Spacer().frame(maxHeight: .infinity)
-             }
-             }
-             // .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-             // .rotationEffect(Angle(degrees: self.compassHeading.degrees))
-             .rotationEffect(Angle(degrees: self.angle))
-             .edgesIgnoringSafeArea(.all)
-             .navigationBarTitle("")
-             .navigationBarBackButtonHidden(true)
-             .navigationBarHidden(true)
-             */
-        } else if (self.mode == 1) {
-            
-            // main //
-            
-            ZStack {
-                // circle
-                Circle()
-                    .strokeBorder(Color(red: 79/255, green: 79/255, blue: 79/255), lineWidth: 8)
-                // .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                // .edgesIgnoringSafeArea(.all)
-                /*
-                 Circle()
-                 .strokeBorder(Color.blue,lineWidth: 10)
-                 .background(Circle().foregroundColor(Color.red))
-                 */
-                
-                
-                // text 1
-                VStack(alignment: HorizontalAlignment.center, spacing: 2)  {
-                    Text("별우(STAR) 9TH").font(.system(size: 14)).padding(.top, 46)
-                    
-                    HStack(spacing: 4) {
-                        Text("PAR 4").font(.system(size: 14))
-                        Text("HDCP 12").font(.system(size: 14))
-                        Text("• 330").font(.system(size: 14))
-                    }
-                    // .padding(.horizontal, 12)
-                    
-                    Spacer().frame(maxHeight: .infinity)
+            GeometryReader { geometry in
+                VStack {
+                    Circle()
+                        .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
+                        // .frame(width: geometry.size.width, height: geometry.size.width)
+                        .frame(width: 8, height: 8)
+                    Spacer().frame(height: geometry.size.width - 8)
                 }
-                
-                // text 2
-                VStack(alignment: .center)  {
-                    HStack(alignment: .firstTextBaseline, spacing: 0) {
-                        Text("384").font(.system(size: 56))
-                        Text("m").font(.system(size: 14))
-                    }
-                }
-                
-                // text 3
-                VStack(alignment: .leading)  {
-                    Spacer().frame(maxHeight: .infinity)
-                    // Text("9").font(.system(size: 22)).padding(.bottom, 40)
-                    
-                    HStack(alignment: .firstTextBaseline, spacing: 0) {
-                        Text("-9").font(.system(size: 40))
-                        Text("m").font(.system(size: 10))
-                    }.padding(.bottom, 46)
-                }
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
             }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .rotationEffect(Angle(degrees: self.locationManager.heading ?? 0))
             .edgesIgnoringSafeArea(.all)
             .navigationBarTitle("")
             .navigationBarBackButtonHidden(true)
@@ -142,6 +458,371 @@ struct MainView: View {
         
         
     }
+    
+    func getHoleViewInfo() {
+        let count = self.teeingGroundInfo?.holes.count
+        
+        var names: [String] = []
+        
+        var i = 0
+        while (i < count!) {
+            let name = self.teeingGroundInfo?.holes[i].name
+            
+            names.append(name!)
+            
+            i += 1
+        } // end of while
+        
+        self.names = names
+    }
+    
+    func getTeeViewInfo() {
+        let count = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds.count
+        
+        var names: [String] = []
+        var color: [Color] = []
+        var distances: [String] = []
+        // var selectedIndex: Int = -1
+        
+        var i = 0
+        while (i < count!) {
+            let name = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[i].name
+            
+            let c = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[i].color
+            let _c: Color = Util.getColor(c!)
+            
+            var distance = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[i].distance
+            var unit: String
+            
+            if self.distanceUnit == 0 { // meter
+                if self.teeingGroundInfo?.unit == "M" {
+                    // N/A
+                } else {
+                    // yard to meter
+                    if let d = distance {
+                        let tmp = Double(d) * 0.9144
+                        distance = Int(tmp.rounded())
+                    }
+                }
+                
+                unit = "m"
+            } else { // yard
+                if self.teeingGroundInfo?.unit == "Y" {
+                    // N/A
+                } else {
+                    // meter to yard
+                    if let d = distance {
+                        let tmp = Double(d) * 1.09361
+                        distance = Int(tmp.rounded())
+                    }
+                }
+                
+                unit = "yd"
+            }
+            
+            let d = String(distance!) + " " + unit
+            
+            names.append(name!)
+            color.append(_c)
+            distances.append(d)
+            
+            i += 1
+        } // end of while
+        
+        self.names = names
+        self.color = color
+        self.distances = distances
+        // self.selectedIndex = self.teeingGroundIndex
+    }
+    
+    func getSensors(_ groupId: Int64, onComplete: @escaping () -> Void) {
+        // print("getSensors", groupId)
+        
+        CloudKitManager.getSensors(groupId) { records in
+            if let records = records {
+                for record in records {
+                    // let id = record["id"] as! Int64
+                    let holeNumber = record["holeNumber"] as! Int64
+                    let elevation = record["elevation"] as! Double
+                    let location = record["location"] as! CLLocation
+                    let battery = record["battery"] as! Int64
+                    let timestamp = record["timestamp"] as! Int64
+                    
+                    let sensor = SensorModel(id: groupId, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
+                    print("sensor", sensor)
+                    
+                    self.sensors.append(sensor)
+                    
+                    onComplete()
+                }
+            }
+        }
+    } // end of getSensors
+    
+    func setTeeDistance() {
+        let teeingGround = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!]
+        // print(#function, teeingGround)
+        
+        let color = teeingGround?.color
+        let _c = Util.getColor(color!)
+        
+        // var name = teeingGround?.name
+        
+        var distance = teeingGround?.distance
+        
+        if self.distanceUnit == 0 { // meter
+            if self.teeingGroundInfo?.unit == "M" {
+                // N/A
+            } else {
+                // yard to meter
+                if let d = distance {
+                    let tmp = Double(d) * 0.9144
+                    distance = Int(tmp.rounded())
+                }
+            }
+            
+            self.textUnit = "m"
+        } else { // yard
+            if self.teeingGroundInfo?.unit == "Y" {
+                // N/A
+            } else {
+                // meter to yard
+                if let d = distance {
+                    let tmp = Double(d) * 1.09361
+                    distance = Int(tmp.rounded())
+                }
+            }
+            
+            self.textUnit = "yd"
+        }
+        
+        self.textTeeDistance = "• " + String(distance!)
+        self.colorTeeDistance = _c
+    }
+    
+    func toggleUnit() {
+        if self.distanceUnit == 0 {
+            // meter to yard
+            
+            self.distanceUnit = 1
+            
+            self.textUnit = "yd"
+        } else {
+            // yard to meter
+            
+            self.distanceUnit = 0
+            
+            self.textUnit = "m"
+        }
+    }
+    
+    func getUserElevationTimer() {
+        // (1)
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
+            if let location = locationManager.lastLocation {
+                timer1.invalidate()
+                
+                let lat = location.coordinate.latitude
+                let lon = location.coordinate.longitude
+                let alt = location.altitude
+                
+                // self.getUserElevation(String(lat), String(lon), alt)
+                // ToDo: test
+                self.userElevation = 20.2
+                MainView.elevationDiff = self.userElevation! - alt
+                
+                // (2) ~ (n)
+                Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 1 min x 30
+                    print(#function, "getUserElevationTimer BIG timer")
+                    
+                    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
+                        if let location = locationManager.lastLocation {
+                            timer2.invalidate()
+                            
+                            let lat = location.coordinate.latitude
+                            let lon = location.coordinate.longitude
+                            let alt = location.altitude
+                            
+                            // self.getUserElevation(String(lat), String(lon), alt)
+                            // ToDo: test
+                            self.userElevation = 20.2
+                            MainView.elevationDiff = self.userElevation! - alt
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func getUserElevation(_ lat: String, _ lon: String, _ alt: Double) {
+        // let params = ["username":"john", "password":"123456"] as Dictionary<String, String>
+        
+        let url = "https://maps.googleapis.com/maps/api/elevation/json?locations=" + lat + "," + lon + "&key=AIzaSyDGeKg4ewR0-MfmHnBWkv6Qfeoc5Ia4vP8";
+        
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "GET"
+        // request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            // print(response!)
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!) as! Dictionary<String, AnyObject>
+                print(json)
+                
+                if String(describing: json["status"]) == "OK" {
+                    if let results = json["results"] as? [String: Any] {
+                        if let elevation = results["elevation"] as? String {
+                            self.userElevation = Double(elevation)!
+                            
+                            MainView.elevationDiff = self.userElevation! - alt
+                        }
+                    }
+                }
+            } catch {
+                print(#function, "error")
+            }
+        })
+        
+        task.resume()
+    }
+    
+    func checkHolePass(_ lat1: Double, _ lon1: Double, _ lat2: Double, _ lon2: Double) {
+        let coordinate1 = CLLocation(latitude: lat1, longitude: lon1)
+        let coordinate2 = CLLocation(latitude: lat2, longitude: lon2)
+        
+        let distance = coordinate1.distance(from: coordinate2) // result is in meters
+        
+        let result = self.checkHolePass(distance)
+        if result == true {
+            self.holeNumber! += 1
+            if (self.holeNumber! % 9) == 0 {
+                // 9홀 종료
+                
+                if Global.halftime == 1 {
+                    // 전반 종료
+                    
+                    saveHole(2)
+                } else if Global.halftime == 2 {
+                    // 후반 종료
+                    
+                    saveHole(4)
+                }
+                
+                // ToDo
+                // if Global.halftime == 1 { moveToHoleSearchView(200) }
+                // else if Global.halftime == 2 { moveToHoleSearchView(300) }
+            } else {
+                // 일반 홀 종료
+                
+                if Global.halftime == 1 {
+                    // 전반 중
+                    
+                    saveHole(1)
+                } else if Global.halftime == 2 {
+                    // 후반 중
+                    
+                    saveHole(3)
+                }
+                
+                // let holeName = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
+                // showMessage(holeName)
+                withAnimation {
+                    self.mode = 0
+                }
+            }
+        }
+    }
+    
+    func checkHolePass(_ distance: Double) -> Bool {
+        // ToDo
+        return false
+    }
+    
+    func saveHole(_ halftime: Int) {
+        // 1. time string
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 2019-12-20 09:40:08
+        // dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm:ss" // 2018-May-01 10:41:31
+        let dateString = dateFormatter.string(from: date)
+        // let interval = date.timeIntervalSince1970
+        
+        UserDefaults.standard.set(dateString, forKey: "TIME")
+        
+        // 2. group id
+        // UserDefaults.standard.set(self.course?.id, forKey: "GROUP_ID")
+        
+        // 2. course
+        /*
+         var address: String
+         var countryCode: String
+         var courses: [CourseItem]
+         var id: Int64
+         var location: CLLocation
+         var name: String
+         */
+        
+        if let course = self.course {
+            // address
+            UserDefaults.standard.set(course.address, forKey: "COURSE_ADDRESS")
+            
+            // countryCode
+            UserDefaults.standard.set(course.countryCode, forKey: "COURSE_COUNTRY_CODE")
+            
+            // courses (convert to json string array)
+            var strings: [String] = []
+            
+            for c in course.courses {
+                let cd = CourseData(name: c.name, range: c.range)
+                do {
+                    let encodedData = try JSONEncoder().encode(cd)
+                    let jsonString = String(data: encodedData, encoding: .utf8)
+                    
+                    strings.append(jsonString!)
+                } catch {
+                    // ToDo: error handling
+                    print(error)
+                }
+            }
+            
+            UserDefaults.standard.set(strings, forKey: "COURSE_COURSES")
+            
+            // id
+            UserDefaults.standard.set(course.id, forKey: "COURSE_ID")
+            
+            // latitude
+            UserDefaults.standard.set(course.location.coordinate.latitude, forKey: "COURSE_LATITUDE")
+            
+            // longitude
+            UserDefaults.standard.set(course.location.coordinate.longitude, forKey: "COURSE_LONGITUDE")
+            
+            // name
+            UserDefaults.standard.set(course.name, forKey: "COURSE_NAME")
+        }
+        
+        // 3. hole number
+        UserDefaults.standard.set(self.holeNumber, forKey: "HOLE_NUMBER")
+        
+        // 4. teeing ground index
+        UserDefaults.standard.set(self.teeingGroundIndex, forKey: "TEEING_GROUND_INDEX")
+        
+        // 5. halftime
+        UserDefaults.standard.set(halftime, forKey: "HALFTIME")
+    }
+    
+    /*
+     func showMessage(_ message: String) {
+     self.textMessage = message
+     withAnimation {
+     MainView.mode = 0
+     }
+     
+     }
+     */
+    
 }
 
 struct MainView_Previews: PreviewProvider {
@@ -150,72 +831,74 @@ struct MainView_Previews: PreviewProvider {
     }
 }
 
-struct Marker: Hashable {
-    let degrees: Double
-    let label: String
-    
-    init(degrees: Double, label: String = "") {
-        self.degrees = degrees
-        self.label = label
-    }
-    
-    func degreeText() -> String {
-        return String(format: "%.0f", self.degrees)
-    }
-    
-    static func markers() -> [Marker] {
-        return [
-            Marker(degrees: 0, label: "N"),
-            Marker(degrees: 30),
-            Marker(degrees: 60),
-            Marker(degrees: 90, label: "E"),
-            Marker(degrees: 120),
-            Marker(degrees: 150),
-            Marker(degrees: 180, label: "S"),
-            Marker(degrees: 210),
-            Marker(degrees: 240),
-            Marker(degrees: 270, label: "W"),
-            Marker(degrees: 300),
-            Marker(degrees: 330)
-        ]
-    }
-}
-
-struct CompassMarkerView: View {
-    let marker: Marker
-    let compassDegress: Double
-    
-    var body: some View {
-        VStack {
-            Text(marker.degreeText())
-                .fontWeight(.light)
-                .rotationEffect(self.textAngle())
-            
-            Capsule()
-                .frame(width: self.capsuleWidth(),
-                       height: self.capsuleHeight())
-                .foregroundColor(self.capsuleColor())
-            
-            Text(marker.label)
-                .fontWeight(.bold)
-                .rotationEffect(self.textAngle())
-                .padding(.bottom, 180)
-        }.rotationEffect(Angle(degrees: marker.degrees))
-    }
-    
-    private func capsuleWidth() -> CGFloat {
-        return self.marker.degrees == 0 ? 7 : 3
-    }
-    
-    private func capsuleHeight() -> CGFloat {
-        return self.marker.degrees == 0 ? 45 : 30
-    }
-    
-    private func capsuleColor() -> Color {
-        return self.marker.degrees == 0 ? .red : .gray
-    }
-    
-    private func textAngle() -> Angle {
-        return Angle(degrees: -self.compassDegress - self.marker.degrees)
-    }
-}
+/*
+ struct Marker: Hashable {
+ let degrees: Double
+ let label: String
+ 
+ init(degrees: Double, label: String = "") {
+ self.degrees = degrees
+ self.label = label
+ }
+ 
+ func degreeText() -> String {
+ return String(format: "%.0f", self.degrees)
+ }
+ 
+ static func markers() -> [Marker] {
+ return [
+ Marker(degrees: 0, label: "N"),
+ Marker(degrees: 30),
+ Marker(degrees: 60),
+ Marker(degrees: 90, label: "E"),
+ Marker(degrees: 120),
+ Marker(degrees: 150),
+ Marker(degrees: 180, label: "S"),
+ Marker(degrees: 210),
+ Marker(degrees: 240),
+ Marker(degrees: 270, label: "W"),
+ Marker(degrees: 300),
+ Marker(degrees: 330)
+ ]
+ }
+ }
+ 
+ struct CompassMarkerView: View {
+ let marker: Marker
+ let compassDegress: Double
+ 
+ var body: some View {
+ VStack {
+ Text(marker.degreeText())
+ .fontWeight(.light)
+ .rotationEffect(self.textAngle())
+ 
+ Capsule()
+ .frame(width: self.capsuleWidth(),
+ height: self.capsuleHeight())
+ .foregroundColor(self.capsuleColor())
+ 
+ Text(marker.label)
+ .fontWeight(.bold)
+ .rotationEffect(self.textAngle())
+ .padding(.bottom, 180)
+ }.rotationEffect(Angle(degrees: marker.degrees))
+ }
+ 
+ private func capsuleWidth() -> CGFloat {
+ return self.marker.degrees == 0 ? 7 : 3
+ }
+ 
+ private func capsuleHeight() -> CGFloat {
+ return self.marker.degrees == 0 ? 45 : 30
+ }
+ 
+ private func capsuleColor() -> Color {
+ return self.marker.degrees == 0 ? .red : .gray
+ }
+ 
+ private func textAngle() -> Angle {
+ return Angle(degrees: -self.compassDegress - self.marker.degrees)
+ }
+ }
+ */

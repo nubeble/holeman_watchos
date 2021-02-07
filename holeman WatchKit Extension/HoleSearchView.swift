@@ -15,11 +15,13 @@ struct HoleSearchView: View {
     @State var course: CourseModel? = nil
     
     @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
-    @State var teeingGroundIndex: Int = -1
+    @State var teeingGroundIndex: Int = 0
     
     @State var startHoles: [StartHole] = []
     
-    @State var holeNumber: Int = 0
+    // @State var selectedStartHoleIndex: Int = 0
+    
+    @State var holeNumber: Int = 1
     
     
     struct HoleData: Codable, Hashable {
@@ -38,12 +40,12 @@ struct HoleSearchView: View {
     
     
     var body: some View {
-        if (self.mode == 0) {
+        if self.mode == 0 {
             
             ZStack {
                 
-                VStack(alignment: HorizontalAlignment.center)  {
-                    
+                // VStack(alignment: HorizontalAlignment.center)  {
+                VStack(spacing: 2) {
                     if let name = self.course?.name {
                         let start1 = name.firstIndex(of: "(")
                         let end1 = name.firstIndex(of: ")")
@@ -58,8 +60,16 @@ struct HoleSearchView: View {
                         let range2 = i2..<end1!
                         let str2 = name[range2]
                         
-                        Text(str1).font(.system(size: 16)).lineLimit(1)
-                        Text(str2).font(.system(size: 16)).lineLimit(1)
+                        Text(str1).font(.system(size: 18))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 4)
+                        Text(str2).font(.system(size: 18 * 0.8))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 4)
                         
                         Spacer().frame(maxHeight: .infinity)
                     }
@@ -82,14 +92,15 @@ struct HoleSearchView: View {
                 
             }
             .onAppear(perform: {
-                Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+                // ToDo: test timer
+                Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
                     getStartHole() // 1, 10, 19, ...
                 }
             })
             
-        } else if (self.mode == 1) {
+        } else if self.mode == 1 {
             
-        } else if (self.mode == 2) { // show start hole list
+        } else if self.mode == 2 { // show start hole list
             
             GeometryReader { geometry in
                 ScrollView() {
@@ -102,18 +113,21 @@ struct HoleSearchView: View {
                             ForEach(0 ..< self.startHoles.count) {
                                 let index = $0
                                 
+                                let number = self.startHoles[index].number
                                 let name = self.startHoles[index].name
                                 
                                 Button(action: {
-                                    // ToDo
+                                    // self.selectedStartHoleIndex = index
+                                    self.holeNumber = number
+                                    
                                     // move to MainView
                                     withAnimation {
                                         self.mode = 20
                                     }
                                 }) {
                                     Text(name).font(.system(size: 18))
-                                        .fixedSize(horizontal: false, vertical: true)
-                                        .lineLimit(2)
+                                        // .fixedSize(horizontal: false, vertical: true)
+                                        // .lineLimit(2)
                                         // .multilineTextAlignment(.leading)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }.id($0)
@@ -150,11 +164,11 @@ struct HoleSearchView: View {
                 } // end of ScrollView
             }
             
-        } else if (self.mode == 10) { // go back
+        } else if self.mode == 10 { // go back
             
             // CourseView()
             
-        } else if (self.mode == 20) { // move to next (MainView)
+        } else if self.mode == 20 { // move to next (MainView)
             
             // 1. teeingGroundIndex
             let teeingGroundIndex = self.teeingGroundIndex
@@ -179,7 +193,7 @@ struct HoleSearchView: View {
     func getHoles(_ groupId: Int64, onComplete: @escaping () -> Void) {
         CloudKitManager.getHoles(groupId) { records in
             if let records = records {
-                if (records.count == 1) {
+                if records.count == 1 {
                     let record = records[0]
                     
                     var info = TeeingGroundInfoModel(unit: "", holes: [])
@@ -213,7 +227,7 @@ struct HoleSearchView: View {
                             let distances = decodedData.distance
                             
                             // set name
-                            if (self.course?.courses.count == 0) {
+                            if self.course?.courses.count == 0 {
                                 let number = i
                                 tg.name = Util.getOrdinalNumber(number) + " HOLE"
                             } else {
@@ -224,9 +238,9 @@ struct HoleSearchView: View {
                                     let startNumber = course.range[0]
                                     let endNumber = course.range[1]
                                     
-                                    if (startNumber <= number && number <= endNumber) {
+                                    if startNumber <= number && number <= endNumber {
                                         number = (number + 9) % 9;
-                                        if (number == 0) { number = 9; }
+                                        if number == 0 { number = 9; }
                                         // tg.name = name + " " + number;
                                         // tg.name = name + " HOLE " + number;
                                         tg.name = name + " " + Util.getOrdinalNumber(number);
@@ -262,7 +276,7 @@ struct HoleSearchView: View {
                                 
                                 // print("distance", distance)
                                 
-                                let t = TeeingGround(name: String(name), color: String(color), distance: distance)
+                                let t = TeeingGround(name: String(name).uppercased(), color: String(color).uppercased(), distance: distance)
                                 tg.teeingGrounds.append(t)
                             }
                         } catch {
@@ -284,7 +298,7 @@ struct HoleSearchView: View {
         }
     } // end of getHoles
     
-    func getStartHole() -> Void {
+    func getStartHole() {
         // getHoles(groupId)
         
         let groupId = self.course?.id
@@ -293,17 +307,20 @@ struct HoleSearchView: View {
             // onGetHoles
             
             let courses = self.course?.courses
-            var i = 0
-            for course in courses! {
+            
+            for (_, item) in courses!.enumerated() {
+                // print(#function, index, item.range[0])
                 
-                let startHoleNumber = course.range[0]
+                let startHoleNumber = item.range[0]
                 
                 getSensor(groupId!, Int64(startHoleNumber)) {
                     // onGetSensor
                     
-                    i += 1
-                    
-                    if i == courses?.count {
+                    if self.startHoles.count == courses?.count {
+                        // sort by holeNumber self.startHoles
+                        self.startHoles.sort(by: { $0.number < $1.number })
+                        // print(#function, self.startHoles)
+                        
                         calcDistance()
                     }
                 }
@@ -341,7 +358,7 @@ struct HoleSearchView: View {
         var holeName: String = "";
         
         let courses = self.course?.courses
-        if (courses?.count == 0) {
+        if courses?.count == 0 {
             holeName = Util.getOrdinalNumber(number) + " HOLE"
         } else {
             for course in courses! {
@@ -349,7 +366,7 @@ struct HoleSearchView: View {
                 let startNumber = course.range[0]
                 let endNumber = course.range[1]
                 
-                if (startNumber <= number && number <= endNumber) {
+                if startNumber <= number && number <= endNumber {
                     var n = (number + 9) % 9
                     if n == 0 { n = 9 }
                     
@@ -364,72 +381,75 @@ struct HoleSearchView: View {
         return holeName
     }
     
-    func calcDistance() -> Void {
+    func calcDistance() {
         // print("calcDistance")
         
-        let locationManager = LocationManager()
-        
-        var runCount = 0
-        
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-            runCount += 1
-            print(#function, "Timer fired #\(runCount)")
+        DispatchQueue.main.async {
+            let locationManager = LocationManager()
             
-            if let location = locationManager.lastLocation {
-                print("Timer stopped")
-                timer.invalidate()
+            var runCount = 0
+            
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                runCount += 1
+                print(#function, "Timer fired #\(runCount)")
                 
-                let latitude = location.coordinate.latitude
-                let longitude = location.coordinate.longitude
-                let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
-                
-                var list: [Int] = []
-                
-                for startHole in self.startHoles {
-                    let coordinate2 = CLLocation(latitude: startHole.latitude, longitude: startHole.longitude)
+                if let location = locationManager.lastLocation {
+                    print("Timer stopped")
+                    timer.invalidate()
                     
-                    let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                    let latitude = location.coordinate.latitude
+                    let longitude = location.coordinate.longitude
+                    let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
                     
-                    var fullBack = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
+                    var list: [Int] = []
                     
-                    if (self.teeingGroundInfo?.unit == "Y") {
-                        let x = Double(fullBack!) * 0.9144
-                        fullBack = Int(x.rounded())
+                    for startHole in self.startHoles {
+                        let coordinate2 = CLLocation(latitude: startHole.latitude, longitude: startHole.longitude)
+                        
+                        let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                        
+                        var fullBack = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
+                        
+                        if self.teeingGroundInfo?.unit == "Y" {
+                            let x = Double(fullBack!) * 0.9144
+                            fullBack = Int(x.rounded())
+                        }
+                        
+                        print(#function, fullBack!, distance)
+                        
+                        let d = distance - Double(fullBack!)
+                        if d < 30 { // ToDo: 30m
+                            list.append(startHole.number)
+                        }
                     }
                     
-                    print(#function, fullBack!, distance)
-                    
-                    let d = distance - Double(fullBack!)
-                    if (d < 22600) { // ToDo: 30m
-                        list.append(startHole.number)
+                    // update UI
+                    if list.count == 1 {
+                        let n = list[0]
+                        
+                        moveNext(n)
+                    } else if list.count > 1 {
+                        showList()
+                    } else { // 0
+                        // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
+                        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+                            calcDistance()
+                        }
                     }
-                }
-                
-                // update UI
-                if list.count == 1 {
-                    let n = list[0]
-                    
-                    moveNext(n)
-                } else if list.count > 1 {
-                    showList()
-                } else { // 0
-                    // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
-                    Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
-                        calcDistance()
-                    }
-                }
-            } // end of if let
-        } // end of Timer
+                } // end of if let
+            } // end of Timer
+            
+        }
     }
     
-    func showList() -> Void {
+    func showList() {
         // show start hole list
         withAnimation {
             self.mode = 2
         }
     }
     
-    func moveNext(_ holeNumber: Int) -> Void {
+    func moveNext(_ holeNumber: Int) {
         self.holeNumber = holeNumber
         
         withAnimation {

@@ -48,8 +48,8 @@
 	<key>WKWatchOnly</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-    	<string>Your location is required to calculate the distance.</string>
-    	<key>NSLocationWhenInUseUsageDescription</key>
-    	<string>Your location is required to calculate the distance.</string>
+	<string>Your location is required to calculate the distance.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is required to calculate the distance.</string>
 </dict>
 </plist>

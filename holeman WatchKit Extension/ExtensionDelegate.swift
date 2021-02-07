@@ -78,24 +78,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         if let ck = userInfo["ck"] as? NSDictionary {
             if let qry = ck["qry"] as? NSDictionary {
                 if let rid = qry["rid"] as? String {
-                    //Do stuff
-                    
-                    print("rid", rid)
-                    
-                    // ToDo: check recordType - Sensor
+                    // print("rid", rid)
                     
                     let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
                     let recordID = CKRecord.ID.init(recordName: rid)
                     db.fetch(withRecordID: recordID) { record, error in
-                        
                         if let record = record, error == nil {
-                            
-                            print("record", record)
-                            
-                            
-                            // ToDo: update record
-                            
-                            // 1. parse data
+                            // print("record", record)
                             
                             // values={ holeNumber=18, id=27, elevation=1608.613647460938, location=<+39.73915482,-104.98470306> +/- 0.00m (speed 0.00 mps / course 0.00) @ 2001/01/01 9:00:00 AM Korean Standard Time, timestamp=1604930511235 }
                             
@@ -106,23 +95,24 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                             let timestamp = record["timestamp"] as! Int64
                             let battery = record["battery"] as! Int64
                             
-                            print("id", id)
-                            print("holeNumber", holeNumber)
-                            // print("location", location)
-                            print("latitude", location.coordinate.latitude)
-                            print("longitude", location.coordinate.longitude)
-                            print("elevation", elevation)
-                            print("battery", battery)
-                            print("timestamp", timestamp)
+                            /*
+                             print("id", id)
+                             print("holeNumber", holeNumber)
+                             // print("location", location)
+                             print("latitude", location.coordinate.latitude)
+                             print("longitude", location.coordinate.longitude)
+                             print("elevation", elevation)
+                             print("battery", battery)
+                             print("timestamp", timestamp)
+                             */
+                            
+                            DispatchQueue.main.async {
+                                let sensor = SensorModel(id: id, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
+                                NotificationCenter.default.post(name: .sensorUpdated, object: sensor)
+                            }
                         }
-                        
                     }
-                    
                 }
-                
-                
-                
-                
             }
         }
         

@@ -21,11 +21,6 @@ struct CourseSearchView: View {
     // @State var country: String?
     @State var countryCode: String?
     
-    struct CourseData: Codable, Hashable {
-        let name: String
-        let range: [Int]
-    }
-    
     // @State var course: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
     @State var courses: [CourseModel] = []
     
@@ -41,7 +36,7 @@ struct CourseSearchView: View {
     
     var body: some View {
         
-        if (self.mode == 0) {
+        if self.mode == 0 {
             // from CourseListView, 자동으로 검색
             
             // loading indicator
@@ -51,9 +46,9 @@ struct CourseSearchView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             }.onAppear(perform: onCreate)
             
-        } else if (self.mode == 1) {
+        } else if self.mode == 1 {
             // N/A
-        } else if (self.mode == 2) {
+        } else if self.mode == 2 {
             
             ZStack {
                 Text(text1).font(.system(size: 22)).multilineTextAlignment(.center)
@@ -114,7 +109,7 @@ struct CourseSearchView: View {
                 .edgesIgnoringSafeArea(.bottom)
             } // end of ZStack
             
-        } else if (self.mode == 3) {
+        } else if self.mode == 3 {
             /*
              ZStack {
              VStack {
@@ -240,11 +235,23 @@ struct CourseSearchView: View {
                                         self.mode = 20
                                     }
                                 }) {
-                                    Text(str1 + "\n" + str2).font(.system(size: 18))
-                                        .fixedSize(horizontal: false, vertical: true)
-                                        .lineLimit(2)
-                                        // .multilineTextAlignment(.leading)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    /*
+                                     Text(str1 + "\n" + str2).font(.system(size: 18))
+                                     .fixedSize(horizontal: false, vertical: true)
+                                     .lineLimit(2)
+                                     // .multilineTextAlignment(.leading)
+                                     .frame(maxWidth: .infinity, alignment: .leading)
+                                     */
+                                    VStack(spacing: 2) {
+                                        Text(str1).font(.system(size: 18))
+                                            .fixedSize(horizontal: false, vertical: true)
+                                            .lineLimit(1)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                        Text(str2).font(.system(size: 18 * 0.8))
+                                            .fixedSize(horizontal: false, vertical: true)
+                                            .lineLimit(1)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
                                 }.id($0)
                             }
                             
@@ -265,7 +272,7 @@ struct CourseSearchView: View {
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .padding(.top, 10)
+                            .padding(.top, 6)
                             .padding(.bottom, -20) // ToDo: check default padding
                             
                         }.onAppear {
@@ -290,11 +297,11 @@ struct CourseSearchView: View {
             
             
             
-        } else if (self.mode == 10) { // go back
+        } else if self.mode == 10 { // go back
             
             CourseView()
             
-        } else if (self.mode == 20) { // move to next (HoleSearchView)
+        } else if self.mode == 20 { // move to next (HoleSearchView)
             
             let c = self.courses[self.selectedCourseIndex]
             HoleSearchView(course: c)
@@ -303,34 +310,36 @@ struct CourseSearchView: View {
         
     }
     
-    private func onCreate() {
+    func onCreate() {
         // print(#function, "onCreate()")
         
         // get country code
         getCountryCodeTimer()
     }
     
-    private func getCountryCodeTimer() {
-        let locationManager = LocationManager()
-        
-        // --
-        var runCount = 0
-        
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-            runCount += 1
-            print(#function, "Timer fired #\(runCount)")
+    func getCountryCodeTimer() {
+        DispatchQueue.main.async {
+            let locationManager = LocationManager()
             
-            if let location = locationManager.lastLocation {
-                print("Timer stopped")
-                timer.invalidate()
+            // --
+            var runCount = 0
+            
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                runCount += 1
+                print(#function, "Timer fired #\(runCount)")
                 
-                self.getCountryCode(location: location)
+                if let location = locationManager.lastLocation {
+                    print("Timer stopped")
+                    timer.invalidate()
+                    
+                    self.getCountryCode(location: location)
+                }
             }
+            // --
         }
-        // --
     }
     
-    private func getCountryCode(location: CLLocation) {
+    func getCountryCode(location: CLLocation) {
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
             // always good to check if no error
             // also we have to unwrap the placemark because it's optional
@@ -341,7 +350,7 @@ struct CourseSearchView: View {
             
             // a new function where you start to parse placemarks to get the information you need
             let result = self.parsePlacemarks(location: location)
-            if (result == false) {
+            if result == false {
                 // call timer again
                 getCountryCodeTimer()
             } else {
@@ -391,6 +400,7 @@ struct CourseSearchView: View {
                                     let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
                                     c.courses.append(item)
                                 } catch {
+                                    // ToDo: error handling
                                     print(error)
                                 }
                             }
@@ -434,7 +444,7 @@ struct CourseSearchView: View {
                             // --
                         }
                         
-                        if (count == 0) {
+                        if count == 0 {
                             // ToDo: no course nearby
                         } else {
                             // print(#function, "move to HoleSearchView")
@@ -451,7 +461,7 @@ struct CourseSearchView: View {
         })
     }
     
-    private func parsePlacemarks(location: CLLocation) -> Bool {
+    func parsePlacemarks(location: CLLocation) -> Bool {
         // let location = self.lastLocation
         
         // here we check if location manager is not nil using a _ wild card
