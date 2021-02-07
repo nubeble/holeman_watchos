@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct IntroView: View {
-    @State var mode: Int = 0
+    @State var mode: Int = -1
     
     @State var text1: String = "안녕하세요!"
     @State var text1Opacity: Double = 0
@@ -24,6 +24,13 @@ struct IntroView: View {
     
     @State var textMessage: String = ""
     
+    // pass to HoleSearchView
+    @State var search: Bool?
+    @State var course: CourseModel?
+    @State var holeNumber: Int?
+    @State var teeingGroundInfo: TeeingGroundInfoModel?
+    @State var teeingGroundIndex: Int?
+    
     
     
     // @State private var textValue: String = "Sample Data"
@@ -31,17 +38,21 @@ struct IntroView: View {
     
     var body: some View {
         
-        if self.mode == 0 {
+        if self.mode == -1 {
             
             VStack {
-                Text(text1).font(.system(size: 24)).opacity(text1Opacity)
+                // N/A
             }
             .onAppear {
-                
-                // ToDo: test
                 checkLastPlayedHole()
-                
-                
+            }
+            
+        } else if self.mode == 0 {
+            
+            VStack {
+                Text(text1).font(.system(size: 24)).fontWeight(.medium).opacity(text1Opacity)
+            }
+            .onAppear {
                 
                 withAnimation(.easeInOut(duration: 1), {
                     self.text1Opacity = 1
@@ -69,16 +80,17 @@ struct IntroView: View {
             
             ZStack {
                 VStack {
-                    Text(text2).font(.system(size: 24)).opacity(text2Opacity)
-                    Text(text3).font(.system(size: 24)).opacity(text3Opacity)
+                    Text(text2).font(.system(size: 24)).fontWeight(.medium).opacity(text2Opacity)
+                    Text(text3).font(.system(size: 24)).fontWeight(.medium).opacity(text3Opacity)
                 }
                 
                 VStack {
                     Spacer().frame(maxHeight: .infinity)
                     
                     Button(action: {
-                        print("button click")
+                        // ToDo: sign-in view here
                         
+                        // ToDo: test (일단 apple sign in 스킵)
                         withAnimation {
                             self.mode = 2
                         }
@@ -158,7 +170,7 @@ struct IntroView: View {
             
             ZStack {
                 VStack {
-                    Text(self.textMessage).font(.system(size: 24)).bold()
+                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -213,7 +225,7 @@ struct IntroView: View {
             
             ZStack {
                 VStack {
-                    Text(self.textMessage).font(.system(size: 24)).bold()
+                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -268,7 +280,7 @@ struct IntroView: View {
             
             ZStack {
                 VStack {
-                    Text(self.textMessage).font(.system(size: 24)).bold()
+                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -319,14 +331,19 @@ struct IntroView: View {
                 .edgesIgnoringSafeArea(.bottom)
             }
             
+        } else if self.mode == 21 {
+            
+            // move to HoleSearchView
+            HoleSearchView(from: 100, search: self.search, course: self.course, teeingGroundInfo: self.teeingGroundInfo, teeingGroundIndex: self.teeingGroundIndex!, holeNumber: self.holeNumber!)
+            
         }
     }
     
     func checkLastPlayedHole() {
-        let time = UserDefaults.standard.string(forKey: "TIME")
+        let _time = UserDefaults.standard.string(forKey: "TIME")
         let halftime = UserDefaults.standard.integer(forKey: "HALFTIME")
         
-        if let _time = time {
+        if let time = _time {
             // get current time
             let date = Date()
             let dateFormatter = DateFormatter()
@@ -348,17 +365,17 @@ struct IntroView: View {
             print(#function, date2, hour2, min2)
             
             
-            i1 = _time.index(_time.startIndex, offsetBy: 0)
-            i2 = _time.index(_time.startIndex, offsetBy: 10)
-            let date1 = _time[i1..<i2]
+            i1 = time.index(time.startIndex, offsetBy: 0)
+            i2 = time.index(time.startIndex, offsetBy: 10)
+            let date1 = time[i1..<i2]
             
-            i1 = _time.index(_time.startIndex, offsetBy: 11)
-            i2 = _time.index(_time.startIndex, offsetBy: 13)
-            let hour1 = _time[i1..<i2]
+            i1 = time.index(time.startIndex, offsetBy: 11)
+            i2 = time.index(time.startIndex, offsetBy: 13)
+            let hour1 = time[i1..<i2]
             
-            i1 = _time.index(_time.startIndex, offsetBy: 11)
-            i2 = _time.index(_time.startIndex, offsetBy: 13)
-            let min1 = _time[i1..<i2]
+            i1 = time.index(time.startIndex, offsetBy: 11)
+            i2 = time.index(time.startIndex, offsetBy: 13)
+            let min1 = time[i1..<i2]
             print(#function, date1, hour1, min1)
             
             
@@ -372,19 +389,19 @@ struct IntroView: View {
                 
                 if (sum2 - sum1) < 60 {
                     if halftime == 1 { // 전반 중 앱이 죽었다가 다시 실행
-                        self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
+                        self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
                         
                         withAnimation {
                             self.mode = 11
                         }
                     } else if halftime == 2 { // 전반 종료 후 앱이 죽었다가 다시 실행
-                        self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
+                        self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
                         
                         withAnimation {
                             self.mode = 12
                         }
                     } else if halftime == 3 { // 후반 중 앱이 죽었다가 다시 실행
-                        self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
+                        self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
                         
                         withAnimation {
                             self.mode = 13
@@ -404,59 +421,121 @@ struct IntroView: View {
     }
     
     func moveNext(_ search: Bool) {
-        // ToDo
+        // holeNumber, teeingGroundIndex, course
+        
+        let time = UserDefaults.standard.string(forKey: "TIME")
+        let holeNumber = UserDefaults.standard.integer(forKey: "HOLE_NUMBER")
+        let teeingGroundIndex = UserDefaults.standard.integer(forKey: "TEEING_GROUND_INDEX")
         
         
-        
-        
+        if time != nil {
+            // get course
+            // --
+            var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
+            
+            let address = UserDefaults.standard.string(forKey: "COURSE_ADDRESS")
+            let countryCode = UserDefaults.standard.string(forKey: "COURSE_COUNTRY_CODE")
+            
+            c.address = address!
+            c.countryCode = countryCode!
+            
+            let courses = UserDefaults.standard.stringArray(forKey: "COURSE_COURSES")
+            for course in courses! {
+                do {
+                    let data = Data(course.utf8)
+                    let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
+                    
+                    let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
+                    c.courses.append(item)
+                } catch {
+                    // ToDo: error handling
+                    print(error)
+                }
+            }
+            
+            let id = UserDefaults.standard.integer(forKey: "COURSE_ID")
+            
+            let latitude = UserDefaults.standard.double(forKey: "COURSE_LATITUDE")
+            let longitude = UserDefaults.standard.double(forKey: "COURSE_LONGITUDE")
+            let name = UserDefaults.standard.string(forKey: "COURSE_NAME")
+            
+            c.id = Int64(id)
+            c.location = CLLocation(latitude: latitude, longitude: longitude)
+            c.name = name!
+            // --
+            
+            // get teeingGroundInfo
+            // --
+            let unit = UserDefaults.standard.string(forKey: "TEEING_GROUND_INFO_UNIT")
+            
+            let holes = UserDefaults.standard.stringArray(forKey: "TEEING_GROUND_INFO_HOLES")
+            var array: [TeeingGrounds] = []
+            for hole in holes! {
+                do {
+                    let data = Data(hole.utf8)
+                    let decodedData = try JSONDecoder().decode(TeeingGroundsData.self, from: data)
+                    
+                    //let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
+                    //c.courses.append(item)
+                    
+                    var teeingGrounds: [TeeingGround] = []
+                    for tg in decodedData.teeingGrounds {
+                        let teeingGround = TeeingGround(name: tg.name, color: tg.color, distance: tg.distance)
+                        teeingGrounds.append(teeingGround)
+                    }
+                    
+                    let item = TeeingGrounds(teeingGrounds: teeingGrounds, par: decodedData.par, handicap: decodedData.handicap, name: decodedData.name)
+                    
+                    array.append(item)
+                } catch {
+                    // ToDo: error handling
+                    print(error)
+                }
+            }
+            
+            let t = TeeingGroundInfoModel(unit: unit!, holes: array)
+            // --
+            
+            moveToHoleSearchView(search, c, holeNumber, t, teeingGroundIndex)
+        }
         
     }
     
-    func moveToHoleSearchView() {
-        // ToDo
+    func moveToHoleSearchView(_ search: Bool, _ course: CourseModel, _ holeNumber: Int, _ teeingGroundInfo: TeeingGroundInfoModel, _ teeingGroundIndex: Int) {
+        self.search = search
+        self.course = course
+        self.holeNumber = holeNumber
+        self.teeingGroundInfo = teeingGroundInfo
+        self.teeingGroundIndex = teeingGroundIndex
         
-        
-        var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
-        
-        let address = UserDefaults.standard.string(forKey: "COURSE_ADDRESS")
-        let countryCode = UserDefaults.standard.string(forKey: "COURSE_COUNTRY_CODE")
-        
-        c.address = address!
-        c.countryCode = countryCode!
-        
-        let strings = UserDefaults.standard.stringArray(forKey: "COURSE_COURSES")
-        for string in strings! {
-            do {
-                let data = Data(string.utf8)
-                let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
-                
-                let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
-                c.courses.append(item)
-            } catch {
-                // ToDo: error handling
-                print(error)
-            }
+        withAnimation {
+            self.mode = 21
         }
-        
-        let id = UserDefaults.standard.integer(forKey: "COURSE_ID")
-        
-        let latitude = UserDefaults.standard.double(forKey: "COURSE_LATITUDE")
-        let longitude = UserDefaults.standard.double(forKey: "COURSE_LONGITUDE")
-        let name = UserDefaults.standard.string(forKey: "COURSE_NAME")
-        
-        c.id = Int64(id)
-        c.location = CLLocation(latitude: latitude, longitude: longitude)
-        c.name = name!
-        
-        
-        let holeNumber = UserDefaults.standard.integer(forKey: "HOLE_NUMBER")
-        let teeingGroundIndex = UserDefaults.standard.integer(forKey: "TEEING_GROUND_INDEX")
-        let halftime = UserDefaults.standard.integer(forKey: "HALFTIME")
-        
     }
     
     func startNew(_ removeData: Bool, _ showTextAnimation: Bool) {
-        // ToDo
+        print(#function, removeData, showTextAnimation)
+        
+        if removeData == true {
+            let defaults = UserDefaults.standard
+            let dictionary = defaults.dictionaryRepresentation()
+            dictionary.keys.forEach { key in
+                defaults.removeObject(forKey: key)
+            }
+        }
+        
+        Global.halftime = 1
+        
+        if showTextAnimation == true {
+            self.mode = 0
+        } else {
+            // ToDo: sign-in view here
+            
+            // ToDo: test (일단 apple sign in 스킵)
+            withAnimation {
+                self.mode = 2
+            }
+        }
     }
 }
 

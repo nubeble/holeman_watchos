@@ -15,17 +15,17 @@ struct TeeView: View {
     @State var distances: [String] = []
     @State var selectedIndex: Int = -1
     
-    // MainView backup
-    @State var __course: CourseModel?
-    @State var __teeingGroundInfo: TeeingGroundInfoModel?
-    // @State var __teeingGroundIndex: Int?
-    @State var __holeNumber: Int?
-    @State var __distanceUnit: Int?
-    @State var __sensors: [SensorModel]?
-    @State var __latitude: Double?
-    @State var __longitude: Double?
-    @State var __elevation: Double?
-    @State var __userElevation: Double?
+    // backup of MainView
+    var __course: CourseModel?
+    var __teeingGroundInfo: TeeingGroundInfoModel?
+    // var __teeingGroundIndex: Int?
+    var __holeNumber: Int?
+    var __distanceUnit: Int?
+    var __sensors: [SensorModel]?
+    var __latitude: Double?
+    var __longitude: Double?
+    var __elevation: Double?
+    var __userElevation: Double?
     
     var body: some View {
         

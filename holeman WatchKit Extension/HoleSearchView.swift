@@ -10,6 +10,11 @@ import SwiftUI
 struct HoleSearchView: View {
     @State var mode: Int = 0
     
+    @State var textMessage: String = "스타트 홀로 가시면\n자동으로 시작됩니다."
+    
+    var from: Int?
+    var search: Bool?
+    
     // @ObservedObject var locationManager = LocationManager()
     
     @State var course: CourseModel? = nil
@@ -44,8 +49,7 @@ struct HoleSearchView: View {
             
             ZStack {
                 
-                // VStack(alignment: HorizontalAlignment.center)  {
-                VStack(spacing: 2) {
+                VStack(spacing: 1.8) {
                     if let name = self.course?.name {
                         let start1 = name.firstIndex(of: "(")
                         let end1 = name.firstIndex(of: ")")
@@ -60,12 +64,14 @@ struct HoleSearchView: View {
                         let range2 = i2..<end1!
                         let str2 = name[range2]
                         
-                        Text(str1).font(.system(size: 18))
+                        // Text(str1).font(.system(size: 18))
+                        Text(str1).font(.system(size: 16))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 4)
-                        Text(str2).font(.system(size: 18 * 0.8))
+                        // Text(str2).font(.system(size: 18 * 0.8))
+                        Text(str2).font(.system(size: 16 * 0.8))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -76,7 +82,7 @@ struct HoleSearchView: View {
                 }
                 
                 VStack {
-                    Text("스타트 홀로 가시면\n자동으로 시작됩니다.").font(.system(size: 22)).multilineTextAlignment(.center)
+                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack(alignment: HorizontalAlignment.center) {
@@ -92,9 +98,54 @@ struct HoleSearchView: View {
                 
             }
             .onAppear(perform: {
-                // ToDo: test timer
-                Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
-                    getStartHole() // 1, 10, 19, ...
+                if let from = self.from {
+                    
+                    if from == 100 {
+                        if let search = self.search {
+                            if search == true {
+                                // 그늘집에서 잘 쉬셨나요?
+                                // 스타트 홀로 가시면 자동으로 시작됩니다.
+                                
+                                self.textMessage = "그늘집에서 잘 쉬셨나요?\n스타트 홀로 가시면 자동으로 시작됩니다."
+                                
+                                // ToDo: test timer
+                                Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+                                    getStartHole() // 1, 10, 19, ...
+                                }
+                            } else {
+                                // 스타트 홀 검색하지 않고 teeingGroundInfo만 구하고 holeNumber로 실행
+                                self.textMessage = "로딩 중입니다."
+                                
+                                moveNext()
+                            }
+                        }
+                    } else if from == 200 {
+                        // 전반 종료 후 앱이 계속 떠 있는 상태로 후반 시작
+                        
+                        self.textMessage = "전반 플레이가 끝났습니다.\n그늘집에서 쉬신 후 스타트 홀로 가시면 자동으로 시작됩니다."
+                        
+                        // ToDo: test timer
+                        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+                            getStartHole() // 1, 10, 19, ...
+                        }
+                    } else if from == 300 {
+                        // 후반 종료. move to CourseSearchView
+                        
+                        self.textMessage = "전후반 플레이가 모두 끝났습니다.\n수고하셨습니다."
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                            withAnimation {
+                                self.mode = 21
+                            }
+                        }
+                    }
+                } else {
+                    // 일반 실행
+                    
+                    // ToDo: test timer
+                    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+                        getStartHole() // 1, 10, 19, ...
+                    }
                 }
             })
             
@@ -186,6 +237,11 @@ struct HoleSearchView: View {
             let teeingGroundInfo = self.teeingGroundInfo
             
             MainView(course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundIndex: teeingGroundIndex, holeNumber: holeNumber)
+            
+        } else if self.mode == 21 { // move to CourseSearchView
+            
+            // ToDo
+            
         }
         
     }
@@ -427,7 +483,8 @@ struct HoleSearchView: View {
                     if list.count == 1 {
                         let n = list[0]
                         
-                        moveNext(n)
+                        self.holeNumber = n
+                        moveNext()
                     } else if list.count > 1 {
                         showList()
                     } else { // 0
@@ -449,9 +506,7 @@ struct HoleSearchView: View {
         }
     }
     
-    func moveNext(_ holeNumber: Int) {
-        self.holeNumber = holeNumber
-        
+    func moveNext() {
         withAnimation {
             self.mode = 20
         }

@@ -31,12 +31,6 @@ struct MainView: View {
     
     var distance: String {
         if let location = locationManager.lastLocation {
-            // ToDo: check hole pass (or use 1 sec timer)
-            // print(#function, location)
-            if self.latitude != nil && self.longitude != nil {
-                self.checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
-            }
-            
             if self.latitude == nil || self.longitude == nil { return "0.0" }
             
             let latitude = location.coordinate.latitude
@@ -92,7 +86,11 @@ struct MainView: View {
         }
     }
     
-    static var getUserElevationTimerStarted = false
+    @State var timer1: Timer? = nil // get user elevation timer
+    @State var timer2: Timer? = nil // hole pass check timer
+    
+    // static var getUserElevationTimerStarted = false
+    static var lastGetUserElevationTime: UInt64?
     static var elevationDiff: Double?
     
     
@@ -120,10 +118,20 @@ struct MainView: View {
     
     // @ObservedObject var compassHeading = CompassHeading()
     
+    // 100: normal state, 200: 홀까지 남은 거리가 30미터 안으로 들어왔을 때, 300: 10초 머물렀을 때, 400: 다시 30미터 (+ 10미터) 밖으로 나갔을 때
+    // static let HOLE_PASS_DISTANCE: Double = 30.0 // meter
+    static let HOLE_PASS_DISTANCE: Double = 80.0 // ToDo: test
+    @State var holePassFlag = 100
+    @State var holePassCount = 0
+    // @State var holePassStartTime: DispatchTime? = nil
+    
     // pass to TeeView & HoleView
-    @State var names: [String] = []
-    @State var color: [Color] = []
-    @State var distances: [String] = []
+    @State var names: [String]?
+    @State var color: [Color]?
+    @State var distances: [String]?
+    
+    // pass to HoleSearchView
+    @State var from: Int?
     
     var body: some View {
         
@@ -138,7 +146,7 @@ struct MainView: View {
                  */
                 
                 VStack {
-                    Text(self.textMessage).font(.system(size: 24)).bold()
+                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
                     // .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
@@ -347,11 +355,23 @@ struct MainView: View {
                 }
                 
                 // set height
-                print("MainView.getUserElevationTimerStarted ==", MainView.getUserElevationTimerStarted)
-                if MainView.getUserElevationTimerStarted == false {
-                    getUserElevationTimer()
-                    MainView.getUserElevationTimerStarted = true
-                }
+                // print("MainView.getUserElevationTimerStarted ==", MainView.getUserElevationTimerStarted)
+                // if MainView.getUserElevationTimerStarted == false {
+                startGetUserElevationTimer()
+                // MainView.getUserElevationTimerStarted = true
+                // }
+                
+                // start HolePassCheck timer
+                startCheckHolePassTimer()
+                
+                // ToDo: test
+                saveHole(1)
+            }
+            .onDisappear {
+                // stop timer
+                self.timer1?.invalidate()
+                self.timer2?.invalidate()
+                
             }
             .onReceive(sensorUpdatedNotification) { notification in
                 // print(#function, notification)
@@ -381,7 +401,7 @@ struct MainView: View {
             
         } else if self.mode == 2 { // open HoleView
             
-            HoleView(names: self.names, selectedIndex: self.holeNumber! - 1,
+            HoleView(names: self.names!, selectedIndex: self.holeNumber! - 1,
                      // backup
                      __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundIndex: self.teeingGroundIndex,
                      /*__holeNumber: self.holeNumber,*/ __distanceUnit: self.distanceUnit,
@@ -391,13 +411,18 @@ struct MainView: View {
             
         } else if self.mode == 3 { // open TeeView
             
-            TeeView(names: self.names, color: self.color, distances: self.distances, selectedIndex: self.teeingGroundIndex!,
+            TeeView(names: self.names!, color: self.color!, distances: self.distances!, selectedIndex: self.teeingGroundIndex!,
                     // backup
                     __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, /*__teeingGroundIndex: self.teeingGroundIndex,*/
                     __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
                     __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
                     __userElevation: self.userElevation
             )
+            
+        } else if self.mode == 21 {
+            
+            // move to HoleSearchView
+            HoleSearchView(from: self.from, course: self.course, teeingGroundIndex: self.teeingGroundIndex!)
             
         } else if self.mode == 99 {
             
@@ -616,7 +641,35 @@ struct MainView: View {
         }
     }
     
-    func getUserElevationTimer() {
+    func startGetUserElevationTimer() {
+        if let time1 = MainView.lastGetUserElevationTime {
+            let now = DispatchTime.now()
+            var interval = now.uptimeNanoseconds - time1
+            interval = interval / 1_000_000 // millisecond
+            let sec = interval / 1000 // second
+            let min = sec / 60
+            
+            if min >= 15 {
+                // start 1 & 2
+                startGetUserElevationTimer1()
+            } else {
+                // start 2
+                let minDiff = 15 - min
+                let secDiff: Double = Double(minDiff * 60)
+                
+                print(#function, "GetUserElevationTimer will be started in", minDiff, "min later.")
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + secDiff) { // seconds
+                    startGetUserElevationTimer2()
+                }
+            }
+        } else {
+            // start 1 & 2
+            startGetUserElevationTimer1()
+        }
+    }
+    
+    func startGetUserElevationTimer1() {
         // (1)
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
             if let location = locationManager.lastLocation {
@@ -627,28 +680,52 @@ struct MainView: View {
                 let alt = location.altitude
                 
                 // self.getUserElevation(String(lat), String(lon), alt)
-                // ToDo: test
+                // ToDo: test (일단 google api 스킵)
                 self.userElevation = 20.2
                 MainView.elevationDiff = self.userElevation! - alt
                 
+                MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
+                
                 // (2) ~ (n)
-                Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 1 min x 30
-                    print(#function, "getUserElevationTimer BIG timer")
+                self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 1 min x 30
+                    // Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
+                    // if let location = locationManager.lastLocation {
+                    // timer2.invalidate()
                     
-                    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
-                        if let location = locationManager.lastLocation {
-                            timer2.invalidate()
-                            
-                            let lat = location.coordinate.latitude
-                            let lon = location.coordinate.longitude
-                            let alt = location.altitude
-                            
-                            // self.getUserElevation(String(lat), String(lon), alt)
-                            // ToDo: test
-                            self.userElevation = 20.2
-                            MainView.elevationDiff = self.userElevation! - alt
-                        }
-                    }
+                    let lat2 = location.coordinate.latitude
+                    let lon2 = location.coordinate.longitude
+                    let alt2 = location.altitude
+                    
+                    // self.getUserElevation(String(lat2), String(lon2), alt2)
+                    // ToDo: test (일단 google api 스킵)
+                    self.userElevation = 20.2
+                    MainView.elevationDiff = self.userElevation! - alt2
+                    
+                    MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
+                    // }
+                    // }
+                }
+            }
+        }
+    }
+    
+    func startGetUserElevationTimer2() {
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
+            if let location = locationManager.lastLocation {
+                timer1.invalidate()
+                
+                // (2) ~ (n)
+                self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 1 min x 30
+                    let lat2 = location.coordinate.latitude
+                    let lon2 = location.coordinate.longitude
+                    let alt2 = location.altitude
+                    
+                    // self.getUserElevation(String(lat2), String(lon2), alt2)
+                    // ToDo: test (일단 google api 스킵)
+                    self.userElevation = 20.2
+                    MainView.elevationDiff = self.userElevation! - alt2
+                    
+                    MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
                 }
             }
         }
@@ -689,6 +766,16 @@ struct MainView: View {
         task.resume()
     }
     
+    func startCheckHolePassTimer() {
+        self.timer2 = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in // 1 sec
+            if let location = locationManager.lastLocation {
+                if self.latitude != nil && self.longitude != nil {
+                    self.checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
+                }
+            }
+        }
+    }
+    
     func checkHolePass(_ lat1: Double, _ lon1: Double, _ lat2: Double, _ lon2: Double) {
         let coordinate1 = CLLocation(latitude: lat1, longitude: lon1)
         let coordinate2 = CLLocation(latitude: lat2, longitude: lon2)
@@ -711,9 +798,8 @@ struct MainView: View {
                     saveHole(4)
                 }
                 
-                // ToDo
-                // if Global.halftime == 1 { moveToHoleSearchView(200) }
-                // else if Global.halftime == 2 { moveToHoleSearchView(300) }
+                if Global.halftime == 1 { moveToHoleSearchView(200) }
+                else if Global.halftime == 2 { moveToHoleSearchView(300) }
             } else {
                 // 일반 홀 종료
                 
@@ -737,12 +823,58 @@ struct MainView: View {
     }
     
     func checkHolePass(_ distance: Double) -> Bool {
-        // ToDo
-        return false
+        switch self.holePassFlag {
+        case 100:
+            if distance < MainView.HOLE_PASS_DISTANCE { self.holePassFlag = 200 }
+            return false
+            
+        case 200:
+            if distance < MainView.HOLE_PASS_DISTANCE {
+                
+                if self.holePassCount >= 10 { // 10 sec
+                    self.holePassFlag = 300
+                    self.holePassCount = 0
+                    
+                    print(#function, "10 seconds")
+                } else {
+                    self.holePassCount += 1
+                }
+                
+                
+                /*
+                 if self.holePassStartTime == nil {
+                 self.holePassStartTime = DispatchTime.now()
+                 } else {
+                 let now = DispatchTime.now()
+                 var interval = now.uptimeNanoseconds - self.holePassStartTime!.uptimeNanoseconds
+                 interval = interval / 1_000_000 // millisecond
+                 let sec = interval / 1000 // second
+                 
+                 if sec >= 10 {
+                 self.holePassFlag = 300
+                 print(#function, "10 seconds")
+                 }
+                 }
+                 */
+            } else {
+                self.holePassFlag = 100
+            }
+            return false
+            
+        case 300:
+            if distance > (MainView.HOLE_PASS_DISTANCE + 10) { self.holePassFlag = 400 }
+            return false
+            
+        case 400:
+            return true
+            
+        default:
+            return false
+        }
     }
     
     func saveHole(_ halftime: Int) {
-        // 1. time string
+        // 1. time
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 2019-12-20 09:40:08
@@ -751,9 +883,6 @@ struct MainView: View {
         // let interval = date.timeIntervalSince1970
         
         UserDefaults.standard.set(dateString, forKey: "TIME")
-        
-        // 2. group id
-        // UserDefaults.standard.set(self.course?.id, forKey: "GROUP_ID")
         
         // 2. course
         /*
@@ -773,7 +902,7 @@ struct MainView: View {
             UserDefaults.standard.set(course.countryCode, forKey: "COURSE_COUNTRY_CODE")
             
             // courses (convert to json string array)
-            var strings: [String] = []
+            var coursesStringArray: [String] = []
             
             for c in course.courses {
                 let cd = CourseData(name: c.name, range: c.range)
@@ -781,14 +910,14 @@ struct MainView: View {
                     let encodedData = try JSONEncoder().encode(cd)
                     let jsonString = String(data: encodedData, encoding: .utf8)
                     
-                    strings.append(jsonString!)
+                    coursesStringArray.append(jsonString!)
                 } catch {
                     // ToDo: error handling
                     print(error)
                 }
             }
             
-            UserDefaults.standard.set(strings, forKey: "COURSE_COURSES")
+            UserDefaults.standard.set(coursesStringArray, forKey: "COURSE_COURSES")
             
             // id
             UserDefaults.standard.set(course.id, forKey: "COURSE_ID")
@@ -806,22 +935,52 @@ struct MainView: View {
         // 3. hole number
         UserDefaults.standard.set(self.holeNumber, forKey: "HOLE_NUMBER")
         
-        // 4. teeing ground index
+        // 4. teeing ground info
+        // --
+        UserDefaults.standard.set(self.teeingGroundInfo?.unit, forKey: "TEEING_GROUND_INFO_UNIT")
+        
+        if let holes = self.teeingGroundInfo?.holes {
+            var holesStringArray: [String] = []
+            
+            for hole in holes {
+                var teeingGroundDataArray: [TeeingGroundData] = []
+                for teeingGround in hole.teeingGrounds {
+                    let teeingGroundData = TeeingGroundData(name: teeingGround.name, color: teeingGround.color, distance: teeingGround.distance)
+                    teeingGroundDataArray.append(teeingGroundData)
+                }
+                
+                let tgd = TeeingGroundsData(teeingGrounds: teeingGroundDataArray, par: hole.par, handicap: hole.handicap, name: hole.name)
+                
+                do {
+                    let encodedData = try JSONEncoder().encode(tgd)
+                    let jsonString = String(data: encodedData, encoding: .utf8)
+                    
+                    holesStringArray.append(jsonString!)
+                } catch {
+                    // ToDo: error handling
+                    print(error)
+                }
+            }
+            
+            UserDefaults.standard.set(holesStringArray, forKey: "TEEING_GROUND_INFO_HOLES")
+        }
+        // --
+        
+        // 5. teeing ground index
         UserDefaults.standard.set(self.teeingGroundIndex, forKey: "TEEING_GROUND_INDEX")
         
-        // 5. halftime
+        // 6. halftime
         UserDefaults.standard.set(halftime, forKey: "HALFTIME")
     }
     
-    /*
-     func showMessage(_ message: String) {
-     self.textMessage = message
-     withAnimation {
-     MainView.mode = 0
-     }
-     
-     }
-     */
+    func moveToHoleSearchView(_ halftime: Int) { // 200: 전반 종료, 300: 후반 종료
+        self.from = halftime
+        
+        
+        withAnimation {
+            self.mode = 21
+        }
+    }
     
 }
 

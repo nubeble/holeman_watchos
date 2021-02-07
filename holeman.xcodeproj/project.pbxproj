@@ -20,6 +20,7 @@
 		B923CCBB2546C5BD00E09B40 /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCBA2546C5BD00E09B40 /* CloudManager.swift */; };
 		B923CCD82547E1B500E09B40 /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCD72547E1B500E09B40 /* CloudKitManager.swift */; };
 		B923CCDD2547E24D00E09B40 /* ListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCDC2547E24D00E09B40 /* ListElement.swift */; };
+		B925136325D00B79006EEC0A /* TeeingGroundData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B925136225D00B79006EEC0A /* TeeingGroundData.swift */; };
 		B92DB505256409E100511383 /* CompassHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92DB504256409E100511383 /* CompassHeading.swift */; };
 		B92DB50A2569F84000511383 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92DB5092569F84000511383 /* MainView.swift */; };
 		B956D2E8256031E00056007B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956D2E7256031E00056007B /* HomeView.swift */; };
@@ -116,6 +117,7 @@
 		B923CCBA2546C5BD00E09B40 /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
 		B923CCD72547E1B500E09B40 /* CloudKitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		B923CCDC2547E24D00E09B40 /* ListElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListElement.swift; sourceTree = "<group>"; };
+		B925136225D00B79006EEC0A /* TeeingGroundData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeeingGroundData.swift; sourceTree = "<group>"; };
 		B92DB504256409E100511383 /* CompassHeading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompassHeading.swift; sourceTree = "<group>"; };
 		B92DB5092569F84000511383 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		B956D2E7256031E00056007B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				B975BC0125B2963200EFD939 /* CourseModel.swift */,
 				B9AD0F9E25CE4EBF00CE247B /* CourseData.swift */,
 				B975BC1125BEDECD00EFD939 /* TeeingGroundInfoModel.swift */,
+				B925136225D00B79006EEC0A /* TeeingGroundData.swift */,
 				B975BC1625C0028E00EFD939 /* HoleModel.swift */,
 				B91AB1E225C4E44A0050B157 /* SensorModel.swift */,
 				B9BACF46256CB7DD00F7B07D /* Course.swift */,
@@ -529,6 +532,7 @@
 				B975BBF525AE9A8C00EFD939 /* CourseSearchView.swift in Sources */,
 				B923CCA9254671BF00E09B40 /* ArticleRow.swift in Sources */,
 				B92DB50A2569F84000511383 /* MainView.swift in Sources */,
+				B925136325D00B79006EEC0A /* TeeingGroundData.swift in Sources */,
 				B99531132581BE76001D5FBF /* SplashView.swift in Sources */,
 				B9AD0F9F25CE4EBF00CE247B /* CourseData.swift in Sources */,
 				B923CCAC254671BF00E09B40 /* ArticleFetcher.swift in Sources */,
