@@ -43,6 +43,9 @@ struct HoleSearchView: View {
         var longitude: Double
     }
     
+    // pass to MainView
+    // @State var save: Bool?
+    
     
     var body: some View {
         if self.mode == 0 {
@@ -108,6 +111,8 @@ struct HoleSearchView: View {
                                 
                                 self.textMessage = "그늘집에서 잘 쉬셨나요?\n스타트 홀로 가시면 자동으로 시작됩니다."
                                 
+                                // self.save = false
+                                
                                 // ToDo: test timer
                                 Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
                                     getStartHole() // 1, 10, 19, ...
@@ -116,6 +121,8 @@ struct HoleSearchView: View {
                                 // 스타트 홀 검색하지 않고 teeingGroundInfo만 구하고 holeNumber로 실행
                                 self.textMessage = "로딩 중입니다."
                                 
+                                // self.save = false
+                                
                                 moveNext()
                             }
                         }
@@ -123,6 +130,8 @@ struct HoleSearchView: View {
                         // 전반 종료 후 앱이 계속 떠 있는 상태로 후반 시작
                         
                         self.textMessage = "전반 플레이가 끝났습니다.\n그늘집에서 쉬신 후 스타트 홀로 가시면 자동으로 시작됩니다."
+                        
+                        // self.save = false
                         
                         // ToDo: test timer
                         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
@@ -171,10 +180,10 @@ struct HoleSearchView: View {
                                     // self.selectedStartHoleIndex = index
                                     self.holeNumber = number
                                     
+                                    // self.save = true
+                                    
                                     // move to MainView
-                                    withAnimation {
-                                        self.mode = 20
-                                    }
+                                    moveNext()
                                 }) {
                                     Text(name).font(.system(size: 18))
                                         // .fixedSize(horizontal: false, vertical: true)
@@ -207,7 +216,7 @@ struct HoleSearchView: View {
                              */
                             
                         }.onAppear {
-                            // ToDo: scroll
+                            // scroll
                             // value.scrollTo(2)
                         }
                     }
@@ -236,11 +245,12 @@ struct HoleSearchView: View {
             // 5. teeingGroundInfo
             let teeingGroundInfo = self.teeingGroundInfo
             
+            // MainView(save: self.save, course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundIndex: teeingGroundIndex, holeNumber: holeNumber)
             MainView(course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundIndex: teeingGroundIndex, holeNumber: holeNumber)
             
         } else if self.mode == 21 { // move to CourseSearchView
             
-            // ToDo
+            // ToDo: !!!
             
         }
         
@@ -482,8 +492,10 @@ struct HoleSearchView: View {
                     // update UI
                     if list.count == 1 {
                         let n = list[0]
-                        
                         self.holeNumber = n
+                        
+                        // self.save = true
+                        
                         moveNext()
                     } else if list.count > 1 {
                         showList()

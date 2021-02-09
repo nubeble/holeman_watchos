@@ -14,6 +14,8 @@ extension Notification.Name {
 struct MainView: View {
     @State var mode: Int = 0
     
+    // var save: Bool?
+    
     let sensorUpdatedNotification = NotificationCenter.default.publisher(for: .sensorUpdated)
     
     @State var textHoleName: String = "별우(STAR) 9TH"
@@ -92,7 +94,8 @@ struct MainView: View {
     // static var getUserElevationTimerStarted = false
     static var lastGetUserElevationTime: UInt64?
     static var elevationDiff: Double?
-    
+    static var lastHoleNumber: Int?
+    static var lastTeeingGroundIndex: Int?
     
     
     @State var course: CourseModel? = nil
@@ -364,14 +367,13 @@ struct MainView: View {
                 // start HolePassCheck timer
                 startCheckHolePassTimer()
                 
-                // ToDo: test
-                saveHole(1)
+                // save hole info
+                saveHoleOnAppear()
             }
             .onDisappear {
                 // stop timer
                 self.timer1?.invalidate()
                 self.timer2?.invalidate()
-                
             }
             .onReceive(sensorUpdatedNotification) { notification in
                 // print(#function, notification)
@@ -764,6 +766,60 @@ struct MainView: View {
         })
         
         task.resume()
+    }
+    
+    func saveHoleOnAppear() {
+        /*
+        if let save = self.save { // from HoleSearchView
+            if save == true {
+                print(#function, "saveHole()", 1)
+                
+                if Global.halftime == 1 { saveHole(1) } // 전반 중
+                else { saveHole(3) } // 후반 중
+                
+                // return
+            }
+            
+            MainView.lastHoleNumber = self.holeNumber
+            MainView.lastTeeingGroundIndex = self.teeingGroundIndex
+            
+            return
+        }
+         */
+
+        if MainView.lastHoleNumber == nil && MainView.lastTeeingGroundIndex == nil { // 최초 로드
+            print(#function, "saveHole()", 2)
+            
+            if Global.halftime == 1 { saveHole(1) } // 전반 중
+            else { saveHole(3) } // 후반 중
+            
+            MainView.lastHoleNumber = self.holeNumber
+            MainView.lastTeeingGroundIndex = self.teeingGroundIndex
+            
+            return
+        }
+        
+        if MainView.lastHoleNumber != self.holeNumber {
+            print(#function, "saveHole()", 3)
+            
+            if Global.halftime == 1 { saveHole(1) } // 전반 중
+            else { saveHole(3) } // 후반 중
+            
+            MainView.lastHoleNumber = self.holeNumber
+            
+            return
+        }
+        
+        if MainView.lastTeeingGroundIndex != self.teeingGroundIndex {
+            print(#function, "saveHole()", 4)
+            
+            if Global.halftime == 1 { saveHole(1) } // 전반 중
+            else { saveHole(3) } // 후반 중
+            
+            MainView.lastTeeingGroundIndex = self.teeingGroundIndex
+            
+            return
+        }
     }
     
     func startCheckHolePassTimer() {

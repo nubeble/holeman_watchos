@@ -24,7 +24,7 @@ struct CloudManager {
         // let query = CKQuery(recordType: RecordType, predicate: NSPredicate(value: true))
         let predicate = NSPredicate(format: "TRUEPREDICATE")
         let query = CKQuery(recordType: RecordType, predicate: predicate)
-        query.sortDescriptors = [NSSortDescriptor(key: "country_code", ascending: false)] // ToDo
+        query.sortDescriptors = [NSSortDescriptor(key: "country_code", ascending: false)] // ToDo: check
         
         publicDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID, completionHandler: { (records, error) -> Void in // default record zone
             

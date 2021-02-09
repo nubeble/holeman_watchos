@@ -276,7 +276,7 @@ struct CourseSearchView: View {
                             .padding(.bottom, -20) // ToDo: check default padding
                             
                         }.onAppear {
-                            // ToDo: scroll
+                            // scroll
                             // value.scrollTo(2)
                         }
                     }

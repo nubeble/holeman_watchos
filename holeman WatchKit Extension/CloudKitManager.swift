@@ -97,7 +97,7 @@ struct CloudKitManager {
          */
     }
     
-    static func deleteAllSubscriptions(subscriptions: [CKSubscription], handler: @escaping ((Int) -> Void)) {
+    static func deleteAllSubscriptions(subscriptions: [CKSubscription], onComplete: @escaping ((Int) -> Void)) {
         let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
         
         var index: Int = 0
@@ -124,7 +124,7 @@ struct CloudKitManager {
             // delete all subscriptions
             print("delete subscription...")
             
-            db.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { string, error in
+            db.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { id, error in
                 index += 1
                 
                 if error != nil {
@@ -134,14 +134,17 @@ struct CloudKitManager {
                 
                 if index == subscriptions.count {
                     // handler(result)
-                    handler(index)
+                    onComplete(index)
                 }
             })
             
         } // end of for
     }
     
-    static func saveSubscription(_ type: String, _ id: Int64) { // id: course id
+    // static func saveSubscription(_ type: String, _ id: Int64) { // id: course id
+    
+    static func saveSubscription(_ type: String, _ id: Int64, onComplete: @escaping ((String) -> Void)) {
+        
         // create subscription
         // predicate: You can customize this to only get notified when particular records are changed.
         
@@ -159,7 +162,7 @@ struct CloudKitManager {
         sub.notificationInfo = notification
         
         // save this subscription to iCloud
-        // ToDo: If you want to have just a single subscription it may be a good idea to save (into UserDefaults maybe) that subscription is created so you can avoid creating it next time.
+        // If you want to have just a single subscription it may be a good idea to save (into UserDefaults maybe) that subscription is created so you can avoid creating it next time.
         let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
         db.save(sub) { (subscription, error) in
             if let error = error {
@@ -167,8 +170,10 @@ struct CloudKitManager {
                 return
             }
             
-            if let _ = subscription {
+            if let subscription = subscription {
                 print("success on saving subscription.")
+                
+                onComplete(subscription.subscriptionID)
             }
         }
     }
@@ -345,33 +350,85 @@ struct CloudKitManager {
         }
     }
     
+    /*
+     static func subscribeToSensors(_ groupId: Int64) {
+     let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+     
+     // check existance
+     db.fetchAllSubscriptions(completionHandler: { subscriptions, error in
+     if error != nil {
+     // failed to fetch all subscriptions, handle error here
+     // end the function early
+     return
+     }
+     
+     if let subscriptions = subscriptions {
+     if subscriptions.count == 0 {
+     CloudKitManager.saveSubscription("Sensor", groupId)
+     } else {
+     CloudKitManager.deleteAllSubscriptions(subscriptions: subscriptions) { count in
+     print("deleteAllSubscriptions count", count)
+     
+     print("save subscription...")
+     CloudKitManager.saveSubscription("Sensor", groupId)
+     }
+     }
+     }
+     })
+     }
+     */
+    
     static func subscribeToSensors(_ groupId: Int64) {
-        let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+        // check UserDefaults
+        let subId = UserDefaults.standard.string(forKey: "SUBSCRIPTION_SENSORS_SUB_ID")
+        if subId != nil {
+            let courseId = UserDefaults.standard.integer(forKey: "SUBSCRIPTION_SENSORS_COURSE_ID")
+            if courseId == Int(groupId) {
+                // skip saving
+                return
+            } else {
+                // 1. delete db
+                let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+                db.delete(withSubscriptionID: subId!, completionHandler: { id, error in
+                    // N/A
+                })
+                
+                // 2. save db
+                CloudKitManager.saveSubscription("Sensor", groupId) { id in
+                    // 3. update ud (subId & courseId)
+                    UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_SENSORS_SUB_ID")
+                    UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_SENSORS_COURSE_ID") // course id
+                }
+            }
+        } else {
+            // 2. save db
+            CloudKitManager.saveSubscription("Sensor", groupId) { id in
+                // 3. update ud (subId & courseId)
+                UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_SENSORS_SUB_ID")
+                UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_SENSORS_COURSE_ID") // course id
+            }
+        }
+    }
+    
+    static func saveUser(_ id: String, _ name: String, _ email: String) {
+        let record = CKRecord(recordType: "User")
+        record["id"] = id as String
+        record["name"] = id as String
+        record["email"] = id as String
         
-        // check existance
-        db.fetchAllSubscriptions(completionHandler: { subscriptions, error in
-            if error != nil {
-                // failed to fetch all subscriptions, handle error here
-                // end the function early
+        let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+        db.save(record) { (record, error) in
+            if let error = error {
+                print(#function, error)
                 return
             }
             
-            if let subscriptions = subscriptions {
-                if subscriptions.count == 0 {
-                    CloudKitManager.saveSubscription("Sensor", groupId)
-                } else {
-                    CloudKitManager.deleteAllSubscriptions(subscriptions: subscriptions) { (count) in
-                        print("deleteAllSubscriptions count", count)
-                        
-                        print("save subscription...")
-                        CloudKitManager.saveSubscription("Sensor", groupId)
-                    }
-                }
+            if let _ = record {
+                print(#function, "success on saving user.")
             }
-        })
+        }
     }
     
-
     
     
     /*

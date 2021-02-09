@@ -42,7 +42,7 @@ struct CourseListView: View {
                             Text("Select Course").font(.system(size: 20, weight: .semibold))
                             Text("골프장을 선택하세요.").font(.system(size: 16, weight: .light)).padding(.bottom, 10)
                             
-                            // Divider() // ToDo
+                            // Divider()
                             
                             ForEach(0 ..< self.courses.count) {
                                 let index = $0
@@ -111,7 +111,7 @@ struct CourseListView: View {
                             .padding(.bottom, -20) // ToDo: check default padding
                             
                         }.onAppear {
-                            // ToDo: scroll
+                            // scroll
                             // value.scrollTo(2)
                         }
                     }

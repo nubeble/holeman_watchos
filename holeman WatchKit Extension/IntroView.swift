@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct IntroView: View {
     @State var mode: Int = -1
@@ -88,26 +89,9 @@ struct IntroView: View {
                     Spacer().frame(maxHeight: .infinity)
                     
                     Button(action: {
-                        // ToDo: sign-in view here
-                        
-                        // ToDo: test (일단 apple sign in 스킵)
-                        withAnimation {
-                            self.mode = 2
-                        }
+                        // Sign in with Apple
+                        checkUserIdentifierValidation()
                     }) {
-                        /*
-                         VStack {
-                         Image(systemName: "arrow.right")
-                         .font(Font.system(size: 28, weight: .heavy))
-                         // .resizable()
-                         // .frame(width: 30, height: 30)
-                         // Text("Circle!")
-                         }
-                         .padding(14)
-                         .background(Color.green)
-                         .mask(Circle())
-                         */
-                        
                         ZStack {
                             Circle()
                                 .fill(Color.green)
@@ -116,30 +100,13 @@ struct IntroView: View {
                             Image(systemName: "arrow.right")
                                 .font(Font.system(size: 28, weight: .heavy))
                         }
-                        
                     }
                     .buttonStyle(PlainButtonStyle())
                     .padding(.bottom, 10)
                     .opacity(button1Opacity)
-                    
-                    /*
-                     Text("\(textValue)")
-                     .opacity(opacity)
-                     
-                     Button("Next") {
-                     withAnimation(.easeInOut(duration: 0.5), {
-                     self.opacity = 0
-                     })
-                     self.textValue = "uuuuuuuuuuuuuuu"
-                     withAnimation(.easeInOut(duration: 1), {
-                     self.opacity = 1
-                     })
-                     }
-                     */
-                }
+                } // end of VStack
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
-                
             }
             .onAppear {
                 withAnimation(.easeInOut(duration: 1), {
@@ -161,9 +128,72 @@ struct IntroView: View {
                 }
             }
             
-        } else if self.mode == 2 {
+        } else if self.mode == 2 { // Sign in with Apple
             
-            // move to course view
+            ZStack {
+                VStack(alignment: HorizontalAlignment.center) {
+                    Image("icon")
+                        .resizable()
+                        .frame(width: 200 / 5, height: 200 / 5)
+                    // .padding(.bottom, 15)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Text("홀맨을 이용하시려면\n로그인이 필요합니다.").font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
+                
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    SignInWithAppleButton(.signIn) { request in
+                        request.requestedScopes = [.fullName, .email]
+                    }
+                    onCompletion: { result in
+                        switch result {
+                        case .success(let authResults):
+                            print("Authorisation successful", authResults)
+                            
+                            guard let credential = authResults.credential as? ASAuthorizationAppleIDCredential, let identityToken = credential.identityToken, let identityTokenString = String(data: identityToken, encoding: .utf8) else { return }
+                            
+                            // let body = ["appleIdentityToken": identityTokenString]
+                            // guard let jsonData = try? JSONEncoder().encode(body) else { return }
+                            
+                            // print("credential", credential)
+                            // This is where you'd fire an API request to your server to authenticate with the identity token attached in the request headers.
+                            
+                            // ToDo: get fullName, email
+                            let userIdentifier = credential.user
+                            var name: String = ""
+                            if let fullName = credential.fullName {
+                                name = fullName.givenName! + " " + fullName.familyName!
+                            }
+                            let email: String = credential.email ?? ""
+                            
+                            print(userIdentifier, name, email)
+                            
+                            // 1. save to db
+                            CloudKitManager.saveUser(userIdentifier, name, email)
+                            
+                            // 2. save to UserDefaults
+                            UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
+                            
+                        case .failure (let error):
+                            print("Authorisation failed: \(error.localizedDescription)")
+                        }
+                    }
+                    // .signInWithAppleButtonStyle(.black) // black button
+                    // .signInWithAppleButtonStyle(.white) // white button
+                    .signInWithAppleButtonStyle(.whiteOutline) // white with border
+                    // .frame(width: .infinity, height: 30)
+                    // .frame(width: 100, height: 30)
+                    .frame(height: 30)
+                }
+            }
+            
+        } else if self.mode == 3 { // move to course view
+            
             CourseView()
             
         } else if self.mode == 11 {
@@ -340,10 +370,10 @@ struct IntroView: View {
     }
     
     func checkLastPlayedHole() {
-        let _time = UserDefaults.standard.string(forKey: "TIME")
+        let time = UserDefaults.standard.string(forKey: "TIME")
         let halftime = UserDefaults.standard.integer(forKey: "HALFTIME")
         
-        if let time = _time {
+        if let time = time {
             // get current time
             let date = Date()
             let dateFormatter = DateFormatter()
@@ -529,14 +559,51 @@ struct IntroView: View {
         if showTextAnimation == true {
             self.mode = 0
         } else {
-            // ToDo: sign-in view here
-            
-            // ToDo: test (일단 apple sign in 스킵)
+            // Sign in with Apple
+            checkUserIdentifierValidation()
+        }
+    }
+    
+    func checkUserIdentifierValidation() {
+        let id = UserDefaults.standard.string(forKey: "USER_ID")
+        if let id = id {
+            // check validation
+            let appleIDProvider = ASAuthorizationAppleIDProvider()
+            appleIDProvider.getCredentialState(forUserID: id) { (credentialState, error) in
+                /*
+                 switch credentialState {
+                 case .authorized:
+                 // The Apple ID credential is valid.
+                 
+                 case .revoked:
+                 // The Apple ID credential is revoked.
+                 
+                 case .notFound:
+                 // No credential was found, so show the sign-in UI.
+                 
+                 default:
+                 }
+                 */
+                if credentialState != .authorized {
+                    // show UI
+                    withAnimation {
+                        self.mode = 2
+                    }
+                } else {
+                    // pass
+                    withAnimation {
+                        self.mode = 3
+                    }
+                }
+            }
+        } else {
+            // show UI
             withAnimation {
                 self.mode = 2
             }
         }
     }
+    
 }
 
 struct IntroView_Previews: PreviewProvider {
