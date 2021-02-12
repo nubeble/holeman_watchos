@@ -88,6 +88,31 @@ struct MainView: View {
         }
     }
     
+    var bearing: Double {
+        if let location = locationManager.lastLocation {
+            if let heading = locationManager.heading {
+                // print(#function, heading)
+                
+                if self.latitude == nil || self.longitude == nil { return 0 }
+                
+                // calc bearing
+                let bearing = Util.getBearing(self.latitude!, self.longitude!, location.coordinate.latitude, location.coordinate.longitude)
+                
+                var angle = heading + bearing
+                // angle = (angle + 360) % 360
+                
+                let tmp = angle + 360
+                angle = tmp.truncatingRemainder(dividingBy: 360)
+                
+                return angle
+            } else {
+                return 0
+            }
+        } else {
+            return 0
+        }
+    }
+    
     @State var timer1: Timer? = nil // get user elevation timer
     @State var timer2: Timer? = nil // hole pass check timer
     
@@ -110,6 +135,15 @@ struct MainView: View {
     // 3.
     @State var userElevation: Double? // user elevation (mElevation) - meter
     
+    struct Menu: ButtonStyle {
+        func makeBody(configuration: Self.Configuration) -> some View {
+            configuration.label
+                .padding(6)
+                .background(configuration.isPressed ? Color.green : Color.green.opacity(0))
+                .clipShape(Circle())
+        }
+    }
+    
     struct HoleName: ButtonStyle {
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
@@ -123,7 +157,7 @@ struct MainView: View {
     
     // 100: normal state, 200: 홀까지 남은 거리가 30미터 안으로 들어왔을 때, 300: 10초 머물렀을 때, 400: 다시 30미터 (+ 10미터) 밖으로 나갔을 때
     // static let HOLE_PASS_DISTANCE: Double = 30.0 // meter
-    static let HOLE_PASS_DISTANCE: Double = 80.0 // ToDo: test
+    static let HOLE_PASS_DISTANCE: Double = 80.0 // ToDo: test (distance)
     @State var holePassFlag = 100
     @State var holePassCount = 0
     // @State var holePassStartTime: DispatchTime? = nil
@@ -136,6 +170,20 @@ struct MainView: View {
     // pass to HoleSearchView
     @State var from: Int?
     
+    /*
+     var btn: some View { Button(action: {
+     // self.presentationMode.wrappedValue.dismiss()
+     }) {
+     HStack {
+     Image("ic_back") // set image here
+     .aspectRatio(contentMode: .fit)
+     .foregroundColor(.white)
+     Text("Go back")
+     }
+     }
+     }
+     */
+    
     var body: some View {
         
         if self.mode == 0 {
@@ -147,6 +195,38 @@ struct MainView: View {
                  .opacity(0.1)
                  .edgesIgnoringSafeArea(.all)
                  */
+                
+                VStack(spacing: 1.6) {
+                    if let name = self.course?.name {
+                        let start1 = name.firstIndex(of: "(")
+                        let end1 = name.firstIndex(of: ")")
+                        
+                        let i1 = name.index(start1!, offsetBy: -1)
+                        
+                        let range1 = name.startIndex..<i1
+                        let str1 = name[range1]
+                        
+                        let i2 = name.index(start1!, offsetBy: 1)
+                        
+                        let range2 = i2..<end1!
+                        let str2 = name[range2]
+                        
+                        // Text(str1).font(.system(size: 18))
+                        Text(str1).font(.system(size: 16))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 4)
+                        // Text(str2).font(.system(size: 18 * 0.8))
+                        Text(str2).font(.system(size: 16 * 0.8))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 4)
+                        
+                        Spacer().frame(maxHeight: .infinity)
+                    }
+                }
                 
                 VStack {
                     Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
@@ -194,6 +274,30 @@ struct MainView: View {
             // main //
             GeometryReader { geometry in
                 ZStack {
+                    // menu icon
+                    VStack {
+                        HStack {
+                            Button(action: {
+                                // go to TeeView
+                                withAnimation {
+                                    self.mode = 4
+                                }
+                            }) {
+                                Image(systemName: "list.bullet")
+                                    .font(Font.system(size: 14, weight: .heavy))
+                            }
+                            // .buttonStyle(PlainButtonStyle())
+                            .buttonStyle(Menu())
+                            .padding(.leading, 8)
+                            // .padding(.leading, 108)
+                            
+                            Spacer()
+                        }.padding(.top, 4)
+                        
+                        Spacer().frame(maxHeight: .infinity)
+                    }
+                    
+                    // circle
                     VStack {
                         Circle()
                             .strokeBorder(Color(red: 51/255, green: 51/255, blue: 51/255), lineWidth: 8)
@@ -209,8 +313,7 @@ struct MainView: View {
                         Spacer().frame(height: geometry.size.width - 8)
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
-                    .rotationEffect(Angle(degrees: self.locationManager.heading ?? 0))
-                    
+                    .rotationEffect(Angle(degrees: self.bearing))
                     
                     // text 1
                     VStack(alignment: HorizontalAlignment.center, spacing: 0)  {
@@ -376,7 +479,7 @@ struct MainView: View {
                 self.timer2?.invalidate()
             }
             .onReceive(sensorUpdatedNotification) { notification in
-                // print(#function, notification)
+                print(#function, notification)
                 
                 let s: SensorModel = notification.object as! SensorModel
                 
@@ -389,16 +492,20 @@ struct MainView: View {
                 
                 for (index, item) in self.sensors.enumerated() {
                     if item.holeNumber == holeNumber {
+                        // print(#function, "updated.")
+                        
                         self.sensors[index].location = location
                         self.sensors[index].elevation = elevation
                         self.sensors[index].timestamp = timestamp
                         self.sensors[index].battery = battery
                         
+                        self.latitude = location.coordinate.latitude
+                        self.longitude = location.coordinate.longitude
+                        self.elevation = elevation
+                        
                         break
                     }
                 }
-                
-                // print(#function, self.sensors)
             }
             
         } else if self.mode == 2 { // open HoleView
@@ -419,6 +526,16 @@ struct MainView: View {
                     __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
                     __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
                     __userElevation: self.userElevation
+            )
+            
+        } else if self.mode == 4 { // open MenuView
+            
+            MenuView(/*names: self.names!, color: self.color!, distances: self.distances!, selectedIndex: self.teeingGroundIndex!,*/
+                    // backup
+                __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundIndex: self.teeingGroundIndex,
+                __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
+                __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
+                __userElevation: self.userElevation
             )
             
         } else if self.mode == 21 {
@@ -770,23 +887,23 @@ struct MainView: View {
     
     func saveHoleOnAppear() {
         /*
-        if let save = self.save { // from HoleSearchView
-            if save == true {
-                print(#function, "saveHole()", 1)
-                
-                if Global.halftime == 1 { saveHole(1) } // 전반 중
-                else { saveHole(3) } // 후반 중
-                
-                // return
-            }
-            
-            MainView.lastHoleNumber = self.holeNumber
-            MainView.lastTeeingGroundIndex = self.teeingGroundIndex
-            
-            return
-        }
+         if let save = self.save { // from HoleSearchView
+         if save == true {
+         print(#function, "saveHole()", 1)
+         
+         if Global.halftime == 1 { saveHole(1) } // 전반 중
+         else { saveHole(3) } // 후반 중
+         
+         // return
+         }
+         
+         MainView.lastHoleNumber = self.holeNumber
+         MainView.lastTeeingGroundIndex = self.teeingGroundIndex
+         
+         return
+         }
          */
-
+        
         if MainView.lastHoleNumber == nil && MainView.lastTeeingGroundIndex == nil { // 최초 로드
             print(#function, "saveHole()", 2)
             
@@ -1031,7 +1148,6 @@ struct MainView: View {
     
     func moveToHoleSearchView(_ halftime: Int) { // 200: 전반 종료, 300: 후반 종료
         self.from = halftime
-        
         
         withAnimation {
             self.mode = 21

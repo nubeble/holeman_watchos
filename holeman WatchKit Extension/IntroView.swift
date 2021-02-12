@@ -45,6 +45,21 @@ struct IntroView: View {
                 // N/A
             }
             .onAppear {
+                // ToDo: test (remove all UserDefaults)
+                // --
+                /*
+                let defaults = UserDefaults.standard
+                let dictionary = defaults.dictionaryRepresentation()
+                dictionary.keys.forEach { key in
+                    defaults.removeObject(forKey: key)
+                }
+                */
+                // --
+
+                
+                
+                
+                
                 checkLastPlayedHole()
             }
             
@@ -163,12 +178,26 @@ struct IntroView: View {
                             // print("credential", credential)
                             // This is where you'd fire an API request to your server to authenticate with the identity token attached in the request headers.
                             
-                            // ToDo: get fullName, email
+                            // get fullName, email
                             let userIdentifier = credential.user
+                            
                             var name: String = ""
                             if let fullName = credential.fullName {
-                                name = fullName.givenName! + " " + fullName.familyName!
+                                let firstName = fullName.givenName ?? ""
+                                let lastName = fullName.familyName ?? ""
+                                
+                                if firstName.count > 0 {
+                                    if lastName.count > 0 {
+                                        name = firstName + " " + lastName
+                                    } else {
+                                        name = firstName
+                                    }
+                                } else {
+                                    let nickname = fullName.nickname ?? "Unknown"
+                                    name = nickname
+                                }
                             }
+                            
                             let email: String = credential.email ?? ""
                             
                             print(userIdentifier, name, email)
@@ -178,6 +207,9 @@ struct IntroView: View {
                             
                             // 2. save to UserDefaults
                             UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
+                            
+                            // move next
+                            self.mode = 3
                             
                         case .failure (let error):
                             print("Authorisation failed: \(error.localizedDescription)")
@@ -546,11 +578,16 @@ struct IntroView: View {
     func startNew(_ removeData: Bool, _ showTextAnimation: Bool) {
         print(#function, removeData, showTextAnimation)
         
+        // clean UserDefaults except USER ID, SUB
         if removeData == true {
             let defaults = UserDefaults.standard
             let dictionary = defaults.dictionaryRepresentation()
             dictionary.keys.forEach { key in
-                defaults.removeObject(forKey: key)
+                if key == "USER_ID" || key == "SUBSCRIPTION_SENSORS_SUB_ID" || key == "SUBSCRIPTION_SENSORS_COURSE_ID" {
+                    // skip
+                } else {
+                    defaults.removeObject(forKey: key)
+                }
             }
         }
         

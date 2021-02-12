@@ -265,7 +265,7 @@ struct CourseListView: View {
                         }
                         
                         if count == 0 {
-                            // ToDo: no course nearby
+                            // ToDo: no course in country
                         } else {
                             // show list
                             withAnimation {

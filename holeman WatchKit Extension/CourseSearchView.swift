@@ -209,7 +209,8 @@ struct CourseSearchView: View {
                             
                             // Divider() // ToDo
                             
-                            ForEach(0 ..< self.courses.count - 2) { // ToDo: test single item
+                            // ForEach(0 ..< self.courses.count - 2) { // ToDo: test (show only single item)
+                            ForEach(0 ..< self.courses.count) {
                                 let index = $0
                                 
                                 let name = self.courses[index].name

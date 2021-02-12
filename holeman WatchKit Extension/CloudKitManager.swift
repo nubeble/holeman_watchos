@@ -257,7 +257,9 @@ struct CloudKitManager {
         // convert radius in meters to kilometers
         
         // let radiusInMeters: CLLocationDistance =
-        let radiusInKilometers = 1
+        // let radiusInKilometers = 1 // 1 km
+        // ToDo: 1000 km
+        let radiusInKilometers = 1000
         
         // let p = NSPredicate(format: "distanceToLocation:fromLocation:(location, %@) < %@", location, NSNumber(value: radiusInKilometers))
         let p = NSPredicate(format: "countryCode = %@ AND distanceToLocation:fromLocation:(location, %@) < %@", countryCode, location, NSNumber(value: radiusInKilometers))
@@ -382,7 +384,9 @@ struct CloudKitManager {
         // check UserDefaults
         let subId = UserDefaults.standard.string(forKey: "SUBSCRIPTION_SENSORS_SUB_ID")
         if subId != nil {
+            print("subscription ID", subId)
             let courseId = UserDefaults.standard.integer(forKey: "SUBSCRIPTION_SENSORS_COURSE_ID")
+            print("course id", courseId)
             if courseId == Int(groupId) {
                 // skip saving
                 return
@@ -411,20 +415,116 @@ struct CloudKitManager {
     }
     
     static func saveUser(_ id: String, _ name: String, _ email: String) {
-        let record = CKRecord(recordType: "User")
-        record["id"] = id as String
-        record["name"] = id as String
-        record["email"] = id as String
+        /*
+         let record = CKRecord(recordType: "User", recordID: CKRecord.ID.init(recordName: id))
+         record["id"] = id as String
+         record["name"] = name as String
+         record["email"] = email as String
+         let valid: Int64 = 100 // 100: valid, 200: invalid (logout)
+         record["valid"] = valid as Int64
+         
+         let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+         db.save(record) { (record, error) in
+         if let error = error {
+         print(#function, error)
+         return
+         }
+         
+         if let _ = record {
+         print(#function, "success on saving user.")
+         }
+         }
+         */
+        
+        // fetch
+        let recordID = CKRecord.ID.init(recordName: id)
         
         let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
-        db.save(record) { (record, error) in
+        db.fetch(withRecordID: recordID) { (record, error) in
             if let error = error {
-                print(#function, error)
+                // print(#function, error)
+                print("User Record not found")
+                
+                let record = CKRecord(recordType: "User", recordID: CKRecord.ID.init(recordName: id))
+                record["id"] = id as String
+                record["name"] = name as String
+                record["email"] = email as String
+                let valid: Int64 = 100 // 100: valid, 200: invalid (logout)
+                record["valid"] = valid as Int64
+                
+                // let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+                db.save(record) { (record, error) in
+                    if let error = error {
+                        print(#function, error)
+                        return
+                    }
+                    
+                    if let _ = record {
+                        // print(#function, "success on saving user.")
+                        print("User Record saved")
+                    }
+                }
+                
                 return
             }
             
-            if let _ = record {
-                print(#function, "success on saving user.")
+            if let record = record {
+                // print(#function, "success on updating user.")
+                print("User Record found")
+                
+                // record["id"] = id as String
+                record["name"] = name as String
+                record["email"] = email as String
+                let valid: Int64 = 100 // 100: valid, 200: invalid (logout)
+                record["valid"] = valid as Int64
+                
+                // save
+                db.save(record) { (record, error) in
+                    if let error = error {
+                        print(#function, error)
+                        return
+                    }
+                    
+                    if let _ = record {
+                        // print(#function, "success on saving user.")
+                        print("User Record updated")
+                    }
+                }
+            }
+        }
+    }
+    
+    static func removeUser(_ id: String, onComplete: @escaping ((Int) -> Void)) { // update: fetch + save
+        // fetch
+        let recordID = CKRecord.ID.init(recordName: id)
+        
+        let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+        db.fetch(withRecordID: recordID) { (record, error) in
+            if let error = error {
+                print(#function, error)
+                // return
+                onComplete(0)
+            }
+            
+            if let record = record {
+                // print(#function, "success on updating user.")
+                
+                let valid: Int64 = 200 // 100: valid, 200: invalid (logout)
+                record["valid"] = valid as Int64
+                
+                // save
+                db.save(record) { (record, error) in
+                    if let error = error {
+                        print(#function, error)
+                        // return
+                        onComplete(0)
+                    }
+                    
+                    if let _ = record {
+                        print(#function, "success on saving user.")
+                        onComplete(1)
+                    }
+                }
             }
         }
     }

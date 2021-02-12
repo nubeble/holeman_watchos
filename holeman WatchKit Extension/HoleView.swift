@@ -105,8 +105,8 @@ struct HoleView: View {
             MainView(mode: 1,
                      course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.__teeingGroundIndex,
                      holeNumber: self.selectedIndex + 1, distanceUnit: self.__distanceUnit!,
-                     sensors: self.__sensors!, latitude: self.__latitude!, longitude: self.__longitude!, elevation: self.__elevation!,
-                     userElevation: self.__userElevation!
+                     sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
+                     userElevation: self.__userElevation
             )
             
         }

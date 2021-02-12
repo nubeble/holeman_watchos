@@ -52,7 +52,7 @@ struct HoleSearchView: View {
             
             ZStack {
                 
-                VStack(spacing: 1.8) {
+                VStack(spacing: 1.6) {
                     if let name = self.course?.name {
                         let start1 = name.firstIndex(of: "(")
                         let end1 = name.firstIndex(of: ")")
@@ -250,7 +250,7 @@ struct HoleSearchView: View {
             
         } else if self.mode == 21 { // move to CourseSearchView
             
-            // ToDo: !!!
+            CourseSearchView()
             
         }
         
@@ -368,7 +368,7 @@ struct HoleSearchView: View {
         // getHoles(groupId)
         
         let groupId = self.course?.id
-        
+        //print(#function, groupId)
         getHoles(groupId!) {
             // onGetHoles
             
@@ -448,7 +448,7 @@ struct HoleSearchView: View {
     }
     
     func calcDistance() {
-        // print("calcDistance")
+        print("calcDistance")
         
         DispatchQueue.main.async {
             let locationManager = LocationManager()
@@ -484,7 +484,7 @@ struct HoleSearchView: View {
                         print(#function, fullBack!, distance)
                         
                         let d = distance - Double(fullBack!)
-                        if d < 30 { // ToDo: 30m
+                        if d < 289500 { // ToDo: 30m
                             list.append(startHole.number)
                         }
                     }
