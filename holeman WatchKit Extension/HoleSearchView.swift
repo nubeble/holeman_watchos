@@ -212,7 +212,7 @@ struct HoleSearchView: View {
                              }
                              .buttonStyle(PlainButtonStyle())
                              .padding(.top, 10)
-                             .padding(.bottom, -20) // ToDo: check default padding
+                             .padding(.bottom, -20) // check default padding
                              */
                             
                         }.onAppear {
@@ -347,6 +347,7 @@ struct HoleSearchView: View {
                             }
                         } catch {
                             print(error)
+                            return
                         }
                         
                         // set
@@ -360,6 +361,8 @@ struct HoleSearchView: View {
                 } else { // records.count != 1
                     // ToDo: error handling
                 }
+            } else {
+                // N/A
             }
         }
     } // end of getHoles

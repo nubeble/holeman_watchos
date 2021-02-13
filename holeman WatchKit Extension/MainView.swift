@@ -157,7 +157,7 @@ struct MainView: View {
     
     // 100: normal state, 200: 홀까지 남은 거리가 30미터 안으로 들어왔을 때, 300: 10초 머물렀을 때, 400: 다시 30미터 (+ 10미터) 밖으로 나갔을 때
     // static let HOLE_PASS_DISTANCE: Double = 30.0 // meter
-    static let HOLE_PASS_DISTANCE: Double = 80.0 // ToDo: test (distance)
+    static let HOLE_PASS_DISTANCE: Double = 80.0 // ToDo: test (80 m)
     @State var holePassFlag = 100
     @State var holePassCount = 0
     // @State var holePassStartTime: DispatchTime? = nil
@@ -699,6 +699,8 @@ struct MainView: View {
                     
                     onComplete()
                 }
+            } else {
+                // N/A
             }
         }
     } // end of getSensors
@@ -1085,8 +1087,8 @@ struct MainView: View {
                     
                     coursesStringArray.append(jsonString!)
                 } catch {
-                    // ToDo: error handling
                     print(error)
+                    return
                 }
             }
             
@@ -1130,8 +1132,8 @@ struct MainView: View {
                     
                     holesStringArray.append(jsonString!)
                 } catch {
-                    // ToDo: error handling
                     print(error)
+                    return
                 }
             }
             

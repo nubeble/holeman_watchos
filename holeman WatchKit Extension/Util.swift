@@ -86,5 +86,31 @@ struct Util {
         return number * 180 / .pi
     }
     
+    static func getWaitMessage(_ number: Int) -> String { // 0 ~ n
+        var num = number
+        
+        num = num % 5
+        
+        switch num {
+        case 0:
+            return "잠시만 기다려주세요."
+            
+        case 1:
+            return "근처에 골프장을 찾을 수 없네요."
+            
+        case 2:
+            return "실내에서는 GPS가 안잡혀요."
+            
+        case 3:
+            return "클럽하우스 밖으로 나와주세요."
+            
+        case 4:
+            return "열심히 찾고 있어요. 😅"
+            
+        default:
+            return "잠시만 기다려주세요."
+        }
+    }
+    
 }
 

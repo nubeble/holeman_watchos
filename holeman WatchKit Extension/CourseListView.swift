@@ -10,6 +10,9 @@ import SwiftUI
 struct CourseListView: View {
     @State var mode: Int = 0
     
+    @State var textMessage: String?
+    @State var findNearbyCourseCounter = 0
+    
     // @ObservedObject var locationManager = LocationManager()
     @State var placemark: CLPlacemark?
     @State var countryCode: String?
@@ -27,10 +30,15 @@ struct CourseListView: View {
                 ProgressView()
                     .scaleEffect(1.5, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                
+                VStack {
+                    Spacer()
+                    
+                    Text(self.textMessage ?? "").font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
+                        .transition(.opacity)
+                        .id(self.textMessage ?? "")
+                }
             }.onAppear(perform: onCreate)
-            .onDisappear {
-                // print(#function, "!!!")
-            }
             
         } else if self.mode == 1 {
             
@@ -93,7 +101,7 @@ struct CourseListView: View {
                             
                             Button(action: {
                                 withAnimation {
-                                    self.mode = 3
+                                    self.mode = 10
                                 }
                             }) {
                                 ZStack {
@@ -108,7 +116,7 @@ struct CourseListView: View {
                             }
                             .buttonStyle(PlainButtonStyle())
                             .padding(.top, 6)
-                            .padding(.bottom, -20) // ToDo: check default padding
+                            .padding(.bottom, -20) // check default padding
                             
                         }.onAppear {
                             // scroll
@@ -124,14 +132,11 @@ struct CourseListView: View {
             let c = self.courses[self.selectedCourseIndex]
             HoleSearchView(course: c)
             
-        } else if self.mode == 3 { // go back
+        } else if self.mode == 10 { // go back
             
             CourseView()
             
         }
-        
-        
-        
     }
     
     func onCreate() {
@@ -178,106 +183,115 @@ struct CourseListView: View {
                 // call timer again
                 getCountryCodeTimer()
             } else {
-                CloudKitManager.fetchAllCourses(String(self.countryCode!)) { records in
-                    // print(#function, records)
-                    if let records = records {
-                        var count = 0
-                        for record in records {
-                            count += 1
-                            // print("course #\(count)", record)
-                            
-                            print("course #\(count)")
-                            
-                            let address = record["address"] as! String
-                            // let countryCode = record["countryCode"] as! String
-                            let courses = record["courses"] as! [String]
-                            let id = record["id"] as! Int64
-                            let location = record["location"] as! CLLocation
-                            let name = record["name"] as! String
-                            
-                            // set data
-                            // --
-                            var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
-                            
-                            c.address = address
-                            c.countryCode = countryCode!
-                            
-                            // courses
-                            var i = 0
-                            for course in courses {
-                                // print("course[\(i)]", course)
-                                i += 1
-                                
-                                // parse json
-                                do {
-                                    // let data = Data.init(base64Encoded: course)
-                                    let data = Data(course.utf8)
-                                    let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
-                                    // print(decodedData)
-                                    
-                                    // decodedData.name
-                                    // decodedData.range[0], decodedData.range[1]
-                                    
-                                    let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
-                                    c.courses.append(item)
-                                } catch {
-                                    print(error)
-                                }
-                            }
-                            
-                            c.id = id
-                            c.location = location
-                            c.name = name
-                            
-                            self.courses.append(c)
-                            // --
-                            
-                            // print
-                            // --
-                            /*
-                             print("address", address)
-                             
-                             var i = 0
-                             for course in courses {
-                             // print("course[\(i)]", course)
-                             i += 1
-                             
-                             // parse json
-                             do {
-                             // let data = Data.init(base64Encoded: course)
-                             let data = Data(course.utf8)
-                             let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
-                             print(decodedData)
-                             
-                             // decodedData.name
-                             // decodedData.range[0], decodedData.range[1]
-                             } catch {
-                             print(error)
-                             }
-                             }
-                             
-                             print("id", id)
-                             print("latitude", location.coordinate.latitude)
-                             print("longitude", location.coordinate.longitude)
-                             print("name", name)
-                             */
-                            // --
-                        }
-                        
-                        if count == 0 {
-                            // ToDo: no course in country
-                        } else {
-                            // show list
-                            withAnimation {
-                                self.mode = 1
-                            }
-                        }
-                    } else {
-                        // ToDo: error handling
-                    }
-                }
+                findNearbyCourse(location)
             }
         })
+    }
+    
+    func findNearbyCourse(_ location: CLLocation) {
+        findNearbyCourse(location) { result in
+            if result == false {
+                // no course nearby. try again in 3 sec
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    if self.findNearbyCourseCounter == 10 {
+                        withAnimation(.linear(duration: 0.5)) {
+                            self.textMessage = "잠시 후 다시 시도해 주세요."
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                            // back to CourseView
+                            withAnimation {
+                                self.mode = 10
+                            }
+                        }
+                        
+                        return
+                    }
+                    
+                    // show wait message
+                    withAnimation(.linear(duration: 0.5)) {
+                        self.textMessage = Util.getWaitMessage(self.findNearbyCourseCounter)
+                    }
+                    self.findNearbyCourseCounter += 1
+                    
+                    findNearbyCourse(location)
+                }
+            }
+        }
+    }
+    
+    func findNearbyCourse(_ location: CLLocation, onComplete: @escaping (_ result: Bool) -> Void) {
+        CloudKitManager.fetchAllCourses(String(self.countryCode!)) { records in
+            // print(#function, records)
+            if let records = records {
+                var count = 0
+                for record in records {
+                    count += 1
+                    // print("course #\(count)", record)
+                    
+                    print("course #\(count)")
+                    
+                    let address = record["address"] as! String
+                    // let countryCode = record["countryCode"] as! String
+                    let courses = record["courses"] as! [String]
+                    let id = record["id"] as! Int64
+                    let location = record["location"] as! CLLocation
+                    let name = record["name"] as! String
+                    
+                    // set data
+                    // --
+                    var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
+                    
+                    c.address = address
+                    c.countryCode = countryCode!
+                    
+                    // courses
+                    var i = 0
+                    for course in courses {
+                        // print("course[\(i)]", course)
+                        i += 1
+                        
+                        // parse json
+                        do {
+                            // let data = Data.init(base64Encoded: course)
+                            let data = Data(course.utf8)
+                            let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
+                            // print(decodedData)
+                            
+                            // decodedData.name
+                            // decodedData.range[0], decodedData.range[1]
+                            
+                            let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
+                            c.courses.append(item)
+                        } catch {
+                            print(error)
+                            return
+                        }
+                    }
+                    
+                    c.id = id
+                    c.location = location
+                    c.name = name
+                    
+                    self.courses.append(c)
+                    // --
+                }
+                
+                if count == 0 {
+                    print(#function, "no course nearby. try again in 3 sec")
+                    onComplete(false)
+                } else {
+                    // show list
+                    withAnimation {
+                        self.mode = 1
+                    }
+                    
+                    onComplete(true)
+                }
+            } else {
+                // N/A
+            }
+        }
     }
     
     func parsePlacemarks(location: CLLocation) -> Bool {
@@ -320,8 +334,7 @@ struct CourseListView: View {
             return false
         }
     } // end of parsePlacemarks()
-    
-}
+} // end of View
 
 struct CourseListView_Previews: PreviewProvider {
     static var previews: some View {

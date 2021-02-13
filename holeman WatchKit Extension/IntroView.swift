@@ -510,8 +510,8 @@ struct IntroView: View {
                     let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
                     c.courses.append(item)
                 } catch {
-                    // ToDo: error handling
                     print(error)
+                    return
                 }
             }
             
@@ -550,8 +550,8 @@ struct IntroView: View {
                     
                     array.append(item)
                 } catch {
-                    // ToDo: error handling
                     print(error)
+                    return
                 }
             }
             

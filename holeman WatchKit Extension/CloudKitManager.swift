@@ -254,12 +254,13 @@ struct CloudKitManager {
     }
     
     static func fetchNearbyLocations(_ countryCode: String, _ location: CLLocation, onComplete: @escaping (_ records:[CKRecord]?) -> Void) {
+        print(#function)
         // convert radius in meters to kilometers
         
         // let radiusInMeters: CLLocationDistance =
-        // let radiusInKilometers = 1 // 1 km
-        // ToDo: 1000 km
-        let radiusInKilometers = 1000
+        let radiusInKilometers = 1 // 1 km
+        // ToDo: test (1000 km)
+        // let radiusInKilometers = 0.000000001
         
         // let p = NSPredicate(format: "distanceToLocation:fromLocation:(location, %@) < %@", location, NSNumber(value: radiusInKilometers))
         let p = NSPredicate(format: "countryCode = %@ AND distanceToLocation:fromLocation:(location, %@) < %@", countryCode, location, NSNumber(value: radiusInKilometers))

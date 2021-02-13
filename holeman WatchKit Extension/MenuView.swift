@@ -153,7 +153,7 @@ struct MenuView: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.top, 6)
-                        .padding(.bottom, -20) // ToDo: check default padding
+                        .padding(.bottom, -20) // check default padding
                         
                     } // end of VStack
                 } // end of ScrollView
