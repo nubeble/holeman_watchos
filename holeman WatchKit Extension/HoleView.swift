@@ -26,7 +26,6 @@ struct HoleView: View {
     var __userElevation: Double?
     
     var body: some View {
-        
         if self.mode == 0 {
             
             GeometryReader { geometry in

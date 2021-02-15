@@ -38,7 +38,6 @@ struct IntroView: View {
     // @State private var opacity: Double = 1
     
     var body: some View {
-        
         if self.mode == -1 {
             
             VStack {
@@ -640,7 +639,6 @@ struct IntroView: View {
             }
         }
     }
-    
 }
 
 struct IntroView_Previews: PreviewProvider {

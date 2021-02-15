@@ -156,8 +156,8 @@ struct MainView: View {
     // @ObservedObject var compassHeading = CompassHeading()
     
     // 100: normal state, 200: 홀까지 남은 거리가 30미터 안으로 들어왔을 때, 300: 10초 머물렀을 때, 400: 다시 30미터 (+ 10미터) 밖으로 나갔을 때
-    // static let HOLE_PASS_DISTANCE: Double = 30.0 // meter
-    static let HOLE_PASS_DISTANCE: Double = 80.0 // ToDo: test (80 m)
+    static let HOLE_PASS_DISTANCE: Double = 30.0 // meter
+    // static let HOLE_PASS_DISTANCE: Double = 80.0 // ToDo: test (80 m)
     @State var holePassFlag = 100
     @State var holePassCount = 0
     // @State var holePassStartTime: DispatchTime? = nil
@@ -185,7 +185,6 @@ struct MainView: View {
      */
     
     var body: some View {
-        
         if self.mode == 0 {
             
             // message //
@@ -531,7 +530,7 @@ struct MainView: View {
         } else if self.mode == 4 { // open MenuView
             
             MenuView(/*names: self.names!, color: self.color!, distances: self.distances!, selectedIndex: self.teeingGroundIndex!,*/
-                    // backup
+                // backup
                 __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundIndex: self.teeingGroundIndex,
                 __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
                 __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
@@ -599,8 +598,6 @@ struct MainView: View {
             .navigationBarHidden(true)
             
         }
-        
-        
     }
     
     func getHoleViewInfo() {
@@ -1155,7 +1152,6 @@ struct MainView: View {
             self.mode = 21
         }
     }
-    
 }
 
 struct MainView_Previews: PreviewProvider {

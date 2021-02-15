@@ -132,11 +132,7 @@ struct ContentView: View {
         
         // registration.registerForPushNotifications()
         
-        
-        
     }
-    
-    
 }
 
 struct ContentView_Previews: PreviewProvider {

@@ -15,7 +15,6 @@ struct CourseView: View {
     // @State private var selectedTimeIndex = 60
     
     var body: some View {
-        
         if self.mode == 0 {
             
             //use GeometryReader for height & weight//
@@ -113,7 +112,6 @@ struct CourseView: View {
             CourseListView()
             
         }
-        
     }
 }
 

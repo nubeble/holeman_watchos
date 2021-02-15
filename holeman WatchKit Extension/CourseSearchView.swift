@@ -29,7 +29,6 @@ struct CourseSearchView: View {
     // @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
     
     var body: some View {
-        
         if self.mode == 0 {
             
             // loading indicator
@@ -200,7 +199,7 @@ struct CourseSearchView: View {
              .edgesIgnoringSafeArea(.bottom)
              }
              */
-            // ToDo: change to List
+            // ToDo: change picker to List
             GeometryReader { geometry in
                 ScrollView() {
                     ScrollViewReader { value in
@@ -372,7 +371,7 @@ struct CourseSearchView: View {
                         self.textMessage = Util.getWaitMessage(self.findNearbyCourseCounter)
                     }
                     self.findNearbyCourseCounter += 1
-
+                    
                     findNearbyCourse(location)
                 }
             }

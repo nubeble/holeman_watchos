@@ -114,7 +114,7 @@ struct HoleSearchView: View {
                                 // self.save = false
                                 
                                 // ToDo: test timer
-                                Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                                     getStartHole() // 1, 10, 19, ...
                                 }
                             } else {
@@ -134,7 +134,7 @@ struct HoleSearchView: View {
                         // self.save = false
                         
                         // ToDo: test timer
-                        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                             getStartHole() // 1, 10, 19, ...
                         }
                     } else if from == 300 {
@@ -152,7 +152,7 @@ struct HoleSearchView: View {
                     // 일반 실행
                     
                     // ToDo: test timer
-                    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                         getStartHole() // 1, 10, 19, ...
                     }
                 }
@@ -253,7 +253,6 @@ struct HoleSearchView: View {
             CourseSearchView()
             
         }
-        
     }
     
     func getHoles(_ groupId: Int64, onComplete: @escaping () -> Void) {
@@ -504,7 +503,7 @@ struct HoleSearchView: View {
                         showList()
                     } else { // 0
                         // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
-                        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                             calcDistance()
                         }
                     }

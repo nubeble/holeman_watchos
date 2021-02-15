@@ -22,7 +22,6 @@ struct CourseListView: View {
     @State var selectedCourseIndex: Int = 0
     
     var body: some View {
-        
         if self.mode == 0 {
             
             // loading indicator

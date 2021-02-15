@@ -12,7 +12,6 @@ struct SplashView: View {
     @State var isActive: Bool = false
     
     var body: some View {
-        
         VStack {
             // 2.
             if self.isActive {
@@ -35,7 +34,6 @@ struct SplashView: View {
                 }
             }
         }
-        
         
         /*
          if self.isActive == true {
@@ -60,7 +58,6 @@ struct SplashView: View {
          
          }
          */
-        
     }
 }
 
