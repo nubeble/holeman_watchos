@@ -86,7 +86,7 @@ struct Util {
         return number * 180 / .pi
     }
     
-    static func getWaitMessage(_ number: Int) -> String { // 0 ~ n
+    static func getWaitMessageForCourse(_ number: Int) -> String { // find course
         var num = number
         
         num = num % 5
@@ -96,7 +96,7 @@ struct Util {
             return "잠시만 기다려주세요."
             
         case 1:
-            return "근처에 골프장을 찾을 수 없네요."
+            return "근처에 골프장을 찾을 수 없네요. 😥"
             
         case 2:
             return "실내에서는 GPS가 안잡혀요."
@@ -105,12 +105,92 @@ struct Util {
             return "클럽하우스 밖으로 나와주세요."
             
         case 4:
-            return "열심히 찾고 있어요. 😅"
+            return "열심히 찾고 있어요. 🥵"
             
         default:
             return "잠시만 기다려주세요."
         }
     }
     
+    static func getWaitMessageForHole(_ number: Int) -> String { // find start hole
+        var num = number
+        
+        num = num % 4
+        
+        switch num {
+        case 0:
+            return "근처에 스타트 홀을\n찾고 있습니다."
+            
+        case 1:
+            return "스타트 홀로 가시면\n자동으로 시작됩니다."
+            
+        case 2:
+            return "스타트 홀이 멀리\n떨어져 있네요."
+            
+        case 3:
+            return "스타트 홀 근처로\n이동해 주세요."
+            
+        default:
+            return "스타트 홀로 가시면\n자동으로 시작됩니다."
+        }
+    }
+    
+    // billing success 후 코스 정보 저장 (CourseSearchView, CourseListView에서 호출)
+    static func saveCourse(_ course: CourseModel) {
+        // 1. time
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 2019-12-20 09:40:08
+        // dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm:ss" // 2018-May-01 10:41:31
+        let dateString = dateFormatter.string(from: date)
+        // let interval = date.timeIntervalSince1970
+        
+        UserDefaults.standard.set(dateString, forKey: "LAST_PURCHASED_COURSE_TIME")
+        
+        // 2. course
+        /*
+         var address: String
+         var countryCode: String
+         var courses: [CourseItem]
+         var id: Int64
+         var location: CLLocation
+         var name: String
+         */
+        
+        // address
+        UserDefaults.standard.set(course.address, forKey: "LAST_PURCHASED_COURSE_COURSE_ADDRESS")
+        
+        // countryCode
+        UserDefaults.standard.set(course.countryCode, forKey: "LAST_PURCHASED_COURSE_COURSE_COUNTRY_CODE")
+        
+        // courses (convert to json string array)
+        var coursesStringArray: [String] = []
+        
+        for c in course.courses {
+            let cd = CourseData(name: c.name, range: c.range)
+            do {
+                let encodedData = try JSONEncoder().encode(cd)
+                let jsonString = String(data: encodedData, encoding: .utf8)
+                
+                coursesStringArray.append(jsonString!)
+            } catch {
+                print(error)
+                return
+            }
+        }
+        
+        UserDefaults.standard.set(coursesStringArray, forKey: "LAST_PURCHASED_COURSE_COURSE_COURSES")
+        
+        // id
+        UserDefaults.standard.set(course.id, forKey: "LAST_PURCHASED_COURSE_COURSE_ID")
+        
+        // latitude
+        UserDefaults.standard.set(course.location.coordinate.latitude, forKey: "LAST_PURCHASED_COURSE_COURSE_LATITUDE")
+        
+        // longitude
+        UserDefaults.standard.set(course.location.coordinate.longitude, forKey: "LAST_PURCHASED_COURSE_COURSE_LONGITUDE")
+        
+        // name
+        UserDefaults.standard.set(course.name, forKey: "LAST_PURCHASED_COURSE_COURSE_NAME")
+    }
 }
-

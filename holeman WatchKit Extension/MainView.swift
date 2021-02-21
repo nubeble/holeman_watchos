@@ -904,7 +904,7 @@ struct MainView: View {
          */
         
         if MainView.lastHoleNumber == nil && MainView.lastTeeingGroundIndex == nil { // 최초 로드
-            print(#function, "saveHole()", 2)
+            // print(#function, "saveHole()", 2)
             
             if Global.halftime == 1 { saveHole(1) } // 전반 중
             else { saveHole(3) } // 후반 중
@@ -1054,7 +1054,7 @@ struct MainView: View {
         let dateString = dateFormatter.string(from: date)
         // let interval = date.timeIntervalSince1970
         
-        UserDefaults.standard.set(dateString, forKey: "TIME")
+        UserDefaults.standard.set(dateString, forKey: "LAST_PLAYED_HOLE_TIME")
         
         // 2. course
         /*
@@ -1068,10 +1068,10 @@ struct MainView: View {
         
         if let course = self.course {
             // address
-            UserDefaults.standard.set(course.address, forKey: "COURSE_ADDRESS")
+            UserDefaults.standard.set(course.address, forKey: "LAST_PLAYED_HOLE_COURSE_ADDRESS")
             
             // countryCode
-            UserDefaults.standard.set(course.countryCode, forKey: "COURSE_COUNTRY_CODE")
+            UserDefaults.standard.set(course.countryCode, forKey: "LAST_PLAYED_HOLE_COURSE_COUNTRY_CODE")
             
             // courses (convert to json string array)
             var coursesStringArray: [String] = []
@@ -1089,27 +1089,27 @@ struct MainView: View {
                 }
             }
             
-            UserDefaults.standard.set(coursesStringArray, forKey: "COURSE_COURSES")
+            UserDefaults.standard.set(coursesStringArray, forKey: "LAST_PLAYED_HOLE_COURSE_COURSES")
             
             // id
-            UserDefaults.standard.set(course.id, forKey: "COURSE_ID")
+            UserDefaults.standard.set(course.id, forKey: "LAST_PLAYED_HOLE_COURSE_ID")
             
             // latitude
-            UserDefaults.standard.set(course.location.coordinate.latitude, forKey: "COURSE_LATITUDE")
+            UserDefaults.standard.set(course.location.coordinate.latitude, forKey: "LAST_PLAYED_HOLE_COURSE_LATITUDE")
             
             // longitude
-            UserDefaults.standard.set(course.location.coordinate.longitude, forKey: "COURSE_LONGITUDE")
+            UserDefaults.standard.set(course.location.coordinate.longitude, forKey: "LAST_PLAYED_HOLE_COURSE_LONGITUDE")
             
             // name
-            UserDefaults.standard.set(course.name, forKey: "COURSE_NAME")
+            UserDefaults.standard.set(course.name, forKey: "LAST_PLAYED_HOLE_COURSE_NAME")
         }
         
         // 3. hole number
-        UserDefaults.standard.set(self.holeNumber, forKey: "HOLE_NUMBER")
+        UserDefaults.standard.set(self.holeNumber, forKey: "LAST_PLAYED_HOLE_HOLE_NUMBER")
         
         // 4. teeing ground info
         // --
-        UserDefaults.standard.set(self.teeingGroundInfo?.unit, forKey: "TEEING_GROUND_INFO_UNIT")
+        UserDefaults.standard.set(self.teeingGroundInfo?.unit, forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INFO_UNIT")
         
         if let holes = self.teeingGroundInfo?.holes {
             var holesStringArray: [String] = []
@@ -1134,15 +1134,15 @@ struct MainView: View {
                 }
             }
             
-            UserDefaults.standard.set(holesStringArray, forKey: "TEEING_GROUND_INFO_HOLES")
+            UserDefaults.standard.set(holesStringArray, forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INFO_HOLES")
         }
         // --
         
         // 5. teeing ground index
-        UserDefaults.standard.set(self.teeingGroundIndex, forKey: "TEEING_GROUND_INDEX")
+        UserDefaults.standard.set(self.teeingGroundIndex, forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INDEX")
         
         // 6. halftime
-        UserDefaults.standard.set(halftime, forKey: "HALFTIME")
+        UserDefaults.standard.set(halftime, forKey: "LAST_PLAYED_HOLE_HALFTIME")
     }
     
     func moveToHoleSearchView(_ halftime: Int) { // 200: 전반 종료, 300: 후반 종료

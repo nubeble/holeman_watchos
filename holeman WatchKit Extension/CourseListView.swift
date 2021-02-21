@@ -10,7 +10,7 @@ import SwiftUI
 struct CourseListView: View {
     @State var mode: Int = 0
     
-    @State var textMessage: String?
+    @State var textMessage: String = ""
     @State var findNearbyCourseCounter = 0
     
     // @ObservedObject var locationManager = LocationManager()
@@ -27,15 +27,15 @@ struct CourseListView: View {
             // loading indicator
             ZStack {
                 ProgressView()
-                    .scaleEffect(1.5, anchor: .center)
+                    .scaleEffect(1.2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
                 
                 VStack {
                     Spacer()
                     
-                    Text(self.textMessage ?? "").font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
+                    Text(self.textMessage).font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
                         .transition(.opacity)
-                        .id(self.textMessage ?? "")
+                        .id(self.textMessage)
                 }
             }.onAppear(perform: onCreate)
             
@@ -209,7 +209,7 @@ struct CourseListView: View {
                     
                     // show wait message
                     withAnimation(.linear(duration: 0.5)) {
-                        self.textMessage = Util.getWaitMessage(self.findNearbyCourseCounter)
+                        self.textMessage = Util.getWaitMessageForCourse(self.findNearbyCourseCounter)
                     }
                     self.findNearbyCourseCounter += 1
                     

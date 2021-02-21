@@ -11,6 +11,7 @@ struct HoleSearchView: View {
     @State var mode: Int = 0
     
     @State var textMessage: String = "스타트 홀로 가시면\n자동으로 시작됩니다."
+    @State var findStartHoleCounter = 0
     
     var from: Int?
     var search: Bool?
@@ -86,6 +87,8 @@ struct HoleSearchView: View {
                 
                 VStack {
                     Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                        .transition(.opacity)
+                        .id(self.textMessage)
                 }
                 
                 VStack(alignment: HorizontalAlignment.center) {
@@ -106,16 +109,18 @@ struct HoleSearchView: View {
                     if from == 100 {
                         if let search = self.search {
                             if search == true {
-                                // 그늘집에서 잘 쉬셨나요?
-                                // 스타트 홀로 가시면 자동으로 시작됩니다.
+                                // 그늘집에서 잘 쉬셨나요? 스타트 홀로 가시면 자동으로 시작됩니다.
                                 
-                                self.textMessage = "그늘집에서 잘 쉬셨나요?\n스타트 홀로 가시면 자동으로 시작됩니다."
+                                self.textMessage = "그늘집에서 잘 쉬셨나요?\n홀로 가시면 자동 시작됩니다."
                                 
                                 // self.save = false
                                 
                                 // ToDo: test timer
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                                    getStartHole() // 1, 10, 19, ...
+                                    // getStartHole() // 1, 10, 19, ...
+                                    
+                                    let groupId = self.course?.id
+                                    onGetHoles(groupId!)
                                 }
                             } else {
                                 // 스타트 홀 검색하지 않고 teeingGroundInfo만 구하고 holeNumber로 실행
@@ -126,16 +131,24 @@ struct HoleSearchView: View {
                                 moveNext()
                             }
                         }
+                    } else if from == 400 {
+                        // ToDo: test timer
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                            getStartHole() // 1, 10, 19, ...
+                        }
                     } else if from == 200 {
                         // 전반 종료 후 앱이 계속 떠 있는 상태로 후반 시작
                         
-                        self.textMessage = "전반 플레이가 끝났습니다.\n그늘집에서 쉬신 후 스타트 홀로 가시면 자동으로 시작됩니다."
+                        self.textMessage = "전반 플레이가 끝났습니다.\n그늘집에서 쉬신 후\n홀로 가시면 자동 시작됩니다."
                         
                         // self.save = false
                         
                         // ToDo: test timer
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                            getStartHole() // 1, 10, 19, ...
+                            // getStartHole() // 1, 10, 19, ...
+                            
+                            let groupId = self.course?.id
+                            onGetHoles(groupId!)
                         }
                     } else if from == 300 {
                         // 후반 종료. move to CourseSearchView
@@ -367,30 +380,30 @@ struct HoleSearchView: View {
     } // end of getHoles
     
     func getStartHole() {
-        // getHoles(groupId)
-        
         let groupId = self.course?.id
         //print(#function, groupId)
         getHoles(groupId!) {
-            // onGetHoles
+            onGetHoles(groupId!)
+        }
+    }
+    
+    func onGetHoles(_ groupId: Int64) {
+        let courses = self.course?.courses
+        
+        for (_, item) in courses!.enumerated() {
+            // print(#function, index, item.range[0])
             
-            let courses = self.course?.courses
+            let startHoleNumber = item.range[0]
             
-            for (_, item) in courses!.enumerated() {
-                // print(#function, index, item.range[0])
+            getSensor(groupId, Int64(startHoleNumber)) {
+                // onGetSensor
                 
-                let startHoleNumber = item.range[0]
-                
-                getSensor(groupId!, Int64(startHoleNumber)) {
-                    // onGetSensor
+                if self.startHoles.count == courses?.count {
+                    // sort by holeNumber self.startHoles
+                    self.startHoles.sort(by: { $0.number < $1.number })
+                    // print(#function, self.startHoles)
                     
-                    if self.startHoles.count == courses?.count {
-                        // sort by holeNumber self.startHoles
-                        self.startHoles.sort(by: { $0.number < $1.number })
-                        // print(#function, self.startHoles)
-                        
-                        calcDistance()
-                    }
+                    calcDistance()
                 }
             }
         }
@@ -486,7 +499,7 @@ struct HoleSearchView: View {
                         print(#function, fullBack!, distance)
                         
                         let d = distance - Double(fullBack!)
-                        if d < 289500 { // ToDo: 30m
+                        if d < 300 { // ToDo: 30m
                             list.append(startHole.number)
                         }
                     }
@@ -502,6 +515,12 @@ struct HoleSearchView: View {
                     } else if list.count > 1 {
                         showList()
                     } else { // 0
+                        // change text message
+                        withAnimation(.linear(duration: 0.5)) {
+                            self.textMessage = Util.getWaitMessageForHole(self.findStartHoleCounter)
+                        }
+                        self.findStartHoleCounter += 1
+                        
                         // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                             calcDistance()

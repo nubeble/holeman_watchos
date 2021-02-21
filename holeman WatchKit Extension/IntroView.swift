@@ -26,6 +26,7 @@ struct IntroView: View {
     @State var textMessage: String = ""
     
     // pass to HoleSearchView
+    @State var from: Int?
     @State var search: Bool?
     @State var course: CourseModel?
     @State var holeNumber: Int?
@@ -47,19 +48,20 @@ struct IntroView: View {
                 // ToDo: test (remove all UserDefaults)
                 // --
                 /*
-                let defaults = UserDefaults.standard
-                let dictionary = defaults.dictionaryRepresentation()
-                dictionary.keys.forEach { key in
-                    defaults.removeObject(forKey: key)
-                }
-                */
+                 let defaults = UserDefaults.standard
+                 let dictionary = defaults.dictionaryRepresentation()
+                 dictionary.keys.forEach { key in
+                 defaults.removeObject(forKey: key)
+                 }
+                 */
                 // --
-
                 
                 
                 
                 
-                checkLastPlayedHole()
+                
+                // checkLastPlayedHole()
+                checkLastPurchasedCourse()
             }
             
         } else if self.mode == 0 {
@@ -227,7 +229,7 @@ struct IntroView: View {
             
             CourseView()
             
-        } else if self.mode == 11 {
+        } else if self.mode == 11 || self.mode == 12 || self.mode == 13 || self.mode == 14 || self.mode == 15 {
             
             ZStack {
                 VStack {
@@ -242,7 +244,7 @@ struct IntroView: View {
                         Button(action: {
                             // 새 게임으로 시작
                             
-                            startNew(true, false)
+                            startNew(true, true, false)
                         }) {
                             ZStack {
                                 Circle()
@@ -260,119 +262,29 @@ struct IntroView: View {
                         
                         // button 2
                         Button(action: {
-                            Global.halftime = 1
-                            
-                            moveNext(false)
-                        }) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.green)
-                                    .frame(width: 54, height: 54)
+                            if self.mode == 11 {
+                                Global.halftime = 1
                                 
-                                Image(systemName: "checkmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
-                        // .opacity(button1Opacity)
-                    }
-                }
-                .frame(maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.bottom)
-            }
-            
-        } else if self.mode == 12 {
-            
-            ZStack {
-                VStack {
-                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
-                }
-                
-                VStack {
-                    Spacer().frame(maxHeight: .infinity)
-                    
-                    HStack(spacing: 40) {
-                        // button 1
-                        Button(action: {
-                            // 새 게임으로 시작
-                            
-                            startNew(true, false)
-                        }) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                    .frame(width: 54, height: 54)
+                                moveNext(false)
+                            } else if self.mode == 12 {
+                                Global.halftime = 2
                                 
-                                Image(systemName: "xmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
-                        // .opacity(button1Opacity)
-                        
-                        
-                        // button 2
-                        Button(action: {
-                            Global.halftime = 2
-                            
-                            moveNext(true)
-                        }) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.green)
-                                    .frame(width: 54, height: 54)
+                                moveNext(true)
+                            } else if self.mode == 13 {
+                                Global.halftime = 2
                                 
-                                Image(systemName: "checkmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
-                        // .opacity(button1Opacity)
-                    }
-                }
-                .frame(maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.bottom)
-            }
-            
-        } else if self.mode == 13 {
-            
-            ZStack {
-                VStack {
-                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
-                }
-                
-                VStack {
-                    Spacer().frame(maxHeight: .infinity)
-                    
-                    HStack(spacing: 40) {
-                        // button 1
-                        Button(action: {
-                            // 새 게임으로 시작
-                            
-                            startNew(true, false)
-                        }) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                    .frame(width: 54, height: 54)
+                                moveNext(false)
+                            } else if self.mode == 14 {
+                                Global.halftime = 1
                                 
-                                Image(systemName: "xmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                // moveToHoleSearchActivity
+                                moveNextFromPurchase(false)
+                            } else if self.mode == 15 {
+                                Global.halftime = 1
+                                
+                                // moveToHoleSearchActivity (+ 홀 정보 삭제)
+                                moveNextFromPurchase(true)
                             }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
-                        // .opacity(button1Opacity)
-                        
-                        
-                        // button 2
-                        Button(action: {
-                            Global.halftime = 2
-                            
-                            moveNext(false)
                         }) {
                             ZStack {
                                 Circle()
@@ -395,14 +307,124 @@ struct IntroView: View {
         } else if self.mode == 21 {
             
             // move to HoleSearchView
-            HoleSearchView(from: 100, search: self.search, course: self.course, teeingGroundInfo: self.teeingGroundInfo, teeingGroundIndex: self.teeingGroundIndex!, holeNumber: self.holeNumber!)
+            HoleSearchView(from: self.from, search: self.search, course: self.course, teeingGroundInfo: self.teeingGroundInfo, teeingGroundIndex: self.teeingGroundIndex!, holeNumber: self.holeNumber!)
             
         }
     }
     
+    /*
+     func checkLastPlayedHole() {
+     let time = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TIME")
+     let halftime = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_HALFTIME")
+     
+     if let time = time {
+     // get current time
+     let date = Date()
+     let dateFormatter = DateFormatter()
+     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 2019-12-20 09:40:08
+     let dateString = dateFormatter.string(from: date)
+     
+     
+     var i1 = dateString.index(dateString.startIndex, offsetBy: 0)
+     var i2 = dateString.index(dateString.startIndex, offsetBy: 10)
+     let date2 = dateString[i1..<i2] // yyyy-MM-dd
+     
+     i1 = dateString.index(dateString.startIndex, offsetBy: 11)
+     i2 = dateString.index(dateString.startIndex, offsetBy: 13)
+     let hour2 = dateString[i1..<i2] // HH
+     
+     i1 = dateString.index(dateString.startIndex, offsetBy: 14)
+     i2 = dateString.index(dateString.startIndex, offsetBy: 16)
+     let min2 = dateString[i1..<i2] // mm
+     print(#function, date2, hour2, min2)
+     
+     
+     i1 = time.index(time.startIndex, offsetBy: 0)
+     i2 = time.index(time.startIndex, offsetBy: 10)
+     let date1 = time[i1..<i2]
+     
+     i1 = time.index(time.startIndex, offsetBy: 11)
+     i2 = time.index(time.startIndex, offsetBy: 13)
+     let hour1 = time[i1..<i2]
+     
+     i1 = time.index(time.startIndex, offsetBy: 11)
+     i2 = time.index(time.startIndex, offsetBy: 13)
+     let min1 = time[i1..<i2]
+     print(#function, date1, hour1, min1)
+     
+     
+     if date1 == date2 {
+     let h1 = Int(hour1)
+     let m1 = Int(min1)
+     let h2 = Int(hour2)
+     let m2 = Int(min2)
+     let sum1 = h1! * 60 + m1!
+     let sum2 = h2! * 60 + m2!
+     
+     if (sum2 - sum1) < 60 {
+     if halftime == 1 { // 전반 중 앱이 죽었다가 다시 실행
+     self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+     
+     withAnimation {
+     self.mode = 11
+     }
+     } else if halftime == 2 { // 전반 종료 후 앱이 죽었다가 다시 실행
+     self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+     
+     withAnimation {
+     self.mode = 12
+     }
+     } else if halftime == 3 { // 후반 중 앱이 죽었다가 다시 실행
+     self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+     
+     withAnimation {
+     self.mode = 13
+     }
+     } else if halftime == 4 { // 후반 종료 후 앱이 죽었다가 다시 실행
+     startNew(true, true)
+     }
+     } else {
+     startNew(true, true)
+     }
+     } else {
+     startNew(true, true)
+     }
+     } else {
+     startNew(false, true)
+     }
+     }
+     */
+    
+    func checkLastPurchasedCourse() {
+        let time = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_TIME")
+        if let time = time {
+            // get current time
+            let date = Date()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 2019-12-20 09:40:08
+            let dateString = dateFormatter.string(from: date)
+            
+            var i1 = dateString.index(dateString.startIndex, offsetBy: 0)
+            var i2 = dateString.index(dateString.startIndex, offsetBy: 10)
+            let date2 = dateString[i1..<i2] // yyyy-MM-dd
+            
+            i1 = time.index(time.startIndex, offsetBy: 0)
+            i2 = time.index(time.startIndex, offsetBy: 10)
+            let date1 = time[i1..<i2]
+            
+            if date1 == date2 { // 오늘 구매 (last played hole 정보 비교)
+                checkLastPlayedHole()
+            } else { // 날짜가 다르면 새 게임 (last purchased course 정보만 삭제)
+                startNew(true, false, true)
+            }
+        } else { // 정보가 없으면 새 게임 (last played hole 정보는 유지)
+            startNew(true, false, true)
+        }
+    }
+    
     func checkLastPlayedHole() {
-        let time = UserDefaults.standard.string(forKey: "TIME")
-        let halftime = UserDefaults.standard.integer(forKey: "HALFTIME")
+        let time = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TIME")
+        let halftime = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_HALFTIME")
         
         if let time = time {
             // get current time
@@ -411,96 +433,73 @@ struct IntroView: View {
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 2019-12-20 09:40:08
             let dateString = dateFormatter.string(from: date)
             
-            
             var i1 = dateString.index(dateString.startIndex, offsetBy: 0)
             var i2 = dateString.index(dateString.startIndex, offsetBy: 10)
             let date2 = dateString[i1..<i2] // yyyy-MM-dd
-            
-            i1 = dateString.index(dateString.startIndex, offsetBy: 11)
-            i2 = dateString.index(dateString.startIndex, offsetBy: 13)
-            let hour2 = dateString[i1..<i2] // HH
-            
-            i1 = dateString.index(dateString.startIndex, offsetBy: 14)
-            i2 = dateString.index(dateString.startIndex, offsetBy: 16)
-            let min2 = dateString[i1..<i2] // mm
-            print(#function, date2, hour2, min2)
-            
             
             i1 = time.index(time.startIndex, offsetBy: 0)
             i2 = time.index(time.startIndex, offsetBy: 10)
             let date1 = time[i1..<i2]
             
-            i1 = time.index(time.startIndex, offsetBy: 11)
-            i2 = time.index(time.startIndex, offsetBy: 13)
-            let hour1 = time[i1..<i2]
-            
-            i1 = time.index(time.startIndex, offsetBy: 11)
-            i2 = time.index(time.startIndex, offsetBy: 13)
-            let min1 = time[i1..<i2]
-            print(#function, date1, hour1, min1)
-            
-            
-            if date1 == date2 {
-                let h1 = Int(hour1)
-                let m1 = Int(min1)
-                let h2 = Int(hour2)
-                let m2 = Int(min2)
-                let sum1 = h1! * 60 + m1!
-                let sum2 = h2! * 60 + m2!
+            if date1 == date2 { // 이전 플레이 홀에 이어서 실행
                 
-                if (sum2 - sum1) < 60 {
-                    if halftime == 1 { // 전반 중 앱이 죽었다가 다시 실행
-                        self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
-                        
-                        withAnimation {
-                            self.mode = 11
-                        }
-                    } else if halftime == 2 { // 전반 종료 후 앱이 죽었다가 다시 실행
-                        self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
-                        
-                        withAnimation {
-                            self.mode = 12
-                        }
-                    } else if halftime == 3 { // 후반 중 앱이 죽었다가 다시 실행
-                        self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
-                        
-                        withAnimation {
-                            self.mode = 13
-                        }
-                    } else if halftime == 4 { // 후반 종료 후 앱이 죽었다가 다시 실행
-                        startNew(true, true)
+                if halftime == 1 { // 전반 중 앱이 죽었다가 다시 실행
+                    self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+                    
+                    withAnimation {
+                        self.mode = 11
                     }
-                } else {
-                    startNew(true, true)
+                } else if halftime == 2 { // 전반 종료 후 앱이 죽었다가 다시 실행
+                    self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+                    
+                    withAnimation {
+                        self.mode = 12
+                    }
+                } else if halftime == 3 { // 후반 중 앱이 죽었다가 다시 실행
+                    self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+                    
+                    withAnimation {
+                        self.mode = 13
+                    }
+                } else if halftime == 4 { // 후반 종료 후 앱이 죽었다가 다시 실행
+                    startNew(true, true, true)
                 }
-            } else {
-                startNew(true, true)
+                
+            } else { // 이전 플레이 홀 날짜가 다를 수 있다. (오늘 구매하고 아직 홀 정보가 없다는 뜻)
+                self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+                
+                withAnimation {
+                    self.mode = 15
+                }
             }
-        } else {
-            startNew(false, true)
+        } else { // 구매하고 홀 플레이 하기 전에 앱이 종료되었다.
+            self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+            
+            withAnimation {
+                self.mode = 14
+            }
         }
     }
     
     func moveNext(_ search: Bool) {
         // holeNumber, teeingGroundIndex, course
         
-        let time = UserDefaults.standard.string(forKey: "TIME")
-        let holeNumber = UserDefaults.standard.integer(forKey: "HOLE_NUMBER")
-        let teeingGroundIndex = UserDefaults.standard.integer(forKey: "TEEING_GROUND_INDEX")
-        
+        let time = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TIME")
+        let holeNumber = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_HOLE_NUMBER")
+        let teeingGroundIndex = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INDEX")
         
         if time != nil {
             // get course
             // --
             var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
             
-            let address = UserDefaults.standard.string(forKey: "COURSE_ADDRESS")
-            let countryCode = UserDefaults.standard.string(forKey: "COURSE_COUNTRY_CODE")
+            let address = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_ADDRESS")
+            let countryCode = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_COUNTRY_CODE")
             
             c.address = address!
             c.countryCode = countryCode!
             
-            let courses = UserDefaults.standard.stringArray(forKey: "COURSE_COURSES")
+            let courses = UserDefaults.standard.stringArray(forKey: "LAST_PLAYED_HOLE_COURSE_COURSES")
             for course in courses! {
                 do {
                     let data = Data(course.utf8)
@@ -514,11 +513,11 @@ struct IntroView: View {
                 }
             }
             
-            let id = UserDefaults.standard.integer(forKey: "COURSE_ID")
+            let id = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_COURSE_ID")
             
-            let latitude = UserDefaults.standard.double(forKey: "COURSE_LATITUDE")
-            let longitude = UserDefaults.standard.double(forKey: "COURSE_LONGITUDE")
-            let name = UserDefaults.standard.string(forKey: "COURSE_NAME")
+            let latitude = UserDefaults.standard.double(forKey: "LAST_PLAYED_HOLE_COURSE_LATITUDE")
+            let longitude = UserDefaults.standard.double(forKey: "LAST_PLAYED_HOLE_COURSE_LONGITUDE")
+            let name = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_NAME")
             
             c.id = Int64(id)
             c.location = CLLocation(latitude: latitude, longitude: longitude)
@@ -527,9 +526,9 @@ struct IntroView: View {
             
             // get teeingGroundInfo
             // --
-            let unit = UserDefaults.standard.string(forKey: "TEEING_GROUND_INFO_UNIT")
+            let unit = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INFO_UNIT")
             
-            let holes = UserDefaults.standard.stringArray(forKey: "TEEING_GROUND_INFO_HOLES")
+            let holes = UserDefaults.standard.stringArray(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INFO_HOLES")
             var array: [TeeingGrounds] = []
             for hole in holes! {
                 do {
@@ -557,12 +556,13 @@ struct IntroView: View {
             let t = TeeingGroundInfoModel(unit: unit!, holes: array)
             // --
             
-            moveToHoleSearchView(search, c, holeNumber, t, teeingGroundIndex)
+            moveToHoleSearchView(100, search, c, holeNumber, t, teeingGroundIndex)
         }
         
     }
     
-    func moveToHoleSearchView(_ search: Bool, _ course: CourseModel, _ holeNumber: Int, _ teeingGroundInfo: TeeingGroundInfoModel, _ teeingGroundIndex: Int) {
+    func moveToHoleSearchView(_ from: Int, _ search: Bool, _ course: CourseModel, _ holeNumber: Int, _ teeingGroundInfo: TeeingGroundInfoModel?, _ teeingGroundIndex: Int) {
+        self.from = from
         self.search = search
         self.course = course
         self.holeNumber = holeNumber
@@ -574,19 +574,106 @@ struct IntroView: View {
         }
     }
     
-    func startNew(_ removeData: Bool, _ showTextAnimation: Bool) {
-        print(#function, removeData, showTextAnimation)
-        
-        // clean UserDefaults except USER ID, SUB
-        if removeData == true {
+    func moveNextFromPurchase(_ removePlayData: Bool) {
+        if removePlayData == true {
             let defaults = UserDefaults.standard
             let dictionary = defaults.dictionaryRepresentation()
             dictionary.keys.forEach { key in
-                if key == "USER_ID" || key == "SUBSCRIPTION_SENSORS_SUB_ID" || key == "SUBSCRIPTION_SENSORS_COURSE_ID" {
-                    // skip
-                } else {
+                
+                if key.hasPrefix("LAST_PLAYED_HOLE") {
                     defaults.removeObject(forKey: key)
                 }
+                
+            }
+        }
+        
+        // get course
+        // --
+        var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
+        
+        let address = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_ADDRESS")
+        let countryCode = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_COUNTRY_CODE")
+        
+        c.address = address!
+        c.countryCode = countryCode!
+        
+        let courses = UserDefaults.standard.stringArray(forKey: "LAST_PURCHASED_COURSE_COURSE_COURSES")
+        for course in courses! {
+            do {
+                let data = Data(course.utf8)
+                let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
+                
+                let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
+                c.courses.append(item)
+            } catch {
+                print(error)
+                return
+            }
+        }
+        
+        let id = UserDefaults.standard.integer(forKey: "LAST_PURCHASED_COURSE_COURSE_ID")
+        
+        let latitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LATITUDE")
+        let longitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LONGITUDE")
+        let name = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_NAME")
+        
+        c.id = Int64(id)
+        c.location = CLLocation(latitude: latitude, longitude: longitude)
+        c.name = name!
+        // --
+        
+        moveToHoleSearchView(400, true, c, 0, nil, -1)
+    }
+    
+    /*
+     func startNew(_ removeData: Bool, _ showTextAnimation: Bool) {
+     print(#function, removeData, showTextAnimation)
+     
+     // clean UserDefaults except USER ID, SUB
+     if removeData == true {
+     let defaults = UserDefaults.standard
+     let dictionary = defaults.dictionaryRepresentation()
+     dictionary.keys.forEach { key in
+     if key == "USER_ID" || key == "SUBSCRIPTION_SENSORS_SUB_ID" || key == "SUBSCRIPTION_SENSORS_COURSE_ID" {
+     // skip
+     } else {
+     defaults.removeObject(forKey: key)
+     }
+     }
+     }
+     
+     Global.halftime = 1
+     
+     if showTextAnimation == true {
+     self.mode = 0
+     } else {
+     // Sign in with Apple
+     checkUserIdentifierValidation()
+     }
+     }
+     */
+    func startNew(_ removePurchaseData: Bool, _ removePlayData: Bool, _ showTextAnimation: Bool) {
+        if removePurchaseData == true {
+            let defaults = UserDefaults.standard
+            let dictionary = defaults.dictionaryRepresentation()
+            dictionary.keys.forEach { key in
+                
+                if key.hasPrefix("LAST_PURCHASED_COURSE") {
+                    defaults.removeObject(forKey: key)
+                }
+                
+            }
+        }
+        
+        if removePlayData == true {
+            let defaults = UserDefaults.standard
+            let dictionary = defaults.dictionaryRepresentation()
+            dictionary.keys.forEach { key in
+                
+                if key.hasPrefix("LAST_PLAYED_HOLE") {
+                    defaults.removeObject(forKey: key)
+                }
+                
             }
         }
         

@@ -224,7 +224,7 @@ struct MenuView: View {
             // loading indicator
             ZStack {
                 ProgressView()
-                    .scaleEffect(1.5, anchor: .center)
+                    .scaleEffect(1.2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             }
             .onAppear {

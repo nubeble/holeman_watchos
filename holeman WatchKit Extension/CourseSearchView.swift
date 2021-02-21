@@ -10,7 +10,7 @@ import SwiftUI
 struct CourseSearchView: View {
     @State var mode: Int = 0
     
-    @State var textMessage: String?
+    @State var textMessage: String = ""
     @State var findNearbyCourseCounter = 0
     
     // @ObservedObject var locationManager = LocationManager()
@@ -34,15 +34,15 @@ struct CourseSearchView: View {
             // loading indicator
             ZStack {
                 ProgressView()
-                    .scaleEffect(1.5, anchor: .center)
+                    .scaleEffect(1.2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
                 
                 VStack {
                     Spacer()
                     
-                    Text(self.textMessage ?? "").font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
+                    Text(self.textMessage).font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
                         .transition(.opacity)
-                        .id(self.textMessage ?? "")
+                        .id(self.textMessage)
                 }
             }.onAppear(perform: onCreate)
             
@@ -368,7 +368,7 @@ struct CourseSearchView: View {
                     
                     // show wait message
                     withAnimation(.linear(duration: 0.5)) {
-                        self.textMessage = Util.getWaitMessage(self.findNearbyCourseCounter)
+                        self.textMessage = Util.getWaitMessageForCourse(self.findNearbyCourseCounter)
                     }
                     self.findNearbyCourseCounter += 1
                     
@@ -468,6 +468,7 @@ struct CourseSearchView: View {
                 
                 if count == 0 {
                     print(#function, "no course nearby. try again in 3 sec")
+                    
                     onComplete(false)
                 } else {
                     // move to HoleSearchView

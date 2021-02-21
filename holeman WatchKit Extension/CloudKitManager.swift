@@ -258,7 +258,7 @@ struct CloudKitManager {
         // convert radius in meters to kilometers
         
         // let radiusInMeters: CLLocationDistance = 1
-        let radiusInKilometers = 1 // ToDo: 1 km
+        let radiusInKilometers = 2 // ToDo: 1 km
         
         // let p = NSPredicate(format: "distanceToLocation:fromLocation:(location, %@) < %@", location, NSNumber(value: radiusInKilometers))
         let p = NSPredicate(format: "countryCode = %@ AND distanceToLocation:fromLocation:(location, %@) < %@", countryCode, location, NSNumber(value: radiusInKilometers))
