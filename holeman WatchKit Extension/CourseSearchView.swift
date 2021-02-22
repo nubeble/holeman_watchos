@@ -28,7 +28,7 @@ struct CourseSearchView: View {
     // @State var groupId = 0
     // @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
     
-    @StateObject var storeManager: StoreManager
+    @StateObject var storeManager: StoreManager = StoreManager()
     
     var body: some View {
         if self.mode == 0 {
@@ -233,9 +233,17 @@ struct CourseSearchView: View {
                                 Button(action: {
                                     self.selectedCourseIndex = index
                                     
-                                    // move to next
+                                    /*
+                                     // move to next (HoleSearchView)
+                                     withAnimation {
+                                     self.mode = 20
+                                     }
+                                     */
+                                    // ToDo: 2021-02-22, in-app purchases
+                                    storeManager.getProducts(productIDs: ["course"])
+                                    
                                     withAnimation {
-                                        self.mode = 20
+                                        self.mode = 21
                                     }
                                 }) {
                                     /*
@@ -296,7 +304,34 @@ struct CourseSearchView: View {
             let c = self.courses[self.selectedCourseIndex]
             HoleSearchView(course: c)
             
+        } else if self.mode == 21 {
+            
+            // ToDo: show billing UI
+            List(storeManager.myProducts, id: \.self) { product in
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(product.localizedTitle)
+                            .font(.headline)
+                        Text(product.localizedDescription)
+                            .font(.caption2)
+                    }
+                    Spacer()
+                    if UserDefaults.standard.bool(forKey: product.productIdentifier) {
+                        Text ("Purchased")
+                            .foregroundColor(.green)
+                    } else {
+                        Button(action: {
+                            //Purchase particular ILO product
+                        }) {
+                            Text("Buy for \(product.price) $")
+                        }
+                        .foregroundColor(.blue)
+                    }
+                }
+            }
+            
         }
+        
     }
     
     func onCreate() {
@@ -530,6 +565,6 @@ struct CourseSearchView: View {
 
 struct CourseSearchView_Previews: PreviewProvider {
     static var previews: some View {
-        CourseSearchView(storeManager: StoreManager())
+        CourseSearchView()
     }
 }

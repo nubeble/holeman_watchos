@@ -21,7 +21,7 @@ struct CourseListView: View {
     
     @State var selectedCourseIndex: Int = 0
     
-    @StateObject var storeManager: StoreManager
+    @StateObject var storeManager: StoreManager = StoreManager()
     
     var body: some View {
         if self.mode == 0 {
@@ -75,9 +75,16 @@ struct CourseListView: View {
                                     self.selectedCourseIndex = index
                                     // print("button click", name)
                                     
-                                    // move to CourseSearchView
+                                    /*
+                                     withAnimation {
+                                     self.mode = 2
+                                     }
+                                     */
+                                    // ToDo: 2021-02-22, in-app purchases
+                                    storeManager.getProducts(productIDs: ["course"])
+                                    
                                     withAnimation {
-                                        self.mode = 2
+                                        self.mode = 21
                                     }
                                 }) {
                                     /*
@@ -128,10 +135,36 @@ struct CourseListView: View {
                 } // end of ScrollView
             }
             
-        } else if self.mode == 2 {
+        } else if self.mode == 2 { // move to next (HoleSearchView)
             
             let c = self.courses[self.selectedCourseIndex]
             HoleSearchView(course: c)
+            
+        } else if self.mode == 21 {
+            
+            // ToDo: show billing UI
+            List(storeManager.myProducts, id: \.self) { product in
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(product.localizedTitle)
+                            .font(.headline)
+                        Text(product.localizedDescription)
+                            .font(.caption2)
+                    }
+                    Spacer()
+                    if UserDefaults.standard.bool(forKey: product.productIdentifier) {
+                        Text ("Purchased")
+                            .foregroundColor(.green)
+                    } else {
+                        Button(action: {
+                            //Purchase particular ILO product
+                        }) {
+                            Text("Buy for \(product.price) $")
+                        }
+                        .foregroundColor(.blue)
+                    }
+                }
+            }
             
         } else if self.mode == 10 { // go back
             
@@ -339,6 +372,6 @@ struct CourseListView: View {
 
 struct CourseListView_Previews: PreviewProvider {
     static var previews: some View {
-        CourseListView(storeManager: StoreManager())
+        CourseListView()
     }
 }

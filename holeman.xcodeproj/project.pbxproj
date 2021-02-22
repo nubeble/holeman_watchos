@@ -107,6 +107,7 @@
 		65B35E43AAEA6C2CB3023E89 /* Pods_holeman.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_holeman.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		77B069F833FCB46B26C43952 /* Pods-holeman WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-holeman WatchKit Extension.debug.xcconfig"; path = "Target Support Files/Pods-holeman WatchKit Extension/Pods-holeman WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		B0DF725CA6FF565437AAEB9B /* Pods-holeman WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-holeman WatchKit Extension.release.xcconfig"; path = "Target Support Files/Pods-holeman WatchKit Extension/Pods-holeman WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
+		B908DDD925E40290005DB11F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.2.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		B91AB1E225C4E44A0050B157 /* SensorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorModel.swift; sourceTree = "<group>"; };
 		B91AB1FC25CA85EC0050B157 /* TeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeeView.swift; sourceTree = "<group>"; };
 		B923CCA4254671BF00E09B40 /* ArticleRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleRow.swift; sourceTree = "<group>"; };
@@ -192,6 +193,7 @@
 		5130AA064D336B415AEFDD0F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B908DDD925E40290005DB11F /* StoreKit.framework */,
 				B98FF37625504DDC00CA1ECA /* UserNotifications.framework */,
 				B98FF37825504E4F00CA1ECA /* UserNotifications.framework */,
 				B923CCB52546AC3400E09B40 /* CloudKit.framework */,
@@ -722,6 +724,7 @@
 			baseConfigurationReference = B0DF725CA6FF565437AAEB9B /* Pods-holeman WatchKit Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
@@ -734,6 +737,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
