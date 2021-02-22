@@ -29,10 +29,14 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate {
     }
     
     func getProducts(productIDs: [String]) {
-        print(#function, "Start requesting products ...")
-        let request = SKProductsRequest(productIdentifiers: Set(productIDs))
-        request.delegate = self
-        request.start()
+        if SKPaymentQueue.canMakePayments() {
+            print(#function, "Start requesting products ...")
+            let request = SKProductsRequest(productIdentifiers: Set(productIDs))
+            request.delegate = self
+            request.start()
+        } else {
+            print(#function, "Can't make payments ...")
+        }
     }
     
     func request(_ request: SKRequest, didFailWithError error: Error) {
