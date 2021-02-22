@@ -28,6 +28,8 @@ struct CourseSearchView: View {
     // @State var groupId = 0
     // @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
     
+    @StateObject var storeManager: StoreManager
+    
     var body: some View {
         if self.mode == 0 {
             
@@ -379,7 +381,7 @@ struct CourseSearchView: View {
     }
     
     func findNearbyCourse(_ location: CLLocation, onComplete: @escaping (_ result: Bool) -> Void) {
-        CloudKitManager.fetchNearbyLocations(String(self.countryCode!), location) { records in
+        CloudManager.fetchNearbyLocations(String(self.countryCode!), location) { records in
             // print(#function, records)
             if let records = records {
                 var count = 0
@@ -528,6 +530,6 @@ struct CourseSearchView: View {
 
 struct CourseSearchView_Previews: PreviewProvider {
     static var previews: some View {
-        CourseSearchView()
+        CourseSearchView(storeManager: StoreManager())
     }
 }

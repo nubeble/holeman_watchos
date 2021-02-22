@@ -21,6 +21,8 @@ struct CourseListView: View {
     
     @State var selectedCourseIndex: Int = 0
     
+    @StateObject var storeManager: StoreManager
+    
     var body: some View {
         if self.mode == 0 {
             
@@ -220,7 +222,7 @@ struct CourseListView: View {
     }
     
     func findNearbyCourse(_ location: CLLocation, onComplete: @escaping (_ result: Bool) -> Void) {
-        CloudKitManager.fetchAllCourses(String(self.countryCode!)) { records in
+        CloudManager.fetchAllCourses(String(self.countryCode!)) { records in
             // print(#function, records)
             if let records = records {
                 var count = 0
@@ -337,6 +339,6 @@ struct CourseListView: View {
 
 struct CourseListView_Previews: PreviewProvider {
     static var previews: some View {
-        CourseListView()
+        CourseListView(storeManager: StoreManager())
     }
 }

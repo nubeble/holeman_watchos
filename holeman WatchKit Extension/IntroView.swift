@@ -204,7 +204,7 @@ struct IntroView: View {
                             print(userIdentifier, name, email)
                             
                             // 1. save to db
-                            CloudKitManager.saveUser(userIdentifier, name, email)
+                            CloudManager.saveUser(userIdentifier, name, email)
                             
                             // 2. save to UserDefaults
                             UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")

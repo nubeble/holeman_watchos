@@ -1,5 +1,5 @@
 //
-//  CloudKitManager.swift
+//  CloudManager.swift
 //  holeman WatchKit Extension
 //
 //  Created by Jay Kim on 2021/01/13.
@@ -19,7 +19,7 @@ import SwiftUI
 //
 // On your device (or in the simulator) you should make sure you are logged into iCloud and have iCloud Drive enabled.
 
-struct CloudKitManager {
+struct CloudManager {
     
     // record type
     struct RecordType {
@@ -27,7 +27,7 @@ struct CloudKitManager {
     }
     
     // MARK: - errors
-    enum CloudKitManagerError: Error {
+    enum CloudManagerError: Error {
         case recordFailure
         case recordIDFailure
         case castFailure
@@ -49,14 +49,14 @@ struct CloudKitManager {
                 if subscriptions.count == 0 {
                     print("no subscription exists.")
                     print("save subscription...")
-                    //CloudKitManager.saveSubscription(27)
+                    // CloudManager.saveSubscription(27)
                 }
                 
-                CloudKitManager.deleteAllSubscriptions(subscriptions: subscriptions) { (count) in
+                CloudManager.deleteAllSubscriptions(subscriptions: subscriptions) { (count) in
                     print("deleteAllSubscriptions count", count)
                     
                     print("save subscription...")
-                    //CloudKitManager.saveSubscription(27)
+                    // CloudManager.saveSubscription(27)
                 }
             }
         })
@@ -198,14 +198,14 @@ struct CloudKitManager {
                 }
                 
                 guard let record = record else {
-                    completion(.failure(CloudKitManagerError.recordFailure))
+                    completion(.failure(CloudManagerError.recordFailure))
                     return
                 }
                 
                 // means success
                 let id = record.recordID
                 guard let text = record["text"] as? String else {
-                    completion(.failure(CloudKitManagerError.castFailure))
+                    completion(.failure(CloudManagerError.castFailure))
                     return
                 }
                 
@@ -242,7 +242,7 @@ struct CloudKitManager {
                     return
                 }
                 //                guard let cursor = cursor else {
-                //                    completion(.failure(CloudKitManagerError.cursorFailure))
+                //                    completion(.failure(CloudManagerError.cursorFailure))
                 //                    return
                 //                }
                 //                print("Cursor: \(String(describing: cursor))")
@@ -365,13 +365,13 @@ struct CloudKitManager {
      
      if let subscriptions = subscriptions {
      if subscriptions.count == 0 {
-     CloudKitManager.saveSubscription("Sensor", groupId)
+     CloudManager.saveSubscription("Sensor", groupId)
      } else {
-     CloudKitManager.deleteAllSubscriptions(subscriptions: subscriptions) { count in
+     CloudManager.deleteAllSubscriptions(subscriptions: subscriptions) { count in
      print("deleteAllSubscriptions count", count)
      
      print("save subscription...")
-     CloudKitManager.saveSubscription("Sensor", groupId)
+     CloudManager.saveSubscription("Sensor", groupId)
      }
      }
      }
@@ -397,7 +397,7 @@ struct CloudKitManager {
                 })
                 
                 // 2. save db
-                CloudKitManager.saveSubscription("Sensor", groupId) { id in
+                CloudManager.saveSubscription("Sensor", groupId) { id in
                     // 3. update ud (subId & courseId)
                     UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_SENSORS_SUB_ID")
                     UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_SENSORS_COURSE_ID") // course id
@@ -405,7 +405,7 @@ struct CloudKitManager {
             }
         } else {
             // 2. save db
-            CloudKitManager.saveSubscription("Sensor", groupId) { id in
+            CloudManager.saveSubscription("Sensor", groupId) { id in
                 // 3. update ud (subId & courseId)
                 UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_SENSORS_SUB_ID")
                 UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_SENSORS_COURSE_ID") // course id
@@ -540,7 +540,7 @@ struct CloudKitManager {
      return
      }
      guard let recordID = recordID else {
-     completion(.failure(CloudKitManagerError.recordIDFailure))
+     completion(.failure(CloudManagerError.recordIDFailure))
      return
      }
      completion(.success(recordID))
@@ -560,7 +560,7 @@ struct CloudKitManager {
      }
      guard let record = record else {
      DispatchQueue.main.async {
-     completion(.failure(CloudKitManagerError.recordFailure))
+     completion(.failure(CloudManagerError.recordFailure))
      }
      return
      }
@@ -573,12 +573,12 @@ struct CloudKitManager {
      return
      }
      guard let record = record else {
-     completion(.failure(CloudKitManagerError.recordFailure))
+     completion(.failure(CloudManager.recordFailure))
      return
      }
      let recordID = record.recordID
      guard let text = record["text"] as? String else {
-     completion(.failure(CloudKitManagerError.castFailure))
+     completion(.failure(CloudManager.castFailure))
      return
      }
      let listElement = ListElement(recordID: recordID, text: text)

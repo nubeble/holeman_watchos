@@ -17,8 +17,8 @@
 		B923CCAC254671BF00E09B40 /* ArticleFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCA7254671BF00E09B40 /* ArticleFetcher.swift */; };
 		B923CCAD254671BF00E09B40 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCA8254671BF00E09B40 /* Article.swift */; };
 		B923CCB62546AC3400E09B40 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B923CCB52546AC3400E09B40 /* CloudKit.framework */; };
-		B923CCBB2546C5BD00E09B40 /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCBA2546C5BD00E09B40 /* CloudManager.swift */; };
-		B923CCD82547E1B500E09B40 /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCD72547E1B500E09B40 /* CloudKitManager.swift */; };
+		B923CCBB2546C5BD00E09B40 /* CCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCBA2546C5BD00E09B40 /* CCloudManager.swift */; };
+		B923CCD82547E1B500E09B40 /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCD72547E1B500E09B40 /* CloudManager.swift */; };
 		B923CCDD2547E24D00E09B40 /* ListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCDC2547E24D00E09B40 /* ListElement.swift */; };
 		B925136325D00B79006EEC0A /* TeeingGroundData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B925136225D00B79006EEC0A /* TeeingGroundData.swift */; };
 		B92A41DD25D4C5840067F39B /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A41DC25D4C5840067F39B /* MenuView.swift */; };
@@ -26,6 +26,7 @@
 		B92DB50A2569F84000511383 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92DB5092569F84000511383 /* MainView.swift */; };
 		B956D2E8256031E00056007B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956D2E7256031E00056007B /* HomeView.swift */; };
 		B956D2F625609A0E0056007B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956D2F525609A0E0056007B /* LocationManager.swift */; };
+		B95C909525E3C0FC00315DF2 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95C909425E3C0FC00315DF2 /* StoreManager.swift */; };
 		B96885B925A9560900C046E8 /* CourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96885B825A9560900C046E8 /* CourseView.swift */; };
 		B975BBF025AE982C00EFD939 /* CourseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BBEF25AE982C00EFD939 /* CourseListView.swift */; };
 		B975BBF525AE9A8C00EFD939 /* CourseSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BBF425AE9A8C00EFD939 /* CourseSearchView.swift */; };
@@ -115,8 +116,8 @@
 		B923CCA8254671BF00E09B40 /* Article.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		B923CCB12546AC0800E09B40 /* holeman WatchKit ExtensionDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "holeman WatchKit ExtensionDebug.entitlements"; sourceTree = "<group>"; };
 		B923CCB52546AC3400E09B40 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.0.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
-		B923CCBA2546C5BD00E09B40 /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
-		B923CCD72547E1B500E09B40 /* CloudKitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
+		B923CCBA2546C5BD00E09B40 /* CCloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCloudManager.swift; sourceTree = "<group>"; };
+		B923CCD72547E1B500E09B40 /* CloudManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
 		B923CCDC2547E24D00E09B40 /* ListElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListElement.swift; sourceTree = "<group>"; };
 		B925136225D00B79006EEC0A /* TeeingGroundData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeeingGroundData.swift; sourceTree = "<group>"; };
 		B92A41DC25D4C5840067F39B /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 		B92DB5092569F84000511383 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		B956D2E7256031E00056007B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B956D2F525609A0E0056007B /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		B95C909425E3C0FC00315DF2 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		B96885B825A9560900C046E8 /* CourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseView.swift; sourceTree = "<group>"; };
 		B975BBEF25AE982C00EFD939 /* CourseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListView.swift; sourceTree = "<group>"; };
 		B975BBF425AE9A8C00EFD939 /* CourseSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseSearchView.swift; sourceTree = "<group>"; };
@@ -221,7 +223,7 @@
 				B923CCA6254671BF00E09B40 /* ArticleDetail.swift */,
 				B923CCA7254671BF00E09B40 /* ArticleFetcher.swift */,
 				B923CCA4254671BF00E09B40 /* ArticleRow.swift */,
-				B923CCBA2546C5BD00E09B40 /* CloudManager.swift */,
+				B923CCBA2546C5BD00E09B40 /* CCloudManager.swift */,
 				B923CCDC2547E24D00E09B40 /* ListElement.swift */,
 				B923CCA5254671BF00E09B40 /* ArticlesView.swift */,
 				B9AA29E92535BA2A0057FA8D /* holeman WatchKit App */,
@@ -271,9 +273,10 @@
 				B9AA29F82535BA2B0057FA8D /* holemanApp.swift */,
 				B9AA29FA2535BA2B0057FA8D /* ComplicationController.swift */,
 				B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */,
-				B923CCD72547E1B500E09B40 /* CloudKitManager.swift */,
+				B923CCD72547E1B500E09B40 /* CloudManager.swift */,
 				B956D2F525609A0E0056007B /* LocationManager.swift */,
 				B92DB504256409E100511383 /* CompassHeading.swift */,
+				B95C909425E3C0FC00315DF2 /* StoreManager.swift */,
 				B975BC0925B8E7F800EFD939 /* Util.swift */,
 				B9AD0F9425CE0E9700CE247B /* Global.swift */,
 				B975BC0125B2963200EFD939 /* CourseModel.swift */,
@@ -527,6 +530,7 @@
 				B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */,
 				B975BC0A25B8E7F800EFD939 /* Util.swift in Sources */,
 				B92DB505256409E100511383 /* CompassHeading.swift in Sources */,
+				B95C909525E3C0FC00315DF2 /* StoreManager.swift in Sources */,
 				B923CCAB254671BF00E09B40 /* ArticleDetail.swift in Sources */,
 				B923CCAD254671BF00E09B40 /* Article.swift in Sources */,
 				B92A41DD25D4C5840067F39B /* MenuView.swift in Sources */,
@@ -543,12 +547,12 @@
 				B975BBFD25B292ED00EFD939 /* HoleSearchView.swift in Sources */,
 				B923CCDD2547E24D00E09B40 /* ListElement.swift in Sources */,
 				B96885B925A9560900C046E8 /* CourseView.swift in Sources */,
-				B923CCD82547E1B500E09B40 /* CloudKitManager.swift in Sources */,
+				B923CCD82547E1B500E09B40 /* CloudManager.swift in Sources */,
 				B9AD0F9525CE0E9700CE247B /* Global.swift in Sources */,
 				B995311B2583094C001D5FBF /* IntroView.swift in Sources */,
 				B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */,
 				B9AD0F8725CC160400CE247B /* HoleView.swift in Sources */,
-				B923CCBB2546C5BD00E09B40 /* CloudManager.swift in Sources */,
+				B923CCBB2546C5BD00E09B40 /* CCloudManager.swift in Sources */,
 				B975BBF025AE982C00EFD939 /* CourseListView.swift in Sources */,
 				B975BC1225BEDECD00EFD939 /* TeeingGroundInfoModel.swift in Sources */,
 				B975BC1725C0028E00EFD939 /* HoleModel.swift in Sources */,

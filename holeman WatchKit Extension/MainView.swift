@@ -432,7 +432,7 @@ struct MainView: View {
                     
                     let groupId = self.course?.id
                     
-                    CloudKitManager.subscribeToSensors(groupId!)
+                    CloudManager.subscribeToSensors(groupId!)
                     
                     getSensors(groupId!) {
                         for sensor in self.sensors {
@@ -679,7 +679,7 @@ struct MainView: View {
     func getSensors(_ groupId: Int64, onComplete: @escaping () -> Void) {
         // print("getSensors", groupId)
         
-        CloudKitManager.getSensors(groupId) { records in
+        CloudManager.getSensors(groupId) { records in
             if let records = records {
                 for record in records {
                     // let id = record["id"] as! Int64

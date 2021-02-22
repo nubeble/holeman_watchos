@@ -269,7 +269,7 @@ struct HoleSearchView: View {
     }
     
     func getHoles(_ groupId: Int64, onComplete: @escaping () -> Void) {
-        CloudKitManager.getHoles(groupId) { records in
+        CloudManager.getHoles(groupId) { records in
             if let records = records {
                 if records.count == 1 {
                     let record = records[0]
@@ -412,7 +412,7 @@ struct HoleSearchView: View {
     func getSensor(_ groupId: Int64, _ holeNumber: Int64, onComplete: @escaping () -> Void) {
         print("getSensor", groupId, holeNumber)
         
-        CloudKitManager.getSensor(groupId, holeNumber) { record in
+        CloudManager.getSensor(groupId, holeNumber) { record in
             if let record = record {
                 // print(#function, record)
                 

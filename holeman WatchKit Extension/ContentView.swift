@@ -23,7 +23,7 @@ struct ContentView: View {
         return "\(locationManager.lastLocation?.coordinate.longitude ?? 0)"
     }
     
-    // private let manager = CloudManager()
+    // private let manager = CCloudManager()
     
     // private let registration = RegistrationHelper()
     
@@ -72,7 +72,7 @@ struct ContentView: View {
                 
                 /*
                  let newItem = ListElement(text: "hello")
-                 CloudKitManager.save(item: newItem) { (result) in
+                 CloudManager.save(item: newItem) { (result) in
                  
                  switch result {
                  case .success(let newItem):
@@ -85,7 +85,7 @@ struct ContentView: View {
                  }
                  */
                 
-                CloudKitManager.subscribe()
+                CloudManager.subscribe()
                 
             }, label: {
                 Text("subscribe")
