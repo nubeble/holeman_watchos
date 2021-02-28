@@ -240,7 +240,7 @@ struct CourseSearchView: View {
                                      }
                                      */
                                     // ToDo: 2021-02-22, in-app purchases
-                                    storeManager.getProducts(productIDs: ["course"])
+                                    storeManager.getProducts(productIDs: ["com.nubeble.holeman.iap.course", "com.nubeble.holeman.test1"])
                                     
                                     withAnimation {
                                         self.mode = 21

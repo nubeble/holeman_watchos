@@ -7,8 +7,11 @@
 
 import SwiftUI
 import AuthenticationServices
+import UserNotifications
 
 struct IntroView: View {
+    @Environment(\.scenePhase) var scenePhase
+    
     @State var mode: Int = -1
     
     @State var text1: String = "안녕하세요!"
@@ -25,6 +28,8 @@ struct IntroView: View {
     
     @State var textMessage: String = ""
     
+    @State var onComplete: ((Bool) -> Void)?
+    
     // pass to HoleSearchView
     @State var from: Int?
     @State var search: Bool?
@@ -32,8 +37,6 @@ struct IntroView: View {
     @State var holeNumber: Int?
     @State var teeingGroundInfo: TeeingGroundInfoModel?
     @State var teeingGroundIndex: Int?
-    
-    
     
     // @State private var textValue: String = "Sample Data"
     // @State private var opacity: Double = 1
@@ -76,6 +79,7 @@ struct IntroView: View {
                 })
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    // Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { _ in
                     // hide
                     /*
                      withAnimation(.easeInOut(duration: 0.5), {
@@ -105,8 +109,17 @@ struct IntroView: View {
                     Spacer().frame(maxHeight: .infinity)
                     
                     Button(action: {
+                        print("button click")
+                        
                         // Sign in with Apple
-                        checkUserIdentifierValidation()
+                        // checkUserIdentifierValidation()
+                        
+                        requestNotificationAuthorization() { result in
+                            if result == true {
+                                // Sign in with Apple
+                                checkUserIdentifierValidation()
+                            }
+                        }
                     }) {
                         ZStack {
                             Circle()
@@ -130,11 +143,13 @@ struct IntroView: View {
                 })
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    // Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
                     withAnimation(.easeInOut(duration: 1), {
                         self.text3Opacity = 1
                     })
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        // Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
                         // show button & move to next view
                         
                         withAnimation(.easeInOut(duration: 1), {
@@ -265,25 +280,48 @@ struct IntroView: View {
                             if self.mode == 11 {
                                 Global.halftime = 1
                                 
-                                moveNext(false)
+                                // moveNext(false)
+                                requestNotificationAuthorization() { result in
+                                    if result == true {
+                                        moveNext(false)
+                                    }
+                                }
                             } else if self.mode == 12 {
                                 Global.halftime = 2
                                 
-                                moveNext(true)
+                                // moveNext(true)
+                                requestNotificationAuthorization() { result in
+                                    if result == true {
+                                        moveNext(true)
+                                    }
+                                }
                             } else if self.mode == 13 {
                                 Global.halftime = 2
                                 
-                                moveNext(false)
+                                // moveNext(false)
+                                requestNotificationAuthorization() { result in
+                                    if result == true {
+                                        moveNext(false)
+                                    }
+                                }
                             } else if self.mode == 14 {
                                 Global.halftime = 1
                                 
-                                // moveToHoleSearchActivity
-                                moveNextFromPurchase(false)
+                                // moveNextFromPurchase(false) // moveToHoleSearchActivity
+                                requestNotificationAuthorization() { result in
+                                    if result == true {
+                                        moveNextFromPurchase(false)
+                                    }
+                                }
                             } else if self.mode == 15 {
                                 Global.halftime = 1
                                 
-                                // moveToHoleSearchActivity (+ 홀 정보 삭제)
-                                moveNextFromPurchase(true)
+                                // moveNextFromPurchase(true) // moveToHoleSearchActivity (+ 홀 정보 삭제)
+                                requestNotificationAuthorization() { result in
+                                    if result == true {
+                                        moveNextFromPurchase(true)
+                                    }
+                                }
                             }
                         }) {
                             ZStack {
@@ -309,6 +347,79 @@ struct IntroView: View {
             // move to HoleSearchView
             HoleSearchView(from: self.from, search: self.search, course: self.course, teeingGroundInfo: self.teeingGroundInfo, teeingGroundIndex: self.teeingGroundIndex!, holeNumber: self.holeNumber!)
             
+        } else if self.mode == 31 {
+            
+            // 알림을 허용해주세요
+            // iPhone에서 Apple Watch 앱을 열고
+            // '나의 시계' 탭 - '알림' - 'Holeman' - 알림 허용
+            
+            // Please Allow Notifications
+            // WKExtension.shared().openSystemURL(URL(string: "App-Prefs:root=LOCATION_SERVICES")!)
+            // user to the Settings for your app by passing UIApplicationOpenSettingsURLString to UIApplication's openURL: method.
+            
+            
+            // ToDo: 설정에서 권한 설정 후 복귀하면 어떻게 되나?
+            
+            ZStack {
+                VStack {
+                    // Text("알림을 허용해주세요.").font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text("알림을 허용해주세요.").font(.system(size: 20, weight: .semibold)).padding(.top, 10)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Text("iPhone에서 Apple Watch 앱을 열고 '나의 시계' - '알림' - 'Holeman' - 알림 허용").font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                }
+                
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Button(action: {
+                        requestNotificationAuthorization() { result in
+                            if result == true {
+                                if let fun = self.onComplete {
+                                    fun(true)
+                                }
+                            }
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 54, height: 54)
+                            
+                            Image(systemName: "arrow.right")
+                                .font(Font.system(size: 28, weight: .heavy))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.bottom, 10)
+                    // .opacity(button1Opacity)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .inactive {
+                    print("Inactive")
+                } else if newPhase == .active {
+                    print("Active")
+                    
+                    UNUserNotificationCenter.current().getNotificationSettings { settings in
+                        print("Notification settings: \(settings)")
+                        
+                        guard settings.authorizationStatus == .authorized else { return }
+                        
+                        if let fun = self.onComplete {
+                            fun(true)
+                        }
+                    }
+                    
+                } else if newPhase == .background {
+                    print("Background")
+                }
+            }
         }
     }
     
@@ -683,7 +794,14 @@ struct IntroView: View {
             self.mode = 0
         } else {
             // Sign in with Apple
-            checkUserIdentifierValidation()
+            // checkUserIdentifierValidation()
+            
+            requestNotificationAuthorization() { result in
+                if result == true {
+                    // Sign in with Apple
+                    checkUserIdentifierValidation()
+                }
+            }
         }
     }
     
@@ -723,6 +841,41 @@ struct IntroView: View {
             // show UI
             withAnimation {
                 self.mode = 2
+            }
+        }
+    }
+    
+    func requestNotificationAuthorization(onComplete: @escaping (_ result: Bool) -> Void) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+            if let error = error {
+                print(error.localizedDescription)
+                
+                // ToDo: error handling
+                
+                return
+            }
+            
+            if granted {
+                print("Notification Permission granted")
+                
+                DispatchQueue.main.async {
+                    WKExtension.shared().registerForRemoteNotifications()
+                }
+                
+                onComplete(true)
+            } else { // denied
+                print("Permission denied")
+                
+                if self.onComplete == nil {
+                    print("self.onComplete is nil")
+                    self.onComplete = onComplete
+                    
+                    withAnimation {
+                        self.mode = 31
+                    }
+                } else {
+                    print("self.onComplete is NOT nil")
+                }
             }
         }
     }

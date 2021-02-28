@@ -81,7 +81,17 @@ struct CourseListView: View {
                                      }
                                      */
                                     // ToDo: 2021-02-22, in-app purchases
-                                    storeManager.getProducts(productIDs: ["course"])
+                                    storeManager.getProducts(productIDs: ["com.nubeble.holeman.iap.course",
+                                                                          "com.nubeble.holeman.watchkitapp.iap.test1",
+                                                                          "com.nubeble.holeman.watchkitapp.watchkitextension.iap.test100",
+                                                                          
+                                                                          "course",
+                                                                          
+                                                                          "com.nubeble.holeman.watchkitapp.test2",
+                                                                          "com.nubeble.holeman.watchkitapp.watchkitextension.test2",
+                                                                          
+                                                                          
+                                                                          "com.nubeble.holeman.test2"])
                                     
                                     withAnimation {
                                         self.mode = 21

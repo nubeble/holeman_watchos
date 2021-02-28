@@ -28,6 +28,7 @@
 		B956D2F625609A0E0056007B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956D2F525609A0E0056007B /* LocationManager.swift */; };
 		B95C909525E3C0FC00315DF2 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95C909425E3C0FC00315DF2 /* StoreManager.swift */; };
 		B96885B925A9560900C046E8 /* CourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96885B825A9560900C046E8 /* CourseView.swift */; };
+		B96EFAB125EB25710045C051 /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96EFAB025EB25710045C051 /* IAPHelper.swift */; };
 		B975BBF025AE982C00EFD939 /* CourseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BBEF25AE982C00EFD939 /* CourseListView.swift */; };
 		B975BBF525AE9A8C00EFD939 /* CourseSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BBF425AE9A8C00EFD939 /* CourseSearchView.swift */; };
 		B975BBFD25B292ED00EFD939 /* HoleSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BBFC25B292ED00EFD939 /* HoleSearchView.swift */; };
@@ -128,6 +129,7 @@
 		B956D2F525609A0E0056007B /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		B95C909425E3C0FC00315DF2 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		B96885B825A9560900C046E8 /* CourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseView.swift; sourceTree = "<group>"; };
+		B96EFAB025EB25710045C051 /* IAPHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPHelper.swift; sourceTree = "<group>"; };
 		B975BBEF25AE982C00EFD939 /* CourseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListView.swift; sourceTree = "<group>"; };
 		B975BBF425AE9A8C00EFD939 /* CourseSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseSearchView.swift; sourceTree = "<group>"; };
 		B975BBFC25B292ED00EFD939 /* HoleSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoleSearchView.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 		B9AA29DA2535BA2A0057FA8D = {
 			isa = PBXGroup;
 			children = (
+				B96EFAB025EB25710045C051 /* IAPHelper.swift */,
 				B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */,
 				B923CCA8254671BF00E09B40 /* Article.swift */,
 				B923CCA6254671BF00E09B40 /* ArticleDetail.swift */,
@@ -551,6 +554,7 @@
 				B96885B925A9560900C046E8 /* CourseView.swift in Sources */,
 				B923CCD82547E1B500E09B40 /* CloudManager.swift in Sources */,
 				B9AD0F9525CE0E9700CE247B /* Global.swift in Sources */,
+				B96EFAB125EB25710045C051 /* IAPHelper.swift in Sources */,
 				B995311B2583094C001D5FBF /* IntroView.swift in Sources */,
 				B98FF37225504D4700CA1ECA /* RegistrationHelper.swift in Sources */,
 				B9AD0F8725CC160400CE247B /* HoleView.swift in Sources */,
@@ -725,9 +729,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
-				DEVELOPMENT_TEAM = 5L8B8J2A48;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "holeman WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -753,12 +757,14 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -774,12 +780,14 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -792,12 +800,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5E66D5973B3B1F1CAD64765A /* Pods-holeman.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -806,12 +816,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 64ACAFA693CB2A20AD144575 /* Pods-holeman.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

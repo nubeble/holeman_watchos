@@ -383,7 +383,7 @@ struct CloudManager {
         // check UserDefaults
         let subId = UserDefaults.standard.string(forKey: "SUBSCRIPTION_SENSORS_SUB_ID")
         if subId != nil {
-            print("subscription ID", subId)
+            // print("subscription ID", subId)
             let courseId = UserDefaults.standard.integer(forKey: "SUBSCRIPTION_SENSORS_COURSE_ID")
             print("course id", courseId)
             if courseId == Int(groupId) {

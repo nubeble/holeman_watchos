@@ -11,30 +11,29 @@ import UserNotifications
 import CloudKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
-    // func appl
-    
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
         
         // This will run in foreground mode.
         print("applicationDidFinishLaunching")
         
-        
-        // UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { success, error in
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { success, error in
-            
-            if success {
-                print("Permission granted.")
-                
-                DispatchQueue.main.async {
-                    WKExtension.shared().registerForRemoteNotifications()
-                }
-                
-            } else if let error = error {
-                print(error.localizedDescription)
-            }
-            
-        }
+        /*
+         // UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { success, error in
+         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { success, error in
+         
+         if success {
+         print("Permission granted.")
+         
+         DispatchQueue.main.async {
+         WKExtension.shared().registerForRemoteNotifications()
+         }
+         
+         } else if let error = error {
+         print(error.localizedDescription)
+         }
+         
+         }
+         */
     }
     
     func applicationDidBecomeActive() {
@@ -64,13 +63,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         // print("didRegisterForRemoteNotifications", deviceToken)
         
         let deviceTokenAsString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
-        print("device token", deviceTokenAsString)
+        print("didRegisterForRemoteNotifications", "device token", deviceTokenAsString)
     }
     
     func didFailToRegisterForRemoteNotificationsWithError(_ error: Error) {
         print("didFailToRegisterForRemoteNotificationsWithError", error)
     }
-    
     
     func didReceiveRemoteNotification(_ userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (WKBackgroundFetchResult) -> Void) {
         print("didReceiveRemoteNotification", userInfo)
@@ -138,6 +136,4 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         // completionHandler(.failed)
         completionHandler(.newData)
     }
-    
-    
 }

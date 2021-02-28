@@ -8,12 +8,26 @@
 import Foundation
 import StoreKit
 
-class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate {
+class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+    //FETCH PRODUCTS
+    // var request: SKProductsRequest!
+    
     @Published var myProducts = [SKProduct]()
-    var request: SKProductsRequest!
+    
+    func getProducts(productIDs: [String]) {
+        if SKPaymentQueue.canMakePayments() {
+            print(#function, "Start requesting products ...")
+            
+            let request = SKProductsRequest(productIdentifiers: Set(productIDs))
+            request.delegate = self
+            request.start()
+        } else {
+            print(#function, "Can't make payments ...")
+        }
+    }
     
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        print(#function, "Did receive response")
+        print(#function, "Received response")
         
         if !response.products.isEmpty {
             for fetchedProduct in response.products {
@@ -28,18 +42,53 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate {
         }
     }
     
-    func getProducts(productIDs: [String]) {
+    func request(_ request: SKRequest, didFailWithError error: Error) {
+        print(#function, "Request failed: \(error)")
+    }
+    
+    func requestDidFinish(_ request: SKRequest) {
+        print(#function, "Request finished")
+    }
+    
+    //HANDLE TRANSACTIONS
+    @Published var transactionState: SKPaymentTransactionState?
+    
+    // 1.
+    func purchaseProduct(product: SKProduct) {
         if SKPaymentQueue.canMakePayments() {
-            print(#function, "Start requesting products ...")
-            let request = SKProductsRequest(productIdentifiers: Set(productIDs))
-            request.delegate = self
-            request.start()
+            let payment = SKPayment(product: product)
+            SKPaymentQueue.default().add(payment) // ToDo: remove
         } else {
-            print(#function, "Can't make payments ...")
+            print("Can't make payment")
         }
     }
     
-    func request(_ request: SKRequest, didFailWithError error: Error) {
-        print(#function, "Request did fail: \(error)")
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            switch transaction.transactionState {
+            case .purchasing:
+                transactionState = .purchasing
+            case .purchased:
+                UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier)
+                queue.finishTransaction(transaction)
+                transactionState = .purchased
+            case .restored:
+                UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier)
+                queue.finishTransaction(transaction)
+                transactionState = .restored
+            case .failed, .deferred:
+                print("Payment Queue Error: \(String(describing: transaction.error))")
+                queue.finishTransaction(transaction)
+                transactionState = .failed
+            default:
+                queue.finishTransaction(transaction)
+            }
+        }
+    }
+    
+    // 2.
+    func restoreProducts() {
+        print("Restoring products ...")
+        SKPaymentQueue.default().restoreCompletedTransactions()
     }
 }

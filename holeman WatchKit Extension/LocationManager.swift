@@ -55,7 +55,7 @@ class LocationManager: NSObject, ObservableObject {
         self.locationManager.delegate = self
         self.locationManager.distanceFilter = kCLDistanceFilterNone
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.requestWhenInUseAuthorization() // ToDo
         
         if CLLocationManager.headingAvailable() {
             self.locationManager.startUpdatingLocation()
