@@ -128,7 +128,7 @@ struct Util {
             return "스타트 홀이 멀리\n떨어져 있네요."
             
         case 3:
-            return "스타트 홀 근처로\n이동해 주세요."
+            return "스타트 홀 근처로\n이동해주세요."
             
         default:
             return "스타트 홀로 가시면\n자동으로 시작됩니다."

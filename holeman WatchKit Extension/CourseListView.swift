@@ -73,29 +73,31 @@ struct CourseListView: View {
                                 
                                 Button(action: {
                                     self.selectedCourseIndex = index
-                                    // print("button click", name)
                                     
-                                    /*
-                                     withAnimation {
-                                     self.mode = 2
-                                     }
-                                     */
-                                    // ToDo: 2021-02-22, in-app purchases
-                                    storeManager.getProducts(productIDs: ["com.nubeble.holeman.iap.course",
-                                                                          "com.nubeble.holeman.watchkitapp.iap.test1",
-                                                                          "com.nubeble.holeman.watchkitapp.watchkitextension.iap.test100",
-                                                                          
-                                                                          "course",
-                                                                          
-                                                                          "com.nubeble.holeman.watchkitapp.test2",
-                                                                          "com.nubeble.holeman.watchkitapp.watchkitextension.test2",
-                                                                          
-                                                                          
-                                                                          "com.nubeble.holeman.test2"])
                                     
                                     withAnimation {
-                                        self.mode = 21
+                                        self.mode = 2
                                     }
+                                    
+                                    
+                                    // ToDo: 2021-02-22, in-app purchases
+                                    /*
+                                     storeManager.getProducts(productIDs: ["com.nubeble.holeman.iap.course",
+                                     "com.nubeble.holeman.watchkitapp.iap.test1",
+                                     "com.nubeble.holeman.watchkitapp.watchkitextension.iap.test100",
+                                     
+                                     "course",
+                                     
+                                     "com.nubeble.holeman.watchkitapp.test2",
+                                     "com.nubeble.holeman.watchkitapp.watchkitextension.test2",
+                                     
+                                     
+                                     "com.nubeble.holeman.test2"])
+                                     
+                                     withAnimation {
+                                     self.mode = 21
+                                     }
+                                     */
                                 }) {
                                     /*
                                      Text(str1 + "\n" + str2).font(.system(size: 18))
@@ -233,13 +235,13 @@ struct CourseListView: View {
     }
     
     func findNearbyCourse(_ location: CLLocation) {
-        findNearbyCourse(location) { result in
+        findAllCourses() { result in
             if result == false {
                 // no course nearby. try again in 3 sec
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                     if self.findNearbyCourseCounter == 10 {
                         withAnimation(.linear(duration: 0.5)) {
-                            self.textMessage = "잠시 후 다시 시도해 주세요."
+                            self.textMessage = "잠시 후 다시\n시도해주세요."
                         }
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
@@ -264,7 +266,7 @@ struct CourseListView: View {
         }
     }
     
-    func findNearbyCourse(_ location: CLLocation, onComplete: @escaping (_ result: Bool) -> Void) {
+    func findAllCourses(onComplete: @escaping (_ result: Bool) -> Void) {
         CloudManager.fetchAllCourses(String(self.countryCode!)) { records in
             // print(#function, records)
             if let records = records {

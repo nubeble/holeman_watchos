@@ -68,6 +68,7 @@ struct HoleSearchView: View {
                         let range2 = i2..<end1!
                         let str2 = name[range2]
                         
+                        
                         // Text(str1).font(.system(size: 18))
                         Text(str1).font(.system(size: 16))
                             .fixedSize(horizontal: false, vertical: true)
@@ -80,6 +81,11 @@ struct HoleSearchView: View {
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 4)
+                        
+                        /*
+                         Text(str1).font(.system(size: 16)).lineLimit(1)
+                         Text(str2).font(.system(size: 16 * 0.8)).lineLimit(1)
+                         */
                         
                         Spacer().frame(maxHeight: .infinity)
                     }
@@ -239,7 +245,7 @@ struct HoleSearchView: View {
             
         } else if self.mode == 10 { // go back
             
-            // CourseView()
+            CourseView()
             
         } else if self.mode == 20 { // move to next (MainView)
             
@@ -463,16 +469,38 @@ struct HoleSearchView: View {
     }
     
     func calcDistance() {
-        print("calcDistance")
+        print("calcDistance", self.findStartHoleCounter)
+        
+        if self.findStartHoleCounter == 10 {
+            // ToDo: 현재처럼 CourseView로 돌아가는게 아니라, O(refresh) | X(go back) 버튼을 띄워 물어봐야 한다!
+            
+            // 골프존카운티 안성H
+            // golfzone county Ansung H
+            
+            // 근처에 스타트 홀을 찾을 수 없습니다. 계속 찾으시겠습니까?
+            
+            withAnimation(.linear(duration: 0.5)) {
+                self.textMessage = "잠시 후 다시\n시도해주세요."
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                // back to CourseView
+                withAnimation {
+                    self.mode = 10
+                }
+            }
+            
+            return
+        }
         
         DispatchQueue.main.async {
             let locationManager = LocationManager()
             
-            var runCount = 0
+            // var runCount = 0
             
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                runCount += 1
-                print(#function, "Timer fired #\(runCount)")
+                // runCount += 1
+                // print(#function, "Timer fired #\(runCount)")
                 
                 if let location = locationManager.lastLocation {
                     print("Timer stopped")
@@ -499,7 +527,7 @@ struct HoleSearchView: View {
                         print(#function, fullBack!, distance)
                         
                         let d = distance - Double(fullBack!)
-                        if d < 300 { // ToDo: 30m
+                        if d < 30 { // ToDo: 30m
                             list.append(startHole.number)
                         }
                     }

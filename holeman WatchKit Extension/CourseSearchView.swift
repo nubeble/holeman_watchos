@@ -233,18 +233,19 @@ struct CourseSearchView: View {
                                 Button(action: {
                                     self.selectedCourseIndex = index
                                     
+                                    // move to next (HoleSearchView)
+                                    withAnimation {
+                                        self.mode = 20
+                                    }
+                                    
+                                    // ToDo: 2021-02-22, in-app purchases
                                     /*
-                                     // move to next (HoleSearchView)
+                                     storeManager.getProducts(productIDs: ["com.nubeble.holeman.iap.course", "com.nubeble.holeman.test1"])
+                                     
                                      withAnimation {
-                                     self.mode = 20
+                                     self.mode = 21
                                      }
                                      */
-                                    // ToDo: 2021-02-22, in-app purchases
-                                    storeManager.getProducts(productIDs: ["com.nubeble.holeman.iap.course", "com.nubeble.holeman.test1"])
-                                    
-                                    withAnimation {
-                                        self.mode = 21
-                                    }
                                 }) {
                                     /*
                                      Text(str1 + "\n" + str2).font(.system(size: 18))
@@ -390,7 +391,7 @@ struct CourseSearchView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                     if self.findNearbyCourseCounter == 10 {
                         withAnimation(.linear(duration: 0.5)) {
-                            self.textMessage = "잠시 후 다시 시도해 주세요."
+                            self.textMessage = "잠시 후 다시\n시도해주세요."
                         }
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
