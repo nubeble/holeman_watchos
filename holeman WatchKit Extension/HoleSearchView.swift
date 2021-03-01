@@ -13,7 +13,8 @@ struct HoleSearchView: View {
     @State var textMessage: String = "스타트 홀로 가시면\n자동으로 시작됩니다."
     @State var findStartHoleCounter = 0
     
-    var from: Int?
+    // var from: Int?
+    @State var from: Int?
     var search: Bool?
     
     // @ObservedObject var locationManager = LocationManager()
@@ -53,7 +54,7 @@ struct HoleSearchView: View {
             
             ZStack {
                 
-                VStack(spacing: 1.6) {
+                VStack {
                     if let name = self.course?.name {
                         let start1 = name.firstIndex(of: "(")
                         let end1 = name.firstIndex(of: ")")
@@ -69,23 +70,17 @@ struct HoleSearchView: View {
                         let str2 = name[range2]
                         
                         
-                        // Text(str1).font(.system(size: 18))
                         Text(str1).font(.system(size: 16))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 4)
-                        // Text(str2).font(.system(size: 18 * 0.8))
+                            .padding(.leading, 2)
+                        
                         Text(str2).font(.system(size: 16 * 0.8))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 4)
-                        
-                        /*
-                         Text(str1).font(.system(size: 16)).lineLimit(1)
-                         Text(str2).font(.system(size: 16 * 0.8)).lineLimit(1)
-                         */
+                            .padding(.leading, 2)
                         
                         Spacer().frame(maxHeight: .infinity)
                     }
@@ -166,6 +161,10 @@ struct HoleSearchView: View {
                                 self.mode = 21
                             }
                         }
+                    } else if from == 500 {
+                        self.textMessage = "스타트 홀로 가시면\n자동으로 시작됩니다."
+                        
+                        calcDistance()
                     }
                 } else {
                     // 일반 실행
@@ -246,6 +245,111 @@ struct HoleSearchView: View {
         } else if self.mode == 10 { // go back
             
             CourseView()
+            
+        } else if self.mode == 11 { // O/X
+            
+            ZStack {
+                
+                VStack {
+                    if let name = self.course?.name {
+                        let start1 = name.firstIndex(of: "(")
+                        let end1 = name.firstIndex(of: ")")
+                        
+                        let i1 = name.index(start1!, offsetBy: -1)
+                        
+                        let range1 = name.startIndex..<i1
+                        let str1 = name[range1]
+                        
+                        let i2 = name.index(start1!, offsetBy: 1)
+                        
+                        let range2 = i2..<end1!
+                        let str2 = name[range2]
+                        
+                        
+                        Text(str1).font(.system(size: 16))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Text(str2).font(.system(size: 16 * 0.8))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Spacer().frame(maxHeight: .infinity)
+                    }
+                }
+                
+                VStack {
+                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
+                
+                /*
+                 VStack(alignment: HorizontalAlignment.center) {
+                 Spacer().frame(maxHeight: .infinity)
+                 
+                 Image("tee up")
+                 .resizable()
+                 .frame(width: 200 / 5, height: 200 / 5)
+                 .padding(.bottom, 15)
+                 }
+                 .frame(maxHeight: .infinity)
+                 .edgesIgnoringSafeArea(.bottom)
+                 */
+                
+                // O/X button
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    HStack(spacing: 40) {
+                        // button 1
+                        Button(action: {
+                            
+                            // back to CourseView
+                            withAnimation {
+                                self.mode = 10
+                            }
+                            
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                    .frame(width: 54, height: 54)
+                                
+                                Image(systemName: "xmark")
+                                    .font(Font.system(size: 28, weight: .heavy))
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(.bottom, 10)
+                        
+                        // button 2
+                        Button(action: {
+                            
+                            // self.textMessage = "스타트 홀로 가시면\n자동으로 시작됩니다."
+                            self.from = 500
+                            
+                            withAnimation {
+                                self.mode = 0
+                            }
+                            
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.green)
+                                    .frame(width: 54, height: 54)
+                                
+                                Image(systemName: "checkmark")
+                                    .font(Font.system(size: 28, weight: .heavy))
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(.bottom, 10)
+                    }
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
             
         } else if self.mode == 20 { // move to next (MainView)
             
@@ -377,7 +481,9 @@ struct HoleSearchView: View {
                     
                     onComplete()
                 } else { // records.count != 1
+                    
                     // ToDo: error handling
+                    
                 }
             } else {
                 // N/A
@@ -472,25 +578,32 @@ struct HoleSearchView: View {
         print("calcDistance", self.findStartHoleCounter)
         
         if self.findStartHoleCounter == 10 {
-            // ToDo: 현재처럼 CourseView로 돌아가는게 아니라, O(refresh) | X(go back) 버튼을 띄워 물어봐야 한다!
+            self.findStartHoleCounter = 0
             
-            // 골프존카운티 안성H
-            // golfzone county Ansung H
+            self.textMessage = "스타트 홀을 찾을 수\n없어요. 계속 찾을까요?"
             
-            // 근처에 스타트 홀을 찾을 수 없습니다. 계속 찾으시겠습니까?
-            
-            withAnimation(.linear(duration: 0.5)) {
-                self.textMessage = "잠시 후 다시\n시도해주세요."
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                // back to CourseView
-                withAnimation {
-                    self.mode = 10
-                }
+            withAnimation {
+                self.mode = 11
             }
             
             return
+            
+            /*
+             // CourseView로 돌아가는게 아니라, O(refresh) | X(go back) 버튼을 띄워 물어봐야 한다!
+             
+             withAnimation(.linear(duration: 0.5)) {
+             self.textMessage = "잠시 후 다시\n시도해주세요."
+             }
+             
+             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+             // back to CourseView
+             withAnimation {
+             self.mode = 10
+             }
+             }
+             
+             return
+             */
         }
         
         DispatchQueue.main.async {
@@ -527,7 +640,8 @@ struct HoleSearchView: View {
                         print(#function, fullBack!, distance)
                         
                         let d = distance - Double(fullBack!)
-                        if d < 30 { // ToDo: 30m
+                        // ToDo: internal test
+                        if d < 300000 { // ToDo: 30m
                             list.append(startHole.number)
                         }
                     }

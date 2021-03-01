@@ -247,6 +247,68 @@ struct IntroView: View {
         } else if self.mode == 11 || self.mode == 12 || self.mode == 13 || self.mode == 14 || self.mode == 15 {
             
             ZStack {
+                
+                VStack {
+                    // show course name & hole name
+                    
+                    if self.mode == 12 {
+                        let course = self.course?.name ?? ""
+                        let hole = "후반전 시작" // ToDo: language bundle
+                        
+                        Text(course).font(.system(size: 16))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        // Text(hole).font(.system(size: 16))
+                        Text(hole).font(.system(size: 16 * 0.8))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    } else {
+                        let course = self.course?.name ?? ""
+                        let hole = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
+                        
+                        if course != "" && hole != "" {
+                            Text(course).font(.system(size: 16))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .lineLimit(1)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            // Text(hole).font(.system(size: 16))
+                            Text(hole).font(.system(size: 16 * 0.8))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .lineLimit(1)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        } else if course != "" && hole == "" {
+                            let start1 = course.firstIndex(of: "(")
+                            let end1 = course.firstIndex(of: ")")
+                            
+                            let i1 = course.index(start1!, offsetBy: -1)
+                            
+                            let range1 = course.startIndex..<i1
+                            let str1 = course[range1]
+                            
+                            let i2 = course.index(start1!, offsetBy: 1)
+                            
+                            let range2 = i2..<end1!
+                            let str2 = course[range2]
+                            
+                            Text(str1).font(.system(size: 16))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .lineLimit(1)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Text(str2).font(.system(size: 16 * 0.8))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .lineLimit(1)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
                 VStack {
                     Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
@@ -273,7 +335,6 @@ struct IntroView: View {
                         .buttonStyle(PlainButtonStyle())
                         .padding(.bottom, 10)
                         // .opacity(button1Opacity)
-                        
                         
                         // button 2
                         Button(action: {
@@ -349,16 +410,11 @@ struct IntroView: View {
             
         } else if self.mode == 31 {
             
-            // 알림을 허용해주세요
+            // 알림을 허용해주세요 (Please Allow Notifications)
             // iPhone에서 Apple Watch 앱을 열고
             // '나의 시계' 탭 - '알림' - 'Holeman' - 알림 허용
             
-            // Please Allow Notifications
-            // WKExtension.shared().openSystemURL(URL(string: "App-Prefs:root=LOCATION_SERVICES")!)
-            // user to the Settings for your app by passing UIApplicationOpenSettingsURLString to UIApplication's openURL: method.
-            
-            
-            // ToDo: 설정에서 권한 설정 후 복귀하면 어떻게 되나?
+            // ToDo: open Notification in iPhone
             
             ZStack {
                 VStack {
@@ -555,18 +611,24 @@ struct IntroView: View {
             if date1 == date2 { // 이전 플레이 홀에 이어서 실행
                 
                 if halftime == 1 { // 전반 중 앱이 죽었다가 다시 실행
+                    loadHole()
+                    
                     self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
                     
                     withAnimation {
                         self.mode = 11
                     }
                 } else if halftime == 2 { // 전반 종료 후 앱이 죽었다가 다시 실행
+                    loadHole()
+                    
                     self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
                     
                     withAnimation {
                         self.mode = 12
                     }
                 } else if halftime == 3 { // 후반 중 앱이 죽었다가 다시 실행
+                    loadHole()
+                    
                     self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
                     
                     withAnimation {
@@ -577,6 +639,8 @@ struct IntroView: View {
                 }
                 
             } else { // 이전 플레이 홀 날짜가 다를 수 있다. (오늘 구매하고 아직 홀 정보가 없다는 뜻)
+                loadCourse()
+                
                 self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
                 
                 withAnimation {
@@ -584,6 +648,8 @@ struct IntroView: View {
                 }
             }
         } else { // 구매하고 홀 플레이 하기 전에 앱이 종료되었다.
+            loadCourse()
+            
             self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
             
             withAnimation {
@@ -593,86 +659,93 @@ struct IntroView: View {
     }
     
     func moveNext(_ search: Bool) {
-        // holeNumber, teeingGroundIndex, course
+        /*
+         let time = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TIME")
+         let holeNumber = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_HOLE_NUMBER")
+         let teeingGroundIndex = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INDEX")
+         
+         if time != nil {
+         // get course
+         // --
+         var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
+         
+         let address = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_ADDRESS")
+         let countryCode = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_COUNTRY_CODE")
+         
+         c.address = address!
+         c.countryCode = countryCode!
+         
+         let courses = UserDefaults.standard.stringArray(forKey: "LAST_PLAYED_HOLE_COURSE_COURSES")
+         for course in courses! {
+         do {
+         let data = Data(course.utf8)
+         let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
+         
+         let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
+         c.courses.append(item)
+         } catch {
+         print(error)
+         return
+         }
+         }
+         
+         let id = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_COURSE_ID")
+         
+         let latitude = UserDefaults.standard.double(forKey: "LAST_PLAYED_HOLE_COURSE_LATITUDE")
+         let longitude = UserDefaults.standard.double(forKey: "LAST_PLAYED_HOLE_COURSE_LONGITUDE")
+         let name = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_NAME")
+         
+         c.id = Int64(id)
+         c.location = CLLocation(latitude: latitude, longitude: longitude)
+         c.name = name!
+         // --
+         
+         // get teeingGroundInfo
+         // --
+         let unit = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INFO_UNIT")
+         
+         let holes = UserDefaults.standard.stringArray(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INFO_HOLES")
+         var array: [TeeingGrounds] = []
+         for hole in holes! {
+         do {
+         let data = Data(hole.utf8)
+         let decodedData = try JSONDecoder().decode(TeeingGroundsData.self, from: data)
+         
+         //let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
+         //c.courses.append(item)
+         
+         var teeingGrounds: [TeeingGround] = []
+         for tg in decodedData.teeingGrounds {
+         let teeingGround = TeeingGround(name: tg.name, color: tg.color, distance: tg.distance)
+         teeingGrounds.append(teeingGround)
+         }
+         
+         let item = TeeingGrounds(teeingGrounds: teeingGrounds, par: decodedData.par, handicap: decodedData.handicap, name: decodedData.name)
+         
+         array.append(item)
+         } catch {
+         print(error)
+         return
+         }
+         }
+         
+         let t = TeeingGroundInfoModel(unit: unit!, holes: array)
+         // --
+         
+         moveToHoleSearchView(100, search, c, holeNumber, t, teeingGroundIndex)
+         }
+         */
+        // moveToHoleSearchView(100, search, self.course, self.holeNumber, self.teeingGroundInfo, self.teeingGroundIndex)
         
-        let time = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TIME")
-        let holeNumber = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_HOLE_NUMBER")
-        let teeingGroundIndex = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INDEX")
+        self.from = 100
+        self.search = search
         
-        if time != nil {
-            // get course
-            // --
-            var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
-            
-            let address = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_ADDRESS")
-            let countryCode = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_COUNTRY_CODE")
-            
-            c.address = address!
-            c.countryCode = countryCode!
-            
-            let courses = UserDefaults.standard.stringArray(forKey: "LAST_PLAYED_HOLE_COURSE_COURSES")
-            for course in courses! {
-                do {
-                    let data = Data(course.utf8)
-                    let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
-                    
-                    let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
-                    c.courses.append(item)
-                } catch {
-                    print(error)
-                    return
-                }
-            }
-            
-            let id = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_COURSE_ID")
-            
-            let latitude = UserDefaults.standard.double(forKey: "LAST_PLAYED_HOLE_COURSE_LATITUDE")
-            let longitude = UserDefaults.standard.double(forKey: "LAST_PLAYED_HOLE_COURSE_LONGITUDE")
-            let name = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_NAME")
-            
-            c.id = Int64(id)
-            c.location = CLLocation(latitude: latitude, longitude: longitude)
-            c.name = name!
-            // --
-            
-            // get teeingGroundInfo
-            // --
-            let unit = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INFO_UNIT")
-            
-            let holes = UserDefaults.standard.stringArray(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INFO_HOLES")
-            var array: [TeeingGrounds] = []
-            for hole in holes! {
-                do {
-                    let data = Data(hole.utf8)
-                    let decodedData = try JSONDecoder().decode(TeeingGroundsData.self, from: data)
-                    
-                    //let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
-                    //c.courses.append(item)
-                    
-                    var teeingGrounds: [TeeingGround] = []
-                    for tg in decodedData.teeingGrounds {
-                        let teeingGround = TeeingGround(name: tg.name, color: tg.color, distance: tg.distance)
-                        teeingGrounds.append(teeingGround)
-                    }
-                    
-                    let item = TeeingGrounds(teeingGrounds: teeingGrounds, par: decodedData.par, handicap: decodedData.handicap, name: decodedData.name)
-                    
-                    array.append(item)
-                } catch {
-                    print(error)
-                    return
-                }
-            }
-            
-            let t = TeeingGroundInfoModel(unit: unit!, holes: array)
-            // --
-            
-            moveToHoleSearchView(100, search, c, holeNumber, t, teeingGroundIndex)
+        withAnimation {
+            self.mode = 21
         }
-        
     }
     
-    func moveToHoleSearchView(_ from: Int, _ search: Bool, _ course: CourseModel, _ holeNumber: Int, _ teeingGroundInfo: TeeingGroundInfoModel?, _ teeingGroundIndex: Int) {
+    func moveToHoleSearchView(_ from: Int, _ search: Bool, _ course: CourseModel?, _ holeNumber: Int?, _ teeingGroundInfo: TeeingGroundInfoModel?, _ teeingGroundIndex: Int?) {
         self.from = from
         self.search = search
         self.course = course
@@ -698,42 +771,54 @@ struct IntroView: View {
             }
         }
         
-        // get course
-        // --
-        var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
+        /*
+         // get course
+         // --
+         var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
+         
+         let address = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_ADDRESS")
+         let countryCode = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_COUNTRY_CODE")
+         
+         c.address = address!
+         c.countryCode = countryCode!
+         
+         let courses = UserDefaults.standard.stringArray(forKey: "LAST_PURCHASED_COURSE_COURSE_COURSES")
+         for course in courses! {
+         do {
+         let data = Data(course.utf8)
+         let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
+         
+         let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
+         c.courses.append(item)
+         } catch {
+         print(error)
+         return
+         }
+         }
+         
+         let id = UserDefaults.standard.integer(forKey: "LAST_PURCHASED_COURSE_COURSE_ID")
+         
+         let latitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LATITUDE")
+         let longitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LONGITUDE")
+         let name = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_NAME")
+         
+         c.id = Int64(id)
+         c.location = CLLocation(latitude: latitude, longitude: longitude)
+         c.name = name!
+         // --
+         */
         
-        let address = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_ADDRESS")
-        let countryCode = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_COUNTRY_CODE")
+        // moveToHoleSearchView(400, true, c, 0, nil, -1)
+        self.from = 400
+        self.search = true
+        // self.course = c
+        self.holeNumber = 0
+        // self.teeingGroundInfo = nil
+        self.teeingGroundIndex = -1
         
-        c.address = address!
-        c.countryCode = countryCode!
-        
-        let courses = UserDefaults.standard.stringArray(forKey: "LAST_PURCHASED_COURSE_COURSE_COURSES")
-        for course in courses! {
-            do {
-                let data = Data(course.utf8)
-                let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
-                
-                let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
-                c.courses.append(item)
-            } catch {
-                print(error)
-                return
-            }
+        withAnimation {
+            self.mode = 21
         }
-        
-        let id = UserDefaults.standard.integer(forKey: "LAST_PURCHASED_COURSE_COURSE_ID")
-        
-        let latitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LATITUDE")
-        let longitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LONGITUDE")
-        let name = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_NAME")
-        
-        c.id = Int64(id)
-        c.location = CLLocation(latitude: latitude, longitude: longitude)
-        c.name = name!
-        // --
-        
-        moveToHoleSearchView(400, true, c, 0, nil, -1)
     }
     
     /*
@@ -878,6 +963,131 @@ struct IntroView: View {
                 }
             }
         }
+    }
+    
+    func loadHole() {
+        // let time = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TIME")
+        let holeNumber = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_HOLE_NUMBER")
+        let teeingGroundIndex = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INDEX")
+        
+        // if time != nil {
+        // get course
+        // --
+        var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
+        
+        let address = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_ADDRESS")
+        let countryCode = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_COUNTRY_CODE")
+        
+        c.address = address!
+        c.countryCode = countryCode!
+        
+        let courses = UserDefaults.standard.stringArray(forKey: "LAST_PLAYED_HOLE_COURSE_COURSES")
+        for course in courses! {
+            do {
+                let data = Data(course.utf8)
+                let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
+                
+                let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
+                c.courses.append(item)
+            } catch {
+                print(error)
+                
+                // ToDo: error handling
+                
+                return
+            }
+        }
+        
+        let id = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_COURSE_ID")
+        
+        let latitude = UserDefaults.standard.double(forKey: "LAST_PLAYED_HOLE_COURSE_LATITUDE")
+        let longitude = UserDefaults.standard.double(forKey: "LAST_PLAYED_HOLE_COURSE_LONGITUDE")
+        let name = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_NAME")
+        
+        c.id = Int64(id)
+        c.location = CLLocation(latitude: latitude, longitude: longitude)
+        c.name = name!
+        // --
+        
+        // get teeingGroundInfo
+        // --
+        let unit = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INFO_UNIT")
+        
+        let holes = UserDefaults.standard.stringArray(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INFO_HOLES")
+        var array: [TeeingGrounds] = []
+        for hole in holes! {
+            do {
+                let data = Data(hole.utf8)
+                let decodedData = try JSONDecoder().decode(TeeingGroundsData.self, from: data)
+                
+                //let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
+                //c.courses.append(item)
+                
+                var teeingGrounds: [TeeingGround] = []
+                for tg in decodedData.teeingGrounds {
+                    let teeingGround = TeeingGround(name: tg.name, color: tg.color, distance: tg.distance)
+                    teeingGrounds.append(teeingGround)
+                }
+                
+                let item = TeeingGrounds(teeingGrounds: teeingGrounds, par: decodedData.par, handicap: decodedData.handicap, name: decodedData.name)
+                
+                array.append(item)
+            } catch {
+                print(error)
+                
+                // ToDo: error handling
+                
+                return
+            }
+        }
+        
+        let t = TeeingGroundInfoModel(unit: unit!, holes: array)
+        // --
+        
+        self.course = c
+        self.holeNumber = holeNumber
+        self.teeingGroundInfo = t
+        self.teeingGroundIndex = teeingGroundIndex
+        // }
+    } // end of func loadHole()
+    
+    func loadCourse() {
+        // get course
+        // --
+        var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
+        
+        let address = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_ADDRESS")
+        let countryCode = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_COUNTRY_CODE")
+        
+        c.address = address!
+        c.countryCode = countryCode!
+        
+        let courses = UserDefaults.standard.stringArray(forKey: "LAST_PURCHASED_COURSE_COURSE_COURSES")
+        for course in courses! {
+            do {
+                let data = Data(course.utf8)
+                let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
+                
+                let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
+                c.courses.append(item)
+            } catch {
+                print(error)
+                return
+            }
+        }
+        
+        let id = UserDefaults.standard.integer(forKey: "LAST_PURCHASED_COURSE_COURSE_ID")
+        
+        let latitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LATITUDE")
+        let longitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LONGITUDE")
+        let name = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_NAME")
+        
+        c.id = Int64(id)
+        c.location = CLLocation(latitude: latitude, longitude: longitude)
+        c.name = name!
+        // --
+        
+        self.course = c
     }
 }
 

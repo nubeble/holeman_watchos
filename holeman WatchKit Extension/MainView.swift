@@ -195,7 +195,7 @@ struct MainView: View {
                  .edgesIgnoringSafeArea(.all)
                  */
                 
-                VStack(spacing: 1.6) {
+                VStack {
                     if let name = self.course?.name {
                         let start1 = name.firstIndex(of: "(")
                         let end1 = name.firstIndex(of: ")")
@@ -215,13 +215,13 @@ struct MainView: View {
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 4)
+                        // .padding(.leading, 2)
                         // Text(str2).font(.system(size: 18 * 0.8))
                         Text(str2).font(.system(size: 16 * 0.8))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 4)
+                        // .padding(.leading, 2)
                         
                         Spacer().frame(maxHeight: .infinity)
                     }
@@ -1067,6 +1067,12 @@ struct MainView: View {
          */
         
         if let course = self.course {
+            
+            
+            // ToDo: internal test
+            // Util.saveCourse(course)
+            
+            
             // address
             UserDefaults.standard.set(course.address, forKey: "LAST_PLAYED_HOLE_COURSE_ADDRESS")
             

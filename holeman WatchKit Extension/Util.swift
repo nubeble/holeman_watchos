@@ -119,7 +119,7 @@ struct Util {
         
         switch num {
         case 0:
-            return "스타트 홀 위치를\n찾고 있습니다."
+            return "근처에 스타트 홀을\n찾고 있습니다."
             
         case 1:
             return "스타트 홀로 가시면\n자동으로 시작됩니다."

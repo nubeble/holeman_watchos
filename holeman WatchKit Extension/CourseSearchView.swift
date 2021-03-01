@@ -173,7 +173,6 @@ struct CourseSearchView: View {
              .padding(.bottom, 10)
              // .opacity(button1Opacity)
              
-             
              // button 2
              Button(action: {
              print("button click")
@@ -391,7 +390,7 @@ struct CourseSearchView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                     if self.findNearbyCourseCounter == 10 {
                         withAnimation(.linear(duration: 0.5)) {
-                            self.textMessage = "잠시 후 다시\n시도해주세요."
+                            self.textMessage = "잠시 후 다시 시도해주세요."
                         }
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
