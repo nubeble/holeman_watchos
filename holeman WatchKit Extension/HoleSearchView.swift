@@ -10,7 +10,7 @@ import SwiftUI
 struct HoleSearchView: View {
     @State var mode: Int = 0
     
-    @State var textMessage: String = "스타트 홀로 가시면\n자동으로 시작됩니다."
+    @State var textMessage: String = "스타트 홀로 가시면 자동으로 시작됩니다."
     @State var findStartHoleCounter = 0
     
     // var from: Int?
@@ -53,7 +53,6 @@ struct HoleSearchView: View {
         if self.mode == 0 {
             
             ZStack {
-                
                 VStack {
                     if let name = self.course?.name {
                         let start1 = name.firstIndex(of: "(")
@@ -76,7 +75,7 @@ struct HoleSearchView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 2)
                         
-                        Text(str2).font(.system(size: 16 * 0.8))
+                        Text(str2).font(.system(size: 14))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -87,7 +86,7 @@ struct HoleSearchView: View {
                 }
                 
                 VStack {
-                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
                         .transition(.opacity)
                         .id(self.textMessage)
                 }
@@ -102,7 +101,6 @@ struct HoleSearchView: View {
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
-                
             }
             .onAppear(perform: {
                 if let from = self.from {
@@ -112,7 +110,7 @@ struct HoleSearchView: View {
                             if search == true {
                                 // 그늘집에서 잘 쉬셨나요? 스타트 홀로 가시면 자동으로 시작됩니다.
                                 
-                                self.textMessage = "그늘집에서 잘 쉬셨나요?\n홀로 가시면 자동 시작됩니다."
+                                self.textMessage = "그늘집에서 잘 쉬셨나요? 홀로 가시면 자동 시작됩니다."
                                 
                                 // self.save = false
                                 
@@ -140,7 +138,7 @@ struct HoleSearchView: View {
                     } else if from == 200 {
                         // 전반 종료 후 앱이 계속 떠 있는 상태로 후반 시작
                         
-                        self.textMessage = "전반 플레이가 끝났습니다.\n그늘집에서 쉬신 후\n홀로 가시면 자동 시작됩니다."
+                        self.textMessage = "전반 플레이가 끝났습니다. 그늘집에서 쉬신 후 홀로 가시면 자동 시작됩니다."
                         
                         // self.save = false
                         
@@ -154,7 +152,7 @@ struct HoleSearchView: View {
                     } else if from == 300 {
                         // 후반 종료. move to CourseSearchView
                         
-                        self.textMessage = "전후반 플레이가 모두 끝났습니다.\n수고하셨습니다."
+                        self.textMessage = "전후반 플레이가 모두 끝났습니다. 수고하셨습니다."
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                             withAnimation {
@@ -162,7 +160,7 @@ struct HoleSearchView: View {
                             }
                         }
                     } else if from == 500 {
-                        self.textMessage = "스타트 홀로 가시면\n자동으로 시작됩니다."
+                        self.textMessage = "스타트 홀로 가시면 자동으로 시작됩니다."
                         
                         calcDistance()
                     }
@@ -186,7 +184,7 @@ struct HoleSearchView: View {
                     ScrollViewReader { value in
                         LazyVStack {
                             Text("Select Hole").font(.system(size: 20, weight: .semibold))
-                            Text("스타트 홀을 선택하세요.").font(.system(size: 16, weight: .light)).padding(.bottom, 10)
+                            Text("스타트 홀을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
                             
                             ForEach(0 ..< self.startHoles.count) {
                                 let index = $0
@@ -249,7 +247,6 @@ struct HoleSearchView: View {
         } else if self.mode == 11 { // O/X
             
             ZStack {
-                
                 VStack {
                     if let name = self.course?.name {
                         let start1 = name.firstIndex(of: "(")
@@ -271,7 +268,7 @@ struct HoleSearchView: View {
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(str2).font(.system(size: 16 * 0.8))
+                        Text(str2).font(.system(size: 14))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -281,7 +278,7 @@ struct HoleSearchView: View {
                 }
                 
                 VStack {
-                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 /*
@@ -326,7 +323,7 @@ struct HoleSearchView: View {
                         // button 2
                         Button(action: {
                             
-                            // self.textMessage = "스타트 홀로 가시면\n자동으로 시작됩니다."
+                            // self.textMessage = "스타트 홀로 가시면 자동으로 시작됩니다."
                             self.from = 500
                             
                             withAnimation {
@@ -493,13 +490,16 @@ struct HoleSearchView: View {
     
     func getStartHole() {
         let groupId = self.course?.id
-        //print(#function, groupId)
+        print(#function, groupId!)
+        
         getHoles(groupId!) {
             onGetHoles(groupId!)
         }
     }
     
     func onGetHoles(_ groupId: Int64) {
+        print(#function, groupId)
+        
         let courses = self.course?.courses
         
         for (_, item) in courses!.enumerated() {
@@ -567,7 +567,6 @@ struct HoleSearchView: View {
                     
                     break
                 }
-                
             }
         }
         
@@ -575,12 +574,12 @@ struct HoleSearchView: View {
     }
     
     func calcDistance() {
-        print("calcDistance", self.findStartHoleCounter)
+        // print("calcDistance", self.findStartHoleCounter)
         
         if self.findStartHoleCounter == 10 {
             self.findStartHoleCounter = 0
             
-            self.textMessage = "스타트 홀을 찾을 수\n없어요. 계속 찾을까요?"
+            self.textMessage = "스타트 홀을 찾지 못했습니다. 계속 찾을까요?"
             
             withAnimation {
                 self.mode = 11
@@ -592,7 +591,7 @@ struct HoleSearchView: View {
              // CourseView로 돌아가는게 아니라, O(refresh) | X(go back) 버튼을 띄워 물어봐야 한다!
              
              withAnimation(.linear(duration: 0.5)) {
-             self.textMessage = "잠시 후 다시\n시도해주세요."
+             self.textMessage = "잠시 후 다시 시도해주세요."
              }
              
              DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
@@ -616,7 +615,7 @@ struct HoleSearchView: View {
                 // print(#function, "Timer fired #\(runCount)")
                 
                 if let location = locationManager.lastLocation {
-                    print("Timer stopped")
+                    // print("Timer stopped")
                     timer.invalidate()
                     
                     let latitude = location.coordinate.latitude
@@ -640,8 +639,9 @@ struct HoleSearchView: View {
                         print(#function, fullBack!, distance)
                         
                         let d = distance - Double(fullBack!)
-                        // ToDo: internal test
-                        if d < 300000 { // ToDo: 30m
+                        
+                        // if d < 30 { // ToDo: static (30 m)
+                        if d < 300 * 1000 { // ToDo: internal test (300 km)
                             list.append(startHole.number)
                         }
                     }

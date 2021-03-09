@@ -31,11 +31,11 @@ struct MenuView: View {
                 ScrollView() {
                     VStack {
                         Text("Settings").font(.system(size: 20, weight: .semibold))
-                        Text("원하시는 기능을 선택하세요.").font(.system(size: 16, weight: .light)).padding(.bottom, 10)
+                        Text("원하시는 기능을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
                         
                         // item 1
                         Button(action: {
-                            self.textMessage = "플레이 중인 라운드를\n종료하시겠습니까?"
+                            self.textMessage = "플레이 중인 라운드를 종료하시겠습니까?"
                             
                             withAnimation {
                                 self.mode = 1
@@ -56,7 +56,7 @@ struct MenuView: View {
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("라운드를 종료하고 코스 선택으로 돌아갑니다.").font(.system(size: 18 * 0.8)).foregroundColor(Color.gray)
+                                    Text("라운드를 종료하고 코스 선택으로 돌아갑니다.").font(.system(size: 12)).foregroundColor(Color.gray)
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -90,7 +90,7 @@ struct MenuView: View {
                          // .fixedSize(horizontal: false, vertical: true)
                          // .lineLimit(1)
                          .frame(maxWidth: .infinity, alignment: .leading)
-                         Text("앱을 종료합니다.").font(.system(size: 18 * 0.8)).foregroundColor(Color.gray)
+                         Text("앱을 종료합니다.").font(.system(size: 12)).foregroundColor(Color.gray)
                          // .fixedSize(horizontal: false, vertical: true)
                          // .lineLimit(1)
                          .frame(maxWidth: .infinity, alignment: .leading)
@@ -103,7 +103,7 @@ struct MenuView: View {
                         
                         // item 3
                         Button(action: {
-                            self.textMessage = "정말 로그아웃을\n하시겠습니까?"
+                            self.textMessage = "정말 로그아웃을 하시겠습니까?"
                             
                             withAnimation {
                                 self.mode = 3
@@ -124,7 +124,7 @@ struct MenuView: View {
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("로그아웃 후 로그인 데이터를 삭제합니다.").font(.system(size: 18 * 0.8)).foregroundColor(Color.gray)
+                                    Text("로그아웃 후 계정 정보를 삭제합니다.").font(.system(size: 12)).foregroundColor(Color.gray)
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -163,7 +163,7 @@ struct MenuView: View {
             
             ZStack {
                 VStack {
-                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {

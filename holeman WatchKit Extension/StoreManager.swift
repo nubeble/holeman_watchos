@@ -10,35 +10,39 @@ import StoreKit
 
 class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     //FETCH PRODUCTS
-    // var request: SKProductsRequest!
+    var request: SKProductsRequest? // store the request as a property
     
     @Published var myProducts = [SKProduct]()
     
     func getProducts(productIDs: [String]) {
-        if SKPaymentQueue.canMakePayments() {
-            print(#function, "Start requesting products ...")
-            
-            let request = SKProductsRequest(productIdentifiers: Set(productIDs))
-            request.delegate = self
-            request.start()
-        } else {
-            print(#function, "Can't make payments ...")
-        }
+        print(#function, "Start requesting products ...")
+        
+        self.request?.cancel()
+        
+        self.request = SKProductsRequest(productIdentifiers: Set(productIDs))
+        self.request!.delegate = self
+        self.request!.start()
     }
     
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         print(#function, "Received response")
         
         if !response.products.isEmpty {
-            for fetchedProduct in response.products {
+            for product in response.products {
                 DispatchQueue.main.async {
-                    self.myProducts.append(fetchedProduct)
+                    self.myProducts.append(product)
+                    
+                    // print("productIdentifier", product.productIdentifier)
+                    // product.localizedTitle
+                    // product.price
                 }
             }
             
             for invalidIdentifier in response.invalidProductIdentifiers {
                 print("Invalid identifiers found: \(invalidIdentifier)")
             }
+        } else {
+            print(#function, "response.products is empty")
         }
     }
     
@@ -57,7 +61,7 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     func purchaseProduct(product: SKProduct) {
         if SKPaymentQueue.canMakePayments() {
             let payment = SKPayment(product: product)
-            SKPaymentQueue.default().add(payment) // ToDo: remove
+            SKPaymentQueue.default().add(payment) // ToDo: iap, remove after add
         } else {
             print("Can't make payment")
         }
@@ -67,19 +71,31 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
         for transaction in transactions {
             switch transaction.transactionState {
             case .purchasing:
-                transactionState = .purchasing
+                DispatchQueue.main.async {
+                    self.transactionState = .purchasing
+                }
+                
             case .purchased:
-                UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier)
+                UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap
                 queue.finishTransaction(transaction)
-                transactionState = .purchased
+                DispatchQueue.main.async {
+                    self.transactionState = .purchased
+                }
+                
             case .restored:
-                UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier)
+                UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap
                 queue.finishTransaction(transaction)
-                transactionState = .restored
+                DispatchQueue.main.async {
+                    self.transactionState = .restored
+                }
+                
             case .failed, .deferred:
                 print("Payment Queue Error: \(String(describing: transaction.error))")
                 queue.finishTransaction(transaction)
-                transactionState = .failed
+                DispatchQueue.main.async {
+                    self.transactionState = .failed
+                }
+                
             default:
                 queue.finishTransaction(transaction)
             }

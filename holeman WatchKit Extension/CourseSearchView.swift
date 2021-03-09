@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct CourseSearchView: View {
     @State var mode: Int = 0
@@ -51,66 +52,7 @@ struct CourseSearchView: View {
         } else if self.mode == 1 {
             // N/A
         } else if self.mode == 2 {
-            /*
-             ZStack {
-             Text(text1).font(.system(size: 22)).multilineTextAlignment(.center)
-             
-             VStack {
-             Spacer().frame(maxHeight: .infinity)
-             
-             HStack(spacing: 40) {
-             // button 1
-             Button(action: {
-             print("button click")
-             /*
-             withAnimation {
-             self.mode = 3
-             }
-             */
-             }) {
-             ZStack {
-             Circle()
-             .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-             .frame(width: 54, height: 54)
-             
-             Image(systemName: "xmark")
-             .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
-             .font(Font.system(size: 28, weight: .heavy))
-             }
-             }
-             .buttonStyle(PlainButtonStyle())
-             .padding(.bottom, 10)
-             // .opacity(button1Opacity)
-             
-             
-             // button 3
-             
-             Button(action: {
-             print("button click")
-             /*
-             withAnimation {
-             self.mode = 3
-             }
-             */
-             }) {
-             ZStack {
-             Circle()
-             .fill(Color.green)
-             .frame(width: 54, height: 54)
-             
-             Image(systemName: "checkmark")
-             .font(Font.system(size: 28, weight: .heavy))
-             }
-             }
-             .buttonStyle(PlainButtonStyle())
-             .padding(.bottom, 10)
-             // .opacity(button1Opacity)
-             }
-             }
-             .frame(maxHeight: .infinity)
-             .edgesIgnoringSafeArea(.bottom)
-             } // end of ZStack
-             */
+            // N/A
         } else if self.mode == 3 {
             /*
              ZStack {
@@ -206,7 +148,7 @@ struct CourseSearchView: View {
                     ScrollViewReader { value in
                         LazyVStack {
                             Text("Select Course").font(.system(size: 20, weight: .semibold))
-                            Text("골프장을 선택하세요.").font(.system(size: 16, weight: .light)).padding(.bottom, 10)
+                            Text("골프장을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
                             
                             // Divider()
                             
@@ -232,19 +174,17 @@ struct CourseSearchView: View {
                                 Button(action: {
                                     self.selectedCourseIndex = index
                                     
-                                    // move to next (HoleSearchView)
-                                    withAnimation {
-                                        self.mode = 20
-                                    }
-                                    
-                                    // ToDo: 2021-02-22, in-app purchases
+                                    // ToDo: internal test
                                     /*
-                                     storeManager.getProducts(productIDs: ["com.nubeble.holeman.iap.course", "com.nubeble.holeman.test1"])
-                                     
                                      withAnimation {
-                                     self.mode = 21
+                                     self.mode = 20
                                      }
                                      */
+                                    
+                                    // payment
+                                    withAnimation {
+                                        self.mode = 50
+                                    }
                                 }) {
                                     /*
                                      Text(str1 + "\n" + str2).font(.system(size: 18))
@@ -254,11 +194,13 @@ struct CourseSearchView: View {
                                      .frame(maxWidth: .infinity, alignment: .leading)
                                      */
                                     VStack(spacing: 2) {
-                                        Text(str1).font(.system(size: 18))
+                                        // Text(str1).font(.system(size: 18))
+                                        Text(str1).font(.system(size: 16))
                                             .fixedSize(horizontal: false, vertical: true)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
-                                        Text(str2).font(.system(size: 18 * 0.8))
+                                        // Text(str2).font(.system(size: 16))
+                                        Text(str2).font(.system(size: 14))
                                             .fixedSize(horizontal: false, vertical: true)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -304,30 +246,260 @@ struct CourseSearchView: View {
             let c = self.courses[self.selectedCourseIndex]
             HoleSearchView(course: c)
             
-        } else if self.mode == 21 {
+        } else if self.mode == 50 {
             
-            // ToDo: show billing UI
-            List(storeManager.myProducts, id: \.self) { product in
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(product.localizedTitle)
-                            .font(.headline)
-                        Text(product.localizedDescription)
-                            .font(.caption2)
-                    }
-                    Spacer()
-                    if UserDefaults.standard.bool(forKey: product.productIdentifier) {
-                        Text ("Purchased")
-                            .foregroundColor(.green)
-                    } else {
-                        Button(action: {
-                            //Purchase particular ILO product
-                        }) {
-                            Text("Buy for \(product.price) $")
+            ZStack {
+                VStack {
+                    Text("Selected Course").font(.system(size: 18, weight: .medium)).foregroundColor(.gray)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 4)
+                        .padding(.top, 8)
+                    
+                    VStack {
+                        if let name = self.courses[self.selectedCourseIndex].name {
+                            let start1 = name.firstIndex(of: "(")
+                            let end1 = name.firstIndex(of: ")")
+                            
+                            let i1 = name.index(start1!, offsetBy: -1)
+                            
+                            let range1 = name.startIndex..<i1
+                            let str1 = name[range1]
+                            
+                            let i2 = name.index(start1!, offsetBy: 1)
+                            
+                            let range2 = i2..<end1!
+                            let str2 = name[range2]
+                            
+                            
+                            Text(str1).font(.system(size: 18))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .lineLimit(1)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Text(str2).font(.system(size: 16))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .lineLimit(1)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                        .foregroundColor(.blue)
+                        
+                        if let address = self.courses[self.selectedCourseIndex].address {
+                            let start1 = address.firstIndex(of: "(")
+                            let end1 = address.firstIndex(of: ")")
+                            
+                            let i1 = address.index(start1!, offsetBy: -1)
+                            
+                            let range1 = address.startIndex..<i1
+                            let str1 = address[range1]
+                            
+                            let i2 = address.index(start1!, offsetBy: 1)
+                            
+                            let range2 = i2..<end1!
+                            let str2 = address[range2]
+                            
+                            // local language only
+                            Text(str1).font(.system(size: 14)).foregroundColor(Color.gray)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .lineLimit(1)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.top, 1)
+                        }
+                    }
+                    .padding(.all, 10)
+                    .background(Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255))
+                    .cornerRadius(8)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    HStack(spacing: 40) {
+                        // button 1
+                        Button(action: {
+                            withAnimation {
+                                // self.mode = 3 // show list
+                                self.mode = 10 // go back
+                            }
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                    .frame(width: 54, height: 54)
+                                
+                                Image(systemName: "xmark")
+                                    .font(Font.system(size: 28, weight: .heavy))
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(.bottom, 10)
+                        
+                        // button 2
+                        Button(action: {
+                            storeManager.getProducts(productIDs: Static.productIDs)
+                            
+                            withAnimation {
+                                self.mode = 51
+                            }
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.green)
+                                    .frame(width: 54, height: 54)
+                                
+                                Image(systemName: "checkmark")
+                                    .font(Font.system(size: 28, weight: .heavy))
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(.bottom, 10)
                     }
                 }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            
+        } else if self.mode == 51 {
+            
+            // if self.storeManager.myProducts.count > 0 {
+            if Util.contains(self.storeManager.myProducts, "com.nubeble.holeman.iap.course") == true {
+                /*
+                 ZStack {
+                 VStack {
+                 Text("Payment").font(.system(size: 20, weight: .semibold))
+                 Text("바우쳐를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
+                 
+                 Spacer().frame(maxHeight: .infinity)
+                 }
+                 
+                 VStack {
+                 Text("18홀 라운드를 1,000원에 이용하실 수 있습니다.")
+                 .font(.system(size: 20))
+                 // .foregroundColor(Color.gray)
+                 .fontWeight(.medium)
+                 .multilineTextAlignment(.center)
+                 }
+                 
+                 VStack {
+                 Spacer().frame(maxHeight: .infinity)
+                 
+                 HStack(spacing: 40) {
+                 // button 1
+                 Button(action: {
+                 // go back
+                 withAnimation {
+                 self.mode = 10
+                 }
+                 }) {
+                 ZStack {
+                 Circle()
+                 .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                 .frame(width: 54, height: 54)
+                 
+                 Image(systemName: "xmark")
+                 .font(Font.system(size: 28, weight: .heavy))
+                 }
+                 }
+                 .buttonStyle(PlainButtonStyle())
+                 .padding(.bottom, 10)
+                 
+                 // button 2
+                 Button(action: {
+                 // ToDo: iap, purchase
+                 SKPaymentQueue.default().add(storeManager) // ToDo: remove
+                 
+                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                 storeManager.purchaseProduct(product: product!)
+                 }) {
+                 ZStack {
+                 Circle()
+                 .fill(Color.green)
+                 .frame(width: 54, height: 54)
+                 
+                 Image(systemName: "checkmark")
+                 .font(Font.system(size: 28, weight: .heavy))
+                 }
+                 }
+                 .buttonStyle(PlainButtonStyle())
+                 .padding(.bottom, 10)
+                 }
+                 }
+                 .frame(maxHeight: .infinity)
+                 .edgesIgnoringSafeArea(.bottom)
+                 }
+                 */
+                GeometryReader { geometry in
+                    ScrollView() {
+                        VStack {
+                            Text("Payment").font(.system(size: 20, weight: .semibold))
+                            Text("바우쳐를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
+                            
+                            
+                            Text("Holeman Voucher").font(.system(size: 20, weight: .regular))
+                                .foregroundColor(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.top, -6)
+                            
+                            Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + " 18홀의 정확한 거리 측정 서비스를 1,000원에 이용하세요.")
+                                .font(.system(size: 16))
+                                .fontWeight(.light)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.bottom, 8)
+                            
+                            
+                            Button(action: {
+                                // ToDo: iap, purchase
+                                SKPaymentQueue.default().add(storeManager) // ToDo: remove
+                                
+                                let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                                storeManager.purchaseProduct(product: product!)
+                            }) {
+                                HStack {
+                                    Spacer()
+                                    
+                                    Text("￦1,000 / 18 holes").foregroundColor(.black)
+                                    //.font(.system(size: 15))
+                                    // .fontWeight(.bold)
+                                    
+                                    Spacer()
+                                }
+                                .frame(height: 50)
+                                .background(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
+                                .cornerRadius(8)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            
+                            
+                            Button(action: {
+                                // go back
+                                withAnimation {
+                                    self.mode = 10
+                                }
+                            }) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                        .frame(width: 54, height: 54)
+                                    
+                                    Image(systemName: "arrow.left")
+                                        .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
+                                        .font(Font.system(size: 28, weight: .heavy))
+                                }
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .padding(.top, 6)
+                            .padding(.bottom, -20) // check default padding
+                        }
+                    }
+                }
+                
+            } else {
+                
+                // loading indicator
+                ProgressView()
+                    .scaleEffect(1.2, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                
             }
             
         }
@@ -353,7 +525,7 @@ struct CourseSearchView: View {
                 print(#function, "Timer fired #\(runCount)")
                 
                 if let location = locationManager.lastLocation {
-                    print("Timer stopped")
+                    // print("Timer stopped")
                     timer.invalidate()
                     
                     self.getCountryCode(location: location)

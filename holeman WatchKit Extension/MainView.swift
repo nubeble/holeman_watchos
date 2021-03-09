@@ -21,7 +21,7 @@ struct MainView: View {
     @State var textHoleName: String = "별우(STAR) 9TH"
     @State var textPar: String = "PAR 4"
     @State var textHandicap: String = "HDCP 12"
-    @State var textUnit: String = "m"
+    @State var textUnit: String = ""
     @State var textTeeDistance: String = "• 330"
     @State var colorTeeDistance: Color = Color.white
     // @State var textDistance: String = "384"
@@ -41,14 +41,18 @@ struct MainView: View {
             
             let coordinate2 = CLLocation(latitude: self.latitude!, longitude: self.longitude!)
             
-            let distance = coordinate1.distance(from: coordinate2) // result is in meters
+            var distance = coordinate1.distance(from: coordinate2) // result is in meters
             
-            var returnValue: Double
+            // ToDo: internal test
+            // print(distance)
+            distance = distance - 289642 + 380
+            
+            var returnValue: Double = 0
             if self.distanceUnit == 0 {
                 returnValue = round(distance * 10) / 10
                 
                 if returnValue > 999 { returnValue = 999 }
-            } else {
+            } else if self.distanceUnit == 1 {
                 let tmp = distance * 1.09361
                 returnValue = round(tmp * 10) / 10
                 
@@ -70,12 +74,12 @@ struct MainView: View {
             let height = altitude + MainView.elevationDiff!
             let d = self.elevation! - height
             
-            var returnValue: Double
+            var returnValue: Double = 0
             if self.distanceUnit == 0 {
                 returnValue = round(d * 10) / 10
                 
                 if returnValue > 999 { returnValue = 999 }
-            } else {
+            } else if self.distanceUnit == 1 {
                 let tmp = d * 1.09361
                 returnValue = round(tmp * 10) / 10
                 
@@ -127,7 +131,7 @@ struct MainView: View {
     @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
     @State var teeingGroundIndex: Int?
     @State var holeNumber: Int? // current hole number
-    @State var distanceUnit: Int = 0 // 0: meter, 1: yard
+    @State var distanceUnit: Int = -1 // 0: meter, 1: yard
     @State var sensors: [SensorModel] = []
     @State var latitude: Double?
     @State var longitude: Double?
@@ -155,10 +159,9 @@ struct MainView: View {
     
     // @ObservedObject var compassHeading = CompassHeading()
     
-    // 100: normal state, 200: 홀까지 남은 거리가 30미터 안으로 들어왔을 때, 300: 10초 머물렀을 때, 400: 다시 30미터 (+ 10미터) 밖으로 나갔을 때
-    static let HOLE_PASS_DISTANCE: Double = 30.0 // meter
-    // static let HOLE_PASS_DISTANCE: Double = 80.0 // ToDo: test (80 m)
-    @State var holePassFlag = 100
+    // ToDo: static (30 m)
+    static let HOLE_PASS_DISTANCE: Double = 30 // meter
+    @State var holePassFlag = 100 // 100: normal state, 200: 홀까지 남은 거리가 30미터 안으로 들어왔을 때, 300: 10초 머물렀을 때, 400: 다시 30미터 (+ 10미터) 밖으로 나갔을 때
     @State var holePassCount = 0
     // @State var holePassStartTime: DispatchTime? = nil
     
@@ -210,25 +213,23 @@ struct MainView: View {
                         let range2 = i2..<end1!
                         let str2 = name[range2]
                         
-                        // Text(str1).font(.system(size: 18))
                         Text(str1).font(.system(size: 16))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        // .padding(.leading, 2)
-                        // Text(str2).font(.system(size: 18 * 0.8))
-                        Text(str2).font(.system(size: 16 * 0.8))
+                        
+                        Text(str2).font(.system(size: 14))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        // .padding(.leading, 2)
                         
                         Spacer().frame(maxHeight: .infinity)
                     }
                 }
                 
                 VStack {
-                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                    // textMessage 폰트 크기는 20이지만, holeName만 24로 키운다
+                    Text(self.textMessage).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
                     // .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
@@ -247,7 +248,8 @@ struct MainView: View {
                                 
                                 if self.progressValue >= 1 {
                                     timer.invalidate()
-                                    print(#function, "timer stopped.")
+                                    // print(#function, "timer stopped.")
+                                    
                                     // self.progressValue = 0.0
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -376,7 +378,6 @@ struct MainView: View {
                     // text 3
                     VStack(alignment: .leading)  {
                         Spacer().frame(maxHeight: .infinity)
-                        // Text("9").font(.system(size: 22)).padding(.bottom, 40)
                         
                         HStack {
                             Image("hills")
@@ -408,21 +409,19 @@ struct MainView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
             .onAppear {
+                if self.distanceUnit == -1 {
+                    if self.teeingGroundInfo?.unit == "M" {
+                        self.distanceUnit = 0
+                    } else if self.teeingGroundInfo?.unit == "Y" {
+                        self.distanceUnit = 1
+                    }
+                }
+                
                 // update UI
                 self.textHoleName = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
                 self.textPar = "PAR " + String(self.teeingGroundInfo?.holes[self.holeNumber! - 1].par ?? 0)
                 self.textHandicap = "HDCP " + String(self.teeingGroundInfo?.holes[self.holeNumber! - 1].handicap ?? 0)
-                /*
-                 if self.teeingGroundInfo?.unit == "M" {
-                 self.textUnit = "m"
-                 
-                 self.distanceUnit = 0
-                 } else {
-                 self.textUnit = "yd"
-                 
-                 self.distanceUnit = 1
-                 }
-                 */
+                
                 // set tee distance
                 setTeeDistance()
                 
@@ -1070,7 +1069,7 @@ struct MainView: View {
             
             
             // ToDo: internal test
-            // Util.saveCourse(course)
+            Util.saveCourse(course)
             
             
             // address

@@ -30,6 +30,8 @@ struct IntroView: View {
     
     @State var onComplete: ((Bool) -> Void)?
     
+    @State var name: String?
+    
     // pass to HoleSearchView
     @State var from: Int?
     @State var search: Bool?
@@ -172,7 +174,7 @@ struct IntroView: View {
                 }
                 
                 VStack {
-                    Text("홀맨을 이용하시려면\n로그인이 필요합니다.").font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text("홀맨을 이용하시려면 로그인이 필요합니다.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -197,7 +199,7 @@ struct IntroView: View {
                             // get fullName, email
                             let userIdentifier = credential.user
                             
-                            var name: String = ""
+                            var name: String = "noname"
                             if let fullName = credential.fullName {
                                 let firstName = fullName.givenName ?? ""
                                 let lastName = fullName.familyName ?? ""
@@ -208,15 +210,17 @@ struct IntroView: View {
                                     } else {
                                         name = firstName
                                     }
+                                    
+                                    self.name = name
                                 } else {
-                                    let nickname = fullName.nickname ?? "Unknown"
+                                    let nickname = fullName.nickname ?? "noname"
                                     name = nickname
                                 }
                             }
                             
-                            let email: String = credential.email ?? ""
+                            let email: String = credential.email ?? "noemail"
                             
-                            print(userIdentifier, name, email)
+                            // print(userIdentifier, name, email)
                             
                             // 1. save to db
                             CloudManager.saveUser(userIdentifier, name, email)
@@ -224,9 +228,11 @@ struct IntroView: View {
                             // 2. save to UserDefaults
                             UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
                             
-                            // move next
-                            self.mode = 3
-                            
+                            // move to welcome
+                            // withAnimation {
+                            self.mode = 4
+                        // }
+                        
                         case .failure (let error):
                             print("Authorisation failed: \(error.localizedDescription)")
                         }
@@ -244,15 +250,44 @@ struct IntroView: View {
             
             CourseView()
             
+        } else if self.mode == 4 { // welcome
+            
+            VStack {
+                let str1 = self.name ?? "홀맨 회원"
+                let str2 = "즐거운 라운드 되세요."
+                
+                Text(str1 + "님,").font(.system(size: 24)).fontWeight(.medium)
+                Text(str2).font(.system(size: 24)).fontWeight(.medium)
+            }.onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    withAnimation {
+                        self.mode = 3
+                    }
+                }
+            }
+            
         } else if self.mode == 11 || self.mode == 12 || self.mode == 13 || self.mode == 14 || self.mode == 15 {
             
             ZStack {
-                
                 VStack {
                     // show course name & hole name
                     
-                    if self.mode == 12 {
-                        let course = self.course?.name ?? ""
+                    if self.mode == 11 || self.mode == 13 {
+                        let course = Util.getCourseName(self.course?.name)
+                        let hole = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
+                        
+                        Text(course).font(.system(size: 16))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Text(hole).font(.system(size: 14))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    } else if self.mode == 12 {
+                        // let course = self.course?.name ?? ""
+                        let course = Util.getCourseName(self.course?.name)
                         let hole = "후반전 시작" // ToDo: language bundle
                         
                         Text(course).font(.system(size: 16))
@@ -260,57 +295,30 @@ struct IntroView: View {
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        // Text(hole).font(.system(size: 16))
-                        Text(hole).font(.system(size: 16 * 0.8))
+                        Text(hole).font(.system(size: 14))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                    } else {
-                        let course = self.course?.name ?? ""
-                        let hole = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
+                    } else { // 14, 15
+                        let course = Util.getCourseName(self.course?.name)
+                        let hole = "전반전 시작" // ToDo: language bundle
                         
-                        if course != "" && hole != "" {
-                            Text(course).font(.system(size: 16))
-                                .fixedSize(horizontal: false, vertical: true)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            // Text(hole).font(.system(size: 16))
-                            Text(hole).font(.system(size: 16 * 0.8))
-                                .fixedSize(horizontal: false, vertical: true)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        } else if course != "" && hole == "" {
-                            let start1 = course.firstIndex(of: "(")
-                            let end1 = course.firstIndex(of: ")")
-                            
-                            let i1 = course.index(start1!, offsetBy: -1)
-                            
-                            let range1 = course.startIndex..<i1
-                            let str1 = course[range1]
-                            
-                            let i2 = course.index(start1!, offsetBy: 1)
-                            
-                            let range2 = i2..<end1!
-                            let str2 = course[range2]
-                            
-                            Text(str1).font(.system(size: 16))
-                                .fixedSize(horizontal: false, vertical: true)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            Text(str2).font(.system(size: 16 * 0.8))
-                                .fixedSize(horizontal: false, vertical: true)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
+                        Text(course).font(.system(size: 16))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Text(hole).font(.system(size: 14))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
                 
                 VStack {
-                    Text(self.textMessage).font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -418,7 +426,7 @@ struct IntroView: View {
             
             ZStack {
                 VStack {
-                    // Text("알림을 허용해주세요.").font(.system(size: 22)).fontWeight(.medium).multilineTextAlignment(.center)
+                    // Text("알림을 허용해주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
                     Text("알림을 허용해주세요.").font(.system(size: 20, weight: .semibold)).padding(.top, 10)
                     
                     Spacer().frame(maxHeight: .infinity)
@@ -479,89 +487,6 @@ struct IntroView: View {
         }
     }
     
-    /*
-     func checkLastPlayedHole() {
-     let time = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TIME")
-     let halftime = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_HALFTIME")
-     
-     if let time = time {
-     // get current time
-     let date = Date()
-     let dateFormatter = DateFormatter()
-     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 2019-12-20 09:40:08
-     let dateString = dateFormatter.string(from: date)
-     
-     
-     var i1 = dateString.index(dateString.startIndex, offsetBy: 0)
-     var i2 = dateString.index(dateString.startIndex, offsetBy: 10)
-     let date2 = dateString[i1..<i2] // yyyy-MM-dd
-     
-     i1 = dateString.index(dateString.startIndex, offsetBy: 11)
-     i2 = dateString.index(dateString.startIndex, offsetBy: 13)
-     let hour2 = dateString[i1..<i2] // HH
-     
-     i1 = dateString.index(dateString.startIndex, offsetBy: 14)
-     i2 = dateString.index(dateString.startIndex, offsetBy: 16)
-     let min2 = dateString[i1..<i2] // mm
-     print(#function, date2, hour2, min2)
-     
-     
-     i1 = time.index(time.startIndex, offsetBy: 0)
-     i2 = time.index(time.startIndex, offsetBy: 10)
-     let date1 = time[i1..<i2]
-     
-     i1 = time.index(time.startIndex, offsetBy: 11)
-     i2 = time.index(time.startIndex, offsetBy: 13)
-     let hour1 = time[i1..<i2]
-     
-     i1 = time.index(time.startIndex, offsetBy: 11)
-     i2 = time.index(time.startIndex, offsetBy: 13)
-     let min1 = time[i1..<i2]
-     print(#function, date1, hour1, min1)
-     
-     
-     if date1 == date2 {
-     let h1 = Int(hour1)
-     let m1 = Int(min1)
-     let h2 = Int(hour2)
-     let m2 = Int(min2)
-     let sum1 = h1! * 60 + m1!
-     let sum2 = h2! * 60 + m2!
-     
-     if (sum2 - sum1) < 60 {
-     if halftime == 1 { // 전반 중 앱이 죽었다가 다시 실행
-     self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
-     
-     withAnimation {
-     self.mode = 11
-     }
-     } else if halftime == 2 { // 전반 종료 후 앱이 죽었다가 다시 실행
-     self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
-     
-     withAnimation {
-     self.mode = 12
-     }
-     } else if halftime == 3 { // 후반 중 앱이 죽었다가 다시 실행
-     self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
-     
-     withAnimation {
-     self.mode = 13
-     }
-     } else if halftime == 4 { // 후반 종료 후 앱이 죽었다가 다시 실행
-     startNew(true, true)
-     }
-     } else {
-     startNew(true, true)
-     }
-     } else {
-     startNew(true, true)
-     }
-     } else {
-     startNew(false, true)
-     }
-     }
-     */
-    
     func checkLastPurchasedCourse() {
         let time = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_TIME")
         if let time = time {
@@ -613,7 +538,7 @@ struct IntroView: View {
                 if halftime == 1 { // 전반 중 앱이 죽었다가 다시 실행
                     loadHole()
                     
-                    self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+                    self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
                     
                     withAnimation {
                         self.mode = 11
@@ -621,7 +546,7 @@ struct IntroView: View {
                 } else if halftime == 2 { // 전반 종료 후 앱이 죽었다가 다시 실행
                     loadHole()
                     
-                    self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+                    self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
                     
                     withAnimation {
                         self.mode = 12
@@ -629,7 +554,7 @@ struct IntroView: View {
                 } else if halftime == 3 { // 후반 중 앱이 죽었다가 다시 실행
                     loadHole()
                     
-                    self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+                    self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
                     
                     withAnimation {
                         self.mode = 13
@@ -641,7 +566,7 @@ struct IntroView: View {
             } else { // 이전 플레이 홀 날짜가 다를 수 있다. (오늘 구매하고 아직 홀 정보가 없다는 뜻)
                 loadCourse()
                 
-                self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+                self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
                 
                 withAnimation {
                     self.mode = 15
@@ -650,7 +575,7 @@ struct IntroView: View {
         } else { // 구매하고 홀 플레이 하기 전에 앱이 종료되었다.
             loadCourse()
             
-            self.textMessage = "플레이 중인 라운드와\n이어서 하시겠습니까?"
+            self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
             
             withAnimation {
                 self.mode = 14
@@ -659,6 +584,8 @@ struct IntroView: View {
     }
     
     func moveNext(_ search: Bool) {
+        print(#function, search)
+        
         /*
          let time = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TIME")
          let holeNumber = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_HOLE_NUMBER")
@@ -759,6 +686,8 @@ struct IntroView: View {
     }
     
     func moveNextFromPurchase(_ removePlayData: Bool) {
+        print(#function)
+        
         if removePlayData == true {
             let defaults = UserDefaults.standard
             let dictionary = defaults.dictionaryRepresentation()

@@ -12,32 +12,15 @@ import StoreKit
 struct holemanApp: App {
     @WKExtensionDelegateAdaptor(ExtensionDelegate.self) var delegate
     
-    @StateObject var storeManager = StoreManager()
     
-    let productIDs = [
-        //Use your product IDs instead
-        /*
-         "com.BLCKBIRDS.TreasureStore.IAP.PowerSword",
-         "com.BLCKBIRDS.TreasureStore.IAP.HealingPotion",
-         "com.BLCKBIRDS.TreasureStore.IAP.PirateSkin"
-         */
-        "com.nubeble.holeman.iap.course",
-        "com.nubeble.holeman.test1",
-        "com.nubeble.holeman.test2",
-        
-        "com.nubeble.holeman.watchkitapp.iap.test1",
-        "com.nubeble.holeman.watchkitapp.test",
-        
-        "com.nubeble.holeman.watchkitapp.watchkitextension.iap.test1",
-        "com.nubeble.holeman.watchkitapp.watchkitextension.test2",
-        "course",
-        
-        "com.nubeble.holeman.watchkitapp.watchkitextension.iap.test100",
-        
-        "com.nubeble.holeman.watchkitapp.iap.test10",
-        
-        "com.nubeble.test1"
-    ]
+    //@StateObject var storeManager = StoreManager()
+    /*
+     let productIDs = [
+     "com.nubeble.holeman.iap.course",
+     "com.nubeble.holeman.test1",
+     "com.nubeble.holeman.test2"
+     ]
+     */
     
     var body: some Scene {
         WindowGroup {
@@ -50,12 +33,23 @@ struct holemanApp: App {
                 // print("ContentView appeared!")
                 // WKExtension.shared().registerForRemoteNotifications()
                 
+                /*
+                 // SKPaymentQueue.default().add(storeManager)
+                 // SKPaymentQueue.default().remove(storeManager)
+                 
+                 storeManager.getProducts(productIDs: productIDs)
+                 */
                 
-                SKPaymentQueue.default().add(storeManager)
+                /*
+                storeManager.getProducts(productIDs: Static.productIDs)
                 
-                // SKPaymentQueue.default().remove(storeManager)
-                
-                storeManager.getProducts(productIDs: productIDs)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    SKPaymentQueue.default().add(storeManager) // ToDo: remove
+                    
+                    let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                    storeManager.purchaseProduct(product: product!)
+                }
+                 */
             }.onDisappear {
                 // print("ContentView disappeared!")
             }
