@@ -1002,7 +1002,7 @@ struct MainView: View {
         case 200:
             if distance < MainView.HOLE_PASS_DISTANCE {
                 
-                if self.holePassCount >= 10 { // 10 sec
+                if self.holePassCount >= 10 { // 10 seconds
                     self.holePassFlag = 300
                     self.holePassCount = 0
                     

@@ -336,7 +336,7 @@ struct CourseSearchView: View {
                         
                         // button 2
                         Button(action: {
-                            storeManager.getProducts(productIDs: Static.productIDs)
+                            self.storeManager.getProducts(productIDs: Static.productIDs)
                             
                             withAnimation {
                                 self.mode = 51
@@ -363,71 +363,6 @@ struct CourseSearchView: View {
             
             // if self.storeManager.myProducts.count > 0 {
             if Util.contains(self.storeManager.myProducts, "com.nubeble.holeman.iap.course") == true {
-                /*
-                 ZStack {
-                 VStack {
-                 Text("Payment").font(.system(size: 20, weight: .semibold))
-                 Text("바우쳐를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
-                 
-                 Spacer().frame(maxHeight: .infinity)
-                 }
-                 
-                 VStack {
-                 Text("18홀 라운드를 1,000원에 이용하실 수 있습니다.")
-                 .font(.system(size: 20))
-                 // .foregroundColor(Color.gray)
-                 .fontWeight(.medium)
-                 .multilineTextAlignment(.center)
-                 }
-                 
-                 VStack {
-                 Spacer().frame(maxHeight: .infinity)
-                 
-                 HStack(spacing: 40) {
-                 // button 1
-                 Button(action: {
-                 // go back
-                 withAnimation {
-                 self.mode = 10
-                 }
-                 }) {
-                 ZStack {
-                 Circle()
-                 .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                 .frame(width: 54, height: 54)
-                 
-                 Image(systemName: "xmark")
-                 .font(Font.system(size: 28, weight: .heavy))
-                 }
-                 }
-                 .buttonStyle(PlainButtonStyle())
-                 .padding(.bottom, 10)
-                 
-                 // button 2
-                 Button(action: {
-                 // ToDo: iap, purchase
-                 SKPaymentQueue.default().add(storeManager) // ToDo: remove
-                 
-                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                 storeManager.purchaseProduct(product: product!)
-                 }) {
-                 ZStack {
-                 Circle()
-                 .fill(Color.green)
-                 .frame(width: 54, height: 54)
-                 
-                 Image(systemName: "checkmark")
-                 .font(Font.system(size: 28, weight: .heavy))
-                 }
-                 }
-                 .buttonStyle(PlainButtonStyle())
-                 .padding(.bottom, 10)
-                 }
-                 }
-                 .frame(maxHeight: .infinity)
-                 .edgesIgnoringSafeArea(.bottom)
-                 }
-                 */
                 GeometryReader { geometry in
                     ScrollView() {
                         VStack {
@@ -435,24 +370,31 @@ struct CourseSearchView: View {
                             Text("바우쳐를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
                             
                             
-                            Text("Holeman Voucher").font(.system(size: 20, weight: .regular))
+                            Text("Holeman Voucher")
+                                .font(.system(size: 20, weight: .regular))
                                 .foregroundColor(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                                // .frame(maxWidth: .infinity, alignment: .leading)
+                                .multilineTextAlignment(.center)
                                 .padding(.top, -6)
                             
                             Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + " 18홀의 정확한 거리 측정 서비스를 1,000원에 이용하세요.")
                                 .font(.system(size: 16))
                                 .fontWeight(.light)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                                // .frame(maxWidth: .infinity, alignment: .leading)
+                                .multilineTextAlignment(.center)
                                 .padding(.bottom, 8)
                             
                             
                             Button(action: {
                                 // ToDo: iap, purchase
-                                SKPaymentQueue.default().add(storeManager) // ToDo: remove
+                                SKPaymentQueue.default().add(self.storeManager) // ToDo: remove
                                 
                                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
                                 storeManager.purchaseProduct(product: product!)
+                                
+                                withAnimation {
+                                    self.mode = 52
+                                }
                             }) {
                                 HStack {
                                     Spacer()
@@ -492,18 +434,42 @@ struct CourseSearchView: View {
                         }
                     }
                 }
-                
             } else {
-                
                 // loading indicator
                 ProgressView()
                     .scaleEffect(1.2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
+            }
+            
+        } else if self.mode == 52 {
+            
+            if self.storeManager.transactionState == nil || self.storeManager.transactionState == .purchasing {
+                // loading indicator
+                ProgressView()
+                    .scaleEffect(1.2, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .red))
+            } else if self.storeManager.transactionState == .failed {
+                // back to payment
+                self.mode = 50
+            } else if self.storeManager.transactionState == .purchased {
+                // move next in 3 secs
                 
+                // ToDo: check mark animation
+                VStack {
+                    Image(systemName: "checkmark")
+                        .font(Font.system(size: 40, weight: .heavy))
+                }.onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        withAnimation {
+                            self.mode = 2
+                        }
+                    }
+                }
+            } else { // restored
+                // N/A
             }
             
         }
-        
     }
     
     func onCreate() {
@@ -558,7 +524,7 @@ struct CourseSearchView: View {
     func findNearbyCourse(_ location: CLLocation) {
         findNearbyCourse(location) { result in
             if result == false {
-                // no course nearby. try again in 3 sec
+                // no course nearby. try again in 3 secs
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                     if self.findNearbyCourseCounter == 10 {
                         withAnimation(.linear(duration: 0.5)) {
@@ -676,7 +642,7 @@ struct CourseSearchView: View {
                 }
                 
                 if count == 0 {
-                    print(#function, "no course nearby. try again in 3 sec")
+                    print(#function, "no course nearby. try again in 3 secconds")
                     
                     onComplete(false)
                 } else {
@@ -720,7 +686,6 @@ struct CourseSearchView: View {
              */
             // get the country short name which is called isoCountryCode
             if let countryShortName = placemark.isoCountryCode, !countryShortName.isEmpty {
-                
                 self.countryCode = countryShortName
                 
                 print(#function, countryShortName)

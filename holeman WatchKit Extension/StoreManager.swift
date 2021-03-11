@@ -76,22 +76,32 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 }
                 
             case .purchased:
-                UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap
+                // UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap, save to UserDefaults
+                
+                if transaction.payment.productIdentifier == "com.nubeble.holeman.iap.course" {
+                    
+                }
+                
                 queue.finishTransaction(transaction)
+                
                 DispatchQueue.main.async {
                     self.transactionState = .purchased
                 }
                 
             case .restored:
-                UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap
+                // UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap, save to UserDefaults
+                
                 queue.finishTransaction(transaction)
+                
                 DispatchQueue.main.async {
                     self.transactionState = .restored
                 }
                 
             case .failed, .deferred:
                 print("Payment Queue Error: \(String(describing: transaction.error))")
+                
                 queue.finishTransaction(transaction)
+                
                 DispatchQueue.main.async {
                     self.transactionState = .failed
                 }
