@@ -377,7 +377,15 @@ struct CourseListView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             } else if self.storeManager.transactionState == .failed {
                 // back to payment
-                self.mode = 50
+                VStack {
+                    Text("잠시 후 다시 시도해주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                }.onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        withAnimation {
+                            self.mode = 50
+                        }
+                    }
+                }
             } else if self.storeManager.transactionState == .purchased {
                 // move next in 3 secs
                 
@@ -400,6 +408,10 @@ struct CourseListView: View {
             
             CourseView()
             
+        } else {
+            VStack {
+                Text("test")
+            }
         }
     }
     
