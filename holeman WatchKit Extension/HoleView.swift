@@ -51,7 +51,8 @@ struct HoleView: View {
                                     
                                 }) {
                                     HStack(spacing: 10) {
-                                        Text(name).font(.system(size: 18))
+                                        // Text(name).font(.system(size: 18))
+                                        Text(name).font(.system(size: 20))
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                         
                                         if index == self.selectedIndex {

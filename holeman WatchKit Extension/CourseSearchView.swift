@@ -22,7 +22,7 @@ struct CourseSearchView: View {
     
     @State var courses: [CourseModel] = []
     
-    @State var selectedCourseIndex = 0
+    @State var selectedCourseIndex: Int = -1
     
     // data to MainView
     // @State var teeingGroundIndex = -1
@@ -54,6 +54,7 @@ struct CourseSearchView: View {
         } else if self.mode == 2 {
             // N/A
         } else if self.mode == 3 {
+            
             /*
              ZStack {
              VStack {
@@ -152,7 +153,6 @@ struct CourseSearchView: View {
                             
                             // Divider()
                             
-                            // ForEach(0 ..< self.courses.count - 2) { // ToDo: test (show only single item)
                             ForEach(0 ..< self.courses.count) {
                                 let index = $0
                                 
@@ -194,13 +194,12 @@ struct CourseSearchView: View {
                                      .frame(maxWidth: .infinity, alignment: .leading)
                                      */
                                     VStack(spacing: 2) {
-                                        // Text(str1).font(.system(size: 18))
-                                        Text(str1).font(.system(size: 16))
+                                        Text(str1).font(.system(size: 18))
                                             .fixedSize(horizontal: false, vertical: true)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
-                                        // Text(str2).font(.system(size: 16))
-                                        Text(str2).font(.system(size: 14))
+                                        // Text(str2).font(.system(size: 14))
+                                        Text(str2).font(.system(size: 12)) // 영문 코스명은 12로 고정
                                             .fixedSize(horizontal: false, vertical: true)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -270,13 +269,12 @@ struct CourseSearchView: View {
                             let range2 = i2..<end1!
                             let str2 = name[range2]
                             
-                            
-                            Text(str1).font(.system(size: 18))
+                            Text(str1).font(.system(size: 20))
                                 .fixedSize(horizontal: false, vertical: true)
                                 .lineLimit(1)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            Text(str2).font(.system(size: 16))
+                            Text(str2).font(.system(size: 14)) // 영문 코스명은 12로 고정, BUT 여기는 확대
                                 .fixedSize(horizontal: false, vertical: true)
                                 .lineLimit(1)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -301,7 +299,7 @@ struct CourseSearchView: View {
                                 .fixedSize(horizontal: false, vertical: true)
                                 .lineLimit(1)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.top, 1)
+                                .padding(.top, 2)
                         }
                     }
                     .padding(.all, 10)
@@ -450,14 +448,34 @@ struct CourseSearchView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             } else if self.storeManager.transactionState == .failed {
                 // back to payment
-                VStack {
-                    Text("잠시 후 다시 시도해주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
-                }.onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        withAnimation {
-                            self.mode = 50
-                        }
+                ZStack {
+                    VStack {
+                        Text("잠시 후 다시 시도해주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
                     }
+                    
+                    VStack {
+                        Spacer().frame(maxHeight: .infinity)
+                        
+                        Button(action: {
+                            withAnimation {
+                                self.mode = 51
+                            }
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                    .frame(width: 54, height: 54)
+                                
+                                Image(systemName: "arrow.left")
+                                    .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
+                                    .font(Font.system(size: 28, weight: .heavy))
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(.bottom, 10)
+                    } // end of VStack
+                    .frame(maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.bottom)
                 }
             } else if self.storeManager.transactionState == .purchased {
                 // move next in 3 secs
@@ -653,6 +671,20 @@ struct CourseSearchView: View {
                     print(#function, "no course nearby. try again in 3 secconds")
                     
                     onComplete(false)
+                } else if count == 1 {
+                    self.selectedCourseIndex = 0
+                    
+                    // ToDo: internal test
+                    /*
+                     withAnimation {
+                     self.mode = 20
+                     }
+                     */
+                    
+                    // payment
+                    withAnimation {
+                        self.mode = 50
+                    }
                 } else {
                     // move to HoleSearchView
                     withAnimation {

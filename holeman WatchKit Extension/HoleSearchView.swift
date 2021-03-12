@@ -68,18 +68,17 @@ struct HoleSearchView: View {
                         let range2 = i2..<end1!
                         let str2 = name[range2]
                         
-                        
                         Text(str1).font(.system(size: 16))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 2)
+                        // .padding(.leading, 2)
                         
-                        Text(str2).font(.system(size: 14))
+                        Text(str2).font(.system(size: 12)) // 영문 코스명은 12로 고정
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 2)
+                        // .padding(.leading, 2)
                         
                         Spacer().frame(maxHeight: .infinity)
                     }
@@ -201,7 +200,7 @@ struct HoleSearchView: View {
                                     // move to MainView
                                     moveNext()
                                 }) {
-                                    Text(name).font(.system(size: 18))
+                                    Text(name).font(.system(size: 20))
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(2)
                                         // .multilineTextAlignment(.leading)
@@ -268,7 +267,8 @@ struct HoleSearchView: View {
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(str2).font(.system(size: 14))
+                        // Text(str2).font(.system(size: 14))
+                        Text(str2).font(.system(size: 12)) // 영문 코스명은 12로 고정
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -579,7 +579,7 @@ struct HoleSearchView: View {
         if self.findStartHoleCounter == 10 {
             self.findStartHoleCounter = 0
             
-            self.textMessage = "스타트 홀을 찾지 못했습니다. 계속 찾을까요?"
+            self.textMessage = "스타트 홀을 못찾았습니다. 계속 찾을까요?"
             
             withAnimation {
                 self.mode = 11

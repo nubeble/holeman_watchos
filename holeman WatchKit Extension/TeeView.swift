@@ -56,12 +56,14 @@ struct TeeView: View {
                                 }) {
                                     HStack(spacing: 10) {
                                         VStack {
-                                            Text(name).font(.system(size: 18))
+                                            // Text(name).font(.system(size: 18))
+                                            Text(name).font(.system(size: 20))
                                                 .foregroundColor(c)
                                                 // .fixedSize(horizontal: false, vertical: true)
                                                 // .lineLimit(1)
                                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                            Text(distance).font(.system(size: 16))
+                                            // Text(distance).font(.system(size: 16))
+                                            Text(distance).font(.system(size: 18))
                                                 .foregroundColor(c)
                                                 // .fixedSize(horizontal: false, vertical: true)
                                                 // .lineLimit(1)

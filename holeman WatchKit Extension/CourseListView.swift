@@ -20,7 +20,7 @@ struct CourseListView: View {
     
     @State var courses: [CourseModel] = []
     
-    @State var selectedCourseIndex: Int = 0
+    @State var selectedCourseIndex: Int = -1
     
     @StateObject var storeManager: StoreManager = StoreManager()
     
@@ -76,16 +76,17 @@ struct CourseListView: View {
                                     self.selectedCourseIndex = index
                                     
                                     // ToDo: internal test
+                                    
+                                    withAnimation {
+                                        self.mode = 2
+                                    }
+                                    
                                     /*
+                                     // payment
                                      withAnimation {
-                                     self.mode = 2
+                                     self.mode = 50
                                      }
                                      */
-                                    
-                                    // payment
-                                    withAnimation {
-                                        self.mode = 50
-                                    }
                                     
                                 }) {
                                     /*
@@ -96,13 +97,12 @@ struct CourseListView: View {
                                      .frame(maxWidth: .infinity, alignment: .leading)
                                      */
                                     VStack(spacing: 2) {
-                                        // Text(str1).font(.system(size: 18))
-                                        Text(str1).font(.system(size: 16))
+                                        Text(str1).font(.system(size: 18))
                                             .fixedSize(horizontal: false, vertical: true)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
-                                        // Text(str2).font(.system(size: 16))
-                                        Text(str2).font(.system(size: 14))
+                                        // Text(str2).font(.system(size: 14))
+                                        Text(str2).font(.system(size: 12)) // 영문 코스명은 12로 고정
                                             .fixedSize(horizontal: false, vertical: true)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -111,6 +111,7 @@ struct CourseListView: View {
                             } // end of ForEach
                             
                             Button(action: {
+                                // go back
                                 withAnimation {
                                     self.mode = 10
                                 }
@@ -168,12 +169,12 @@ struct CourseListView: View {
                             let str2 = name[range2]
                             
                             
-                            Text(str1).font(.system(size: 18))
+                            Text(str1).font(.system(size: 20))
                                 .fixedSize(horizontal: false, vertical: true)
                                 .lineLimit(1)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            Text(str2).font(.system(size: 16))
+                            Text(str2).font(.system(size: 14)) // 영문 코스명은 12로 고정, BUT 여기는 확대
                                 .fixedSize(horizontal: false, vertical: true)
                                 .lineLimit(1)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -377,14 +378,34 @@ struct CourseListView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             } else if self.storeManager.transactionState == .failed {
                 // back to payment
-                VStack {
-                    Text("잠시 후 다시 시도해주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
-                }.onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        withAnimation {
-                            self.mode = 50
-                        }
+                ZStack {
+                    VStack {
+                        Text("잠시 후 다시 시도해주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
                     }
+                    
+                    VStack {
+                        Spacer().frame(maxHeight: .infinity)
+                        
+                        Button(action: {
+                            withAnimation {
+                                self.mode = 51
+                            }
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                    .frame(width: 54, height: 54)
+                                
+                                Image(systemName: "arrow.left")
+                                    .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
+                                    .font(Font.system(size: 28, weight: .heavy))
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding(.bottom, 10)
+                    } // end of VStack
+                    .frame(maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.bottom)
                 }
             } else if self.storeManager.transactionState == .purchased {
                 // move next in 3 secs
@@ -555,6 +576,7 @@ struct CourseListView: View {
                 
                 if count == 0 {
                     print(#function, "no course nearby. try again in 3 seconds")
+                    
                     onComplete(false)
                 } else {
                     // show list

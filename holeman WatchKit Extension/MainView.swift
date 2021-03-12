@@ -218,7 +218,7 @@ struct MainView: View {
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(str2).font(.system(size: 14))
+                        Text(str2).font(.system(size: 12)) // 영문 코스명은 12로 고정
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
