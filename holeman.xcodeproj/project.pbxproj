@@ -41,6 +41,7 @@
 		B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */; };
 		B99531132581BE76001D5FBF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99531122581BE76001D5FBF /* SplashView.swift */; };
 		B995311B2583094C001D5FBF /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B995311A2583094C001D5FBF /* IntroView.swift */; };
+		B9AA298325FC1C4400550AE0 /* TeeIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AA298225FC1C4400550AE0 /* TeeIndicator.swift */; };
 		B9AA29E62535BA2A0057FA8D /* holeman WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B9AA29E52535BA2A0057FA8D /* holeman WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B9AA29EB2535BA2B0057FA8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9AA29EA2535BA2B0057FA8D /* Assets.xcassets */; };
 		B9AA29F22535BA2B0057FA8D /* holeman WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B9AA29F12535BA2B0057FA8D /* holeman WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -144,6 +145,7 @@
 		B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		B99531122581BE76001D5FBF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		B995311A2583094C001D5FBF /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
+		B9AA298225FC1C4400550AE0 /* TeeIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeeIndicator.swift; sourceTree = "<group>"; };
 		B9AA29E12535BA2A0057FA8D /* holeman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = holeman.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9AA29E52535BA2A0057FA8D /* holeman WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "holeman WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9AA29EA2535BA2B0057FA8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				B96885B825A9560900C046E8 /* CourseView.swift */,
 				B975BBF425AE9A8C00EFD939 /* CourseSearchView.swift */,
 				B975BBFC25B292ED00EFD939 /* HoleSearchView.swift */,
+				B9AA298225FC1C4400550AE0 /* TeeIndicator.swift */,
 				B975BBEF25AE982C00EFD939 /* CourseListView.swift */,
 				B9AA29F62535BA2B0057FA8D /* ContentView.swift */,
 				B92DB5092569F84000511383 /* MainView.swift */,
@@ -527,6 +530,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9AA298325FC1C4400550AE0 /* TeeIndicator.swift in Sources */,
 				B9BACF47256CB7DD00F7B07D /* Course.swift in Sources */,
 				B9AD0F9A25CE21A500CE247B /* ProgressBar.swift in Sources */,
 				B975BC0225B2963200EFD939 /* CourseModel.swift in Sources */,

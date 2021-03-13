@@ -93,10 +93,16 @@ struct HoleSearchView: View {
                 VStack(alignment: HorizontalAlignment.center) {
                     Spacer().frame(maxHeight: .infinity)
                     
-                    Image("tee up")
-                        .resizable()
-                        .frame(width: 200 / 5, height: 200 / 5)
-                        .padding(.bottom, 15)
+                    ZStack {
+                        Image("tee up")
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                        
+                        TeeIndicator(isAnimating: .constant(true))
+                            .frame(width: 54, height: 54)
+                            .foregroundColor(.white)
+                    }
+                    .padding(.bottom, 10)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
