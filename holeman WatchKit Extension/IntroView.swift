@@ -61,11 +61,6 @@ struct IntroView: View {
                  */
                 // --
                 
-                
-                
-                
-                
-                // checkLastPlayedHole()
                 checkLastPurchasedCourse()
             }
             

@@ -28,7 +28,7 @@ struct MenuView: View {
         if self.mode == 0 {
             
             GeometryReader { geometry in
-                ScrollView() {
+                ScrollView {
                     VStack {
                         Text("Settings").font(.system(size: 20, weight: .semibold))
                         Text("원하시는 기능을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
@@ -228,6 +228,8 @@ struct MenuView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             }
             .onAppear {
+                // remove UserDefaults
+                
                 let id = UserDefaults.standard.string(forKey: "USER_ID")
                 if let id = id {
                     // update db
@@ -238,8 +240,23 @@ struct MenuView: View {
                         }
                     }
                     
-                    // remove UserDefaults
+                    // USER_ID
                     UserDefaults.standard.removeObject(forKey: "USER_ID")
+                    
+                    // LAST_PURCHASED_COURSE, LAST_PLAYED_HOLE
+                    let defaults = UserDefaults.standard
+                    let dictionary = defaults.dictionaryRepresentation()
+                    dictionary.keys.forEach { key in
+                        
+                        if key.hasPrefix("LAST_PURCHASED_COURSE") || key.hasPrefix("LAST_PLAYED_HOLE") {
+                            defaults.removeObject(forKey: key)
+                        }
+                        
+                    }
+                    
+                    // SUBSCRIPTION_SENSORS 는 그냥 둔다.
+                    
+                    print(#function, "finished removing UserDefaults")
                 }
             }
         } else if self.mode == 5 { // go back to IntroView

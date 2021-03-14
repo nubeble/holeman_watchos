@@ -29,7 +29,8 @@ struct holemanApp: App {
                 // ContentView().environmentObject(Course())
                 
                 SplashView()
-            }.onAppear {
+            }
+            .onAppear {
                 // print("ContentView appeared!")
                 // WKExtension.shared().registerForRemoteNotifications()
                 
@@ -41,19 +42,17 @@ struct holemanApp: App {
                  */
                 
                 /*
-                storeManager.getProducts(productIDs: Static.productIDs)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    SKPaymentQueue.default().add(storeManager) // ToDo: remove
-                    
-                    let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                    storeManager.purchaseProduct(product: product!)
-                }
+                 storeManager.getProducts(productIDs: Static.productIDs)
+                 
+                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                 SKPaymentQueue.default().add(storeManager) // ToDo: remove
+                 
+                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                 storeManager.purchaseProduct(product: product!)
+                 }
                  */
             }.onDisappear {
-                // print("ContentView disappeared!")
             }
-            
         }
     }
 }

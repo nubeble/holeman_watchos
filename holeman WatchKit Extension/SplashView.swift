@@ -12,50 +12,46 @@ struct SplashView: View {
     @State var isActive: Bool = false
     
     var body: some View {
-        VStack {
-            // 2.
-            if self.isActive {
-                // 3.
+        
+        if self.isActive == true {
+            VStack { // should be VStack
                 IntroView()
-            } else {
-                // 4.
+            }
+            .navigationBarTitle("Holeman")
+        } else {
+            VStack {
                 Image("logo")
                     .resizable()
                     .frame(width: 710 / 4.2, height: 239 / 4.2)
             }
-        }
-        // 5.
-        .onAppear {
-            // 6.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                // 7.
-                withAnimation {
-                    self.isActive = true
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                    withAnimation {
+                        self.isActive = true
+                    }
                 }
             }
         }
-        
         /*
-         if self.isActive == true {
+         VStack {
+         // 2.
+         if self.isActive {
+         // 3.
          IntroView()
          } else {
-         
-         VStack {
-         Image(systemName: "cloud.heavyrain.fill")
+         // 4.
+         Image("logo")
          .resizable()
-         .frame(width: 80, height: 80)
+         .frame(width: 710 / 4.2, height: 239 / 4.2)
          }
-         // 5.
+         }
+         
          .onAppear {
-         // 6.
          DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-         // 7.
          withAnimation {
          self.isActive = true
          }
          }
-         }
-         
          }
          */
     }

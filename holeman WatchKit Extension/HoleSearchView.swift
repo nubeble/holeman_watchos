@@ -184,7 +184,7 @@ struct HoleSearchView: View {
         } else if self.mode == 2 { // show start hole list
             
             GeometryReader { geometry in
-                ScrollView() {
+                ScrollView {
                     // VStack {
                     ScrollViewReader { value in
                         LazyVStack {

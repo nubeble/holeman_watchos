@@ -45,7 +45,7 @@ struct CourseListView: View {
         } else if self.mode == 1 {
             
             GeometryReader { geometry in
-                ScrollView() {
+                ScrollView {
                     // VStack {
                     ScrollViewReader { value in
                         LazyVStack {
@@ -75,19 +75,10 @@ struct CourseListView: View {
                                 Button(action: {
                                     self.selectedCourseIndex = index
                                     
-                                    // ToDo: internal test
-                                    
                                     withAnimation {
-                                        self.mode = 2
+                                        self.mode = 2 // ToDo: internal test
+                                        // self.mode = 50 // payment
                                     }
-                                    
-                                    /*
-                                     // payment
-                                     withAnimation {
-                                     self.mode = 50
-                                     }
-                                     */
-                                    
                                 }) {
                                     /*
                                      Text(str1 + "\n" + str2).font(.system(size: 18))
@@ -292,7 +283,7 @@ struct CourseListView: View {
             // if self.storeManager.myProducts.count > 0 {
             if Util.contains(self.storeManager.myProducts, "com.nubeble.holeman.iap.course") == true {
                 GeometryReader { geometry in
-                    ScrollView() {
+                    ScrollView {
                         VStack {
                             Text("Payment").font(.system(size: 20, weight: .semibold))
                             Text("바우쳐를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
@@ -300,7 +291,8 @@ struct CourseListView: View {
                             
                             Text("Holeman Voucher")
                                 .font(.system(size: 20, weight: .regular))
-                                .foregroundColor(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
+                                // .foregroundColor(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
+                                .foregroundColor(.green)
                                 // .frame(maxWidth: .infinity, alignment: .leading)
                                 .multilineTextAlignment(.center)
                                 .padding(.top, -6)
@@ -312,10 +304,9 @@ struct CourseListView: View {
                                 .multilineTextAlignment(.center)
                                 .padding(.bottom, 8)
                             
-                            
                             Button(action: {
-                                // ToDo: iap, purchase
-                                SKPaymentQueue.default().add(self.storeManager) // ToDo: remove
+                                // purchase
+                                SKPaymentQueue.default().add(self.storeManager)
                                 
                                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
                                 self.storeManager.purchaseProduct(product: product!)
@@ -334,7 +325,8 @@ struct CourseListView: View {
                                     Spacer()
                                 }
                                 .frame(height: 50)
-                                .background(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
+                                // .background(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
+                                .background(Color.green)
                                 .cornerRadius(8)
                             }
                             .buttonStyle(PlainButtonStyle())
@@ -387,6 +379,8 @@ struct CourseListView: View {
                         Spacer().frame(maxHeight: .infinity)
                         
                         Button(action: {
+                            SKPaymentQueue.default().remove(self.storeManager)
+                            
                             withAnimation {
                                 self.mode = 51
                             }
@@ -416,6 +410,8 @@ struct CourseListView: View {
                         .font(Font.system(size: 40, weight: .heavy))
                 }.onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        SKPaymentQueue.default().remove(self.storeManager)
+                        
                         withAnimation {
                             self.mode = 2
                         }

@@ -19,7 +19,7 @@ struct CourseView: View {
             
             //use GeometryReader for height & weight//
             GeometryReader { geometry in
-                ScrollView() {
+                ScrollView {
                     VStack {
                         Text("Select Course").font(.system(size: 20, weight: .semibold))
                         Text("골프장을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)

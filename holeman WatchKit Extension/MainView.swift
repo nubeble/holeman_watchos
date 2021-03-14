@@ -33,7 +33,7 @@ struct MainView: View {
     
     var distance: String {
         if let location = locationManager.lastLocation {
-            if self.latitude == nil || self.longitude == nil { return "0.0" }
+            if self.latitude == nil || self.longitude == nil { return "0" }
             
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
@@ -47,48 +47,54 @@ struct MainView: View {
             // print(distance)
             distance = distance - 289642 + 380
             
-            var returnValue: Double = 0
+            // var returnValue: Double = 0
+            var returnValue: Int = 0
             if self.distanceUnit == 0 {
-                returnValue = round(distance * 10) / 10
+                // returnValue = round(distance * 10) / 10
+                returnValue = Int(round(distance))
                 
                 if returnValue > 999 { returnValue = 999 }
             } else if self.distanceUnit == 1 {
                 let tmp = distance * 1.09361
-                returnValue = round(tmp * 10) / 10
+                // returnValue = round(tmp * 10) / 10
+                returnValue = Int(round(tmp))
                 
                 if returnValue > 999 { returnValue = 999 }
             }
             
             return "\(returnValue)"
         } else {
-            return "0.0"
+            return "0"
         }
     }
     
     var height: String {
         if let location = locationManager.lastLocation {
-            if MainView.elevationDiff == nil || self.elevation == nil { return "0.0" }
+            if MainView.elevationDiff == nil || self.elevation == nil { return "0" }
             
             let altitude = location.altitude
             
             let height = altitude + MainView.elevationDiff!
             let d = self.elevation! - height
             
-            var returnValue: Double = 0
+            // var returnValue: Double = 0
+            var returnValue: Int = 0
             if self.distanceUnit == 0 {
-                returnValue = round(d * 10) / 10
+                // returnValue = round(d * 10) / 10
+                returnValue = Int(round(d))
                 
                 if returnValue > 999 { returnValue = 999 }
             } else if self.distanceUnit == 1 {
                 let tmp = d * 1.09361
-                returnValue = round(tmp * 10) / 10
+                // returnValue = round(tmp * 10) / 10
+                returnValue = Int(round(tmp))
                 
                 if returnValue > 999 { returnValue = 999 }
             }
             
             return "\(returnValue)"
         } else {
-            return "0.0"
+            return "0"
         }
     }
     
@@ -401,12 +407,23 @@ struct MainView: View {
                         }
                         .padding(.bottom, 48)
                     }
-                }
+                    
+                    // course name
+                    VStack {
+                        Spacer().frame(maxHeight: .infinity)
+                        
+                        Text(Util.getCourseName(self.course?.name)).font(.system(size: 12))
+                            .foregroundColor(.gray)
+                        //.fixedSize(horizontal: false, vertical: true)
+                        //.lineLimit(1)
+                        //.frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                } // end of ZStack
             }
             // .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .edgesIgnoringSafeArea(.all)
-            .navigationBarTitle("")
-            .navigationBarBackButtonHidden(true)
+            // .navigationBarTitle("")
+            // .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
             .onAppear {
                 if self.distanceUnit == -1 {
@@ -543,7 +560,7 @@ struct MainView: View {
             
         } else if self.mode == 99 {
             
-            // compass //
+            // compass test //
             /*
              VStack {
              //Spacer()
@@ -592,8 +609,8 @@ struct MainView: View {
             }
             .rotationEffect(Angle(degrees: self.locationManager.heading ?? 0))
             .edgesIgnoringSafeArea(.all)
-            .navigationBarTitle("")
-            .navigationBarBackButtonHidden(true)
+            // .navigationBarTitle("")
+            // .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
             
         }
@@ -1011,7 +1028,6 @@ struct MainView: View {
                     self.holePassCount += 1
                 }
                 
-                
                 /*
                  if self.holePassStartTime == nil {
                  self.holePassStartTime = DispatchTime.now()
@@ -1027,8 +1043,10 @@ struct MainView: View {
                  }
                  }
                  */
+                
             } else {
                 self.holePassFlag = 100
+                self.holePassCount = 0
             }
             return false
             
@@ -1037,6 +1055,8 @@ struct MainView: View {
             return false
             
         case 400:
+            self.holePassFlag = 100
+            self.holePassCount = 0
             return true
             
         default:

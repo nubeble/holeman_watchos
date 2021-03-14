@@ -31,7 +31,7 @@ struct TeeView: View {
         if self.mode == 0 {
             
             GeometryReader { geometry in
-                ScrollView() {
+                ScrollView {
                     // VStack {
                     ScrollViewReader { value in
                         LazyVStack {
