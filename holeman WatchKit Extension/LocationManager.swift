@@ -52,6 +52,7 @@ class LocationManager: NSObject, ObservableObject {
     
     override init() {
         super.init()
+        
         self.locationManager.delegate = self
         self.locationManager.distanceFilter = kCLDistanceFilterNone
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -69,6 +70,15 @@ extension LocationManager: CLLocationManagerDelegate {
         self.locationStatus = status
         
         // print(#function, statusString)
+        
+        // ToDo: detect permission change (location)
+        /*
+         if status == .authorizedWhenInUse || status == .authorizedAlways {
+         
+         } else {
+         
+         }
+         */
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

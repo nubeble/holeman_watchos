@@ -932,7 +932,7 @@ struct MainView: View {
         }
         
         if MainView.lastHoleNumber != self.holeNumber {
-            print(#function, "saveHole()", 3)
+            // print(#function, "saveHole()", 3)
             
             if Global.halftime == 1 { saveHole(1) } // 전반 중
             else { saveHole(3) } // 후반 중
@@ -943,7 +943,7 @@ struct MainView: View {
         }
         
         if MainView.lastTeeingGroundIndex != self.teeingGroundIndex {
-            print(#function, "saveHole()", 4)
+            // print(#function, "saveHole()", 4)
             
             if Global.halftime == 1 { saveHole(1) } // 전반 중
             else { saveHole(3) } // 후반 중
@@ -968,11 +968,31 @@ struct MainView: View {
         let coordinate1 = CLLocation(latitude: lat1, longitude: lon1)
         let coordinate2 = CLLocation(latitude: lat2, longitude: lon2)
         
+        // 현재 홀의 홀컵과 나 사이의 거리
         let distance = coordinate1.distance(from: coordinate2) // result is in meters
+        
+        
+        // ToDo: 2021-03-15
+        // 1. 현재 홀에 있는지 확인
+        let stillIn = stillInCurrentHole(distance)
+        if stillIn == false { // 현재 홀을 벗어났다면
+            // 2. currentHoleNumber+1 부터 한 바퀴까지 돌면서 각 홀에 있는지 체크
+            self.holeNumber = findHole(coordinate1)
+            
+            // init
+            self.holePassFlag = 100
+            self.holePassCount = 0
+            
+            withAnimation {
+                self.mode = 0
+            }
+            
+            return
+        }
+        
         
         let result = self.checkHolePass(distance)
         if result == true {
-            self.holeNumber! += 1
             if (self.holeNumber! % 9) == 0 {
                 // 9홀 종료
                 
@@ -989,17 +1009,22 @@ struct MainView: View {
                 if Global.halftime == 1 { moveToHoleSearchView(200) }
                 else if Global.halftime == 2 { moveToHoleSearchView(300) }
             } else {
-                // 일반 홀 종료
+                // 일반 홀 종료. 다음 홀로 이동
                 
-                if Global.halftime == 1 {
-                    // 전반 중
-                    
-                    saveHole(1)
-                } else if Global.halftime == 2 {
-                    // 후반 중
-                    
-                    saveHole(3)
-                }
+                self.holeNumber! += 1 // ToDo: check!!!
+                
+                // saveHoleOnAppear에서 저장
+                /*
+                 if Global.halftime == 1 {
+                 // 전반 중
+                 
+                 saveHole(1)
+                 } else if Global.halftime == 2 {
+                 // 후반 중
+                 
+                 saveHole(3)
+                 }
+                 */
                 
                 // let holeName = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
                 // showMessage(holeName)
@@ -1023,7 +1048,7 @@ struct MainView: View {
                     self.holePassFlag = 300
                     self.holePassCount = 0
                     
-                    print(#function, "10 seconds")
+                    print(#function, "10 seconds up")
                 } else {
                     self.holePassCount += 1
                 }
@@ -1064,7 +1089,79 @@ struct MainView: View {
         }
     }
     
+    func stillInCurrentHole(_ distance: Double) -> Bool {
+        var fullBack = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distance
+        
+        if self.teeingGroundInfo?.unit == "Y" {
+            // yard to meter
+            let x = Double(fullBack!) * 0.9144
+            fullBack = Int(x.rounded())
+        }
+        
+        print(#function, "full back tee distance (meter)", fullBack!)
+        
+        fullBack = fullBack! + 30 // full back tee + 30 m
+        
+        if Double(fullBack!) - distance < 0 {
+            return false
+        }
+        
+        return true
+    }
+    
+    func inHole(_ index: Int, _ coordinate: CLLocation) -> Bool {
+        // get distance
+        let sensor = self.sensors[index]
+        let latitude = sensor.location.coordinate.latitude
+        let longitude = sensor.location.coordinate.longitude
+        let coordinate2 = CLLocation(latitude: latitude, longitude: longitude)
+        
+        let distance = coordinate.distance(from: coordinate2) // result is in meters
+        
+        var fullBack = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distance
+        
+        if self.teeingGroundInfo?.unit == "Y" {
+            // yard to meter
+            let x = Double(fullBack!) * 0.9144
+            fullBack = Int(x.rounded())
+        }
+        
+        print(#function, "full back tee distance (meter)", fullBack!)
+        
+        fullBack = fullBack! + 30 // full back tee + 30 m
+        
+        if Double(fullBack!) - distance < 0 {
+            return false
+        }
+        
+        return true
+    }
+    
+    func findHole(_ coordinate: CLLocation) -> Int {
+        if let number = self.holeNumber {
+            let count = self.sensors.count - 1
+            
+            for i in 0...count {
+                var index = number - 1 + i // 다음 홀 index
+                
+                if index >= count {
+                    index = index - self.sensors.count
+                }
+                
+                let result = inHole(index, coordinate)
+                if result == true {
+                    return index
+                }
+            }
+            
+            return (number + 1)
+        } else {
+            return 1
+        }
+    }
+    
     func saveHole(_ halftime: Int) {
+        print(#function, halftime)
         // 1. time
         let date = Date()
         let dateFormatter = DateFormatter()

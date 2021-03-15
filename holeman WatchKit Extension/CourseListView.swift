@@ -331,7 +331,6 @@ struct CourseListView: View {
                             }
                             .buttonStyle(PlainButtonStyle())
                             
-                            
                             Button(action: {
                                 // go back
                                 withAnimation {
@@ -411,6 +410,9 @@ struct CourseListView: View {
                 }.onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         SKPaymentQueue.default().remove(self.storeManager)
+                        
+                        let c = self.courses[self.selectedCourseIndex]
+                        Util.saveCourse(c)
                         
                         withAnimation {
                             self.mode = 2

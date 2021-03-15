@@ -468,13 +468,18 @@ struct IntroView: View {
                     UNUserNotificationCenter.current().getNotificationSettings { settings in
                         print("Notification settings: \(settings)")
                         
-                        guard settings.authorizationStatus == .authorized else { return }
-                        
-                        if let fun = self.onComplete {
-                            fun(true)
+                        if settings.authorizationStatus == .authorized {
+                            print("Push notification is enabled")
+                            
+                            if let fun = self.onComplete {
+                                fun(true)
+                            }
+                        } else {
+                            print("Push notification is not enabled")
+                            
+                            // return
                         }
                     }
-                    
                 } else if newPhase == .background {
                     print("Background")
                 }
@@ -879,6 +884,7 @@ struct IntroView: View {
                     print("self.onComplete is nil")
                     self.onComplete = onComplete
                     
+                    // open request window
                     withAnimation {
                         self.mode = 31
                     }

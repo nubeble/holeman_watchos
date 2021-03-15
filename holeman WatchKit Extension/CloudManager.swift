@@ -336,7 +336,7 @@ struct CloudManager {
     static func getSensors(_ groupId: Int64, onComplete: @escaping (_ records:[CKRecord]?) -> Void) {
         let p = NSPredicate(format: "id = %d", groupId)
         let query = CKQuery(recordType: "Sensor", predicate: p)
-        // query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        query.sortDescriptors = [NSSortDescriptor(key: "holeNumber", ascending: true)]
         
         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
             if let error = error {
@@ -344,7 +344,8 @@ struct CloudManager {
                     print("Cloud Query Error - Fetch Locations: \(error)")
                 }
             } else {
-                // print(records)
+                print(records) // ToDo: check if sorted by holeNumber
+                
                 onComplete(records)
             }
         }
