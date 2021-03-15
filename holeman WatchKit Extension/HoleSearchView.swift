@@ -382,115 +382,116 @@ struct HoleSearchView: View {
     }
     
     func getHoles(_ groupId: Int64, onComplete: @escaping () -> Void) {
-        CloudManager.getHoles(groupId) { records in
-            if let records = records {
-                if records.count == 1 {
-                    let record = records[0]
+        CloudManager.getHoles(groupId) { record in
+            //if let records = records {
+            //if records.count == 1 {
+            //let record = records[0]
+            if let record = record {
+                
+                var info = TeeingGroundInfoModel(unit: "", holes: [])
+                
+                // let id = record["id"] as! Int64
+                let unit = record["unit"] as! String
+                let holes = record["holes"] as! [String]
+                
+                // set unit
+                info.unit = unit
+                
+                // holes
+                var i = 0 // 0 ~ 17
+                for hole in holes {
+                    i += 1
                     
-                    var info = TeeingGroundInfoModel(unit: "", holes: [])
+                    // create
+                    var tg = TeeingGrounds(teeingGrounds: [], par: 0, handicap: 0, name: "")
                     
-                    // let id = record["id"] as! Int64
-                    let unit = record["unit"] as! String
-                    let holes = record["holes"] as! [String]
-                    
-                    // set unit
-                    info.unit = unit
-                    
-                    // holes
-                    var i = 0 // 0 ~ 17
-                    for hole in holes {
-                        i += 1
+                    // parse json
+                    do {
+                        // let data = Data.init(base64Encoded: course)
+                        let data = Data(hole.utf8)
+                        let decodedData = try JSONDecoder().decode(HoleData.self, from: data)
+                        // print(decodedData)
                         
-                        // create
-                        var tg = TeeingGrounds(teeingGrounds: [], par: 0, handicap: 0, name: "")
+                        tg.par = decodedData.par
+                        tg.handicap = decodedData.handicap
                         
-                        // parse json
-                        do {
-                            // let data = Data.init(base64Encoded: course)
-                            let data = Data(hole.utf8)
-                            let decodedData = try JSONDecoder().decode(HoleData.self, from: data)
-                            // print(decodedData)
+                        // let distances = Util.convertToDictionary(text: decodedData.distance)
+                        let distances = decodedData.distance
+                        
+                        // set name
+                        if self.course?.courses.count == 0 {
+                            let number = i
+                            tg.name = Util.getOrdinalNumber(number) + " HOLE"
+                        } else {
+                            var number = i
                             
-                            tg.par = decodedData.par
-                            tg.handicap = decodedData.handicap
-                            
-                            // let distances = Util.convertToDictionary(text: decodedData.distance)
-                            let distances = decodedData.distance
-                            
-                            // set name
-                            if self.course?.courses.count == 0 {
-                                let number = i
-                                tg.name = Util.getOrdinalNumber(number) + " HOLE"
-                            } else {
-                                var number = i
+                            for course in self.course!.courses {
+                                let name = course.name
+                                let startNumber = course.range[0]
+                                let endNumber = course.range[1]
                                 
-                                for course in self.course!.courses {
-                                    let name = course.name
-                                    let startNumber = course.range[0]
-                                    let endNumber = course.range[1]
-                                    
-                                    if startNumber <= number && number <= endNumber {
-                                        number = (number + 9) % 9;
-                                        if number == 0 { number = 9; }
-                                        // tg.name = name + " " + number;
-                                        // tg.name = name + " HOLE " + number;
-                                        tg.name = name + " " + Util.getOrdinalNumber(number);
-                                        break;
-                                    }
+                                if startNumber <= number && number <= endNumber {
+                                    number = (number + 9) % 9;
+                                    if number == 0 { number = 9; }
+                                    // tg.name = name + " " + number;
+                                    // tg.name = name + " HOLE " + number;
+                                    tg.name = name + " " + Util.getOrdinalNumber(number);
+                                    break;
                                 }
                             }
-                            
-                            // set distance
-                            
-                            // sort
-                            // let sorted = distances.sorted {$0.1 < $1.1}
-                            let sorted = distances.sorted {$0.1 > $1.1}
-                            for (key, value) in sorted {
-                                // get name, color
-                                let start1 = key.firstIndex(of: "(")
-                                let end1 = key.firstIndex(of: ")")
-                                
-                                let i1 = key.index(start1!, offsetBy: 0)
-                                
-                                let range1 = key.startIndex..<i1
-                                let name = key[range1]
-                                
-                                let i2 = key.index(start1!, offsetBy: 1)
-                                
-                                let range2 = i2..<end1!
-                                let color = key[range2]
-                                
-                                // print("name", name)
-                                // print("color", color)
-                                
-                                let distance = value
-                                
-                                // print("distance", distance)
-                                
-                                let t = TeeingGround(name: String(name).uppercased(), color: String(color).uppercased(), distance: distance)
-                                tg.teeingGrounds.append(t)
-                            }
-                        } catch {
-                            print(error)
-                            return
                         }
                         
-                        // set
-                        info.holes.append(tg)
-                    } // end of for
+                        // set distance
+                        
+                        // sort
+                        // let sorted = distances.sorted {$0.1 < $1.1}
+                        let sorted = distances.sorted {$0.1 > $1.1}
+                        for (key, value) in sorted {
+                            // get name, color
+                            let start1 = key.firstIndex(of: "(")
+                            let end1 = key.firstIndex(of: ")")
+                            
+                            let i1 = key.index(start1!, offsetBy: 0)
+                            
+                            let range1 = key.startIndex..<i1
+                            let name = key[range1]
+                            
+                            let i2 = key.index(start1!, offsetBy: 1)
+                            
+                            let range2 = i2..<end1!
+                            let color = key[range2]
+                            
+                            // print("name", name)
+                            // print("color", color)
+                            
+                            let distance = value
+                            
+                            // print("distance", distance)
+                            
+                            let t = TeeingGround(name: String(name).uppercased(), color: String(color).uppercased(), distance: distance)
+                            tg.teeingGrounds.append(t)
+                        }
+                    } catch {
+                        print(error)
+                        return
+                    }
                     
-                    self.teeingGroundInfo = info
-                    // print("info", info)
-                    
-                    onComplete()
-                } else { // records.count != 1
-                    
-                    // ToDo: error handling
-                    
-                }
-            } else {
-                // N/A
+                    // set
+                    info.holes.append(tg)
+                } // end of for
+                
+                self.teeingGroundInfo = info
+                // print("info", info)
+                
+                onComplete()
+            } else { // records.count != 1
+                
+                // ToDo: error handling
+                
             }
+            // } else {
+            // N/A
+            // }
         }
     } // end of getHoles
     

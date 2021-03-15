@@ -969,7 +969,10 @@ struct MainView: View {
         let coordinate2 = CLLocation(latitude: lat2, longitude: lon2)
         
         // 현재 홀의 홀컵과 나 사이의 거리
-        let distance = coordinate1.distance(from: coordinate2) // result is in meters
+        var distance = coordinate1.distance(from: coordinate2) // result is in meters
+        
+        // ToDo: internal test
+        distance = distance - 289642 + 380
         
         
         // ToDo: 2021-03-15
@@ -977,59 +980,59 @@ struct MainView: View {
         let stillIn = stillInCurrentHole(distance)
         if stillIn == false { // 현재 홀을 벗어났다면
             // 2. currentHoleNumber+1 부터 한 바퀴까지 돌면서 각 홀에 있는지 체크
-            self.holeNumber = findHole(coordinate1)
-            
-            // init
-            self.holePassFlag = 100
-            self.holePassCount = 0
-            
-            withAnimation {
-                self.mode = 0
-            }
-            
-            return
-        }
-        
-        
-        let result = self.checkHolePass(distance)
-        if result == true {
-            if (self.holeNumber! % 9) == 0 {
-                // 9홀 종료
+            let number = findHole(coordinate1)
+            if number != 0 {
+                self.holeNumber = number
                 
-                if Global.halftime == 1 {
-                    // 전반 종료
-                    
-                    saveHole(2)
-                } else if Global.halftime == 2 {
-                    // 후반 종료
-                    
-                    saveHole(4)
-                }
-                
-                if Global.halftime == 1 { moveToHoleSearchView(200) }
-                else if Global.halftime == 2 { moveToHoleSearchView(300) }
-            } else {
-                // 일반 홀 종료. 다음 홀로 이동
-                
-                self.holeNumber! += 1 // ToDo: check!!!
-                
-                // saveHoleOnAppear에서 저장
-                /*
-                 if Global.halftime == 1 {
-                 // 전반 중
-                 
-                 saveHole(1)
-                 } else if Global.halftime == 2 {
-                 // 후반 중
-                 
-                 saveHole(3)
-                 }
-                 */
-                
-                // let holeName = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
-                // showMessage(holeName)
                 withAnimation {
                     self.mode = 0
+                }
+                
+                // init
+                self.holePassFlag = 100
+                self.holePassCount = 0
+            }
+        } else {
+            let result = self.checkHolePass(distance)
+            if result == true {
+                if (self.holeNumber! % 9) == 0 {
+                    // 9홀 종료
+                    
+                    if Global.halftime == 1 {
+                        // 전반 종료
+                        
+                        saveHole(2)
+                    } else if Global.halftime == 2 {
+                        // 후반 종료
+                        
+                        saveHole(4)
+                    }
+                    
+                    if Global.halftime == 1 { moveToHoleSearchView(200) }
+                    else if Global.halftime == 2 { moveToHoleSearchView(300) }
+                } else {
+                    // 일반 홀 종료. 다음 홀로 이동
+                    
+                    self.holeNumber! += 1
+                    
+                    // saveHoleOnAppear에서 저장
+                    /*
+                     if Global.halftime == 1 {
+                     // 전반 중
+                     
+                     saveHole(1)
+                     } else if Global.halftime == 2 {
+                     // 후반 중
+                     
+                     saveHole(3)
+                     }
+                     */
+                    
+                    // let holeName = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
+                    // showMessage(holeName)
+                    withAnimation {
+                        self.mode = 0
+                    }
                 }
             }
         }
@@ -1098,7 +1101,7 @@ struct MainView: View {
             fullBack = Int(x.rounded())
         }
         
-        print(#function, "full back tee distance (meter)", fullBack!)
+        // print(#function, "full back tee distance (meter)", fullBack!, distance)
         
         fullBack = fullBack! + 30 // full back tee + 30 m
         
@@ -1126,7 +1129,7 @@ struct MainView: View {
             fullBack = Int(x.rounded())
         }
         
-        print(#function, "full back tee distance (meter)", fullBack!)
+        // print(#function, "full back tee distance (meter)", fullBack!)
         
         fullBack = fullBack! + 30 // full back tee + 30 m
         
@@ -1138,25 +1141,37 @@ struct MainView: View {
     }
     
     func findHole(_ coordinate: CLLocation) -> Int {
+        print(#function, "sensors count", self.sensors.count, self.holeNumber!)
+        
         if let number = self.holeNumber {
             let count = self.sensors.count - 1
             
             for i in 0...count {
-                var index = number - 1 + i // 다음 홀 index
+                var index = number + i // 다음 홀 index
                 
-                if index >= count {
+                if index >= self.sensors.count {
                     index = index - self.sensors.count
                 }
                 
                 let result = inHole(index, coordinate)
                 if result == true {
-                    return index
+                    return (index + 1) // 다음 홀 number
                 }
             }
             
-            return (number + 1)
+            // return (number + 1)
+            /*
+             var number2 = number + 1 // 다음 홀 number
+             let count2 = self.teeingGroundInfo?.holes.count
+             if number2 > count2! {
+             number2 = number2 - count2!
+             }
+             
+             return number2
+             */
+            return 0
         } else {
-            return 1
+            return 0 // never happen
         }
     }
     

@@ -69,6 +69,10 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
+            if transaction.payment.productIdentifier != "com.nubeble.holeman.iap.course" {
+                continue
+            }
+            
             switch transaction.transactionState {
             case .purchasing:
                 DispatchQueue.main.async {
@@ -77,10 +81,6 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 
             case .purchased:
                 // UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap, save to UserDefaults
-                
-                if transaction.payment.productIdentifier == "com.nubeble.holeman.iap.course" {
-                    
-                }
                 
                 queue.finishTransaction(transaction)
                 
