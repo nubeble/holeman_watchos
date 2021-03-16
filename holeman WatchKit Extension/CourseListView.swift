@@ -74,11 +74,23 @@ struct CourseListView: View {
                                 
                                 Button(action: {
                                     self.selectedCourseIndex = index
-                                    
+                                    /*
                                     withAnimation {
-                                        self.mode = 2 // ToDo: internal test
-                                        // self.mode = 50 // payment
+                                        self.mode = 50 // payment
                                     }
+                                    */
+                                    
+                                    // ToDo: internal test
+                                    if self.courses[index].id == 29 { // 안성H
+                                        withAnimation {
+                                            self.mode = 2 // skip payment
+                                        }
+                                    } else {
+                                        withAnimation {
+                                            self.mode = 50 // payment
+                                        }
+                                    }
+                                    
                                 }) {
                                     /*
                                      Text(str1 + "\n" + str2).font(.system(size: 18))

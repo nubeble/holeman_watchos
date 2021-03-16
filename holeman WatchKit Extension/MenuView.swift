@@ -103,7 +103,7 @@ struct MenuView: View {
                         
                         // item 3
                         Button(action: {
-                            self.textMessage = "정말 라운드를 종료하고 로그아웃을 하시겠습니까?"
+                            self.textMessage = "정말 로그아웃하시겠습니까?"
                             
                             withAnimation {
                                 self.mode = 3

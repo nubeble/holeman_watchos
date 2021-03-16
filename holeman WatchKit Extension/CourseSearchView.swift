@@ -174,17 +174,16 @@ struct CourseSearchView: View {
                                 Button(action: {
                                     self.selectedCourseIndex = index
                                     
-                                    // ToDo: internal test
+                                    withAnimation {
+                                        self.mode = 50 // payment
+                                    }
+                                    
                                     /*
+                                     // ToDo: internal test (skip payment)
                                      withAnimation {
                                      self.mode = 20
                                      }
                                      */
-                                    
-                                    // payment
-                                    withAnimation {
-                                        self.mode = 50
-                                    }
                                 }) {
                                     /*
                                      Text(str1 + "\n" + str2).font(.system(size: 18))
