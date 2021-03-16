@@ -386,11 +386,11 @@ struct MainView: View {
                     VStack(alignment: .leading)  {
                         Spacer().frame(maxHeight: .infinity)
                         
-                        HStack {
+                        HStack(spacing: 2) {
                             Image("hills")
                                 .resizable()
                                 .frame(width: 28, height: 28)
-                            // .padding(.trailing, 2)
+                                .padding(.top, 4)
                             
                             HStack(alignment: .firstTextBaseline, spacing: 0) {
                                 Text(self.height).font(.system(size: 32))
