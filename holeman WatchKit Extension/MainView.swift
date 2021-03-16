@@ -43,9 +43,10 @@ struct MainView: View {
             
             var distance = coordinate1.distance(from: coordinate2) // result is in meters
             
-            // ToDo: internal test
+            // ToDo: internal test (distance)
             // print(distance)
-            distance = distance - 289642 + 380
+            // distance = distance - 289642 + 380 // 매탄동
+            distance = distance - 307348 + 380 // 우면동
             
             // var returnValue: Double = 0
             var returnValue: Int = 0
@@ -971,8 +972,10 @@ struct MainView: View {
         // 현재 홀의 홀컵과 나 사이의 거리
         var distance = coordinate1.distance(from: coordinate2) // result is in meters
         
-        // ToDo: internal test
-        distance = distance - 289642 + 380
+        // ToDo: internal test (distance)
+        // print(distance)
+        // distance = distance - 289642 + 380 // 매탄동
+        distance = distance - 307348 + 380 // 우면동
         
         
         // ToDo: 2021-03-15

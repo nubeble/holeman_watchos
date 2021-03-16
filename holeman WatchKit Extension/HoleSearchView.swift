@@ -648,7 +648,7 @@ struct HoleSearchView: View {
                         let d = distance - Double(fullBack!)
                         
                         // if d < 30 { // ToDo: static (30 m)
-                        if d < 300 * 1000 { // ToDo: internal test (300 km)
+                        if d < 500 * 1000 { // ToDo: internal test (500 km)
                             list.append(startHole.number)
                         }
                     }
