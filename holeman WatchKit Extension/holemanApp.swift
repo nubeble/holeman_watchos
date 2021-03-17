@@ -13,14 +13,8 @@ struct holemanApp: App {
     @WKExtensionDelegateAdaptor(ExtensionDelegate.self) var delegate
     
     
-    //@StateObject var storeManager = StoreManager()
-    /*
-     let productIDs = [
-     "com.nubeble.holeman.iap.course",
-     "com.nubeble.holeman.test1",
-     "com.nubeble.holeman.test2"
-     ]
-     */
+    @StateObject var storeManager = StoreManager()
+    
     
     var body: some Scene {
         WindowGroup {
@@ -34,23 +28,17 @@ struct holemanApp: App {
                 // print("ContentView appeared!")
                 // WKExtension.shared().registerForRemoteNotifications()
                 
-                /*
-                 // SKPaymentQueue.default().add(storeManager)
-                 // SKPaymentQueue.default().remove(storeManager)
-                 
-                 storeManager.getProducts(productIDs: productIDs)
-                 */
+                // ToDo: test purchase
+                self.storeManager.getProducts(productIDs: Static.productIDs)
                 
-                /*
-                 storeManager.getProducts(productIDs: Static.productIDs)
-                 
-                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                 SKPaymentQueue.default().add(storeManager) // ToDo: remove
-                 
-                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                 storeManager.purchaseProduct(product: product!)
-                 }
-                 */
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                    if product != nil {
+                        SKPaymentQueue.default().add(self.storeManager) // remove
+                        
+                        self.storeManager.purchaseProduct(product: product!)
+                    }
+                }
             }.onDisappear {
             }
         }

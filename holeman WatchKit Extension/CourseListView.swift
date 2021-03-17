@@ -318,13 +318,15 @@ struct CourseListView: View {
                             
                             Button(action: {
                                 // purchase
-                                SKPaymentQueue.default().add(self.storeManager)
-                                
                                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                                self.storeManager.purchaseProduct(product: product!)
-                                
-                                withAnimation {
-                                    self.mode = 52
+                                if product != nil {
+                                    SKPaymentQueue.default().add(self.storeManager)
+                                    
+                                    self.storeManager.purchaseProduct(product: product!)
+                                    
+                                    withAnimation {
+                                        self.mode = 52
+                                    }
                                 }
                             }) {
                                 HStack {

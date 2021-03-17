@@ -1144,7 +1144,7 @@ struct MainView: View {
     }
     
     func findHole(_ coordinate: CLLocation) -> Int {
-        print(#function, "sensors count", self.sensors.count, self.holeNumber!)
+        // print(#function, "sensors count", self.sensors.count, self.holeNumber!)
         
         if let number = self.holeNumber {
             let count = self.sensors.count - 1
