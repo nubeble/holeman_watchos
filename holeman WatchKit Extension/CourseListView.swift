@@ -171,7 +171,6 @@ struct CourseListView: View {
                             let range2 = i2..<end1!
                             let str2 = name[range2]
                             
-                            
                             Text(str1).font(.system(size: 20))
                                 .fixedSize(horizontal: false, vertical: true)
                                 .lineLimit(1)
@@ -205,7 +204,7 @@ struct CourseListView: View {
                                 .padding(.top, 1)
                         }
                     }
-                    .padding(.all, 10)
+                    .padding(.all, 8)
                     .background(Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255))
                     .cornerRadius(8)
                     
@@ -300,7 +299,6 @@ struct CourseListView: View {
                             Text("Payment").font(.system(size: 20, weight: .semibold))
                             Text("바우쳐를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
                             
-                            
                             Text("Holeman Voucher")
                                 .font(.system(size: 20, weight: .regular))
                                 // .foregroundColor(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
@@ -322,7 +320,7 @@ struct CourseListView: View {
                                 if product != nil {
                                     SKPaymentQueue.default().add(self.storeManager)
                                     
-                                    self.storeManager.purchaseProduct(product: product!)
+                                    self.storeManager.purchaseProduct(product!)
                                     
                                     withAnimation {
                                         self.mode = 52
@@ -420,7 +418,7 @@ struct CourseListView: View {
                 // ToDo: check mark animation
                 VStack {
                     Image(systemName: "checkmark")
-                        .font(Font.system(size: 40, weight: .heavy))
+                        .font(Font.system(size: 40, weight: .semibold))
                 }.onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         SKPaymentQueue.default().remove(self.storeManager)

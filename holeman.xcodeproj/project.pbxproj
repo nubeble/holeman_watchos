@@ -111,6 +111,7 @@
 		77B069F833FCB46B26C43952 /* Pods-holeman WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-holeman WatchKit Extension.debug.xcconfig"; path = "Target Support Files/Pods-holeman WatchKit Extension/Pods-holeman WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		B0DF725CA6FF565437AAEB9B /* Pods-holeman WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-holeman WatchKit Extension.release.xcconfig"; path = "Target Support Files/Pods-holeman WatchKit Extension/Pods-holeman WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
 		B908DDD925E40290005DB11F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.2.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
+		B912E90626076C1600D61969 /* holeman WatchKit ExtensionRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "holeman WatchKit ExtensionRelease.entitlements"; sourceTree = "<group>"; };
 		B91AB1E225C4E44A0050B157 /* SensorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorModel.swift; sourceTree = "<group>"; };
 		B91AB1FC25CA85EC0050B157 /* TeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeeView.swift; sourceTree = "<group>"; };
 		B923CCA4254671BF00E09B40 /* ArticleRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleRow.swift; sourceTree = "<group>"; };
@@ -265,6 +266,7 @@
 		B9AA29F52535BA2B0057FA8D /* holeman WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B912E90626076C1600D61969 /* holeman WatchKit ExtensionRelease.entitlements */,
 				B923CCB12546AC0800E09B40 /* holeman WatchKit ExtensionDebug.entitlements */,
 				B99531122581BE76001D5FBF /* SplashView.swift */,
 				B995311A2583094C001D5FBF /* IntroView.swift */,
@@ -720,6 +722,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -736,6 +739,7 @@
 			baseConfigurationReference = B0DF725CA6FF565437AAEB9B /* Pods-holeman WatchKit Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "holeman WatchKit Extension/holeman WatchKit ExtensionRelease.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
@@ -747,6 +751,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -770,6 +775,7 @@
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -793,6 +799,7 @@
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -812,7 +819,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman;
 				PRODUCT_NAME = Holeman;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -828,7 +835,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman;
 				PRODUCT_NAME = Holeman;
 				PROVISIONING_PROFILE_SPECIFIER = "";

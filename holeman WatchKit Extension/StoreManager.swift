@@ -15,7 +15,7 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     @Published var myProducts = [SKProduct]()
     
     func getProducts(productIDs: [String]) {
-        print(#function, "Start requesting products ...")
+        print(#function, "Start requesting products...")
         
         self.request?.cancel()
         
@@ -29,17 +29,15 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
         
         if !response.products.isEmpty {
             for product in response.products {
+                print(#function, "Product: \(product.productIdentifier) \(product.localizedTitle) \(product.price.floatValue)")
+                
                 DispatchQueue.main.async {
                     self.myProducts.append(product)
-                    
-                    // print("productIdentifier", product.productIdentifier)
-                    // product.localizedTitle
-                    // product.price
                 }
             }
             
             for invalidIdentifier in response.invalidProductIdentifiers {
-                print("Invalid identifiers found: \(invalidIdentifier)")
+                print("Invalid identifiers: \(invalidIdentifier)")
             }
         } else {
             print(#function, "response.products is empty")
@@ -58,10 +56,10 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     @Published var transactionState: SKPaymentTransactionState?
     
     // 1.
-    func purchaseProduct(product: SKProduct) {
+    func purchaseProduct(_ product: SKProduct) {
         if SKPaymentQueue.canMakePayments() {
             let payment = SKPayment(product: product)
-            SKPaymentQueue.default().add(payment) // ToDo: iap, remove after add
+            SKPaymentQueue.default().add(payment)
         } else {
             print("Can't make payment")
         }

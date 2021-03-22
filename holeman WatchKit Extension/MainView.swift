@@ -45,8 +45,8 @@ struct MainView: View {
             
             // ToDo: internal test (distance)
             // print(distance)
-            // distance = distance - 289642 + 380 // 매탄동
-            distance = distance - 307348 + 380 // 우면동
+            distance = distance - 289642 + 380 // 매탄동
+            // distance = distance - 307348 + 380 // 우면동
             
             // var returnValue: Double = 0
             var returnValue: Int = 0
@@ -452,27 +452,45 @@ struct MainView: View {
                     CloudManager.subscribeToSensors(groupId!)
                     
                     getSensors(groupId!) {
-                        for sensor in self.sensors {
-                            if sensor.holeNumber == self.holeNumber! {
-                                
-                                self.latitude = sensor.location.coordinate.latitude
-                                self.longitude = sensor.location.coordinate.longitude
-                                self.elevation = sensor.elevation
-                                
-                                break
-                            }
-                        }
-                    }
-                } else {
-                    for sensor in self.sensors {
-                        if sensor.holeNumber == self.holeNumber! {
+                        /*
+                         for sensor in self.sensors {
+                         if sensor.holeNumber == self.holeNumber! {
+                         
+                         self.latitude = sensor.location.coordinate.latitude
+                         self.longitude = sensor.location.coordinate.longitude
+                         self.elevation = sensor.elevation
+                         
+                         break
+                         }
+                         }
+                         */
+                        if self.holeNumber! - 1 < self.sensors.count {
+                            let sensor = self.sensors[self.holeNumber! - 1]
                             
                             self.latitude = sensor.location.coordinate.latitude
                             self.longitude = sensor.location.coordinate.longitude
                             self.elevation = sensor.elevation
-                            
-                            break
                         }
+                    }
+                } else {
+                    /*
+                     for sensor in self.sensors {
+                     if sensor.holeNumber == self.holeNumber! {
+                     
+                     self.latitude = sensor.location.coordinate.latitude
+                     self.longitude = sensor.location.coordinate.longitude
+                     self.elevation = sensor.elevation
+                     
+                     break
+                     }
+                     }
+                     */
+                    if self.holeNumber! - 1 < self.sensors.count {
+                        let sensor = self.sensors[self.holeNumber! - 1]
+                        
+                        self.latitude = sensor.location.coordinate.latitude
+                        self.longitude = sensor.location.coordinate.longitude
+                        self.elevation = sensor.elevation
                     }
                 }
                 
@@ -974,8 +992,8 @@ struct MainView: View {
         
         // ToDo: internal test (distance)
         // print(distance)
-        // distance = distance - 289642 + 380 // 매탄동
-        distance = distance - 307348 + 380 // 우면동
+        distance = distance - 289642 + 380 // 매탄동
+        // distance = distance - 307348 + 380 // 우면동
         
         
         // ToDo: 2021-03-15

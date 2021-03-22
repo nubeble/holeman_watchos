@@ -47,8 +47,7 @@ struct CloudManager {
             
             if let subscriptions = subscriptions {
                 if subscriptions.count == 0 {
-                    print("no subscription exists.")
-                    print("save subscription...")
+                    print("no subscription exists. save subscription...")
                     // CloudManager.saveSubscription(27)
                 }
                 
@@ -103,8 +102,6 @@ struct CloudManager {
         var index: Int = 0
         
         for subscription in subscriptions {
-            
-            
             print("subscription", subscription)
             
             /*
@@ -121,7 +118,6 @@ struct CloudManager {
              }
              */
             
-            // delete all subscriptions
             print("delete subscription...")
             
             db.delete(withSubscriptionID: subscription.subscriptionID, completionHandler: { id, error in
@@ -137,14 +133,10 @@ struct CloudManager {
                     onComplete(index)
                 }
             })
-            
         } // end of for
     }
     
-    // static func saveSubscription(_ type: String, _ id: Int64) { // id: course id
-    
     static func saveSubscription(_ type: String, _ id: Int64, onComplete: @escaping ((String) -> Void)) {
-        
         // create subscription
         // predicate: You can customize this to only get notified when particular records are changed.
         
@@ -294,7 +286,8 @@ struct CloudManager {
                     print("Cloud Query Error - Fetch Locations: \(error)")
                 }
             } else {
-                // print(records)
+                // print("#function", records)
+                
                 onComplete(records)
             }
         }
@@ -346,7 +339,8 @@ struct CloudManager {
                     print("Cloud Query Error: \(error)")
                 }
             } else {
-                // print(record)
+                // print("#function", record)
+                
                 onComplete(record)
             }
         }
@@ -363,7 +357,7 @@ struct CloudManager {
                     print("Cloud Query Error: \(error)")
                 }
             } else {
-                // print(#function, records) // check if sorted by holeNumber
+                // print(#function, records) // sorted by holeNumber
                 
                 onComplete(records)
             }
@@ -460,8 +454,8 @@ struct CloudManager {
         let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
         db.fetch(withRecordID: recordID) { (record, error) in
             if let error = error {
-                // print(#function, error)
-                print("User Record not found")
+                // print(#function, "User Record not found", error)
+                print(#function, "User Record not found")
                 
                 let record = CKRecord(recordType: "User", recordID: CKRecord.ID.init(recordName: id))
                 record["id"] = id as String

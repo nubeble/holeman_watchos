@@ -267,7 +267,6 @@ struct HoleSearchView: View {
                         let range2 = i2..<end1!
                         let str2 = name[range2]
                         
-                        
                         Text(str1).font(.system(size: 16))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)

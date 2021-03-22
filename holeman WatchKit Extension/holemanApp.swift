@@ -29,16 +29,18 @@ struct holemanApp: App {
                 // WKExtension.shared().registerForRemoteNotifications()
                 
                 // ToDo: test purchase
-                self.storeManager.getProducts(productIDs: Static.productIDs)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                    if product != nil {
-                        SKPaymentQueue.default().add(self.storeManager) // remove
-                        
-                        self.storeManager.purchaseProduct(product: product!)
-                    }
-                }
+                /*
+                 self.storeManager.getProducts(productIDs: Static.productIDs)
+                 
+                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                 if product != nil {
+                 SKPaymentQueue.default().add(self.storeManager) // remove
+                 
+                 self.storeManager.purchaseProduct(product!)
+                 }
+                 }
+                 */
             }.onDisappear {
             }
         }
