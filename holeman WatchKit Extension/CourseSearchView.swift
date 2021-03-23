@@ -248,7 +248,7 @@ struct CourseSearchView: View {
             
             ZStack {
                 VStack {
-                    Text("Selected Course").font(.system(size: 18, weight: .medium)).foregroundColor(.gray)
+                    Text("Selected Course").font(.system(size: 16, weight: .semibold)).foregroundColor(.gray)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 4)
                         .padding(.top, 8)

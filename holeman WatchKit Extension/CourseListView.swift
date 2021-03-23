@@ -151,7 +151,7 @@ struct CourseListView: View {
             
             ZStack {
                 VStack {
-                    Text("Selected Course").font(.system(size: 18, weight: .medium)).foregroundColor(.gray)
+                    Text("Selected Course").font(.system(size: 16, weight: .semibold)).foregroundColor(.gray)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 4)
                         .padding(.top, 8)
@@ -321,6 +321,7 @@ struct CourseListView: View {
                                     SKPaymentQueue.default().add(self.storeManager)
                                     
                                     self.storeManager.purchaseProduct(product!)
+                                    // self.storeManager.restoreProducts()
                                     
                                     withAnimation {
                                         self.mode = 52
