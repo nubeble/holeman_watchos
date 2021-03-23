@@ -248,7 +248,7 @@ struct CourseSearchView: View {
             
             ZStack {
                 VStack {
-                    Text("Selected Course").font(.system(size: 16, weight: .semibold)).foregroundColor(.gray)
+                    Text("Selected Course").font(.system(size: 16, weight: .regular)).foregroundColor(.gray)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 4)
                         .padding(.top, 8)
@@ -486,6 +486,7 @@ struct CourseSearchView: View {
                 VStack {
                     Image(systemName: "checkmark")
                         .font(Font.system(size: 40, weight: .semibold))
+                        .foregroundColor(.green)
                 }.onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         SKPaymentQueue.default().remove(self.storeManager)

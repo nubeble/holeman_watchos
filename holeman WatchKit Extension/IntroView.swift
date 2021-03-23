@@ -271,12 +271,12 @@ struct IntroView: View {
                         let course = Util.getCourseName(self.course?.name)
                         let hole = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
                         
-                        Text(course).font(.system(size: 16))
+                        Text(course).font(.system(size: 18))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(hole).font(.system(size: 14))
+                        Text(hole).font(.system(size: 16))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -285,12 +285,12 @@ struct IntroView: View {
                         let course = Util.getCourseName(self.course?.name)
                         let hole = "후반전 시작" // ToDo: language bundle
                         
-                        Text(course).font(.system(size: 16))
+                        Text(course).font(.system(size: 18))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(hole).font(.system(size: 14))
+                        Text(hole).font(.system(size: 16))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -298,12 +298,12 @@ struct IntroView: View {
                         let course = Util.getCourseName(self.course?.name)
                         let hole = "전반전 시작" // ToDo: language bundle
                         
-                        Text(course).font(.system(size: 16))
+                        Text(course).font(.system(size: 18))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(hole).font(.system(size: 14))
+                        Text(hole).font(.system(size: 16))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
