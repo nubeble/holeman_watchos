@@ -1222,7 +1222,7 @@ struct MainView: View {
             
             
             // ToDo: internal test
-            Util.saveCourse(course)
+            // Util.saveCourse(course)
             
             
             // address

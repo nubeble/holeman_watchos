@@ -248,7 +248,7 @@ struct CourseSearchView: View {
             
             ZStack {
                 VStack {
-                    Text("Selected Course").font(.system(size: 16, weight: .regular)).foregroundColor(.gray)
+                    Text("Selected Course").font(.system(size: 18, weight: .regular)).foregroundColor(.gray)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 4)
                         .padding(.top, 8)
@@ -482,7 +482,6 @@ struct CourseSearchView: View {
             } else if self.storeManager.transactionState == .purchased {
                 // move next in 3 secs
                 
-                // ToDo: check mark animation
                 VStack {
                     Image(systemName: "checkmark")
                         .font(Font.system(size: 40, weight: .semibold))

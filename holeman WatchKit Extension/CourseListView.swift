@@ -74,23 +74,23 @@ struct CourseListView: View {
                                 
                                 Button(action: {
                                     self.selectedCourseIndex = index
-                                    /*
+                                    
                                     withAnimation {
                                         self.mode = 50 // payment
                                     }
-                                    */
                                     
                                     // ToDo: internal test
-                                    if self.courses[index].id == 29 { // 안성H
-                                        withAnimation {
-                                            self.mode = 2 // skip payment
-                                        }
-                                    } else {
-                                        withAnimation {
-                                            self.mode = 50 // payment
-                                        }
-                                    }
-                                    
+                                    /*
+                                     if self.courses[index].id == 29 { // 안성H
+                                     withAnimation {
+                                     self.mode = 2 // skip payment
+                                     }
+                                     } else {
+                                     withAnimation {
+                                     self.mode = 50 // payment
+                                     }
+                                     }
+                                     */
                                 }) {
                                     /*
                                      Text(str1 + "\n" + str2).font(.system(size: 18))
@@ -151,7 +151,7 @@ struct CourseListView: View {
             
             ZStack {
                 VStack {
-                    Text("Selected Course").font(.system(size: 16, weight: .regular)).foregroundColor(.gray)
+                    Text("Selected Course").font(.system(size: 18, weight: .regular)).foregroundColor(.gray)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 4)
                         .padding(.top, 8)
@@ -416,7 +416,6 @@ struct CourseListView: View {
             } else if self.storeManager.transactionState == .purchased {
                 // move next in 3 secs
                 
-                // ToDo: check mark animation
                 VStack {
                     Image(systemName: "checkmark")
                         .font(Font.system(size: 40, weight: .semibold))
