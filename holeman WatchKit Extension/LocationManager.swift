@@ -54,8 +54,11 @@ class LocationManager: NSObject, ObservableObject {
         super.init()
         
         self.locationManager.delegate = self
+        // self.locationManager.distanceFilter = kCLDistanceFilterNone
+        // self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         self.locationManager.distanceFilter = kCLDistanceFilterNone
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
         self.locationManager.requestWhenInUseAuthorization() // ToDo: check notification
         
         if CLLocationManager.headingAvailable() {
@@ -85,10 +88,12 @@ extension LocationManager: CLLocationManagerDelegate {
         guard let location = locations.last else { return }
         self.lastLocation = location
         
-        // print(#function, location)
+        // print(#function, self.location)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         self.heading = -1 * newHeading.magneticHeading
+        
+        // print(#function, self.heading)
     }
 }
