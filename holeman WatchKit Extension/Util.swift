@@ -237,4 +237,36 @@ struct Util {
         
         return nil
     }
+    
+    static func checkLastPurchasedCourse(_ id: Int64) -> Bool {
+        let time = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_TIME")
+        if let time = time {
+            // get current time
+            let date = Date()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 2019-12-20 09:40:08
+            let dateString = dateFormatter.string(from: date)
+            
+            var i1 = dateString.index(dateString.startIndex, offsetBy: 0)
+            var i2 = dateString.index(dateString.startIndex, offsetBy: 10)
+            let date2 = dateString[i1..<i2] // yyyy-MM-dd
+            
+            i1 = time.index(time.startIndex, offsetBy: 0)
+            i2 = time.index(time.startIndex, offsetBy: 10)
+            let date1 = time[i1..<i2]
+            
+            if date1 == date2 { // 오늘 구매
+                let courseId = UserDefaults.standard.integer(forKey: "LAST_PURCHASED_COURSE_COURSE_ID")
+                if courseId == id {
+                    return true
+                }
+                
+                return false
+            } else { // 날짜가 다르면 새 구매
+                return false
+            }
+        } else { // 정보가 없으면 새 구매
+            return false
+        }
+    }
 }

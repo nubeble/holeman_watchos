@@ -174,8 +174,15 @@ struct CourseSearchView: View {
                                 Button(action: {
                                     self.selectedCourseIndex = index
                                     
-                                    withAnimation {
-                                        self.mode = 50 // payment
+                                    let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
+                                    if result == true {
+                                        withAnimation {
+                                            self.mode = 20 // move next
+                                        }
+                                    } else {
+                                        withAnimation {
+                                            self.mode = 50 // payment
+                                        }
                                     }
                                     
                                     /*
@@ -494,7 +501,7 @@ struct CourseSearchView: View {
                         Util.saveCourse(c)
                         
                         withAnimation {
-                            self.mode = 2
+                            self.mode = 20 // move next
                         }
                     }
                 }
