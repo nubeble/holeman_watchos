@@ -483,14 +483,11 @@ struct HoleSearchView: View {
                 // print("info", info)
                 
                 onComplete()
-            } else { // records.count != 1
+            } else {
+                print(#function, "No record found")
                 
                 // ToDo: error handling
-                
             }
-            // } else {
-            // N/A
-            // }
         }
     } // end of getHoles
     

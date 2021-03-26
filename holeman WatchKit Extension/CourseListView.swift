@@ -268,7 +268,7 @@ struct CourseListView: View {
             
         } else if self.mode == 21 {
             
-            // ToDo: show billing UI
+            // ToDo: test (show billing UI)
             List(self.storeManager.myProducts, id: \.self) { product in
                 
                 HStack {

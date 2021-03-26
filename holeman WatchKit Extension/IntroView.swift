@@ -862,7 +862,8 @@ struct IntroView: View {
     func requestNotificationAuthorization(onComplete: @escaping (_ result: Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
             if let error = error {
-                print(error.localizedDescription)
+                // print(error.localizedDescription)
+                print(error)
                 
                 // ToDo: error handling
                 

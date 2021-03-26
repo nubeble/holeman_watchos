@@ -143,7 +143,7 @@ struct CourseSearchView: View {
              .edgesIgnoringSafeArea(.bottom)
              }
              */
-            // ToDo: change picker to List
+            // change picker to List
             GeometryReader { geometry in
                 ScrollView {
                     ScrollViewReader { value in
