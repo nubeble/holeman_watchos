@@ -35,10 +35,21 @@ struct holemanApp: App {
                  DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                  let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
                  if product != nil {
-                 SKPaymentQueue.default().add(self.storeManager) // remove
+                 SKPaymentQueue.default().add(self.storeManager)
                  
                  self.storeManager.purchaseProduct(product!)
                  }
+                 }
+                 */
+                
+                // ToDo: test
+                /*
+                 print("finish transactions")
+                 SKPaymentQueue.default().add(self.storeManager)
+                 
+                 for transactionPending in SKPaymentQueue.default().transactions {
+                 print(#function, transactionPending.transactionIdentifier)
+                 SKPaymentQueue.default().finishTransaction(transactionPending)
                  }
                  */
             }.onDisappear {
