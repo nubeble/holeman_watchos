@@ -325,10 +325,10 @@ struct CourseListView: View {
                                 // purchase
                                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
                                 if product != nil {
-                                    SKPaymentQueue.default().add(self.storeManager)
+                                    // ToDo
+                                    // SKPaymentQueue.default().add(self.storeManager)
                                     
                                     self.storeManager.purchaseProduct(product!)
-                                    // self.storeManager.restoreProducts()
                                     
                                     withAnimation {
                                         self.mode = 52
@@ -398,7 +398,8 @@ struct CourseListView: View {
                         Spacer().frame(maxHeight: .infinity)
                         
                         Button(action: {
-                            SKPaymentQueue.default().remove(self.storeManager)
+                            // ToDo
+                            // SKPaymentQueue.default().remove(self.storeManager)
                             
                             withAnimation {
                                 self.mode = 51
@@ -429,7 +430,8 @@ struct CourseListView: View {
                         .foregroundColor(.green)
                 }.onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        SKPaymentQueue.default().remove(self.storeManager)
+                        // ToDo
+                        // SKPaymentQueue.default().remove(self.storeManager)
                         
                         let c = self.courses[self.selectedCourseIndex]
                         Util.saveCourse(c)

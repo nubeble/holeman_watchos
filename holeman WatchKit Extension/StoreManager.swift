@@ -9,6 +9,12 @@ import Foundation
 import StoreKit
 
 class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+    override init() {
+        super.init()
+        
+        SKPaymentQueue.default().add(self)
+    }
+    
     //FETCH PRODUCTS
     var request: SKProductsRequest? // store the request as a property
     
@@ -96,8 +102,8 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 
                 print(#function, "restored: \(String(describing: transaction.payment.productIdentifier))")
                 
-                queue.finishTransaction(transaction)
-                // SKPaymentQueue.default().finishTransaction(transaction)
+                // queue.finishTransaction(transaction)
+                SKPaymentQueue.default().finishTransaction(transaction)
                 
                 DispatchQueue.main.async {
                     self.transactionState = .restored
@@ -107,8 +113,8 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
             case .failed:
                 print(#function, "error: \(String(describing: transaction.error))")
                 
-                queue.finishTransaction(transaction)
-                // SKPaymentQueue.default().finishTransaction(transaction)
+                // queue.finishTransaction(transaction)
+                SKPaymentQueue.default().finishTransaction(transaction)
                 
                 DispatchQueue.main.async {
                     self.transactionState = .failed
@@ -117,8 +123,8 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
             default:
                 print(#function, "default: \(String(describing: transaction.error))")
                 
-                queue.finishTransaction(transaction)
-            // SKPaymentQueue.default().finishTransaction(transaction)
+                // queue.finishTransaction(transaction)
+                SKPaymentQueue.default().finishTransaction(transaction)
             }
         }
     }
