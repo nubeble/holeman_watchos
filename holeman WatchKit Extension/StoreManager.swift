@@ -67,9 +67,11 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
-            if transaction.payment.productIdentifier != "com.nubeble.holeman.iap.course" {
-                continue
-            }
+            /*
+             if transaction.payment.productIdentifier != "com.nubeble.holeman.iap.course" {
+             continue
+             }
+             */
             
             switch transaction.transactionState {
             case .purchasing:
@@ -82,7 +84,8 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 
                 print(#function, "purchased: \(String(describing: transaction.payment.productIdentifier))")
                 
-                queue.finishTransaction(transaction)
+                // queue.finishTransaction(transaction)
+                SKPaymentQueue.default().finishTransaction(transaction) // ToDo
                 
                 DispatchQueue.main.async {
                     self.transactionState = .purchased
@@ -94,15 +97,18 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 print(#function, "restored: \(String(describing: transaction.payment.productIdentifier))")
                 
                 queue.finishTransaction(transaction)
+                // SKPaymentQueue.default().finishTransaction(transaction)
                 
                 DispatchQueue.main.async {
                     self.transactionState = .restored
                 }
                 
-            case .failed, .deferred:
+            // case .failed, .deferred:
+            case .failed:
                 print(#function, "error: \(String(describing: transaction.error))")
                 
                 queue.finishTransaction(transaction)
+                // SKPaymentQueue.default().finishTransaction(transaction)
                 
                 DispatchQueue.main.async {
                     self.transactionState = .failed
@@ -112,8 +118,13 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 print(#function, "default: \(String(describing: transaction.error))")
                 
                 queue.finishTransaction(transaction)
+            // SKPaymentQueue.default().finishTransaction(transaction)
             }
         }
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
+        print(#function, "Transaction removed", transactions)
     }
     
     // 2.
@@ -127,7 +138,7 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     }
     
     func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
-        print(#function, error)
+        print(#function, "Transaction failed", error)
         
         DispatchQueue.main.async {
             self.transactionState = .failed
