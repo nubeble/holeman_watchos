@@ -82,8 +82,8 @@ struct CourseListView: View {
                                         }
                                     } else {
                                         withAnimation {
-                                            // self.mode = 50 // payment
-                                            self.mode = 2 // ToDo: internal test
+                                            self.mode = 50 // payment
+                                            // self.mode = 2 // ToDo: internal test
                                         }
                                     }
                                     
