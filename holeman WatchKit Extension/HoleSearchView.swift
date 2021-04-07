@@ -375,7 +375,7 @@ struct HoleSearchView: View {
             
         } else if self.mode == 21 { // move to CourseSearchView
             
-            CourseSearchView()
+            CourseSearchView() // ToDo
             
         }
     }

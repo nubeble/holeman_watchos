@@ -10,6 +10,9 @@ import SwiftUI
 struct CourseView: View {
     @State var mode: Int = 0
     
+    // ToDo: 2021-04-07
+    // @EnvironmentObject var storeManager: StoreManager
+    
     // @State private var exercises = ["Unterarmstütz", "Dehnen", "Kopfstand", "Handstand"]
     // @State private var selectedExercise = "Plank"
     // @State private var selectedTimeIndex = 60
@@ -106,10 +109,14 @@ struct CourseView: View {
         } else if self.mode == 1 {
             
             CourseSearchView()
+            // ToDo: 2021-04-07
+            // CourseSearchView().environmentObject(storeManager)
             
         } else if self.mode == 2 {
             
             CourseListView()
+            // ToDo: 2021-04-07
+            // CourseListView().environmentObject(storeManager)
             
         }
     }

@@ -12,6 +12,9 @@ import UserNotifications
 struct IntroView: View {
     @Environment(\.scenePhase) var scenePhase
     
+    // ToDo: 2021-04-07
+    // @EnvironmentObject var storeManager: StoreManager
+    
     @State var mode: Int = -1
     
     @State var text1: String = "안녕하세요!"
@@ -244,6 +247,8 @@ struct IntroView: View {
         } else if self.mode == 3 { // move to course view
             
             CourseView()
+            // ToDo: 2021-04-07
+            // CourseView().environmentObject(storeManager)
             
         } else if self.mode == 4 { // welcome
             

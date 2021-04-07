@@ -22,7 +22,9 @@ struct CourseListView: View {
     
     @State var selectedCourseIndex: Int = -1
     
-    @StateObject var storeManager: StoreManager = StoreManager()
+    // @StateObject var storeManager: StoreManager = StoreManager()
+    // ToDo: 2021-04-07
+    @EnvironmentObject var storeManager: StoreManager
     
     var body: some View {
         if self.mode == 0 {
@@ -261,6 +263,20 @@ struct CourseListView: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.bottom, 10)
+                        .onAppear { // ToDo: test
+                            // print("finish transactions")
+                            /*
+                             for transactionPending in SKPaymentQueue.default().transactions {
+                             print(#function, transactionPending.transactionIdentifier)
+                             // SKPaymentQueue.default().finishTransaction(transactionPending)
+                             }
+                             */
+                            
+                            // print("!!!", self.storeManager.transaction?.downloads)
+                            // SKPaymentQueue.default().start(<#T##downloads: [SKDownload]##[SKDownload]#>)
+                            
+
+                        }
                     }
                 }
                 .frame(maxHeight: .infinity)
@@ -324,7 +340,8 @@ struct CourseListView: View {
                             
                             Button(action: {
                                 // purchase
-                                let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                                // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                                let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.test2")
                                 if product != nil {
                                     // ToDo
                                     // SKPaymentQueue.default().add(self.storeManager)

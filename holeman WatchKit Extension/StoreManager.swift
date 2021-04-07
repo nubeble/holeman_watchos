@@ -12,6 +12,8 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     override init() {
         super.init()
         
+        // print(#function)
+        
         SKPaymentQueue.default().add(self)
     }
     
@@ -35,7 +37,7 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
         
         if !response.products.isEmpty {
             for product in response.products {
-                print(#function, "Product: \(product.productIdentifier) \(product.localizedTitle) \(product.price.floatValue)")
+                print(#function, "Product: \(product.productIdentifier), \(product.localizedTitle), \(product.price.floatValue)")
                 
                 DispatchQueue.main.async {
                     self.myProducts.append(product)
@@ -61,9 +63,14 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     //HANDLE TRANSACTIONS
     @Published var transactionState: SKPaymentTransactionState?
     
+    // ToDo
+    var transaction: SKPaymentTransaction?
+    
     // 1.
     func purchaseProduct(_ product: SKProduct) {
         if SKPaymentQueue.canMakePayments() {
+            // print(#function, product.productIdentifier)
+            
             let payment = SKPayment(product: product)
             SKPaymentQueue.default().add(payment)
         } else {
@@ -79,6 +86,7 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
              }
              */
             
+            
             switch transaction.transactionState {
             case .purchasing:
                 DispatchQueue.main.async {
@@ -88,10 +96,21 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
             case .purchased:
                 // UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap, save to UserDefaults
                 
-                print(#function, "purchased: \(String(describing: transaction.payment.productIdentifier))")
+                print(#function, "purchased: \(String(describing: transaction.payment.productIdentifier))",
+                      String(describing: transaction.transactionIdentifier), String(describing: transaction.transactionDate),
+                      // transaction.downloads[0].state,
+                      transaction.downloads.count
+                      )
                 
                 // queue.finishTransaction(transaction)
-                SKPaymentQueue.default().finishTransaction(transaction) // ToDo
+                // SKPaymentQueue.default().finishTransaction(transaction)
+                
+                // ToDo: 2021-04-07 download first
+                // queue.start(transaction.downloads)
+                SKPaymentQueue.default().start(transaction.downloads)
+                
+                // self.items.append(transaction.downloads)
+                self.transaction = transaction
                 
                 DispatchQueue.main.async {
                     self.transactionState = .purchased
@@ -103,7 +122,9 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 print(#function, "restored: \(String(describing: transaction.payment.productIdentifier))")
                 
                 // queue.finishTransaction(transaction)
-                SKPaymentQueue.default().finishTransaction(transaction)
+                // SKPaymentQueue.default().finishTransaction(transaction)
+                
+                // ToDo: 2021-04-07 download
                 
                 DispatchQueue.main.async {
                     self.transactionState = .restored
@@ -133,6 +154,15 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
         print(#function, "Transaction removed", transactions)
     }
     
+    func paymentQueue(_ queue: SKPaymentQueue, updatedDownloads downloads: [SKDownload]) {
+        print(#function, "downloaded", downloads)
+        
+        // ToDo: 2021-04-07 finishTransaction here
+        for download in downloads {
+            SKPaymentQueue.default().finishTransaction(download.transaction) // ToDo
+        }
+    }
+    
     // 2.
     func restoreProducts() {
         print("Restoring products...")
@@ -142,6 +172,8 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
         print("paymentQueueRestoreCompletedTransactionsFinished")
     }
+    
+    
     
     func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
         print(#function, "Transaction failed", error)

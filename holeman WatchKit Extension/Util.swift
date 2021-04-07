@@ -228,7 +228,6 @@ struct Util {
     }
     
     static func getProduct(_ products: [SKProduct], _ id: String) -> SKProduct? {
-        
         for product in products {
             if product.productIdentifier == id {
                 return product

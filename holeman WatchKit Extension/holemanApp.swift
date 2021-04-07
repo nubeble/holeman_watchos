@@ -12,9 +12,8 @@ import StoreKit
 struct holemanApp: App {
     @WKExtensionDelegateAdaptor(ExtensionDelegate.self) var delegate
     
-    
+    // ToDo: 2021-04-07
     @StateObject var storeManager = StoreManager()
-    
     
     var body: some Scene {
         WindowGroup {
@@ -23,7 +22,10 @@ struct holemanApp: App {
                 // ContentView().environmentObject(Course())
                 
                 SplashView()
+                // ToDo: 2021-04-07
+                // SplashView().environmentObject(storeManager)
             }
+            .environmentObject(storeManager)
             .onAppear {
                 // print("ContentView appeared!")
                 // WKExtension.shared().registerForRemoteNotifications()
@@ -39,17 +41,6 @@ struct holemanApp: App {
                  
                  self.storeManager.purchaseProduct(product!)
                  }
-                 }
-                 */
-                
-                // ToDo: test
-                /*
-                 print("finish transactions")
-                 SKPaymentQueue.default().add(self.storeManager)
-                 
-                 for transactionPending in SKPaymentQueue.default().transactions {
-                 print(#function, transactionPending.transactionIdentifier)
-                 SKPaymentQueue.default().finishTransaction(transactionPending)
                  }
                  */
             }.onDisappear {
