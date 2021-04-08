@@ -264,18 +264,15 @@ struct CourseListView: View {
                         .buttonStyle(PlainButtonStyle())
                         .padding(.bottom, 10)
                         .onAppear { // ToDo: test
-                            // print("finish transactions")
-                            /*
-                             for transactionPending in SKPaymentQueue.default().transactions {
-                             print(#function, transactionPending.transactionIdentifier)
-                             // SKPaymentQueue.default().finishTransaction(transactionPending)
-                             }
-                             */
                             
-                            // print("!!!", self.storeManager.transaction?.downloads)
-                            // SKPaymentQueue.default().start(<#T##downloads: [SKDownload]##[SKDownload]#>)
                             
-
+                            print("finish transactions")
+                            for transaction in SKPaymentQueue.default().transactions {
+                                print(#function, transaction)
+                                // SKPaymentQueue.default().finishTransaction(transaction)
+                            }
+                            
+                            
                         }
                     }
                 }
@@ -340,8 +337,8 @@ struct CourseListView: View {
                             
                             Button(action: {
                                 // purchase
-                                // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                                let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.test2")
+                                let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                                // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.test2")
                                 if product != nil {
                                     // ToDo
                                     // SKPaymentQueue.default().add(self.storeManager)

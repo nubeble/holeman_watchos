@@ -12,7 +12,7 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     override init() {
         super.init()
         
-        // print(#function)
+        print(#function)
         
         SKPaymentQueue.default().add(self)
     }
@@ -63,9 +63,6 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     //HANDLE TRANSACTIONS
     @Published var transactionState: SKPaymentTransactionState?
     
-    // ToDo
-    var transaction: SKPaymentTransaction?
-    
     // 1.
     func purchaseProduct(_ product: SKProduct) {
         if SKPaymentQueue.canMakePayments() {
@@ -89,6 +86,8 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
             
             switch transaction.transactionState {
             case .purchasing:
+                print(#function, "purchasing")
+                
                 DispatchQueue.main.async {
                     self.transactionState = .purchasing
                 }
@@ -100,17 +99,16 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                       String(describing: transaction.transactionIdentifier), String(describing: transaction.transactionDate),
                       // transaction.downloads[0].state,
                       transaction.downloads.count
-                      )
+                )
                 
-                // queue.finishTransaction(transaction)
-                // SKPaymentQueue.default().finishTransaction(transaction)
+                queue.finishTransaction(transaction)
+                SKPaymentQueue.default().finishTransaction(transaction)
+                
                 
                 // ToDo: 2021-04-07 download first
                 // queue.start(transaction.downloads)
-                SKPaymentQueue.default().start(transaction.downloads)
+                // SKPaymentQueue.default().start(transaction.downloads)
                 
-                // self.items.append(transaction.downloads)
-                self.transaction = transaction
                 
                 DispatchQueue.main.async {
                     self.transactionState = .purchased
@@ -119,12 +117,12 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
             case .restored:
                 // UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap, save to UserDefaults
                 
-                print(#function, "restored: \(String(describing: transaction.payment.productIdentifier))")
+                print(#function, "restored: \(String(describing: transaction.payment.productIdentifier))",
+                      String(describing: transaction.transactionIdentifier), String(describing: transaction.transactionDate)
+                )
                 
                 // queue.finishTransaction(transaction)
-                // SKPaymentQueue.default().finishTransaction(transaction)
-                
-                // ToDo: 2021-04-07 download
+                SKPaymentQueue.default().finishTransaction(transaction)
                 
                 DispatchQueue.main.async {
                     self.transactionState = .restored
@@ -132,7 +130,7 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 
             // case .failed, .deferred:
             case .failed:
-                print(#function, "error: \(String(describing: transaction.error))")
+                print(#function, "failed: \(String(describing: transaction.error))")
                 
                 // queue.finishTransaction(transaction)
                 SKPaymentQueue.default().finishTransaction(transaction)
@@ -140,6 +138,9 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 DispatchQueue.main.async {
                     self.transactionState = .failed
                 }
+                
+            case .deferred:
+                print(#function, "deferred: \(String(describing: transaction.error))")
                 
             default:
                 print(#function, "default: \(String(describing: transaction.error))")
@@ -152,14 +153,42 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     
     func paymentQueue(_ queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
         print(#function, "Transaction removed", transactions)
+        
+        for transaction in transactions {
+            print(#function, transaction.transactionIdentifier, transaction.transactionDate)
+            
+            /*
+             switch transaction.transactionState {
+             case .purchasing: print("0")
+             case .purchased: print("1")
+             case .failed: print("2")
+             case .restored: print("3")
+             case .deferred: print("4")
+             }
+             */
+            
+            // SKPaymentQueue.default().finishTransaction(transaction)
+        }
+        
     }
     
+    // ToDo
     func paymentQueue(_ queue: SKPaymentQueue, updatedDownloads downloads: [SKDownload]) {
         print(#function, "downloaded", downloads)
         
-        // ToDo: 2021-04-07 finishTransaction here
-        for download in downloads {
-            SKPaymentQueue.default().finishTransaction(download.transaction) // ToDo
+        /*
+         // ToDo: 2021-04-07 finishTransaction here
+         for download in downloads {
+         SKPaymentQueue.default().finishTransaction(download.transaction)
+         }
+         */
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
+        print(#function, "Transaction failed", error)
+        
+        DispatchQueue.main.async {
+            self.transactionState = .failed
         }
     }
     
@@ -171,15 +200,5 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     
     func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
         print("paymentQueueRestoreCompletedTransactionsFinished")
-    }
-    
-    
-    
-    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
-        print(#function, "Transaction failed", error)
-        
-        DispatchQueue.main.async {
-            self.transactionState = .failed
-        }
     }
 }
