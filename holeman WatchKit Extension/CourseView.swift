@@ -110,13 +110,13 @@ struct CourseView: View {
             
             CourseSearchView()
             // ToDo: 2021-04-07
-            // CourseSearchView().environmentObject(storeManager)
+            // CourseSearchView().environmentObject(self.storeManager)
             
         } else if self.mode == 2 {
             
             CourseListView()
             // ToDo: 2021-04-07
-            // CourseListView().environmentObject(storeManager)
+            // CourseListView().environmentObject(self.storeManager)
             
         }
     }

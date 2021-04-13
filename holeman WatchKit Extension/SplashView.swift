@@ -20,7 +20,7 @@ struct SplashView: View {
             VStack { // should be VStack
                 IntroView()
                 // ToDo: 2021-04-07
-                // IntroView().environmentObject(storeManager)
+                // IntroView().environmentObject(self.storeManager)
             }
             .navigationBarTitle("Holeman")
         } else {

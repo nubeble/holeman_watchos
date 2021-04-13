@@ -343,6 +343,7 @@ struct CourseSearchView: View {
                         // button 2
                         Button(action: {
                             self.storeManager.getProducts(productIDs: Static.productIDs)
+                            // StoreManager.sharedInstance.getProducts(productIDs: Static.productIDs)
                             
                             withAnimation {
                                 self.mode = 51
@@ -367,8 +368,8 @@ struct CourseSearchView: View {
             
         } else if self.mode == 51 {
             
-            // if self.storeManager.myProducts.count > 0 {
             if Util.contains(self.storeManager.myProducts, "com.nubeble.holeman.iap.course") == true {
+            // if Util.contains(StoreManager.sharedInstance.myProducts, "com.nubeble.holeman.iap.course") == true {
                 GeometryReader { geometry in
                     ScrollView {
                         VStack {
@@ -393,11 +394,13 @@ struct CourseSearchView: View {
                             Button(action: {
                                 // purchase
                                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                                // let product = Util.getProduct(StoreManager.sharedInstance.myProducts, "com.nubeble.holeman.iap.course")
                                 if product != nil {
                                     // ToDo
                                     // SKPaymentQueue.default().add(self.storeManager)
                                     
                                     self.storeManager.purchaseProduct(product!)
+                                    // StoreManager.sharedInstance.purchaseProduct(product!)
                                     
                                     withAnimation {
                                         self.mode = 52
@@ -452,11 +455,13 @@ struct CourseSearchView: View {
         } else if self.mode == 52 {
             
             if self.storeManager.transactionState == nil || self.storeManager.transactionState == .purchasing {
+            // if StoreManager.sharedInstance.transactionState == nil || StoreManager.sharedInstance.transactionState == .purchasing {
                 // loading indicator
                 ProgressView()
                     .scaleEffect(1.2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             } else if self.storeManager.transactionState == .failed {
+            // } else if StoreManager.sharedInstance.transactionState == .failed {
                 // back to payment
                 ZStack {
                     VStack {
@@ -491,6 +496,7 @@ struct CourseSearchView: View {
                     .edgesIgnoringSafeArea(.bottom)
                 }
             } else if self.storeManager.transactionState == .purchased {
+            // } else if StoreManager.sharedInstance.transactionState == .purchased {
                 // move next in 3 secs
                 
                 VStack {
@@ -498,6 +504,8 @@ struct CourseSearchView: View {
                         .font(Font.system(size: 40, weight: .semibold))
                         .foregroundColor(.green)
                 }.onAppear {
+                    self.storeManager.destroy()
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         // ToDo
                         // SKPaymentQueue.default().remove(self.storeManager)

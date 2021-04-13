@@ -248,7 +248,7 @@ struct IntroView: View {
             
             CourseView()
             // ToDo: 2021-04-07
-            // CourseView().environmentObject(storeManager)
+            // CourseView().environmentObject(self.storeManager)
             
         } else if self.mode == 4 { // welcome
             

@@ -23,10 +23,15 @@ struct holemanApp: App {
                 
                 SplashView()
                 // ToDo: 2021-04-07
-                // SplashView().environmentObject(storeManager)
+                // SplashView().environmentObject(self.storeManager)
             }
-            .environmentObject(storeManager)
+            .environmentObject(self.storeManager)
             .onAppear {
+                
+                
+                // SKPaymentQueue.default().add(self.storeManager)
+                
+                
                 // print("ContentView appeared!")
                 // WKExtension.shared().registerForRemoteNotifications()
                 
