@@ -246,11 +246,18 @@ struct CourseListView: View {
                         
                         // button 2
                         Button(action: {
-                            self.storeManager.getProducts(productIDs: Static.productIDs)
-                            // StoreManager.sharedInstance.getProducts(productIDs: Static.productIDs)
-                            
-                            withAnimation {
-                                self.mode = 51
+                            // ToDo: 여기서 구매를 진행할지, 건너뛸지 (100개를 다 구매했으면) 체크
+                            if Util.purchasedAll() == true {
+                                // ToDo: 이제부터 무료로 이용하실 수 있습니다.
+                                withAnimation {
+                                    self.mode = 53
+                                }
+                            } else {
+                                self.storeManager.getProducts(productIDs: Static.productIDs)
+                                
+                                withAnimation {
+                                    self.mode = 51
+                                }
                             }
                         }) {
                             ZStack {
@@ -264,17 +271,6 @@ struct CourseListView: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.bottom, 10)
-                        .onAppear { // ToDo: test
-                            
-                            
-                            print("finish transactions")
-                            for transaction in SKPaymentQueue.default().transactions {
-                                print(#function, transaction)
-                                // SKPaymentQueue.default().finishTransaction(transaction)
-                            }
-                            
-                            
-                        }
                     }
                 }
                 .frame(maxHeight: .infinity)
@@ -285,7 +281,6 @@ struct CourseListView: View {
             
             // ToDo: test (show billing UI)
             List(self.storeManager.myProducts, id: \.self) { product in
-            // List(StoreManager.sharedInstance.myProducts, id: \.self) { product in
                 
                 HStack {
                     VStack(alignment: .leading) {
@@ -314,8 +309,8 @@ struct CourseListView: View {
             
         } else if self.mode == 51 {
             
-            if Util.contains(self.storeManager.myProducts, "com.nubeble.holeman.iap.course") == true {
-            // if Util.contains(StoreManager.sharedInstance.myProducts, "com.nubeble.holeman.iap.course") == true {
+            // if Util.contains(self.storeManager.myProducts, "com.nubeble.holeman.iap.course") == true {
+            if Util.contains(self.storeManager.myProducts, Static.productIDs) == true {
                 GeometryReader { geometry in
                     ScrollView {
                         VStack {
@@ -338,15 +333,20 @@ struct CourseListView: View {
                                 .padding(.bottom, 8)
                             
                             Button(action: {
+                                // ToDo: get product ID
+                                // let productID = Util.getProductID()
+                                
+                                
+                                
+                                
+                                
                                 // purchase
                                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                                // let product = Util.getProduct(StoreManager.sharedInstance.myProducts, "com.nubeble.holeman.iap.course")
                                 if product != nil {
                                     // ToDo
                                     // SKPaymentQueue.default().add(self.storeManager)
                                     
                                     self.storeManager.purchaseProduct(product!)
-                                    // StoreManager.sharedInstance.purchaseProduct(product!)
                                     
                                     withAnimation {
                                         self.mode = 52
@@ -391,6 +391,10 @@ struct CourseListView: View {
                         }
                     }
                 }
+                .onAppear { // ToDo
+                    // 구매할 product id를 구한다
+                    
+                }
             } else {
                 // loading indicator
                 ProgressView()
@@ -401,13 +405,11 @@ struct CourseListView: View {
         } else if self.mode == 52 {
             
             if self.storeManager.transactionState == nil || self.storeManager.transactionState == .purchasing {
-            // if StoreManager.sharedInstance.transactionState == nil || StoreManager.sharedInstance.transactionState == .purchasing {
                 // loading indicator
                 ProgressView()
                     .scaleEffect(1.2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             } else if self.storeManager.transactionState == .failed {
-            // } else if StoreManager.sharedInstance.transactionState == .failed {
                 // back to payment
                 ZStack {
                     VStack {
@@ -418,9 +420,6 @@ struct CourseListView: View {
                         Spacer().frame(maxHeight: .infinity)
                         
                         Button(action: {
-                            // ToDo
-                            // SKPaymentQueue.default().remove(self.storeManager)
-                            
                             withAnimation {
                                 self.mode = 51
                             }
@@ -442,7 +441,6 @@ struct CourseListView: View {
                     .edgesIgnoringSafeArea(.bottom)
                 }
             } else if self.storeManager.transactionState == .purchased {
-            // } else if StoreManager.sharedInstance.transactionState == .purchased {
                 // move next in 3 secs
                 
                 VStack {
@@ -452,10 +450,9 @@ struct CourseListView: View {
                 }.onAppear {
                     self.storeManager.destroy()
                     
+                    // ToDo: save transaction here (UserDefaults, CloudKit)
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        // ToDo
-                        // SKPaymentQueue.default().remove(self.storeManager)
-                        
                         let c = self.courses[self.selectedCourseIndex]
                         Util.saveCourse(c)
                         

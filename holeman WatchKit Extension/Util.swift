@@ -217,7 +217,6 @@ struct Util {
     }
     
     static func contains(_ products: [SKProduct], _ id: String) -> Bool {
-        
         for product in products {
             if product.productIdentifier == id {
                 return true
@@ -225,6 +224,25 @@ struct Util {
         }
         
         return false
+    }
+    
+    static func contains(_ products: [SKProduct], _ ids: [String]) -> Bool {
+        var count = ids.count
+        
+        for product in products {
+            for id in ids {
+                if product.productIdentifier == id {
+                    count = count - 1
+                    break
+                }
+            }
+        }
+        
+        if count == 0 {
+            return true
+        } else {
+            return false
+        }
     }
     
     static func getProduct(_ products: [SKProduct], _ id: String) -> SKProduct? {
@@ -267,5 +285,17 @@ struct Util {
         } else { // 정보가 없으면 새 구매
             return false
         }
+    }
+    
+    static func purchasedAll() -> Bool {
+        
+        return false
+    }
+    
+    static func getProductID() -> String {
+        
+        
+        return ""
+        
     }
 }
