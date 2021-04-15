@@ -24,6 +24,30 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
         SKPaymentQueue.default().add(self)
     }
     
+    func ready() -> Bool {
+        print(#function)
+        
+        if let remainingTransactionsCount = self.remainingTransactionsCount {
+            
+            if remainingTransactionsCount == 0 {
+                print(#function, "remainingTransactionsCount: 0")
+                
+                self.transactionState = nil
+                return true
+            } else {
+                print(#function, "remainingTransactionsCount NOT 0")
+                
+                return false
+            }
+            
+        } else {
+            print(#function, "remainingTransactionsCount: nil")
+            
+            self.transactionState = nil
+            return true
+        }
+    }
+    
     func destroy() {
         print(#function)
         
@@ -78,6 +102,8 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     //HANDLE TRANSACTIONS
     @Published var transactionState: SKPaymentTransactionState?
     
+    var remainingTransactionsCount: Int?
+    
     // 1.
     func purchaseProduct(_ product: SKProduct) {
         if SKPaymentQueue.canMakePayments() {
@@ -121,12 +147,12 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 }
                 
                 queue.finishTransaction(transaction)
-                // SKPaymentQueue.default().finishTransaction(transaction)
-                
-                // NotificationCenter.default.post(name: Notification.Name(rawValue: "InAppProductPurchasedNotification"), object: nil)
-                
-                // receiptValidation()
-                
+            // SKPaymentQueue.default().finishTransaction(transaction)
+            
+            // NotificationCenter.default.post(name: Notification.Name(rawValue: "InAppProductPurchasedNotification"), object: nil)
+            
+            // receiptValidation()
+            
             case .restored:
                 // UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap, save to UserDefaults
                 
@@ -167,6 +193,10 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     func paymentQueue(_ queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
         print(#function, "Transaction removed")
         
+        self.remainingTransactionsCount = queue.transactions.count
+        
+        print(#function, "removedTransactionsCount", self.remainingTransactionsCount)
+        
         /*
          for transaction in transactions {
          print(#function, transaction.transactionIdentifier, transaction.transactionDate)
@@ -192,12 +222,6 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
          // SKPaymentQueue.default().remove(self)
          }
          */
-        
-    }
-    
-    // ToDo
-    func paymentQueue(_ queue: SKPaymentQueue, updatedDownloads downloads: [SKDownload]) {
-        print(#function, "downloaded", downloads)
     }
     
     func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {

@@ -345,6 +345,14 @@ struct CourseListView: View {
                                 .padding(.bottom, 8)
                             
                             Button(action: {
+                                
+                                let result = self.storeManager.ready()
+                                if result == false {
+                                    // ToDo: user notification
+                                    
+                                    return
+                                }
+                                
                                 if self.buttonFlag == false {
                                     self.buttonFlag = true
                                     
