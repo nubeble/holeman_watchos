@@ -33,6 +33,10 @@ struct CourseSearchView: View {
     // ToDo: 2021-04-07
     @EnvironmentObject var storeManager: StoreManager
     
+    @State var buttonFlag: Bool = false
+    
+    @State var productId: String?
+    
     var body: some View {
         if self.mode == 0 {
             
@@ -148,6 +152,7 @@ struct CourseSearchView: View {
             // change picker to List
             GeometryReader { geometry in
                 ScrollView {
+                    // VStack {
                     ScrollViewReader { value in
                         LazyVStack {
                             Text("Select Course").font(.system(size: 20, weight: .semibold))
@@ -213,7 +218,7 @@ struct CourseSearchView: View {
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                     }
                                 }.id($0)
-                            }
+                            } // end of ForEach
                             
                             Button(action: {
                                 // go back
@@ -342,10 +347,24 @@ struct CourseSearchView: View {
                         
                         // button 2
                         Button(action: {
-                            self.storeManager.getProducts(productIDs: Static.productIDs)
-                            
-                            withAnimation {
-                                self.mode = 51
+                            if self.buttonFlag == false {
+                                self.buttonFlag = true
+                                
+                                Util.purchasedAll() { result in
+                                    if result == true {
+                                        withAnimation {
+                                            self.mode = 53
+                                        }
+                                    } else {
+                                        self.storeManager.getProducts(productIDs: Static.productIDs)
+                                        
+                                        withAnimation {
+                                            self.mode = 51
+                                        }
+                                    }
+                                    
+                                    self.buttonFlag = false
+                                }
                             }
                         }) {
                             ZStack {
@@ -391,13 +410,24 @@ struct CourseSearchView: View {
                                 .padding(.bottom, 8)
                             
                             Button(action: {
-                                // purchase
-                                let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                                if let product = product {
-                                    self.storeManager.purchaseProduct(product)
+                                if self.buttonFlag == false {
+                                    self.buttonFlag = true
                                     
-                                    withAnimation {
-                                        self.mode = 52
+                                    Util.getProductId() { productId in
+                                        self.productId = productId
+                                        
+                                        // purchase
+                                        // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                                        let product = Util.getProduct(self.storeManager.myProducts, productId)
+                                        if let product = product {
+                                            self.storeManager.purchaseProduct(product)
+                                            
+                                            withAnimation {
+                                                self.mode = 52
+                                            }
+                                        }
+                                        
+                                        self.buttonFlag = false
                                     }
                                 }
                             }) {
@@ -494,6 +524,11 @@ struct CourseSearchView: View {
                 }.onAppear {
                     self.storeManager.destroy()
                     
+                    // save purchased product id (UserDefaults, CloudKit)
+                    if let productId = self.productId {
+                        Util.setProductId(productId)
+                    }
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         let c = self.courses[self.selectedCourseIndex]
                         Util.saveCourse(c)
@@ -506,6 +541,25 @@ struct CourseSearchView: View {
             } else { // restored
                 // N/A
             }
+            
+        } else if self.mode == 53 {
+            
+            VStack {
+                Text("홀맨을 사랑해주셔서 감사합니다. 이제부터 무료로 이용하세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+            }.onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    let c = self.courses[self.selectedCourseIndex]
+                    Util.saveCourse(c)
+                    
+                    withAnimation {
+                        self.mode = 2 // move next
+                    }
+                }
+            }
+            
+        } else if self.mode == 10 { // go back
+            
+            CourseView()
             
         }
     }
@@ -680,7 +734,7 @@ struct CourseSearchView: View {
                 }
                 
                 if count == 0 {
-                    print(#function, "no course nearby. try again in 3 secconds")
+                    print(#function, "no course nearby. try again in 3 seconds")
                     
                     onComplete(false)
                 } else if count == 1 {

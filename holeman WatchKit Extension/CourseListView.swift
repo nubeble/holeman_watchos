@@ -215,7 +215,7 @@ struct CourseListView: View {
                                 .fixedSize(horizontal: false, vertical: true)
                                 .lineLimit(1)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.top, 1)
+                                .padding(.top, 2)
                         }
                     }
                     .padding(.all, 8)
