@@ -287,15 +287,86 @@ struct Util {
         }
     }
     
-    static func purchasedAll() -> Bool {
-        
-        return false
+    // static func purchasedAll() -> Bool { // check if the last purchased product id is 100
+    static func purchasedAll(onComplete: @escaping ((_ result: Bool) -> Void)) {
+        // check UserDefaults
+        let id = UserDefaults.standard.string(forKey: "IAP_PRODUCT_ID") // last purchased product id
+        if let id = id { // "com.nubeble.holeman.iap.course.X"
+            let num = id[id.endIndex]
+            if String(num) == "100" {
+                onComplete(true)
+            } else {
+                onComplete(false)
+            }
+        } else {
+            // check CloudKit
+            if let userId = Global.userId {
+                
+                CloudManager.getProductId(userId) { productId in
+                    if productId == "" {
+                        onComplete(false)
+                    } else {
+                        if productId == "100" {
+                            onComplete(true)
+                        } else {
+                            onComplete(false)
+                        }
+                    }
+                }
+                
+            } else {
+                // never happen
+                onComplete(false)
+            }
+        }
     }
     
-    static func getProductID() -> String {
+    static func getProductId(onComplete: @escaping ((_ productId: String) -> Void)) {
+        // check UserDefaults
+        let id = UserDefaults.standard.string(forKey: "IAP_PRODUCT_ID") // last purchased product id
+        // if id != nil {
+        if let id = id { // "com.nubeble.holeman.iap.course.X"
+            // print("product ID", id)
+            
+            var nextNumber = 1
+            
+            let num = id[id.endIndex]
+            if let number = Int(String(num)) {
+                nextNumber = number + 1
+            }
+            
+            let nextId = "com.nubeble.holeman.iap.course." + String(nextNumber)
+            onComplete(nextId)
+        } else {
+            // check CloudKit
+            
+            // get product id with user
+            if let userId = Global.userId {
+                
+                CloudManager.getProductId(userId) { productId in
+                    if productId == "" {
+                        let nextId = "com.nubeble.holeman.iap.course.1"
+                        onComplete(nextId)
+                    } else {
+                        onComplete(productId)
+                    }
+                }
+                
+            } else {
+                // never happen
+                let nextId = "com.nubeble.holeman.iap.course.1"
+                onComplete(nextId)
+            }
+        }
+    }
+    
+    static func setProductId(_ id: String) {
+        // UserDefaults
+        UserDefaults.standard.set(id, forKey: "IAP_PRODUCT_ID") // last purchased product id
         
-        
-        return ""
-        
+        // CloudKit
+        if let userId = Global.userId {
+            CloudManager.setProductId(userId, id)
+        }
     }
 }

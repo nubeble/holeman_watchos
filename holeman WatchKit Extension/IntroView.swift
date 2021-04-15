@@ -226,6 +226,8 @@ struct IntroView: View {
                             // 2. save to UserDefaults
                             UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
                             
+                            Global.userId = userIdentifier
+                            
                             // move to welcome
                             // withAnimation {
                             self.mode = 4
@@ -850,6 +852,8 @@ struct IntroView: View {
                         self.mode = 2
                     }
                 } else {
+                    Global.userId = id
+                    
                     // pass
                     withAnimation {
                         self.mode = 3

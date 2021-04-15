@@ -393,11 +393,8 @@ struct CourseSearchView: View {
                             Button(action: {
                                 // purchase
                                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                                if product != nil {
-                                    // ToDo
-                                    // SKPaymentQueue.default().add(self.storeManager)
-                                    
-                                    self.storeManager.purchaseProduct(product!)
+                                if let product = product {
+                                    self.storeManager.purchaseProduct(product)
                                     
                                     withAnimation {
                                         self.mode = 52

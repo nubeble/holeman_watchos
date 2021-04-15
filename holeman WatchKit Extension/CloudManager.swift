@@ -264,10 +264,12 @@ struct CloudManager {
         // CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: nil) { (records, error) in
         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
             if let error = error {
-                DispatchQueue.main.async {
-                    print("Cloud Query Error: \(error)")
-                }
-            } else {
+                // DispatchQueue.main.async {
+                print("Cloud Query Error: \(error)")
+                // }
+            }
+            
+            if let records = records {
                 print(#function, records)
                 
                 onComplete(records)
@@ -282,10 +284,12 @@ struct CloudManager {
         
         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
             if let error = error {
-                DispatchQueue.main.async {
-                    print("Cloud Query Error - Fetch Locations: \(error)")
-                }
-            } else {
+                // DispatchQueue.main.async {
+                print("Cloud Query Error - Fetch Locations: \(error)")
+                // }
+            }
+            
+            if let records = records {
                 // print("#function", records)
                 
                 onComplete(records)
@@ -318,10 +322,12 @@ struct CloudManager {
         
         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
             if let error = error {
-                DispatchQueue.main.async {
-                    print("Cloud Query Error: \(error)")
-                }
-            } else {
+                // DispatchQueue.main.async {
+                print("Cloud Query Error: \(error)")
+                // }
+            }
+            
+            if let record = record {
                 // print(#function, record)
                 
                 onComplete(record)
@@ -335,10 +341,12 @@ struct CloudManager {
         
         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
             if let error = error {
-                DispatchQueue.main.async {
-                    print("Cloud Query Error: \(error)")
-                }
-            } else {
+                // DispatchQueue.main.async {
+                print("Cloud Query Error: \(error)")
+                // }
+            }
+            
+            if let record = record {
                 // print("#function", record)
                 
                 onComplete(record)
@@ -353,10 +361,12 @@ struct CloudManager {
         
         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
             if let error = error {
-                DispatchQueue.main.async {
-                    print("Cloud Query Error: \(error)")
-                }
-            } else {
+                // DispatchQueue.main.async {
+                print("Cloud Query Error: \(error)")
+                // }
+            }
+            
+            if let records = records {
                 // print(#function, records) // sorted by holeNumber
                 
                 onComplete(records)
@@ -453,7 +463,7 @@ struct CloudManager {
         
         let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
         db.fetch(withRecordID: recordID) { (record, error) in
-            if let error = error {
+            if let _ = error {
                 // print(#function, "User Record not found", error)
                 print(#function, "User Record not found")
                 
@@ -541,6 +551,61 @@ struct CloudManager {
         }
     }
     
+    static func setProductId(_ userId: String, _ productId: String) { // update user with purchased product id
+        // fetch
+        let recordID = CKRecord.ID.init(recordName: userId)
+        
+        let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+        db.fetch(withRecordID: recordID) { (record, error) in
+            if let _ = error {
+                print(#function, "User Record not found")
+                return
+            }
+            
+            if let record = record {
+                print("User Record found")
+                
+                if record["valid"] == 100 { // valid
+                    record["lastPurchasedProductId"] = productId as String
+                    
+                    // save
+                    db.save(record) { (record, error) in
+                        if let error = error {
+                            print(#function, error)
+                            return
+                        }
+                        
+                        if let _ = record {
+                            print("User Record updated with purchased product id")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    static func getProductId(_ userId: String, onComplete: @escaping ((_ productId: String) -> Void)) {
+        let recordID = CKRecord.ID.init(recordName: userId)
+        
+        CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
+            if let _ = error {
+                print(#function, "User Record not found")
+                
+                onComplete("")
+            }
+            
+            if let record = record {
+                // print("User Record found")
+                
+                guard let lastPurchasedProductId = record["lastPurchasedProductId"] as? String else {
+                    onComplete("")
+                    return
+                }
+                
+                onComplete(lastPurchasedProductId)
+            }
+        }
+    }
     
     
     /*

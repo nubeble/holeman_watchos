@@ -26,6 +26,10 @@ struct CourseListView: View {
     // ToDo: 2021-04-07
     @EnvironmentObject var storeManager: StoreManager
     
+    @State var buttonFlag: Bool = false
+    
+    @State var productId: String?
+    
     var body: some View {
         if self.mode == 0 {
             
@@ -246,17 +250,25 @@ struct CourseListView: View {
                         
                         // button 2
                         Button(action: {
-                            // ToDo: 여기서 구매를 진행할지, 건너뛸지 (100개를 다 구매했으면) 체크
-                            if Util.purchasedAll() == true {
-                                // ToDo: 이제부터 무료로 이용하실 수 있습니다.
-                                withAnimation {
-                                    self.mode = 53
-                                }
-                            } else {
-                                self.storeManager.getProducts(productIDs: Static.productIDs)
-                                
-                                withAnimation {
-                                    self.mode = 51
+                            if self.buttonFlag == false {
+                                self.buttonFlag = true
+                            
+                                Util.purchasedAll() { result in
+                                    if result == true {
+                                        // ToDo: 이제부터 무료로 이용하실 수 있습니다.
+                                        withAnimation {
+                                            self.mode = 53
+                                        }
+                                    } else {
+                                        //
+                                        self.storeManager.getProducts(productIDs: Static.productIDs)
+                                        
+                                        withAnimation {
+                                            self.mode = 51
+                                        }
+                                    }
+                                    
+                                    self.buttonFlag = false
                                 }
                             }
                         }) {
@@ -280,6 +292,7 @@ struct CourseListView: View {
         } else if self.mode == 21 {
             
             // ToDo: test (show billing UI)
+            /*
             List(self.storeManager.myProducts, id: \.self) { product in
                 
                 HStack {
@@ -306,6 +319,7 @@ struct CourseListView: View {
                 }
                 
             }
+            */
             
         } else if self.mode == 51 {
             
@@ -333,23 +347,24 @@ struct CourseListView: View {
                                 .padding(.bottom, 8)
                             
                             Button(action: {
-                                // ToDo: get product ID
-                                // let productID = Util.getProductID()
-                                
-                                
-                                
-                                
-                                
-                                // purchase
-                                let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                                if product != nil {
-                                    // ToDo
-                                    // SKPaymentQueue.default().add(self.storeManager)
+                                if self.buttonFlag == false {
+                                    self.buttonFlag = true
                                     
-                                    self.storeManager.purchaseProduct(product!)
-                                    
-                                    withAnimation {
-                                        self.mode = 52
+                                    Util.getProductId() { productId in
+                                        self.productId = productId
+                                        
+                                        // purchase
+                                        // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                                        let product = Util.getProduct(self.storeManager.myProducts, productId)
+                                        if let product = product {
+                                            self.storeManager.purchaseProduct(product)
+                                            
+                                            withAnimation {
+                                                self.mode = 52
+                                            }
+                                        }
+                                        
+                                        self.buttonFlag = false
                                     }
                                 }
                             }) {
@@ -390,10 +405,6 @@ struct CourseListView: View {
                             .padding(.bottom, -20) // check default padding
                         }
                     }
-                }
-                .onAppear { // ToDo
-                    // 구매할 product id를 구한다
-                    
                 }
             } else {
                 // loading indicator
@@ -450,7 +461,10 @@ struct CourseListView: View {
                 }.onAppear {
                     self.storeManager.destroy()
                     
-                    // ToDo: save transaction here (UserDefaults, CloudKit)
+                    // save purchased product id (UserDefaults, CloudKit)
+                    if let productId = self.productId {
+                        Util.setProductId(productId)
+                    }
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         let c = self.courses[self.selectedCourseIndex]
@@ -465,14 +479,26 @@ struct CourseListView: View {
                 // N/A
             }
             
+        } else if self.mode == 53 {
+
+            VStack {
+                Text("홀맨을 사랑해주셔서 감사합니다. 이제부터 무료로 이용하세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+
+            }.onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    let c = self.courses[self.selectedCourseIndex]
+                    Util.saveCourse(c)
+                    
+                    withAnimation {
+                        self.mode = 2 // move next
+                    }
+                }
+            }
+            
         } else if self.mode == 10 { // go back
             
             CourseView()
             
-        } else {
-            VStack {
-                Text("test")
-            }
         }
     }
     
