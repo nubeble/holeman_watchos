@@ -252,15 +252,13 @@ struct CourseListView: View {
                         Button(action: {
                             if self.buttonFlag == false {
                                 self.buttonFlag = true
-                            
+                                
                                 Util.purchasedAll() { result in
                                     if result == true {
-                                        // ToDo: 이제부터 무료로 이용하실 수 있습니다.
                                         withAnimation {
                                             self.mode = 53
                                         }
                                     } else {
-                                        //
                                         self.storeManager.getProducts(productIDs: Static.productIDs)
                                         
                                         withAnimation {
@@ -293,33 +291,33 @@ struct CourseListView: View {
             
             // ToDo: test (show billing UI)
             /*
-            List(self.storeManager.myProducts, id: \.self) { product in
-                
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(product.localizedTitle) // 1
-                            .font(.headline)
-                        Text(product.localizedDescription) // 2
-                            .font(.caption2)
-                    }
-                    
-                    Spacer()
-                    
-                    if UserDefaults.standard.bool(forKey: product.productIdentifier) { // 3
-                        Text ("Purchased")
-                            .foregroundColor(.green)
-                    } else {
-                        Button(action: {
-                            // ToDo: Purchase particular ILO product
-                        }) {
-                            Text("Buy for \(product.price) $") // 4
-                        }
-                        .foregroundColor(.blue)
-                    }
-                }
-                
-            }
-            */
+             List(self.storeManager.myProducts, id: \.self) { product in
+             
+             HStack {
+             VStack(alignment: .leading) {
+             Text(product.localizedTitle) // 1
+             .font(.headline)
+             Text(product.localizedDescription) // 2
+             .font(.caption2)
+             }
+             
+             Spacer()
+             
+             if UserDefaults.standard.bool(forKey: product.productIdentifier) { // 3
+             Text ("Purchased")
+             .foregroundColor(.green)
+             } else {
+             Button(action: {
+             // ToDo: Purchase particular ILO product
+             }) {
+             Text("Buy for \(product.price) $") // 4
+             }
+             .foregroundColor(.blue)
+             }
+             }
+             
+             }
+             */
             
         } else if self.mode == 51 {
             
@@ -480,10 +478,9 @@ struct CourseListView: View {
             }
             
         } else if self.mode == 53 {
-
+            
             VStack {
                 Text("홀맨을 사랑해주셔서 감사합니다. 이제부터 무료로 이용하세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
-
             }.onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     let c = self.courses[self.selectedCourseIndex]
