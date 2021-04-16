@@ -143,6 +143,10 @@ struct CourseListView: View {
                 } // end of ScrollView
             }
             
+        } else if self.mode == 10 { // go back
+            
+            CourseView()
+            
         } else if self.mode == 20 { // move to next (HoleSearchView)
             
             let c = self.courses[self.selectedCourseIndex]
@@ -391,8 +395,6 @@ struct CourseListView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
                     .onAppear {
                         Util.getProductId() { productId in
-                            print(#function, productId)
-                            
                             self.productId = productId
                             
                             // purchase
@@ -494,10 +496,6 @@ struct CourseListView: View {
                     }
                 }
             }
-            
-        } else if self.mode == 10 { // go back
-            
-            CourseView()
             
         }
     }

@@ -561,10 +561,6 @@ struct CourseSearchView: View {
                 }
             }
             
-        } else if self.mode == 10 { // go back
-            
-            CourseView()
-            
         }
     }
     
