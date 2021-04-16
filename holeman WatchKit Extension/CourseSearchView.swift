@@ -185,15 +185,9 @@ struct CourseSearchView: View {
                                     } else {
                                         withAnimation {
                                             self.mode = 50 // payment
+                                            // self.mode = 20 // ToDo: internal test
                                         }
                                     }
-                                    
-                                    /*
-                                     // ToDo: internal test (skip payment)
-                                     withAnimation {
-                                     self.mode = 20
-                                     }
-                                     */
                                 }) {
                                     /*
                                      Text(str1 + "\n" + str2).font(.system(size: 18))
@@ -300,7 +294,7 @@ struct CourseSearchView: View {
                             
                             let i2 = address.index(start1!, offsetBy: 1)
                             
-                            let range2 = i2..<end1!
+                            // let range2 = i2..<end1!
                             // let str2 = address[range2]
                             
                             // local language only
@@ -406,28 +400,8 @@ struct CourseSearchView: View {
                                 .padding(.bottom, 8)
                             
                             Button(action: {
-                                
-
-                                
-                                if self.buttonFlag == false {
-                                    self.buttonFlag = true
-                                    
-                                    Util.getProductId() { productId in
-                                        self.productId = productId
-                                        
-                                        // purchase
-                                        // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                                        let product = Util.getProduct(self.storeManager.myProducts, productId)
-                                        if let product = product {
-                                            self.storeManager.purchaseProduct(product)
-                                            
-                                            withAnimation {
-                                                self.mode = 53
-                                            }
-                                        }
-                                        
-                                        self.buttonFlag = false
-                                    }
+                                withAnimation {
+                                    self.mode = 52
                                 }
                             }) {
                                 HStack {
@@ -468,6 +442,36 @@ struct CourseSearchView: View {
                         }
                     }
                 }
+            } else {
+                // loading indicator
+                ProgressView()
+                    .scaleEffect(1.2, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .red))
+            }
+            
+        } else if self.mode == 52 {
+            
+            if self.storeManager.remainingTransactionsCount == nil || self.storeManager.remainingTransactionsCount == 0 {
+                // loading indicator
+                ProgressView()
+                    .scaleEffect(1.2, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                    .onAppear {
+                        Util.getProductId() { productId in
+                            self.productId = productId
+                            
+                            // purchase
+                            // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                            let product = Util.getProduct(self.storeManager.myProducts, productId)
+                            if let product = product {
+                                self.storeManager.purchaseProduct(product)
+                                
+                                withAnimation {
+                                    self.mode = 53
+                                }
+                            }
+                        }
+                    }
             } else {
                 // loading indicator
                 ProgressView()
@@ -551,7 +555,7 @@ struct CourseSearchView: View {
                     Util.saveCourse(c)
                     
                     withAnimation {
-                        self.mode = 2 // move next
+                        self.mode = 20 // move next
                     }
                 }
             }
