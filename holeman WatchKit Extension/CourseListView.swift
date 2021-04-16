@@ -84,27 +84,14 @@ struct CourseListView: View {
                                     let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
                                     if result == true {
                                         withAnimation {
-                                            self.mode = 2 // move next
+                                            self.mode = 20 // move next
                                         }
                                     } else {
                                         withAnimation {
                                             self.mode = 50 // payment
-                                            // self.mode = 2 // ToDo: internal test
+                                            // self.mode = 20 // ToDo: internal test
                                         }
                                     }
-                                    
-                                    // ToDo: internal test
-                                    /*
-                                     if self.courses[index].id == 29 { // 안성H
-                                     withAnimation {
-                                     self.mode = 2 // skip payment
-                                     }
-                                     } else {
-                                     withAnimation {
-                                     self.mode = 50 // payment
-                                     }
-                                     }
-                                     */
                                 }) {
                                     /*
                                      Text(str1 + "\n" + str2).font(.system(size: 18))
@@ -156,7 +143,7 @@ struct CourseListView: View {
                 } // end of ScrollView
             }
             
-        } else if self.mode == 2 { // move to next (HoleSearchView)
+        } else if self.mode == 20 { // move to next (HoleSearchView)
             
             let c = self.courses[self.selectedCourseIndex]
             HoleSearchView(course: c)
@@ -207,8 +194,8 @@ struct CourseListView: View {
                             
                             let i2 = address.index(start1!, offsetBy: 1)
                             
-                            let range2 = i2..<end1!
-                            let str2 = address[range2]
+                            // let range2 = i2..<end1!
+                            // let str2 = address[range2]
                             
                             // local language only
                             Text(str1).font(.system(size: 14)).foregroundColor(Color.gray)
@@ -256,7 +243,7 @@ struct CourseListView: View {
                                 Util.purchasedAll() { result in
                                     if result == true {
                                         withAnimation {
-                                            self.mode = 53
+                                            self.mode = 54
                                         }
                                     } else {
                                         self.storeManager.getProducts(productIDs: Static.productIDs)
@@ -345,33 +332,8 @@ struct CourseListView: View {
                                 .padding(.bottom, 8)
                             
                             Button(action: {
-                                
-                                let result = self.storeManager.ready()
-                                if result == false {
-                                    // ToDo: user notification
-                                    
-                                    return
-                                }
-                                
-                                if self.buttonFlag == false {
-                                    self.buttonFlag = true
-                                    
-                                    Util.getProductId() { productId in
-                                        self.productId = productId
-                                        
-                                        // purchase
-                                        // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                                        let product = Util.getProduct(self.storeManager.myProducts, productId)
-                                        if let product = product {
-                                            self.storeManager.purchaseProduct(product)
-                                            
-                                            withAnimation {
-                                                self.mode = 52
-                                            }
-                                        }
-                                        
-                                        self.buttonFlag = false
-                                    }
+                                withAnimation {
+                                    self.mode = 52
                                 }
                             }) {
                                 HStack {
@@ -420,6 +382,36 @@ struct CourseListView: View {
             }
             
         } else if self.mode == 52 {
+            
+            if self.storeManager.remainingTransactionsCount == nil || self.storeManager.remainingTransactionsCount == 0 {
+                // loading indicator
+                ProgressView()
+                    .scaleEffect(1.2, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                    .onAppear {
+                        Util.getProductId() { productId in
+                            self.productId = productId
+                            
+                            // purchase
+                            // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                            let product = Util.getProduct(self.storeManager.myProducts, productId)
+                            if let product = product {
+                                self.storeManager.purchaseProduct(product)
+                                
+                                withAnimation {
+                                    self.mode = 53
+                                }
+                            }
+                        }
+                    }
+            } else {
+                // loading indicator
+                ProgressView()
+                    .scaleEffect(1.2, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .red))
+            }
+            
+        } else if self.mode == 53 {
             
             if self.storeManager.transactionState == nil || self.storeManager.transactionState == .purchasing {
                 // loading indicator
@@ -477,7 +469,7 @@ struct CourseListView: View {
                         Util.saveCourse(c)
                         
                         withAnimation {
-                            self.mode = 2 // move next
+                            self.mode = 20 // move next
                         }
                     }
                 }
@@ -485,7 +477,7 @@ struct CourseListView: View {
                 // N/A
             }
             
-        } else if self.mode == 53 {
+        } else if self.mode == 54 {
             
             VStack {
                 Text("홀맨을 사랑해주셔서 감사합니다. 이제부터 무료로 이용하세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
@@ -495,7 +487,7 @@ struct CourseListView: View {
                     Util.saveCourse(c)
                     
                     withAnimation {
-                        self.mode = 2 // move next
+                        self.mode = 20 // move next
                     }
                 }
             }

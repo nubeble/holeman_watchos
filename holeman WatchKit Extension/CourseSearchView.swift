@@ -55,10 +55,6 @@ struct CourseSearchView: View {
                 }
             }.onAppear(perform: onCreate)
             
-        } else if self.mode == 1 {
-            // N/A
-        } else if self.mode == 2 {
-            // N/A
         } else if self.mode == 3 {
             
             /*
@@ -305,7 +301,7 @@ struct CourseSearchView: View {
                             let i2 = address.index(start1!, offsetBy: 1)
                             
                             let range2 = i2..<end1!
-                            let str2 = address[range2]
+                            // let str2 = address[range2]
                             
                             // local language only
                             Text(str1).font(.system(size: 14)).foregroundColor(Color.gray)
@@ -353,7 +349,7 @@ struct CourseSearchView: View {
                                 Util.purchasedAll() { result in
                                     if result == true {
                                         withAnimation {
-                                            self.mode = 53
+                                            self.mode = 54
                                         }
                                     } else {
                                         self.storeManager.getProducts(productIDs: Static.productIDs)
@@ -411,12 +407,7 @@ struct CourseSearchView: View {
                             
                             Button(action: {
                                 
-                                let result = self.storeManager.ready()
-                                if result == false {
-                                    // ToDo: user notification
-                                    
-                                    return
-                                }
+
                                 
                                 if self.buttonFlag == false {
                                     self.buttonFlag = true
@@ -431,7 +422,7 @@ struct CourseSearchView: View {
                                             self.storeManager.purchaseProduct(product)
                                             
                                             withAnimation {
-                                                self.mode = 52
+                                                self.mode = 53
                                             }
                                         }
                                         
@@ -484,7 +475,7 @@ struct CourseSearchView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             }
             
-        } else if self.mode == 52 {
+        } else if self.mode == 53 {
             
             if self.storeManager.transactionState == nil || self.storeManager.transactionState == .purchasing {
                 // loading indicator
@@ -550,7 +541,7 @@ struct CourseSearchView: View {
                 // N/A
             }
             
-        } else if self.mode == 53 {
+        } else if self.mode == 54 {
             
             VStack {
                 Text("홀맨을 사랑해주셔서 감사합니다. 이제부터 무료로 이용하세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
@@ -749,8 +740,8 @@ struct CourseSearchView: View {
                     self.selectedCourseIndex = 0
                     
                     withAnimation {
-                        // self.mode = 20 // ToDo: internal test
                         self.mode = 50 // payment
+                        // self.mode = 20 // ToDo: internal test
                     }
                 } else {
                     // move to HoleSearchView

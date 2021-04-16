@@ -81,8 +81,8 @@ struct Util {
             
             let i2 = name.index(start1!, offsetBy: 1)
             
-            let range2 = i2..<end1!
-            let str2 = name[range2]
+            // let range2 = i2..<end1!
+            // let str2 = name[range2]
             
             return String(str1)
         } else {
