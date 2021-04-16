@@ -40,6 +40,12 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     
     @Published var remainingTransactionsCount: Int?
     
+    func initProducts() {
+        DispatchQueue.main.async {
+            self.myProducts.removeAll()
+        }
+    }
+    
     func getProducts(productIDs: [String]) {
         print(#function, "Start requesting products...")
         
@@ -169,11 +175,12 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     func paymentQueue(_ queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
         print(#function, "Transaction removed")
         
-        DispatchQueue.main.async {
-            self.remainingTransactionsCount = queue.transactions.count
-        }
+        let count = queue.transactions.count
+        print(#function, "removedTransactionsCount", count)
         
-        print(#function, "removedTransactionsCount", self.remainingTransactionsCount!)
+        DispatchQueue.main.async {
+            self.remainingTransactionsCount = count
+        }
         
         
         /*

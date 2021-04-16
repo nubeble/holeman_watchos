@@ -246,6 +246,7 @@ struct CourseListView: View {
                                             self.mode = 54
                                         }
                                     } else {
+                                        self.storeManager.initProducts()
                                         self.storeManager.getProducts(productIDs: Static.productIDs)
                                         
                                         withAnimation {
@@ -390,6 +391,8 @@ struct CourseListView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
                     .onAppear {
                         Util.getProductId() { productId in
+                            print(#function, productId)
+                            
                             self.productId = productId
                             
                             // purchase

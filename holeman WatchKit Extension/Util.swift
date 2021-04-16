@@ -227,6 +227,8 @@ struct Util {
     }
     
     static func contains(_ products: [SKProduct], _ ids: [String]) -> Bool {
+        print(#function, products, ids)
+        
         var count = ids.count
         
         for product in products {
@@ -240,7 +242,7 @@ struct Util {
         
         if count == 0 {
             return true
-        } else {
+        } else { // ToDo
             return false
         }
     }

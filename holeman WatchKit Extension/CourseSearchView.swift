@@ -346,6 +346,7 @@ struct CourseSearchView: View {
                                             self.mode = 54
                                         }
                                     } else {
+                                        self.storeManager.initProducts()
                                         self.storeManager.getProducts(productIDs: Static.productIDs)
                                         
                                         withAnimation {
