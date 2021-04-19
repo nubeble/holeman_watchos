@@ -458,7 +458,11 @@ struct CourseSearchView: View {
                     .scaleEffect(1.2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
                     .onAppear {
+                        self.storeManager.initState()
+                        
                         Util.getProductId() { productId in
+                            print(#function, "productId", productId)
+                            
                             self.productId = productId
                             
                             // purchase

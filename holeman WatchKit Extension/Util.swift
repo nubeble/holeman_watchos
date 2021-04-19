@@ -289,13 +289,18 @@ struct Util {
         }
     }
     
-    // static func purchasedAll() -> Bool { // check if the last purchased product id is 100
+    // static func purchasedAll() -> Bool { // check if the last purchased product id is 99
     static func purchasedAll(onComplete: @escaping ((_ result: Bool) -> Void)) {
         // check UserDefaults
         let id = UserDefaults.standard.string(forKey: "IAP_PRODUCT_ID") // last purchased product id
+        print(#function, "IAP_PRODUCT_ID", id)
+        
         if let id = id { // "com.nubeble.holeman.iap.course.X"
-            let num = id[id.endIndex]
-            if String(num) == "100" {
+            let charArray = Array(id)
+            let num = charArray[id.count - 1]
+            print(#function, "num", num)
+            
+            if String(num) == "99" {
                 onComplete(true)
             } else {
                 onComplete(false)
@@ -305,10 +310,12 @@ struct Util {
             if let userId = Global.userId {
                 
                 CloudManager.getProductId(userId) { productId in
+                    print(#function, "productId", productId)
+                    
                     if productId == "" {
                         onComplete(false)
                     } else {
-                        if productId == "100" {
+                        if productId == "99" {
                             onComplete(true)
                         } else {
                             onComplete(false)
@@ -326,16 +333,23 @@ struct Util {
     static func getProductId(onComplete: @escaping ((_ productId: String) -> Void)) {
         // check UserDefaults
         let id = UserDefaults.standard.string(forKey: "IAP_PRODUCT_ID") // last purchased product id
+        print(#function, "IAP_PRODUCT_ID", id)
+        
         // if id != nil {
         if let id = id { // "com.nubeble.holeman.iap.course.X"
             // print("product ID", id)
             
             var nextNumber = 1
             
-            let num = id[id.endIndex]
+            let charArray = Array(id)
+            let num = charArray[id.count - 1]
+            // print(#function, "num", num)
+            
             if let number = Int(String(num)) {
                 nextNumber = number + 1
             }
+            
+            // print(#function, "nextNumber", nextNumber)
             
             let nextId = "com.nubeble.holeman.iap.course." + String(nextNumber)
             onComplete(nextId)
@@ -346,6 +360,8 @@ struct Util {
             if let userId = Global.userId {
                 
                 CloudManager.getProductId(userId) { productId in
+                    print(#function, "productId", productId)
+                    
                     if productId == "" {
                         let nextId = "com.nubeble.holeman.iap.course.1"
                         onComplete(nextId)

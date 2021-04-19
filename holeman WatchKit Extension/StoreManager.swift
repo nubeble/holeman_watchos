@@ -40,7 +40,17 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     
     @Published var remainingTransactionsCount: Int?
     
+    func initState() {
+        print(#function)
+        
+        DispatchQueue.main.async {
+            self.transactionState = nil
+        }
+    }
+    
     func initProducts() {
+        print(#function)
+        
         DispatchQueue.main.async {
             self.myProducts.removeAll()
         }
