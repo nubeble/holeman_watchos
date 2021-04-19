@@ -22,8 +22,6 @@ struct CourseListView: View {
     
     @State var selectedCourseIndex: Int = -1
     
-    // @StateObject var storeManager: StoreManager = StoreManager()
-    // ToDo: 2021-04-07
     @EnvironmentObject var storeManager: StoreManager
     
     @State var buttonFlag: Bool = false

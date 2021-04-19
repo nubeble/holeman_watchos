@@ -19,7 +19,7 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
     override init() {
         super.init()
         
-        print(#function)
+        // print("StoreManager.init()")
         
         SKPaymentQueue.default().add(self)
     }

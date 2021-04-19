@@ -11,16 +11,11 @@ struct SplashView: View {
     // 1.
     @State var isActive: Bool = false
     
-    // ToDo: 2021-04-07
-    // @EnvironmentObject var storeManager: StoreManager
-    
     var body: some View {
         
         if self.isActive == true {
             VStack { // should be VStack
                 IntroView()
-                // ToDo: 2021-04-07
-                // IntroView().environmentObject(self.storeManager)
             }
             .navigationBarTitle("Holeman")
         } else {

@@ -12,8 +12,9 @@ import StoreKit
 struct holemanApp: App {
     @WKExtensionDelegateAdaptor(ExtensionDelegate.self) var delegate
     
-    // ToDo: 2021-04-07
     @StateObject var storeManager = StoreManager()
+    
+    // var interfaceController = InterfaceController()
     
     var body: some Scene {
         WindowGroup {
@@ -22,34 +23,9 @@ struct holemanApp: App {
                 // ContentView().environmentObject(Course())
                 
                 SplashView()
-                // ToDo: 2021-04-07
                 // SplashView().environmentObject(self.storeManager)
             }
             .environmentObject(self.storeManager)
-            .onAppear {
-                
-                
-                // SKPaymentQueue.default().add(self.storeManager)
-                
-                
-                // print("ContentView appeared!")
-                // WKExtension.shared().registerForRemoteNotifications()
-                
-                // ToDo: test purchase
-                /*
-                 self.storeManager.getProducts(productIDs: Static.productIDs)
-                 
-                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                 let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                 if product != nil {
-                 SKPaymentQueue.default().add(self.storeManager)
-                 
-                 self.storeManager.purchaseProduct(product!)
-                 }
-                 }
-                 */
-            }.onDisappear {
-            }
         }
     }
 }

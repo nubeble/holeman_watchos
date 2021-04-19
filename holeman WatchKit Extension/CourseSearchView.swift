@@ -29,8 +29,6 @@ struct CourseSearchView: View {
     // @State var groupId = 0
     // @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
     
-    // @StateObject var storeManager: StoreManager = StoreManager()
-    // ToDo: 2021-04-07
     @EnvironmentObject var storeManager: StoreManager
     
     @State var buttonFlag: Bool = false
