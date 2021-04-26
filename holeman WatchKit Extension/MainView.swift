@@ -1146,7 +1146,7 @@ struct MainView: View {
          return true
          */
         
-        if Double(fullBack!) - distance >= 0 {
+        if Double(fullBack!) + 30 - distance >= 0 {
             return true
         } else {
             return false
@@ -1182,7 +1182,7 @@ struct MainView: View {
          return true
          */
         
-        if Double(fullBack!) - distance >= 0 {
+        if Double(fullBack!) + 30 - distance >= 0 {
             return true
         } else {
             return false
