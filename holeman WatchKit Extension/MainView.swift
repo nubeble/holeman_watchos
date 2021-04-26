@@ -41,15 +41,17 @@ struct MainView: View {
             
             let coordinate2 = CLLocation(latitude: self.latitude!, longitude: self.longitude!)
             
-            var distance = coordinate1.distance(from: coordinate2) // result is in meters
+            let distance = coordinate1.distance(from: coordinate2) // result is in meters
             
-            // ToDo: internal test (distance)
-            // print(distance)
-            distance = distance - 289642 + 380 // 매탄동
-            // distance = distance - 307348 + 380 // 우면동
-            if distance < 0 {
-                distance *= -1
-            }
+            /*
+             // ToDo: internal test (distance)
+             // print(distance)
+             distance = distance - 289642 + 380 // 매탄동
+             // distance = distance - 307348 + 380 // 우면동
+             if distance < 0 {
+             distance *= -1
+             }
+             */
             
             // var returnValue: Double = 0
             var returnValue: Int = 0
@@ -991,15 +993,17 @@ struct MainView: View {
         let coordinate2 = CLLocation(latitude: lat2, longitude: lon2)
         
         // 현재 홀의 홀컵과 나 사이의 거리
-        var distance = coordinate1.distance(from: coordinate2) // result is in meters
+        let distance = coordinate1.distance(from: coordinate2) // result is in meters
         
-        // ToDo: internal test (distance)
-        // print(distance)
-        distance = distance - 289642 + 380 // 매탄동
-        // distance = distance - 307348 + 380 // 우면동
-        if distance < 0 {
-            distance *= -1
-        }
+        /*
+         // ToDo: internal test (distance)
+         // print(distance)
+         distance = distance - 289642 + 380 // 매탄동
+         // distance = distance - 307348 + 380 // 우면동
+         if distance < 0 {
+         distance *= -1
+         }
+         */
         
         // ToDo: 2021-03-15
         // 1. 현재 홀에 있는지 확인

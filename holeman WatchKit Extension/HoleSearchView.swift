@@ -639,12 +639,17 @@ struct HoleSearchView: View {
                             fullBack = Int(x.rounded())
                         }
                         
-                        print(#function, fullBack!, distance)
+                        print(#function, startHole.number, fullBack!, distance)
                         
-                        let d = distance - Double(fullBack!)
+                        /*
+                         let d = distance - Double(fullBack!)
+                         if d < 30 { // ToDo: static (30 m)
+                         // if d < 300 * 1000 { // ToDo: internal test (300 km)
+                         list.append(startHole.number)
+                         }
+                         */
                         
-                        // if d < 30 { // ToDo: static (30 m)
-                        if d < 500 * 1000 { // ToDo: internal test (500 km)
+                        if Double(fullBack!) - distance > 0 { // 전장 - (나와 홀 사이 거리) > 0 이면 해당 홀 근처로 들어왔다고 간주한다.
                             list.append(startHole.number)
                         }
                     }
