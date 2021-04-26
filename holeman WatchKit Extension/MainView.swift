@@ -1011,6 +1011,7 @@ struct MainView: View {
         if stillIn == false { // 현재 홀을 벗어났다면
             // 2. currentHoleNumber+1 부터 한 바퀴까지 돌면서 각 홀에 있는지 체크
             let number = findHole(coordinate1)
+            print("found hole number", number)
             if number != 0 {
                 self.holeNumber = number
                 
@@ -1022,6 +1023,8 @@ struct MainView: View {
                 self.holePassFlag = 100
                 self.holePassCount = 0
             }
+            
+            // ToDo: 현재 홀을 벗어나고 다음 홀을 찾지 못하면?
         } else {
             let result = self.checkHolePass(distance)
             if result == true {
@@ -1133,13 +1136,21 @@ struct MainView: View {
         
         // print(#function, "full back tee distance (meter)", fullBack!, distance)
         
-        fullBack = fullBack! + 30 // full back tee + 30 m
+        /*
+         fullBack = fullBack! + 30 // full back tee + 30 m
+         
+         if Double(fullBack!) - distance < 0 {
+         return false
+         }
+         
+         return true
+         */
         
-        if Double(fullBack!) - distance < 0 {
+        if Double(fullBack!) - distance >= 0 {
+            return true
+        } else {
             return false
         }
-        
-        return true
     }
     
     func inHole(_ index: Int, _ coordinate: CLLocation) -> Bool {
@@ -1161,13 +1172,21 @@ struct MainView: View {
         
         // print(#function, "full back tee distance (meter)", fullBack!)
         
-        fullBack = fullBack! + 30 // full back tee + 30 m
+        /*
+         fullBack = fullBack! + 30 // full back tee + 30 m
+         
+         if Double(fullBack!) - distance < 0 {
+         return false
+         }
+         
+         return true
+         */
         
-        if Double(fullBack!) - distance < 0 {
+        if Double(fullBack!) - distance >= 0 {
+            return true
+        } else {
             return false
         }
-        
-        return true
     }
     
     func findHole(_ coordinate: CLLocation) -> Int {
@@ -1206,7 +1225,7 @@ struct MainView: View {
     }
     
     func saveHole(_ halftime: Int) {
-        print(#function, halftime)
+        // print(#function, halftime)
         // 1. time
         let date = Date()
         let dateFormatter = DateFormatter()

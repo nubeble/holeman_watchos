@@ -649,7 +649,7 @@ struct HoleSearchView: View {
                          }
                          */
                         
-                        if Double(fullBack!) - distance > 0 { // 전장 - (나와 홀 사이 거리) > 0 이면 해당 홀 근처로 들어왔다고 간주한다.
+                        if Double(fullBack!) - distance >= 20 { // 전장 - (나와 홀 사이 거리) >= 20 이면 해당 홀 근처로 들어왔다고 간주한다.
                             list.append(startHole.number)
                         }
                     }
