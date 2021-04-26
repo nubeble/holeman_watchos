@@ -566,6 +566,7 @@ struct IntroView: View {
                 }
                 
             } else { // 이전 플레이 홀 날짜가 다를 수 있다. (오늘 구매하고 아직 홀 정보가 없다는 뜻)
+                
                 loadCourse()
                 
                 self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
@@ -575,6 +576,7 @@ struct IntroView: View {
                 }
             }
         } else { // 구매하고 홀 플레이 하기 전에 앱이 종료되었다.
+
             loadCourse()
             
             self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
@@ -688,7 +690,7 @@ struct IntroView: View {
     }
     
     func moveNextFromPurchase(_ removePlayData: Bool) {
-        print(#function)
+        print(#function, removePlayData)
         
         if removePlayData == true {
             let defaults = UserDefaults.standard
@@ -702,50 +704,11 @@ struct IntroView: View {
             }
         }
         
-        /*
-         // get course
-         // --
-         var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
-         
-         let address = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_ADDRESS")
-         let countryCode = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_COUNTRY_CODE")
-         
-         c.address = address!
-         c.countryCode = countryCode!
-         
-         let courses = UserDefaults.standard.stringArray(forKey: "LAST_PURCHASED_COURSE_COURSE_COURSES")
-         for course in courses! {
-         do {
-         let data = Data(course.utf8)
-         let decodedData = try JSONDecoder().decode(CourseData.self, from: data)
-         
-         let item = CourseItem(name: decodedData.name, range: [decodedData.range[0], decodedData.range[1]])
-         c.courses.append(item)
-         } catch {
-         print(error)
-         return
-         }
-         }
-         
-         let id = UserDefaults.standard.integer(forKey: "LAST_PURCHASED_COURSE_COURSE_ID")
-         
-         let latitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LATITUDE")
-         let longitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LONGITUDE")
-         let name = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_NAME")
-         
-         c.id = Int64(id)
-         c.location = CLLocation(latitude: latitude, longitude: longitude)
-         c.name = name!
-         // --
-         */
-        
         // moveToHoleSearchView(400, true, c, 0, nil, -1)
         self.from = 400
         self.search = true
-        // self.course = c
         self.holeNumber = 0
-        // self.teeingGroundInfo = nil
-        self.teeingGroundIndex = -1
+        self.teeingGroundIndex = 0
         
         withAnimation {
             self.mode = 21

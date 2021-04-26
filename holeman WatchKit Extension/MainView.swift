@@ -47,6 +47,9 @@ struct MainView: View {
             // print(distance)
             distance = distance - 289642 + 380 // 매탄동
             // distance = distance - 307348 + 380 // 우면동
+            if distance < 0 {
+                distance *= -1
+            }
             
             // var returnValue: Double = 0
             var returnValue: Int = 0
@@ -994,7 +997,9 @@ struct MainView: View {
         // print(distance)
         distance = distance - 289642 + 380 // 매탄동
         // distance = distance - 307348 + 380 // 우면동
-        
+        if distance < 0 {
+            distance *= -1
+        }
         
         // ToDo: 2021-03-15
         // 1. 현재 홀에 있는지 확인

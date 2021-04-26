@@ -26,7 +26,7 @@ struct CourseListView: View {
     
     @State var buttonFlag: Bool = false
     
-    @State var productId: String?
+    // @State var productId: String?
     
     var body: some View {
         if self.mode == 0 {
@@ -239,25 +239,36 @@ struct CourseListView: View {
                         
                         // button 2
                         Button(action: {
-                            if self.buttonFlag == false {
-                                self.buttonFlag = true
-                                
-                                Util.purchasedAll() { result in
-                                    if result == true {
-                                        withAnimation {
-                                            self.mode = 54
-                                        }
-                                    } else {
-                                        self.storeManager.initProducts()
-                                        self.storeManager.getProducts(productIDs: Static.productIDs)
-                                        
-                                        withAnimation {
-                                            self.mode = 51
-                                        }
-                                    }
-                                    
-                                    self.buttonFlag = false
-                                }
+                            // ToDo: 2021-04-26 IAP
+                            /*
+                             if self.buttonFlag == false {
+                             self.buttonFlag = true
+                             
+                             Util.purchasedAll() { result in
+                             if result == true {
+                             withAnimation {
+                             self.mode = 54
+                             }
+                             } else {
+                             self.storeManager.initProducts()
+                             self.storeManager.getProducts(productIDs: Static.productIDs)
+                             
+                             withAnimation {
+                             self.mode = 51
+                             }
+                             }
+                             
+                             self.buttonFlag = false
+                             }
+                             }
+                             */
+                            
+                            self.storeManager.initProducts()
+                            // self.storeManager.getProducts(productIDs: Static.productIDs)
+                            self.storeManager.getProducts(productIDs: [Static.productId])
+                            
+                            withAnimation {
+                                self.mode = 51
                             }
                         }) {
                             ZStack {
@@ -311,8 +322,8 @@ struct CourseListView: View {
             
         } else if self.mode == 51 {
             
-            // if Util.contains(self.storeManager.myProducts, "com.nubeble.holeman.iap.course") == true {
-            if Util.contains(self.storeManager.myProducts, Static.productIDs) == true {
+            if Util.contains(self.storeManager.myProducts, Static.productId) == true {
+                // if Util.contains(self.storeManager.myProducts, Static.productIDs) == true {
                 GeometryReader { geometry in
                     ScrollView {
                         VStack {
@@ -394,20 +405,31 @@ struct CourseListView: View {
                     .onAppear {
                         self.storeManager.initState()
                         
-                        Util.getProductId() { productId in
-                            print(#function, "productId", productId)
+                        // ToDo: 2021-04-26 IAP
+                        /*
+                         Util.getProductId() { productId in
+                         print(#function, "purchasing product id", productId)
+                         
+                         self.productId = productId
+                         
+                         // purchase
+                         // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                         let product = Util.getProduct(self.storeManager.myProducts, productId)
+                         if let product = product {
+                         self.storeManager.purchaseProduct(product)
+                         
+                         withAnimation {
+                         self.mode = 53
+                         }
+                         }
+                         }
+                         */
+                        let product = Util.getProduct(self.storeManager.myProducts, Static.productId)
+                        if let product = product {
+                            self.storeManager.purchaseProduct(product)
                             
-                            self.productId = productId
-                            
-                            // purchase
-                            // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                            let product = Util.getProduct(self.storeManager.myProducts, productId)
-                            if let product = product {
-                                self.storeManager.purchaseProduct(product)
-                                
-                                withAnimation {
-                                    self.mode = 53
-                                }
+                            withAnimation {
+                                self.mode = 53
                             }
                         }
                     }
@@ -466,15 +488,19 @@ struct CourseListView: View {
                 }.onAppear {
                     self.storeManager.destroy()
                     
-                    // save purchased product id (UserDefaults, CloudKit)
-                    if let productId = self.productId {
-                        Util.setProductId(productId)
-                    }
+                    // ToDo: 2021-04-26 IAP
+                    /*
+                     // save purchased product id (UserDefaults, CloudKit)
+                     if let productId = self.productId {
+                     Util.setProductId(productId)
+                     }
+                     */
                     
+                    let c = self.courses[self.selectedCourseIndex]
+                    Util.saveCourse(c)
+                    
+                    // ToDo: test timer
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        let c = self.courses[self.selectedCourseIndex]
-                        Util.saveCourse(c)
-                        
                         withAnimation {
                             self.mode = 20 // move next
                         }

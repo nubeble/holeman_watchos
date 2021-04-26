@@ -193,6 +193,7 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
         }
         
         
+        
         /*
          for transaction in transactions {
          print(#function, transaction.transactionIdentifier, transaction.transactionDate)

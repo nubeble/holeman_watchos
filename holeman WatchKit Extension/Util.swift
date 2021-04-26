@@ -310,7 +310,7 @@ struct Util {
             if let userId = Global.userId {
                 
                 CloudManager.getProductId(userId) { productId in
-                    print(#function, "productId", productId)
+                    print(#function, "last purchased product id", productId)
                     
                     if productId == "" {
                         onComplete(false)
