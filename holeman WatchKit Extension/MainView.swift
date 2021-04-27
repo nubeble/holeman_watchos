@@ -249,7 +249,7 @@ struct MainView: View {
                         // .frame(maxWidth: .infinity, alignment: .leading)
                     } else {
                         Text(self.message1).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
-                        Text(self.message2).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
+                        Text(self.message2).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
                     }
                 }
                 
