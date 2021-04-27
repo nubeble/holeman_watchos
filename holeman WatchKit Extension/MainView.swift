@@ -18,7 +18,7 @@ struct MainView: View {
     
     let sensorUpdatedNotification = NotificationCenter.default.publisher(for: .sensorUpdated)
     
-    @State var textHoleName: String = "별우(STAR) 9TH"
+    @State var textHoleTitle: String = "별우(STAR) 9TH"
     @State var textPar: String = "PAR 4"
     @State var textHandicap: String = "HDCP 12"
     @State var textUnit: String = ""
@@ -26,7 +26,8 @@ struct MainView: View {
     @State var colorTeeDistance: Color = Color.white
     // @State var textDistance: String = "384"
     // @State var textHeight: String = "-9"
-    @State var textMessage: String = ""
+    @State var message1: String = ""
+    @State var message2: String = ""
     @State var progressValue: Float = 0.0
     
     @ObservedObject var locationManager = LocationManager()
@@ -160,7 +161,7 @@ struct MainView: View {
         }
     }
     
-    struct HoleName: ButtonStyle {
+    struct HoleTitle: ButtonStyle {
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
                 .padding(2)
@@ -178,6 +179,8 @@ struct MainView: View {
     // @State var holePassStartTime: DispatchTime? = nil
     
     // pass to TeeView & HoleView
+    @State var titles: [String]?
+    
     @State var names: [String]?
     @State var color: [Color]?
     @State var distances: [String]?
@@ -240,9 +243,14 @@ struct MainView: View {
                 }
                 
                 VStack {
-                    // textMessage 폰트 크기는 20이지만, holeName만 24로 키운다
-                    Text(self.textMessage).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
-                    // .frame(maxWidth: .infinity, alignment: .leading)
+                    if self.message2 == "" {
+                        // textMessage 폰트 크기는 20이지만, holeTitle만 24로 키운다
+                        Text(self.message1).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
+                        // .frame(maxWidth: .infinity, alignment: .leading)
+                    } else {
+                        Text(self.message1).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
+                        Text(self.message2).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
+                    }
                 }
                 
                 VStack {
@@ -277,9 +285,11 @@ struct MainView: View {
                 .edgesIgnoringSafeArea(.bottom)
             }
             .onAppear(perform: {
-                let holeName = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
+                let title = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
+                let name = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
                 
-                self.textMessage = holeName
+                self.message1 = title
+                self.message2 = name
             })
             
         } else if self.mode == 1 {
@@ -340,12 +350,12 @@ struct MainView: View {
                                 self.mode = 2
                             }
                         }) {
-                            Text(self.textHoleName).font(.system(size: 14))
+                            Text(self.textHoleTitle).font(.system(size: 14))
                         }
                         .padding(.top, 46)
                         
                         //.buttonStyle(PlainButtonStyle())
-                        .buttonStyle(HoleName())
+                        .buttonStyle(HoleTitle())
                         
                         
                         HStack(spacing: 4) {
@@ -364,7 +374,7 @@ struct MainView: View {
                             }) {
                                 Text(self.textTeeDistance).font(.system(size: 14)).foregroundColor(self.colorTeeDistance)
                             }
-                            .buttonStyle(HoleName())
+                            .buttonStyle(HoleTitle())
                         }
                         
                         Spacer().frame(maxHeight: .infinity)
@@ -441,7 +451,7 @@ struct MainView: View {
                 }
                 
                 // update UI
-                self.textHoleName = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
+                self.textHoleTitle = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
                 self.textPar = "PAR " + String(self.teeingGroundInfo?.holes[self.holeNumber! - 1].par ?? 0)
                 self.textHandicap = "HDCP " + String(self.teeingGroundInfo?.holes[self.holeNumber! - 1].handicap ?? 0)
                 
@@ -549,7 +559,7 @@ struct MainView: View {
             
         } else if self.mode == 2 { // open HoleView
             
-            HoleView(names: self.names!, selectedIndex: self.holeNumber! - 1,
+            HoleView(titles: self.titles!, selectedIndex: self.holeNumber! - 1,
                      // backup
                      __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundIndex: self.teeingGroundIndex,
                      /*__holeNumber: self.holeNumber,*/ __distanceUnit: self.distanceUnit,
@@ -569,7 +579,7 @@ struct MainView: View {
             
         } else if self.mode == 4 { // open MenuView
             
-            MenuView(/*names: self.names!, color: self.color!, distances: self.distances!, selectedIndex: self.teeingGroundIndex!,*/
+            MenuView(
                 // backup
                 __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundIndex: self.teeingGroundIndex,
                 __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
@@ -643,18 +653,18 @@ struct MainView: View {
     func getHoleViewInfo() {
         let count = self.teeingGroundInfo?.holes.count
         
-        var names: [String] = []
+        var titles: [String] = []
         
         var i = 0
         while (i < count!) {
-            let name = self.teeingGroundInfo?.holes[i].name
+            let title = self.teeingGroundInfo?.holes[i].title
             
-            names.append(name!)
+            titles.append(title!)
             
             i += 1
         } // end of while
         
-        self.names = names
+        self.titles = titles
     }
     
     func getTeeViewInfo() {
@@ -1048,21 +1058,6 @@ struct MainView: View {
                     
                     self.holeNumber! += 1
                     
-                    // saveHoleOnAppear에서 저장
-                    /*
-                     if Global.halftime == 1 {
-                     // 전반 중
-                     
-                     saveHole(1)
-                     } else if Global.halftime == 2 {
-                     // 후반 중
-                     
-                     saveHole(3)
-                     }
-                     */
-                    
-                    // let holeName = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
-                    // showMessage(holeName)
                     withAnimation {
                         self.mode = 0
                     }
@@ -1147,6 +1142,7 @@ struct MainView: View {
          */
         
         if Double(fullBack!) + 30 - distance >= 0 {
+            // if Double(fullBack!) + 30 - distance < 0 { // ToDo: internal test
             return true
         } else {
             return false
@@ -1183,6 +1179,7 @@ struct MainView: View {
          */
         
         if Double(fullBack!) + 30 - distance >= 0 {
+            // if Double(fullBack!) + 30 - distance < 0 { // ToDo: internal test
             return true
         } else {
             return false
@@ -1247,12 +1244,6 @@ struct MainView: View {
          */
         
         if let course = self.course {
-            
-            
-            // ToDo: internal test
-            // Util.saveCourse(course)
-            
-            
             // address
             UserDefaults.standard.set(course.address, forKey: "LAST_PLAYED_HOLE_COURSE_ADDRESS")
             
@@ -1307,7 +1298,7 @@ struct MainView: View {
                     teeingGroundDataArray.append(teeingGroundData)
                 }
                 
-                let tgd = TeeingGroundsData(teeingGrounds: teeingGroundDataArray, par: hole.par, handicap: hole.handicap, name: hole.name)
+                let tgd = TeeingGroundsData(teeingGrounds: teeingGroundDataArray, par: hole.par, handicap: hole.handicap, title: hole.title, name: hole.name)
                 
                 do {
                     let encodedData = try JSONEncoder().encode(tgd)

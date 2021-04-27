@@ -10,7 +10,7 @@ import SwiftUI
 struct HoleView: View {
     @State var mode: Int = 0
     
-    @State var names: [String] = []
+    @State var titles: [String] = []
     @State var selectedIndex: Int = -1
     
     // backup of MainView
@@ -36,10 +36,10 @@ struct HoleView: View {
                             Text("Select Hole").font(.system(size: 20, weight: .semibold))
                             Text("플레이 홀을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
                             
-                            ForEach(0 ..< self.names.count) {
+                            ForEach(0 ..< self.titles.count) {
                                 let index = $0
                                 
-                                let name = self.names[index]
+                                let title = self.titles[index]
                                 
                                 Button(action: {
                                     self.selectedIndex = index
@@ -52,7 +52,7 @@ struct HoleView: View {
                                 }) {
                                     HStack(spacing: 10) {
                                         // Text(name).font(.system(size: 18))
-                                        Text(name).font(.system(size: 20))
+                                        Text(title).font(.system(size: 20))
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                         
                                         if index == self.selectedIndex {

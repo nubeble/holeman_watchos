@@ -16,6 +16,7 @@ struct TeeingGrounds {
     var teeingGrounds: [TeeingGround]
     var par: Int
     var handicap: Int
+    var title: String
     var name: String
 }
 

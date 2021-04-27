@@ -11,6 +11,7 @@ struct TeeingGroundsData: Codable, Hashable {
     let teeingGrounds: [TeeingGroundData]
     let par: Int
     let handicap: Int
+    let title: String
     let name: String
 }
 

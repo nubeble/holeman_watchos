@@ -33,13 +33,14 @@ struct HoleSearchView: View {
     
     struct HoleData: Codable, Hashable {
         let number: Int
+        let name: String
         let par: Int
         let handicap: Int
         let distance: Dictionary<String, Int>
     }
     
     struct StartHole {
-        var name: String
+        var title: String
         var number: Int
         var latitude: Double
         var longitude: Double
@@ -195,7 +196,7 @@ struct HoleSearchView: View {
                                 let index = $0
                                 
                                 let number = self.startHoles[index].number
-                                let name = self.startHoles[index].name
+                                let title = self.startHoles[index].title
                                 
                                 Button(action: {
                                     // self.selectedStartHoleIndex = index
@@ -206,7 +207,7 @@ struct HoleSearchView: View {
                                     // move to MainView
                                     moveNext()
                                 }) {
-                                    Text(name).font(.system(size: 20))
+                                    Text(title).font(.system(size: 20))
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(2)
                                         // .multilineTextAlignment(.leading)
@@ -402,7 +403,7 @@ struct HoleSearchView: View {
                     i += 1
                     
                     // create
-                    var tg = TeeingGrounds(teeingGrounds: [], par: 0, handicap: 0, name: "")
+                    var tg = TeeingGrounds(teeingGrounds: [], par: 0, handicap: 0, title: "", name: "")
                     
                     // parse json
                     do {
@@ -411,6 +412,7 @@ struct HoleSearchView: View {
                         let decodedData = try JSONDecoder().decode(HoleData.self, from: data)
                         // print(decodedData)
                         
+                        tg.name = decodedData.name
                         tg.par = decodedData.par
                         tg.handicap = decodedData.handicap
                         
@@ -420,7 +422,7 @@ struct HoleSearchView: View {
                         // set name
                         if self.course?.courses.count == 0 {
                             let number = i
-                            tg.name = Util.getOrdinalNumber(number) + " HOLE"
+                            tg.title = Util.getOrdinalNumber(number) + " HOLE"
                         } else {
                             var number = i
                             
@@ -434,7 +436,7 @@ struct HoleSearchView: View {
                                     if number == 0 { number = 9; }
                                     // tg.name = name + " " + number;
                                     // tg.name = name + " HOLE " + number;
-                                    tg.name = name + " " + Util.getOrdinalNumber(number);
+                                    tg.title = name + " " + Util.getOrdinalNumber(number);
                                     break;
                                 }
                             }
@@ -541,7 +543,7 @@ struct HoleSearchView: View {
                 let sensor = SensorModel(id: groupId, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
                 print("sensor", sensor)
                 
-                let startHole = StartHole(name: getHoleName(Int(holeNumber)), number: Int(holeNumber), latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                let startHole = StartHole(title: getHoleTitle(Int(holeNumber)), number: Int(holeNumber), latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
                 
                 self.startHoles.append(startHole)
                 
@@ -550,12 +552,12 @@ struct HoleSearchView: View {
         }
     } // end of getHole
     
-    func getHoleName(_ number:Int) -> String {
-        var holeName: String = "";
+    func getHoleTitle(_ number:Int) -> String {
+        var title: String = "";
         
         let courses = self.course?.courses
         if courses?.count == 0 {
-            holeName = Util.getOrdinalNumber(number) + " HOLE"
+            title = Util.getOrdinalNumber(number) + " HOLE"
         } else {
             for course in courses! {
                 let name = course.name
@@ -566,14 +568,14 @@ struct HoleSearchView: View {
                     var n = (number + 9) % 9
                     if n == 0 { n = 9 }
                     
-                    holeName = name + " " + Util.getOrdinalNumber(n)
+                    title = name + " " + Util.getOrdinalNumber(n)
                     
                     break
                 }
             }
         }
         
-        return holeName
+        return title
     }
     
     func calcDistance() {
@@ -650,6 +652,7 @@ struct HoleSearchView: View {
                          */
                         
                         if Double(fullBack!) + 30 + 20 - distance >= 0 { // 전장 (백티 + 30) - (나와 홀 사이 거리) >= -20 이면 해당 홀 근처로 들어왔다고 간주한다.
+                            // if Double(fullBack!) + 30 + 20 - distance < 0 { // ToDo: internal test
                             list.append(startHole.number)
                         }
                     }

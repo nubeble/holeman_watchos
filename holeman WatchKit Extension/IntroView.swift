@@ -271,7 +271,7 @@ struct IntroView: View {
                     
                     if self.mode == 11 || self.mode == 13 {
                         let course = Util.getCourseName(self.course?.name)
-                        let hole = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
+                        let hole = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
                         
                         Text(course).font(.system(size: 18))
                             .fixedSize(horizontal: false, vertical: true)
@@ -576,7 +576,7 @@ struct IntroView: View {
                 }
             }
         } else { // 구매하고 홀 플레이 하기 전에 앱이 종료되었다.
-
+            
             loadCourse()
             
             self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
@@ -927,7 +927,7 @@ struct IntroView: View {
                     teeingGrounds.append(teeingGround)
                 }
                 
-                let item = TeeingGrounds(teeingGrounds: teeingGrounds, par: decodedData.par, handicap: decodedData.handicap, name: decodedData.name)
+                let item = TeeingGrounds(teeingGrounds: teeingGrounds, par: decodedData.par, handicap: decodedData.handicap, title: decodedData.title, name: decodedData.name)
                 
                 array.append(item)
             } catch {
