@@ -242,14 +242,20 @@ struct MainView: View {
                     }
                 }
                 
-                VStack {
-                    if self.message2 == "" {
+                if self.message2 == "" {
+                    VStack {
                         // textMessage 폰트 크기는 20이지만, holeTitle만 24로 키운다
                         Text(self.message1).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
                         // .frame(maxWidth: .infinity, alignment: .leading)
-                    } else {
+                    }
+                } else {
+                    VStack {
                         Text(self.message1).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
-                        Text(self.message2).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                    }
+                    
+                    VStack {
+                        Text(self.message2).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                            .padding(.top, 10)
                     }
                 }
                 
