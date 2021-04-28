@@ -255,7 +255,7 @@ struct MainView: View {
                     
                     VStack {
                         Text(self.message2).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
-                            .padding(.top, 10)
+                            .padding(.top, 50)
                     }
                 }
                 
