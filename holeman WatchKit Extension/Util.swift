@@ -72,14 +72,14 @@ struct Util {
     static func getCourseName(_ name: String?) -> String { // only return local language
         if let name = name {
             let start1 = name.firstIndex(of: "(")
-            let end1 = name.firstIndex(of: ")")
+            // let end1 = name.firstIndex(of: ")")
             
             let i1 = name.index(start1!, offsetBy: -1)
             
             let range1 = name.startIndex..<i1
             let str1 = name[range1]
             
-            let i2 = name.index(start1!, offsetBy: 1)
+            // let i2 = name.index(start1!, offsetBy: 1)
             
             // let range2 = i2..<end1!
             // let str2 = name[range2]

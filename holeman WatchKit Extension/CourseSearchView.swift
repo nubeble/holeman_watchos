@@ -283,14 +283,14 @@ struct CourseSearchView: View {
                         
                         if let address = self.courses[self.selectedCourseIndex].address {
                             let start1 = address.firstIndex(of: "(")
-                            let end1 = address.firstIndex(of: ")")
+                            // let end1 = address.firstIndex(of: ")")
                             
                             let i1 = address.index(start1!, offsetBy: -1)
                             
                             let range1 = address.startIndex..<i1
                             let str1 = address[range1]
                             
-                            let i2 = address.index(start1!, offsetBy: 1)
+                            // let i2 = address.index(start1!, offsetBy: 1)
                             
                             // let range2 = i2..<end1!
                             // let str2 = address[range2]
