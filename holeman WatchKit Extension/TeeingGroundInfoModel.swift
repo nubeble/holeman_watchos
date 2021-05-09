@@ -18,6 +18,7 @@ struct TeeingGrounds {
     var handicap: Int
     var title: String
     var name: String
+    var tips: [String]
 }
 
 struct TeeingGround {

@@ -927,7 +927,7 @@ struct IntroView: View {
                     teeingGrounds.append(teeingGround)
                 }
                 
-                let item = TeeingGrounds(teeingGrounds: teeingGrounds, par: decodedData.par, handicap: decodedData.handicap, title: decodedData.title, name: decodedData.name)
+                let item = TeeingGrounds(teeingGrounds: teeingGrounds, par: decodedData.par, handicap: decodedData.handicap, title: decodedData.title, name: decodedData.name, tips: decodedData.tips)
                 
                 array.append(item)
             } catch {

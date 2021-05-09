@@ -13,7 +13,7 @@ struct CourseView: View {
     var body: some View {
         if self.mode == 0 {
             
-            //use GeometryReader for height & weight//
+            // use GeometryReader for height & weight
             GeometryReader { geometry in
                 ScrollView {
                     VStack {

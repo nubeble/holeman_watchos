@@ -29,6 +29,7 @@ struct MainView: View {
     @State var message1: String = ""
     @State var message2: String = ""
     @State var progressValue: Float = 0.0
+    @State var tips: String = ""
     
     @ObservedObject var locationManager = LocationManager()
     
@@ -250,12 +251,14 @@ struct MainView: View {
                     }
                 } else {
                     VStack {
+                        // hole title
                         Text(self.message1).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
                     }
                     
                     VStack {
+                        // hole name
                         Text(self.message2).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
-                            .padding(.top, 50)
+                            .padding(.top, 48)
                     }
                 }
                 
@@ -280,7 +283,8 @@ struct MainView: View {
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                         withAnimation {
-                                            self.mode = 1
+                                            // self.mode = 1
+                                            self.mode = 9
                                         }
                                     }
                                 }
@@ -298,7 +302,66 @@ struct MainView: View {
                 self.message2 = name
             })
             
-        } else if self.mode == 1 {
+        } else if self.mode == 9 { // tips
+            
+            ZStack {
+                // header
+                VStack {
+                    Text("Tips").font(.system(size: 20, weight: .semibold))
+                    Text("홀을 공략하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                // tips
+                VStack {
+                    Text(self.tips).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
+                
+                // next button
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Button(action: {
+                        withAnimation {
+                            self.mode = 1
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 54, height: 54)
+                            
+                            Image(systemName: "arrow.right")
+                                .font(Font.system(size: 28, weight: .heavy))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.bottom, 10)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            .onAppear(perform: {
+                if let tips = self.teeingGroundInfo?.holes[self.holeNumber! - 1].tips {
+                    var str = ""
+                    var size = tips.count
+                    if size > 3 {
+                        size = 3
+                    }
+                    
+                    for i in 0 ..< size {
+                        str += tips[i]
+                        if i != (size - 1) {
+                            str += "\n"
+                        }
+                    }
+                    
+                    self.tips = str
+                }
+            })
+            
+        } else if self.mode == 1 { // main
             
             // main //
             GeometryReader { geometry in
@@ -1304,7 +1367,7 @@ struct MainView: View {
                     teeingGroundDataArray.append(teeingGroundData)
                 }
                 
-                let tgd = TeeingGroundsData(teeingGrounds: teeingGroundDataArray, par: hole.par, handicap: hole.handicap, title: hole.title, name: hole.name)
+                let tgd = TeeingGroundsData(teeingGrounds: teeingGroundDataArray, par: hole.par, handicap: hole.handicap, title: hole.title, name: hole.name, tips: hole.tips)
                 
                 do {
                     let encodedData = try JSONEncoder().encode(tgd)

@@ -37,6 +37,7 @@ struct HoleSearchView: View {
         let par: Int
         let handicap: Int
         let distance: Dictionary<String, Int>
+        let tips: [String]
     }
     
     struct StartHole {
@@ -403,7 +404,7 @@ struct HoleSearchView: View {
                     i += 1
                     
                     // create
-                    var tg = TeeingGrounds(teeingGrounds: [], par: 0, handicap: 0, title: "", name: "")
+                    var tg = TeeingGrounds(teeingGrounds: [], par: 0, handicap: 0, title: "", name: "", tips: [])
                     
                     // parse json
                     do {
@@ -415,6 +416,7 @@ struct HoleSearchView: View {
                         tg.name = decodedData.name
                         tg.par = decodedData.par
                         tg.handicap = decodedData.handicap
+                        tg.tips = decodedData.tips
                         
                         // let distances = Util.convertToDictionary(text: decodedData.distance)
                         let distances = decodedData.distance

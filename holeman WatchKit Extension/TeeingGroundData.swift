@@ -13,6 +13,7 @@ struct TeeingGroundsData: Codable, Hashable {
     let handicap: Int
     let title: String
     let name: String
+    let tips: [String]
 }
 
 // teeingGroundInfo - holes: [TeeingGrounds] - teeingGrounds: [TeeingGround] - TeeingGround item
