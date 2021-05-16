@@ -95,29 +95,35 @@ struct HoleSearchView: View {
                 VStack(alignment: HorizontalAlignment.center) {
                     Spacer().frame(maxHeight: .infinity)
                     
-                    ZStack {
-                        Image("tee up")
-                            .resizable()
-                            .frame(width: 32, height: 32)
-                        
-                        TeeIndicator(isAnimating: .constant(true))
-                            .frame(width: 54, height: 54)
-                            .foregroundColor(.white)
+                    if self.from == 200 {
+                        ZStack {
+                            Image("beer")
+                                .resizable()
+                                .frame(width: 32, height: 32)
+                        }
+                        .padding(.bottom, 10)
+                    } else {
+                        ZStack {
+                            Image("tee up")
+                                .resizable()
+                                .frame(width: 32, height: 32)
+                            
+                            TeeIndicator(isAnimating: .constant(true))
+                                .frame(width: 54, height: 54)
+                                .foregroundColor(.white)
+                        }
+                        .padding(.bottom, 10)
                     }
-                    .padding(.bottom, 10)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
             }
             .onAppear(perform: {
                 if let from = self.from {
-                    
                     if from == 100 {
                         if let search = self.search {
                             if search == true {
-                                // 그늘집에서 잘 쉬셨나요? 스타트 홀로 가시면 자동으로 시작됩니다.
-                                
-                                self.textMessage = "그늘집에서 잘 쉬셨나요? 홀로 가시면 자동 시작됩니다."
+                                self.textMessage = "그늘집에서 잘 쉬셨나요? 스타트 홀로 가시면 자동 시작됩니다."
                                 
                                 // self.save = false
                                 
@@ -143,9 +149,9 @@ struct HoleSearchView: View {
                             getStartHole() // 1, 10, 19, ...
                         }
                     } else if from == 200 {
-                        // 전반 종료 후 앱이 계속 떠 있는 상태로 후반 시작
+                        // 전반 종료. 앱이 계속 떠 있는 상태에서 홀 근처로 가면 후반 시작
                         
-                        self.textMessage = "전반 플레이가 끝났습니다. 그늘집에서 쉬신 후 홀로 가시면 자동 시작됩니다."
+                        self.textMessage = "전반 플레이가 끝났습니다. 그늘집에서 쉬시고 스타트 홀로 가시면 자동 시작됩니다."
                         
                         // self.save = false
                         
