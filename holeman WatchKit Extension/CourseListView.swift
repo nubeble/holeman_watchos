@@ -350,7 +350,6 @@ struct CourseListView: View {
                             // button 1
                             Button(action: {
                                 withAnimation {
-                                    // self.mode = 1 // show list
                                     self.mode = 10 // go back
                                 }
                             }) {
