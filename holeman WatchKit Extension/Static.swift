@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Static {
+    static let title2PaddingBottom: CGFloat = 8
+    
     static let productId = "com.nubeble.holeman.iap.course"
     
     /*

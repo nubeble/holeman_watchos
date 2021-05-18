@@ -36,7 +36,7 @@ struct TeeView: View {
                     ScrollViewReader { value in
                         LazyVStack {
                             Text("Tee Box").font(.system(size: 20, weight: .semibold))
-                            Text("티 박스를 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
+                            Text("티 박스를 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                             
                             ForEach(0 ..< self.names.count) {
                                 let index = $0

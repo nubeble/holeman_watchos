@@ -308,7 +308,7 @@ struct MainView: View {
                 // header
                 VStack {
                     Text("Tips").font(.system(size: 20, weight: .semibold))
-                    Text("홀을 공략하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
+                    Text("홀을 공략하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }

@@ -150,7 +150,7 @@ struct CourseSearchView: View {
                     ScrollViewReader { value in
                         LazyVStack {
                             Text("Select Course").font(.system(size: 20, weight: .semibold))
-                            Text("골프장을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
+                            Text("골프장을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                             
                             // Divider()
                             
@@ -248,141 +248,270 @@ struct CourseSearchView: View {
             
         } else if self.mode == 50 {
             
-            ZStack {
-                VStack {
-                    Text("Selected Course").font(.system(size: 18, weight: .regular)).foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 4)
-                        .padding(.top, 8)
-                    
+            //            ZStack {
+            //                VStack {
+            //                    Text("Selected Course").font(.system(size: 18, weight: .regular)).foregroundColor(.gray)
+            //                        .frame(maxWidth: .infinity, alignment: .leading)
+            //                        .padding(.leading, 4)
+            //                        .padding(.top, 8)
+            //
+            //                    VStack {
+            //                        if let name = self.courses[self.selectedCourseIndex].name {
+            //                            let start1 = name.firstIndex(of: "(")
+            //                            let end1 = name.firstIndex(of: ")")
+            //
+            //                            let i1 = name.index(start1!, offsetBy: -1)
+            //
+            //                            let range1 = name.startIndex..<i1
+            //                            let str1 = name[range1]
+            //
+            //                            let i2 = name.index(start1!, offsetBy: 1)
+            //
+            //                            let range2 = i2..<end1!
+            //                            let str2 = name[range2]
+            //
+            //                            Text(str1).font(.system(size: 20))
+            //                                .fixedSize(horizontal: false, vertical: true)
+            //                                .lineLimit(1)
+            //                                .frame(maxWidth: .infinity, alignment: .leading)
+            //
+            //                            Text(str2).font(.system(size: 14)) // 영문 코스명은 12로 고정, BUT 여기는 확대
+            //                                .fixedSize(horizontal: false, vertical: true)
+            //                                .lineLimit(1)
+            //                                .frame(maxWidth: .infinity, alignment: .leading)
+            //                        }
+            //
+            //                        if let address = self.courses[self.selectedCourseIndex].address {
+            //                            let start1 = address.firstIndex(of: "(")
+            //                            // let end1 = address.firstIndex(of: ")")
+            //
+            //                            let i1 = address.index(start1!, offsetBy: -1)
+            //
+            //                            let range1 = address.startIndex..<i1
+            //                            let str1 = address[range1]
+            //
+            //                            // let i2 = address.index(start1!, offsetBy: 1)
+            //
+            //                            // let range2 = i2..<end1!
+            //                            // let str2 = address[range2]
+            //
+            //                            // local language only
+            //                            Text(str1).font(.system(size: 14)).foregroundColor(Color.gray)
+            //                                .fixedSize(horizontal: false, vertical: true)
+            //                                .lineLimit(1)
+            //                                .frame(maxWidth: .infinity, alignment: .leading)
+            //                                .padding(.top, 2)
+            //                        }
+            //                    }
+            //                    .padding(.all, 8)
+            //                    .background(Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255))
+            //                    .cornerRadius(8)
+            //
+            //                    Spacer().frame(maxHeight: .infinity)
+            //                }
+            //
+            //                VStack {
+            //                    Spacer().frame(maxHeight: .infinity)
+            //
+            //                    HStack(spacing: 40) {
+            //                        // button 1
+            //                        Button(action: {
+            //                            withAnimation {
+            //                                // self.mode = 3 // show list
+            //                                self.mode = 10 // go back
+            //                            }
+            //                        }) {
+            //                            ZStack {
+            //                                Circle()
+            //                                    .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+            //                                    .frame(width: 54, height: 54)
+            //
+            //                                Image(systemName: "xmark")
+            //                                    .font(Font.system(size: 28, weight: .heavy))
+            //                            }
+            //                        }
+            //                        .buttonStyle(PlainButtonStyle())
+            //                        .padding(.bottom, 10)
+            //
+            //                        // button 2
+            //                        Button(action: {
+            //                            // ToDo: 2021-04-26 IAP
+            //                            /*
+            //                             if self.buttonFlag == false {
+            //                             self.buttonFlag = true
+            //
+            //                             Util.purchasedAll() { result in
+            //                             if result == true {
+            //                             withAnimation {
+            //                             self.mode = 54
+            //                             }
+            //                             } else {
+            //                             self.storeManager.initProducts()
+            //                             self.storeManager.getProducts(productIDs: Static.productIDs)
+            //
+            //                             withAnimation {
+            //                             self.mode = 51
+            //                             }
+            //                             }
+            //
+            //                             self.buttonFlag = false
+            //                             }
+            //                             }
+            //                             */
+            //
+            //                            self.storeManager.initProducts()
+            //                            // self.storeManager.getProducts(productIDs: Static.productIDs)
+            //                            self.storeManager.getProducts(productIDs: [Static.productId])
+            //
+            //                            withAnimation {
+            //                                self.mode = 51
+            //                            }
+            //                        }) {
+            //                            ZStack {
+            //                                Circle()
+            //                                    .fill(Color.green)
+            //                                    .frame(width: 54, height: 54)
+            //
+            //                                Image(systemName: "checkmark")
+            //                                    .font(Font.system(size: 28, weight: .heavy))
+            //                            }
+            //                        }
+            //                        .buttonStyle(PlainButtonStyle())
+            //                        .padding(.bottom, 10)
+            //                    }
+            //                }
+            //                .frame(maxHeight: .infinity)
+            //                .edgesIgnoringSafeArea(.bottom)
+            //            }
+            
+            GeometryReader { geometry in
+                ScrollView {
                     VStack {
-                        if let name = self.courses[self.selectedCourseIndex].name {
-                            let start1 = name.firstIndex(of: "(")
-                            let end1 = name.firstIndex(of: ")")
-                            
-                            let i1 = name.index(start1!, offsetBy: -1)
-                            
-                            let range1 = name.startIndex..<i1
-                            let str1 = name[range1]
-                            
-                            let i2 = name.index(start1!, offsetBy: 1)
-                            
-                            let range2 = i2..<end1!
-                            let str2 = name[range2]
-                            
-                            Text(str1).font(.system(size: 20))
-                                .fixedSize(horizontal: false, vertical: true)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            Text(str2).font(.system(size: 14)) // 영문 코스명은 12로 고정, BUT 여기는 확대
-                                .fixedSize(horizontal: false, vertical: true)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
+                        Text("Select Course").font(.system(size: 20, weight: .semibold))
+                        Text("선택하신 골프장이 맞나요?").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                         
-                        if let address = self.courses[self.selectedCourseIndex].address {
-                            let start1 = address.firstIndex(of: "(")
-                            // let end1 = address.firstIndex(of: ")")
-                            
-                            let i1 = address.index(start1!, offsetBy: -1)
-                            
-                            let range1 = address.startIndex..<i1
-                            let str1 = address[range1]
-                            
-                            // let i2 = address.index(start1!, offsetBy: 1)
-                            
-                            // let range2 = i2..<end1!
-                            // let str2 = address[range2]
-                            
-                            // local language only
-                            Text(str1).font(.system(size: 14)).foregroundColor(Color.gray)
-                                .fixedSize(horizontal: false, vertical: true)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.top, 2)
-                        }
-                    }
-                    .padding(.all, 8)
-                    .background(Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255))
-                    .cornerRadius(8)
-                    
-                    Spacer().frame(maxHeight: .infinity)
-                }
-                
-                VStack {
-                    Spacer().frame(maxHeight: .infinity)
-                    
-                    HStack(spacing: 40) {
-                        // button 1
-                        Button(action: {
-                            withAnimation {
-                                // self.mode = 3 // show list
-                                self.mode = 10 // go back
-                            }
-                        }) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                    .frame(width: 54, height: 54)
+                        VStack {
+                            if let name = self.courses[self.selectedCourseIndex].name {
+                                let start1 = name.firstIndex(of: "(")
+                                let end1 = name.firstIndex(of: ")")
                                 
-                                Image(systemName: "xmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                let i1 = name.index(start1!, offsetBy: -1)
+                                
+                                let range1 = name.startIndex..<i1
+                                let str1 = name[range1]
+                                
+                                let i2 = name.index(start1!, offsetBy: 1)
+                                
+                                let range2 = i2..<end1!
+                                let str2 = name[range2]
+                                
+                                Text(str1).font(.system(size: 20))
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .lineLimit(1)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                Text(str2).font(.system(size: 14)) // 영문 코스명은 12로 고정, BUT 여기는 확대
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .lineLimit(1)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            
+                            if let address = self.courses[self.selectedCourseIndex].address {
+                                let start1 = address.firstIndex(of: "(")
+                                // let end1 = address.firstIndex(of: ")")
+                                
+                                let i1 = address.index(start1!, offsetBy: -1)
+                                
+                                let range1 = address.startIndex..<i1
+                                let str1 = address[range1]
+                                
+                                // let i2 = address.index(start1!, offsetBy: 1)
+                                
+                                // let range2 = i2..<end1!
+                                // let str2 = address[range2]
+                                
+                                // local language only
+                                Text(str1).font(.system(size: 14)).foregroundColor(Color.gray)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .lineLimit(1)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                // .padding(.top, 2)
                             }
                         }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
+                        .padding(.all, 8)
+                        .background(Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255))
+                        .cornerRadius(8)
                         
-                        // button 2
-                        Button(action: {
-                            // ToDo: 2021-04-26 IAP
-                            /*
-                             if self.buttonFlag == false {
-                             self.buttonFlag = true
-                             
-                             Util.purchasedAll() { result in
-                             if result == true {
-                             withAnimation {
-                             self.mode = 54
-                             }
-                             } else {
-                             self.storeManager.initProducts()
-                             self.storeManager.getProducts(productIDs: Static.productIDs)
-                             
-                             withAnimation {
-                             self.mode = 51
-                             }
-                             }
-                             
-                             self.buttonFlag = false
-                             }
-                             }
-                             */
-                            
-                            self.storeManager.initProducts()
-                            // self.storeManager.getProducts(productIDs: Static.productIDs)
-                            self.storeManager.getProducts(productIDs: [Static.productId])
-                            
-                            withAnimation {
-                                self.mode = 51
+                        HStack(spacing: 40) {
+                            // button 1
+                            Button(action: {
+                                withAnimation {
+                                    // self.mode = 1 // show list
+                                    self.mode = 10 // go back
+                                }
+                            }) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                        .frame(width: 54, height: 54)
+                                    
+                                    Image(systemName: "xmark")
+                                        .font(Font.system(size: 28, weight: .heavy))
+                                }
                             }
-                        }) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.green)
-                                    .frame(width: 54, height: 54)
+                            .buttonStyle(PlainButtonStyle())
+                            .padding(.bottom, 10)
+                            
+                            // button 2
+                            Button(action: {
+                                // ToDo: 2021-04-26 IAP
+                                /*
+                                 if self.buttonFlag == false {
+                                 self.buttonFlag = true
+                                 
+                                 Util.purchasedAll() { result in
+                                 if result == true {
+                                 withAnimation {
+                                 self.mode = 54
+                                 }
+                                 } else {
+                                 self.storeManager.initProducts()
+                                 self.storeManager.getProducts(productIDs: Static.productIDs)
+                                 
+                                 withAnimation {
+                                 self.mode = 51
+                                 }
+                                 }
+                                 
+                                 self.buttonFlag = false
+                                 }
+                                 }
+                                 */
                                 
-                                Image(systemName: "checkmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                self.storeManager.initProducts()
+                                // self.storeManager.getProducts(productIDs: Static.productIDs)
+                                self.storeManager.getProducts(productIDs: [Static.productId])
+                                
+                                withAnimation {
+                                    self.mode = 51
+                                }
+                            }) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.green)
+                                        .frame(width: 54, height: 54)
+                                    
+                                    Image(systemName: "checkmark")
+                                        .font(Font.system(size: 28, weight: .heavy))
+                                }
                             }
+                            .buttonStyle(PlainButtonStyle())
+                            .padding(.bottom, 10)
                         }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
-                    }
-                }
-                .frame(maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.bottom)
-            }
+                        .padding(.top, 6)
+                    } // VStack
+                } // ScrollView
+            } // GeometryReader
             
         } else if self.mode == 51 {
             
@@ -392,7 +521,7 @@ struct CourseSearchView: View {
                     ScrollView {
                         VStack {
                             Text("Payment").font(.system(size: 20, weight: .semibold))
-                            Text("바우쳐를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, 10)
+                            Text("바우쳐를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                             
                             Text("Holeman Voucher")
                                 .font(.system(size: 20, weight: .regular))
