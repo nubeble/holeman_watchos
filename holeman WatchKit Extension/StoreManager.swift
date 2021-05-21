@@ -129,10 +129,13 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
             case .purchased:
                 // UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap, save to UserDefaults
                 
-                print(#function, "purchased: \(String(describing: transaction.payment.productIdentifier))",
-                      String(describing: transaction.transactionIdentifier), String(describing: transaction.transactionDate),
-                      transaction.downloads.count
-                )
+                /*
+                 print(#function, "purchased: \(String(describing: transaction.payment.productIdentifier))",
+                 String(describing: transaction.transactionIdentifier), String(describing: transaction.transactionDate),
+                 transaction.downloads.count
+                 )
+                 */
+                print(#function, "purchased")
                 
                 DispatchQueue.main.async {
                     self.transactionState = .purchased

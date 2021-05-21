@@ -554,6 +554,8 @@ struct CourseListView: View {
                          */
                         let product = Util.getProduct(self.storeManager.myProducts, Static.productId)
                         if let product = product {
+                            print("!!!!!!!!", self.storeManager.transactionState)
+                            
                             self.storeManager.purchaseProduct(product)
                             
                             withAnimation {
