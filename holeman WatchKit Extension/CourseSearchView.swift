@@ -53,7 +53,7 @@ struct CourseSearchView: View {
                 }
             }.onAppear(perform: onCreate)
             
-        } else if self.mode == 3 {
+        } else if self.mode == 1 {
             
             /*
              ZStack {
@@ -317,7 +317,7 @@ struct CourseSearchView: View {
             //                        // button 1
             //                        Button(action: {
             //                            withAnimation {
-            //                                // self.mode = 3 // show list
+            //                                // self.mode = 1 // show list
             //                                self.mode = 10 // go back
             //                            }
             //                        }) {
@@ -596,37 +596,35 @@ struct CourseSearchView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
                     .onAppear {
                         self.storeManager.initState() {
-                            
-                        }
-                        
-                        // ToDo: 2021-04-26 IAP
-                        /*
-                         Util.getProductId() { productId in
-                         print(#function, "purchasing product id", productId)
-                         
-                         self.productId = productId
-                         
-                         // purchase
-                         // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                         let product = Util.getProduct(self.storeManager.myProducts, productId)
-                         if let product = product {
-                         self.storeManager.purchaseProduct(product)
-                         
-                         withAnimation {
-                         self.mode = 53
-                         }
-                         }
-                         }
-                         */
-                        let product = Util.getProduct(self.storeManager.myProducts, Static.productId)
-                        if let product = product {
-                            self.storeManager.purchaseProduct(product)
-                            
-                            withAnimation {
-                                self.mode = 53
+                            // ToDo: 2021-04-26 IAP
+                            /*
+                             Util.getProductId() { productId in
+                             print(#function, "purchasing product id", productId)
+                             
+                             self.productId = productId
+                             
+                             // purchase
+                             // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                             let product = Util.getProduct(self.storeManager.myProducts, productId)
+                             if let product = product {
+                             self.storeManager.purchaseProduct(product)
+                             
+                             withAnimation {
+                             self.mode = 53
+                             }
+                             }
+                             }
+                             */
+                            let product = Util.getProduct(self.storeManager.myProducts, Static.productId)
+                            if let product = product {
+                                self.storeManager.purchaseProduct(product)
+                                
+                                withAnimation {
+                                    self.mode = 53
+                                }
                             }
-                        }
-                    }
+                        } // initState()
+                    } // onAppear()
             } else {
                 // loading indicator
                 ProgressView()
@@ -903,9 +901,9 @@ struct CourseSearchView: View {
                         // self.mode = 20 // ToDo: internal test (skip payment)
                     }
                 } else {
-                    // move to HoleSearchView
+                    // show list
                     withAnimation {
-                        self.mode = 3
+                        self.mode = 1
                     }
                     
                     onComplete(true)
