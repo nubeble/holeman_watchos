@@ -206,7 +206,7 @@ struct CourseSearchView: View {
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                     }
                                 }.id($0)
-                            } // end of ForEach
+                            } // ForEach
                             
                             Button(action: {
                                 // go back
@@ -234,7 +234,7 @@ struct CourseSearchView: View {
                         }
                     }
                     // }
-                } // end of ScrollView
+                } // ScrollView
             }
             
         } else if self.mode == 10 { // go back
@@ -595,7 +595,9 @@ struct CourseSearchView: View {
                     .scaleEffect(1.2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
                     .onAppear {
-                        self.storeManager.initState()
+                        self.storeManager.initState() {
+                            
+                        }
                         
                         // ToDo: 2021-04-26 IAP
                         /*
@@ -666,7 +668,7 @@ struct CourseSearchView: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.bottom, 10)
-                    } // end of VStack
+                    } // VStack
                     .frame(maxHeight: .infinity)
                     .edgesIgnoringSafeArea(.bottom)
                 }
@@ -952,8 +954,8 @@ struct CourseSearchView: View {
         } else {
             return false
         }
-    } // end of parsePlacemarks()
-} // end of View
+    } // parsePlacemarks()
+}
 
 struct CourseSearchView_Previews: PreviewProvider {
     static var previews: some View {

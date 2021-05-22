@@ -95,9 +95,9 @@ struct CourseView: View {
                                 Spacer()
                             }
                         }
-                    } // end of VStack
-                } // end of ScrollView
-            } // end of GeometryReader
+                    } // VStack
+                } // ScrollView
+            } // GeometryReader
             
         } else if self.mode == 1 {
             

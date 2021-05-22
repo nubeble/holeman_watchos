@@ -123,7 +123,7 @@ struct ContentView: View {
             
         }.onAppear(perform: onCreate)
         
-    } // end of body
+    } // body
     
     func onCreate() {
         

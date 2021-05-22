@@ -110,7 +110,7 @@ struct CourseListView: View {
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                     }
                                 }.id($0)
-                            } // end of ForEach
+                            } // ForEach
                             
                             Button(action: {
                                 // go back
@@ -138,7 +138,7 @@ struct CourseListView: View {
                         }
                     }
                     // }
-                } // end of ScrollView
+                } // ScrollView
             }
             
         } else if self.mode == 10 { // go back
@@ -531,38 +531,36 @@ struct CourseListView: View {
                     .scaleEffect(1.2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
                     .onAppear {
-                        self.storeManager.initState()
-                        
-                        // ToDo: 2021-04-26 IAP
-                        /*
-                         Util.getProductId() { productId in
-                         print(#function, "purchasing product id", productId)
-                         
-                         self.productId = productId
-                         
-                         // purchase
-                         // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
-                         let product = Util.getProduct(self.storeManager.myProducts, productId)
-                         if let product = product {
-                         self.storeManager.purchaseProduct(product)
-                         
-                         withAnimation {
-                         self.mode = 53
-                         }
-                         }
-                         }
-                         */
-                        let product = Util.getProduct(self.storeManager.myProducts, Static.productId)
-                        if let product = product {
-                            print("!!!!!!!!", self.storeManager.transactionState)
-                            
-                            self.storeManager.purchaseProduct(product)
-                            
-                            withAnimation {
-                                self.mode = 53
+                        self.storeManager.initState() {
+                            // ToDo: 2021-04-26 IAP
+                            /*
+                             Util.getProductId() { productId in
+                             print(#function, "purchasing product id", productId)
+                             
+                             self.productId = productId
+                             
+                             // purchase
+                             // let product = Util.getProduct(self.storeManager.myProducts, "com.nubeble.holeman.iap.course")
+                             let product = Util.getProduct(self.storeManager.myProducts, productId)
+                             if let product = product {
+                             self.storeManager.purchaseProduct(product)
+                             
+                             withAnimation {
+                             self.mode = 53
+                             }
+                             }
+                             }
+                             */
+                            let product = Util.getProduct(self.storeManager.myProducts, Static.productId)
+                            if let product = product {
+                                self.storeManager.purchaseProduct(product)
+                                
+                                withAnimation {
+                                    self.mode = 53
+                                }
                             }
-                        }
-                    }
+                        } // initState()
+                    } // onAppear()
             } else {
                 // loading indicator
                 ProgressView()
@@ -604,7 +602,7 @@ struct CourseListView: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.bottom, 10)
-                    } // end of VStack
+                    } // VStack
                     .frame(maxHeight: .infinity)
                     .edgesIgnoringSafeArea(.bottom)
                 }
@@ -852,8 +850,8 @@ struct CourseListView: View {
         } else {
             return false
         }
-    } // end of parsePlacemarks()
-} // end of View
+    } // parsePlacemarks()
+}
 
 struct CourseListView_Previews: PreviewProvider {
     static var previews: some View {

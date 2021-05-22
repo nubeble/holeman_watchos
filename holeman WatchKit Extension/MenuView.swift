@@ -149,9 +149,9 @@ struct MenuView: View {
                         .padding(.top, 6)
                         .padding(.bottom, -20) // check default padding
                         
-                    } // end of VStack
-                } // end of ScrollView
-            } // end of GeometryReader
+                    } // VStack
+                } // ScrollView
+            } // GeometryReader
             
         } else if self.mode == 1 || self.mode == 2 || self.mode == 3 {
             

@@ -133,7 +133,7 @@ struct CloudManager {
                     onComplete(index)
                 }
             })
-        } // end of for
+        } // for
     }
     
     static func saveSubscription(_ type: String, _ id: Int64, onComplete: @escaping ((String) -> Void)) {

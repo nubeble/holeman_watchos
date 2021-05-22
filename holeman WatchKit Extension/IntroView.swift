@@ -130,7 +130,7 @@ struct IntroView: View {
                     .buttonStyle(PlainButtonStyle())
                     .padding(.bottom, 10)
                     .opacity(button1Opacity)
-                } // end of VStack
+                } // VStack
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
             }
@@ -947,7 +947,7 @@ struct IntroView: View {
         self.teeingGroundInfo = t
         self.teeingGroundIndex = teeingGroundIndex
         // }
-    } // end of func loadHole()
+    } // loadHole()
     
     func loadCourse() {
         // get course

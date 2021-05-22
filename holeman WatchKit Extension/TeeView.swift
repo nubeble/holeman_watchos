@@ -110,7 +110,7 @@ struct TeeView: View {
                         }
                     }
                     // }
-                } // end of ScrollView
+                } // ScrollView
                 // .animation(Animation.linear(duration: 5000).repeatForever(autoreverses: false))
                 // .animation(.easeInOut(duration: 5.0))
             }

@@ -503,7 +503,7 @@ struct MainView: View {
                         //.lineLimit(1)
                         //.frame(maxWidth: .infinity, alignment: .leading)
                     }
-                } // end of ZStack
+                } // ZStack
             }
             // .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .edgesIgnoringSafeArea(.all)
@@ -731,7 +731,7 @@ struct MainView: View {
             titles.append(title!)
             
             i += 1
-        } // end of while
+        } // while
         
         self.titles = titles
     }
@@ -787,7 +787,7 @@ struct MainView: View {
             distances.append(d)
             
             i += 1
-        } // end of while
+        } // while
         
         self.names = names
         self.color = color
@@ -819,7 +819,7 @@ struct MainView: View {
                 // N/A
             }
         }
-    } // end of getSensors
+    } // getSensors()
     
     func setTeeDistance() {
         let teeingGround = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!]

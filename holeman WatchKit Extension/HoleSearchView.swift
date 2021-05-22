@@ -250,7 +250,7 @@ struct HoleSearchView: View {
                         }
                     }
                     // }
-                } // end of ScrollView
+                } // ScrollView
             }
             
         } else if self.mode == 10 { // go back
@@ -487,7 +487,7 @@ struct HoleSearchView: View {
                     
                     // set
                     info.holes.append(tg)
-                } // end of for
+                } // for
                 
                 self.teeingGroundInfo = info
                 // print("info", info)
@@ -499,7 +499,7 @@ struct HoleSearchView: View {
                 // ToDo: error handling
             }
         }
-    } // end of getHoles
+    } // getHoles()
     
     func getStartHole() {
         let groupId = self.course?.id
@@ -558,7 +558,7 @@ struct HoleSearchView: View {
                 onComplete()
             }
         }
-    } // end of getHole
+    } // getHole()
     
     func getHoleTitle(_ number:Int) -> String {
         var title: String = "";
@@ -687,8 +687,8 @@ struct HoleSearchView: View {
                             calcDistance()
                         }
                     }
-                } // end of if let
-            } // end of Timer
+                } // if let
+            } // Timer
             
         }
     }
