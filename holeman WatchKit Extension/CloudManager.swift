@@ -473,6 +473,8 @@ struct CloudManager {
                 record["email"] = email as String
                 let valid: Int64 = 100 // 100: valid, 200: invalid (logout)
                 record["valid"] = valid as Int64
+                let freeTrialNumber: Int64 = 0
+                record["freeTrialNumber"] = freeTrialNumber as Int64
                 
                 // let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
                 db.save(record) { (record, error) in
@@ -499,6 +501,8 @@ struct CloudManager {
                 record["email"] = email as String
                 let valid: Int64 = 100 // 100: valid, 200: invalid (logout)
                 record["valid"] = valid as Int64
+                let freeTrialNumber: Int64 = 0
+                record["freeTrialNumber"] = freeTrialNumber as Int64
                 
                 // save
                 db.save(record) { (record, error) in
@@ -603,6 +607,60 @@ struct CloudManager {
                 }
                 
                 onComplete(lastPurchasedProductId)
+            }
+        }
+    }
+    
+    static func getUser(_ userId: String, onComplete: @escaping ((_ freeTrialNumber: Int64) -> Void)) {
+        let recordID = CKRecord.ID.init(recordName: userId)
+        
+        CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
+            if let _ = error {
+                print(#function, "User Record not found")
+                
+                onComplete(0)
+            }
+            
+            if let record = record {
+                guard let freeTrialNumber = record["freeTrialNumber"] as? Int64 else {
+                    onComplete(0)
+                    return
+                }
+                
+                onComplete(freeTrialNumber)
+            }
+        }
+    }
+    
+    static func setFreeTrialNumber(_ userId: String, _ number: Int64) {
+        // fetch
+        let recordID = CKRecord.ID.init(recordName: userId)
+        
+        let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+        db.fetch(withRecordID: recordID) { (record, error) in
+            if let _ = error {
+                print(#function, "User Record not found")
+                return
+            }
+            
+            if let record = record {
+                print("User Record found")
+                
+                if record["valid"] == 100 { // valid
+                    record["freeTrialNumber"] = number as Int64
+                    
+                    // save
+                    db.save(record) { (record, error) in
+                        if let error = error {
+                            print(#function, error)
+                            return
+                        }
+                        
+                        if let _ = record {
+                            print("User Record updated with purchased product id")
+                        }
+                    }
+                }
             }
         }
     }

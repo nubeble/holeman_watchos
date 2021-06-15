@@ -226,7 +226,7 @@ struct MenuView: View {
                 
                 let id = UserDefaults.standard.string(forKey: "USER_ID")
                 if let id = id {
-                    // update db
+                    // update DB
                     CloudManager.removeUser(id) { result in
                         // go to IntroView (Sign in with Apple)
                         withAnimation {

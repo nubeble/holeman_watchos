@@ -35,6 +35,8 @@ struct CourseSearchView: View {
     
     // @State var productId: String?
     
+    @State var textMessage2: String = ""
+    
     var body: some View {
         if self.mode == 0 {
             
@@ -487,13 +489,17 @@ struct CourseSearchView: View {
                                  }
                                  */
                                 
-                                self.storeManager.initProducts()
-                                // self.storeManager.getProducts(productIDs: Static.productIDs)
-                                self.storeManager.getProducts(productIDs: [Static.productId])
-                                
-                                withAnimation {
-                                    self.mode = 51
-                                }
+                                // ToDo: 2021-06-15
+                                /*
+                                 self.storeManager.initProducts()
+                                 // self.storeManager.getProducts(productIDs: Static.productIDs)
+                                 self.storeManager.getProducts(productIDs: [Static.productId])
+                                 
+                                 withAnimation {
+                                 self.mode = 51
+                                 }
+                                 */
+                                self.checkFreeTrial()
                             }) {
                                 ZStack {
                                     Circle()
@@ -717,7 +723,94 @@ struct CourseSearchView: View {
                 }
             }
             
-        }
+        } else if self.mode == 60 {
+            
+            ZStack {
+                // header
+                VStack {
+                    Text("Free Trial").font(.system(size: 20, weight: .semibold))
+                    Text("무료로 체험하세요!").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Text(self.textMessage2).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
+                
+                // next button
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Button(action: {
+                        let c = self.courses[self.selectedCourseIndex]
+                        Util.saveCourse(c)
+                        
+                        withAnimation {
+                            self.mode = 20 // move next
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 54, height: 54)
+                            
+                            Image(systemName: "arrow.right")
+                                .font(Font.system(size: 28, weight: .heavy))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.bottom, 10)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            
+        } else if self.mode == 61 {
+            
+            ZStack {
+                // header
+                VStack {
+                    Text("Free Trial").font(.system(size: 20, weight: .semibold))
+                    Text("무료로 체험하세요!").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Text(self.textMessage2).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
+                
+                // next button
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Button(action: {
+                        self.storeManager.initProducts()
+                        // self.storeManager.getProducts(productIDs: Static.productIDs)
+                        self.storeManager.getProducts(productIDs: [Static.productId])
+                        
+                        withAnimation {
+                            self.mode = 51
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 54, height: 54)
+                            
+                            Image(systemName: "arrow.right")
+                                .font(Font.system(size: 28, weight: .heavy))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.bottom, 10)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            
+        } // end of 61
     }
     
     func onCreate() {
@@ -953,6 +1046,30 @@ struct CourseSearchView: View {
             return false
         }
     } // parsePlacemarks()
+    
+    func checkFreeTrial() {
+        if let userId = Global.userId {
+            CloudManager.getUser(userId) { freeTrialNumber in
+                if freeTrialNumber < 10 {
+                    let n = 10 - freeTrialNumber
+                    self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (" + String(n) + "회 남았습니다.)"
+                    
+                    // update DB
+                    CloudManager.setFreeTrialNumber(userId, n + 1)
+                    
+                    withAnimation {
+                        self.mode = 60
+                    }
+                } else {
+                    self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (모두 사용하셨습니다.)"
+                    
+                    withAnimation {
+                        self.mode = 61
+                    }
+                }
+            }
+        }
+    } // checkFreeTrial()
 }
 
 struct CourseSearchView_Previews: PreviewProvider {
