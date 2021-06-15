@@ -599,8 +599,6 @@ struct CloudManager {
             }
             
             if let record = record {
-                // print("User Record found")
-                
                 guard let lastPurchasedProductId = record["lastPurchasedProductId"] as? String else {
                     onComplete("")
                     return
@@ -611,7 +609,7 @@ struct CloudManager {
         }
     }
     
-    static func getUser(_ userId: String, onComplete: @escaping ((_ freeTrialNumber: Int64) -> Void)) {
+    static func getFreeTrialNumber(_ userId: String, onComplete: @escaping ((_ freeTrialNumber: Int64) -> Void)) {
         let recordID = CKRecord.ID.init(recordName: userId)
         
         CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in

@@ -947,13 +947,17 @@ struct CourseListView: View {
     
     func checkFreeTrial() {
         if let userId = Global.userId {
-            CloudManager.getUser(userId) { freeTrialNumber in
+            CloudManager.getFreeTrialNumber(userId) { freeTrialNumber in
                 if freeTrialNumber < 10 {
                     let n = 10 - freeTrialNumber
-                    self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (" + String(n) + "회 남았습니다.)"
+                    if n == 10 {
+                        self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요."
+                    } else {
+                        self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (" + String(n) + "회 남았습니다.)"
+                    }
                     
                     // update DB
-                    CloudManager.setFreeTrialNumber(userId, n + 1)
+                    CloudManager.setFreeTrialNumber(userId, freeTrialNumber + 1)
                     
                     withAnimation {
                         self.mode = 60
