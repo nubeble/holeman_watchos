@@ -1050,8 +1050,6 @@ struct CourseSearchView: View {
     func checkFreeTrial() {
         if let userId = Global.userId {
             CloudManager.getFreeTrialNumber(userId) { freeTrialNumber in
-                print("number", freeTrialNumber)
-                
                 if freeTrialNumber < 10 {
                     let n = 10 - freeTrialNumber
                     if n == 10 {
