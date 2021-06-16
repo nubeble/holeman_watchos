@@ -16,6 +16,12 @@ struct MainView: View {
     
     // var save: Bool?
     
+    
+    // ToDo: 2021-06-16
+    let lat = -1.75330096
+    let lon = 2.03302841
+    
+    
     let sensorUpdatedNotification = NotificationCenter.default.publisher(for: .sensorUpdated)
     
     @State var textHoleTitle: String = "별우(STAR) 9TH"
@@ -34,11 +40,11 @@ struct MainView: View {
     @ObservedObject var locationManager = LocationManager()
     
     var distance: String {
-        if let location = locationManager.lastLocation {
+        if let location = self.locationManager.lastLocation {
             if self.latitude == nil || self.longitude == nil { return "0" }
             
-            let latitude = location.coordinate.latitude
-            let longitude = location.coordinate.longitude
+            let latitude = location.coordinate.latitude + self.lat
+            let longitude = location.coordinate.longitude + self.lon
             let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
             
             let coordinate2 = CLLocation(latitude: self.latitude!, longitude: self.longitude!)
@@ -77,7 +83,7 @@ struct MainView: View {
     }
     
     var height: String {
-        if let location = locationManager.lastLocation {
+        if let location = self.locationManager.lastLocation {
             if MainView.elevationDiff == nil || self.elevation == nil { return "0" }
             
             let altitude = location.altitude
@@ -107,14 +113,14 @@ struct MainView: View {
     }
     
     var bearing: Double {
-        if let location = locationManager.lastLocation {
-            if let heading = locationManager.heading {
+        if let location = self.locationManager.lastLocation {
+            if let heading = self.locationManager.heading {
                 // print(#function, heading)
                 
                 if self.latitude == nil || self.longitude == nil { return 0 }
                 
                 // calc bearing
-                let bearing = Util.getBearing(self.latitude!, self.longitude!, location.coordinate.latitude, location.coordinate.longitude)
+                let bearing = Util.getBearing(self.latitude!, self.longitude!, location.coordinate.latitude + self.lat, location.coordinate.longitude + self.lon)
                 
                 var angle = heading + bearing
                 // angle = (angle + 360) % 360
@@ -700,6 +706,7 @@ struct MainView: View {
              .navigationBarHidden(true)
              */
             
+            //  circle frame test
             GeometryReader { geometry in
                 VStack {
                     Circle()
@@ -909,7 +916,7 @@ struct MainView: View {
     func startGetUserElevationTimer1() {
         // (1)
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
-            if let location = locationManager.lastLocation {
+            if let location = self.locationManager.lastLocation {
                 timer1.invalidate()
                 
                 let lat = location.coordinate.latitude
@@ -926,7 +933,7 @@ struct MainView: View {
                 // (2) ~ (n)
                 self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 1 min x 30
                     // Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
-                    // if let location = locationManager.lastLocation {
+                    // if let location = self.locationManager.lastLocation {
                     // timer2.invalidate()
                     
                     let lat2 = location.coordinate.latitude
@@ -948,7 +955,7 @@ struct MainView: View {
     
     func startGetUserElevationTimer2() {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
-            if let location = locationManager.lastLocation {
+            if let location = self.locationManager.lastLocation {
                 timer1.invalidate()
                 
                 // (2) ~ (n)
@@ -1059,9 +1066,9 @@ struct MainView: View {
     
     func startCheckHolePassTimer() {
         self.timer2 = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in // 1 sec
-            if let location = locationManager.lastLocation {
+            if let location = self.locationManager.lastLocation {
                 if self.latitude != nil && self.longitude != nil {
-                    self.checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
+                    self.checkHolePass(location.coordinate.latitude + self.lat, location.coordinate.longitude + self.lon, self.latitude!, self.longitude!)
                 }
             }
         }
@@ -1103,7 +1110,7 @@ struct MainView: View {
                 self.holePassCount = 0
             }
             
-            // ToDo: 현재 홀을 벗어나고 다음 홀을 찾지 못하면?
+            // ToDo: 현재 홀을 벗어나고 다음 홀을 찾지 못하면? 현재는 그냥 현재 홀에 계속 머문다.
         } else {
             let result = self.checkHolePass(distance)
             if result == true {
