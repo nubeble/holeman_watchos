@@ -125,8 +125,6 @@ struct HoleSearchView: View {
                             if search == true {
                                 self.textMessage = "그늘집에서 잘 쉬셨나요? 스타트 홀로 가시면 자동 시작됩니다."
                                 
-                                // self.save = false
-                                
                                 // ToDo: test timer
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                                     // getStartHole() // 1, 10, 19, ...
@@ -515,23 +513,33 @@ struct HoleSearchView: View {
         
         let courses = self.course?.courses
         
-        for (_, item) in courses!.enumerated() {
-            // print(#function, index, item.range[0])
-            
-            let startHoleNumber = item.range[0]
-            
-            getSensor(groupId, Int64(startHoleNumber)) {
-                // onGetSensor
+        if courses?.count == 1 {
+            self.moveToStartHole()
+        } else {
+            for (_, item) in courses!.enumerated() {
+                // print(#function, index, item.range[0])
                 
-                if self.startHoles.count == courses?.count {
-                    // sort by holeNumber self.startHoles
-                    self.startHoles.sort(by: { $0.number < $1.number })
-                    // print(#function, self.startHoles)
+                let startHoleNumber = item.range[0]
+                
+                getSensor(groupId, Int64(startHoleNumber)) {
+                    // onGetSensor
                     
-                    calcDistance()
+                    if self.startHoles.count == courses?.count {
+                        // sort by holeNumber self.startHoles
+                        self.startHoles.sort(by: { $0.number < $1.number })
+                        // print(#function, self.startHoles)
+                        
+                        calcDistance()
+                    }
                 }
-            }
+            } // for
         }
+    }
+    
+    func moveToStartHole() {
+        self.holeNumber = 1
+        
+        moveNext()
     }
     
     func getSensor(_ groupId: Int64, _ holeNumber: Int64, onComplete: @escaping () -> Void) {
