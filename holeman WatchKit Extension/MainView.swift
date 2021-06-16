@@ -17,7 +17,7 @@ struct MainView: View {
     // var save: Bool?
     
     
-    // ToDo: 2021-06-16
+    // ToDo: 2021-06-16 debug
     let lat = -1.75330096
     let lon = 2.03302841
     
@@ -1091,7 +1091,7 @@ struct MainView: View {
          }
          */
         
-        // ToDo: 2021-03-15
+        // ToDo: 2021-03-15 hole pass check
         // 1. 현재 홀에 있는지 확인
         let stillIn = stillInCurrentHole(distance)
         if stillIn == false { // 현재 홀을 벗어났다면

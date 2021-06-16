@@ -393,7 +393,7 @@ struct CourseListView: View {
                                  }
                                  */
                                 
-                                // ToDo: 2021-06-15
+                                // ToDo: 2021-06-15 free trial
                                 /*
                                  self.storeManager.initProducts()
                                  // self.storeManager.getProducts(productIDs: Static.productIDs)
