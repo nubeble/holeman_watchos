@@ -18,8 +18,8 @@ struct MainView: View {
     
     
     // ToDo: 2021-06-16 debug
-    let lat = -1.75330096
-    let lon = 2.03302841
+    let __lat = 1.753586614270796
+    let __lon = -2.033034733589
     
     
     let sensorUpdatedNotification = NotificationCenter.default.publisher(for: .sensorUpdated)
@@ -43,8 +43,8 @@ struct MainView: View {
         if let location = self.locationManager.lastLocation {
             if self.latitude == nil || self.longitude == nil { return "0" }
             
-            let latitude = location.coordinate.latitude + self.lat
-            let longitude = location.coordinate.longitude + self.lon
+            let latitude = location.coordinate.latitude
+            let longitude = location.coordinate.longitude
             let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
             
             let coordinate2 = CLLocation(latitude: self.latitude!, longitude: self.longitude!)
@@ -120,7 +120,7 @@ struct MainView: View {
                 if self.latitude == nil || self.longitude == nil { return 0 }
                 
                 // calc bearing
-                let bearing = Util.getBearing(self.latitude!, self.longitude!, location.coordinate.latitude + self.lat, location.coordinate.longitude + self.lon)
+                let bearing = Util.getBearing(self.latitude!, self.longitude!, location.coordinate.latitude, location.coordinate.longitude)
                 
                 var angle = heading + bearing
                 // angle = (angle + 360) % 360
@@ -153,8 +153,8 @@ struct MainView: View {
     @State var holeNumber: Int? // current hole number
     @State var distanceUnit: Int = -1 // 0: meter, 1: yard
     @State var sensors: [SensorModel] = []
-    @State var latitude: Double?
-    @State var longitude: Double?
+    @State var latitude: Double? // hole latitude
+    @State var longitude: Double? // hole longitude
     @State var elevation: Double? // hole elevation
     // 3.
     @State var userElevation: Double? // user elevation (mElevation) - meter
@@ -557,8 +557,8 @@ struct MainView: View {
                         if self.holeNumber! - 1 < self.sensors.count {
                             let sensor = self.sensors[self.holeNumber! - 1]
                             
-                            self.latitude = sensor.location.coordinate.latitude
-                            self.longitude = sensor.location.coordinate.longitude
+                            self.latitude = sensor.location.coordinate.latitude + self.__lat
+                            self.longitude = sensor.location.coordinate.longitude + self.__lon
                             self.elevation = sensor.elevation
                         }
                     }
@@ -578,8 +578,8 @@ struct MainView: View {
                     if self.holeNumber! - 1 < self.sensors.count {
                         let sensor = self.sensors[self.holeNumber! - 1]
                         
-                        self.latitude = sensor.location.coordinate.latitude
-                        self.longitude = sensor.location.coordinate.longitude
+                        self.latitude = sensor.location.coordinate.latitude + self.__lat
+                        self.longitude = sensor.location.coordinate.longitude + self.__lon
                         self.elevation = sensor.elevation
                     }
                 }
@@ -623,8 +623,8 @@ struct MainView: View {
                         self.sensors[index].timestamp = timestamp
                         self.sensors[index].battery = battery
                         
-                        self.latitude = location.coordinate.latitude
-                        self.longitude = location.coordinate.longitude
+                        self.latitude = location.coordinate.latitude + self.__lat
+                        self.longitude = location.coordinate.longitude + self.__lon
                         self.elevation = elevation
                         
                         break
@@ -1068,7 +1068,7 @@ struct MainView: View {
         self.timer2 = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in // 1 sec
             if let location = self.locationManager.lastLocation {
                 if self.latitude != nil && self.longitude != nil {
-                    self.checkHolePass(location.coordinate.latitude + self.lat, location.coordinate.longitude + self.lon, self.latitude!, self.longitude!)
+                    self.checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
                 }
             }
         }
