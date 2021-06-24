@@ -120,7 +120,8 @@ struct MainView: View {
                 if self.latitude == nil || self.longitude == nil { return 0 }
                 
                 // calc bearing
-                let bearing = Util.getBearing(self.latitude!, self.longitude!, location.coordinate.latitude, location.coordinate.longitude)
+                // let bearing = Util.getBearing(self.latitude!, self.longitude!, location.coordinate.latitude, location.coordinate.longitude)
+                let bearing = Util.getBearing(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
                 
                 var angle = heading + bearing
                 // angle = (angle + 360) % 360

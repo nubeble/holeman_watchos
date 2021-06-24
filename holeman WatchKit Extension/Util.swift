@@ -91,22 +91,40 @@ struct Util {
     }
     
     static func getBearing(_ lat1: Double, _ lon1: Double, _ lat2: Double, _ lon2: Double) -> Double {
-        let dLon = (lon2 - lon1);
-        let y = sin(dLon) * cos(lat2);
-        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
+        /*
+         let dLon = (lon2 - lon1);
+         let y = sin(dLon) * cos(lat2);
+         let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
+         
+         var bearing = Util.toDegrees(atan2(y, x));
+         // bearing = (bearing + 360) % 360;
+         
+         let tmp = bearing + 360
+         bearing = tmp.truncatingRemainder(dividingBy: 360)
+         
+         return bearing;
+         */
+        let _lat1 = degreesToRadians(degrees: lat1)
+        let _lon1 = degreesToRadians(degrees: lon1)
         
-        var bearing = Util.toDegrees(atan2(y, x));
-        // bearing = (bearing + 360) % 360;
+        let _lat2 = degreesToRadians(degrees: lat2)
+        let _lon2 = degreesToRadians(degrees: lon2)
         
-        let tmp = bearing + 360
-        bearing = tmp.truncatingRemainder(dividingBy: 360)
+        let dLon = _lon2 - _lon1
         
-        return bearing;
+        let y = sin(dLon) * cos(_lat2)
+        let x = cos(_lat1) * sin(_lat2) - sin(_lat1) * cos(_lat2) * cos(dLon)
+        let radiansBearing = atan2(y, x)
+        
+        return radiansToDegrees(radians: radiansBearing)
     }
     
     static func toDegrees(_ number: Double) -> Double { // radian to degree
         return number * 180 / .pi
     }
+    
+    static func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
+    static func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
     
     static func getWaitMessageForCourse(_ number: Int) -> String { // find course
         var num = number
