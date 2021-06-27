@@ -54,8 +54,8 @@ class LocationManager: NSObject, ObservableObject {
         super.init()
         
         self.locationManager.delegate = self
-        // self.locationManager.distanceFilter = kCLDistanceFilterNone
-        // self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        // self.locationManager.activityType = .fitness
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         self.locationManager.distanceFilter = kCLDistanceFilterNone
         
@@ -86,14 +86,34 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        self.lastLocation = location
         
-        // print(#function, self.location)
+        if self.filterLocation(location) {
+            // print(#function, location)
+            
+            self.lastLocation = location
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         self.heading = -1 * newHeading.magneticHeading
         
         // print(#function, self.heading)
+    }
+    
+    func filterLocation(_ location: CLLocation) -> Bool {
+        let age = -location.timestamp.timeIntervalSinceNow
+        if age > 10 { // if the elapsed time is more than 10 seconds
+            return false
+        }
+        
+        if location.horizontalAccuracy < 0 { // A negative value indicates that the location’s latitude and longitude are invalid
+            return false
+        }
+        
+        if location.horizontalAccuracy > 30 { // ToDo: 30 meters
+            return false
+        }
+        
+        return true
     }
 }
