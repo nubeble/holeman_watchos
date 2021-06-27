@@ -43,10 +43,7 @@ struct MainView: View {
         if let location = self.locationManager.lastLocation {
             if self.latitude == nil || self.longitude == nil { return "0" }
             
-            let latitude = location.coordinate.latitude
-            let longitude = location.coordinate.longitude
-            let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
-            
+            let coordinate1 = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
             let coordinate2 = CLLocation(latitude: self.latitude!, longitude: self.longitude!)
             
             let distance = coordinate1.distance(from: coordinate2) // result is in meters
@@ -1229,9 +1226,8 @@ struct MainView: View {
     func inHole(_ index: Int, _ coordinate: CLLocation) -> Bool {
         // get distance
         let sensor = self.sensors[index]
-        let latitude = sensor.location.coordinate.latitude
-        let longitude = sensor.location.coordinate.longitude
-        let coordinate2 = CLLocation(latitude: latitude, longitude: longitude)
+        
+        let coordinate2 = CLLocation(latitude: sensor.location.coordinate.latitude, longitude: sensor.location.coordinate.longitude)
         
         let distance = coordinate.distance(from: coordinate2) // result is in meters
         
