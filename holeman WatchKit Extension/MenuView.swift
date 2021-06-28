@@ -222,7 +222,7 @@ struct MenuView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
             }
             .onAppear {
-                // remove UserDefaults
+                // remove DB & UserDefaults
                 
                 let id = UserDefaults.standard.string(forKey: "USER_ID")
                 if let id = id {
