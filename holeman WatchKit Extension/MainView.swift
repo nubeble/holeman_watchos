@@ -84,6 +84,7 @@ struct MainView: View {
             if MainView.elevationDiff == nil || self.elevation == nil { return "0" }
             
             let altitude = location.altitude
+            // print(#function, "altitude", location.altitude)
             
             let height = altitude + MainView.elevationDiff!
             let d = self.elevation! - height
@@ -155,7 +156,7 @@ struct MainView: View {
     @State var longitude: Double? // hole longitude
     @State var elevation: Double? // hole elevation
     // 3.
-    @State var userElevation: Double? // user elevation (mElevation) - meter
+    @State var userElevation: Double? // user elevation (meter)
     
     struct Menu: ButtonStyle {
         func makeBody(configuration: Self.Configuration) -> some View {
@@ -922,6 +923,7 @@ struct MainView: View {
                 let alt = location.altitude
                 
                 // self.getUserElevation(String(lat), String(lon), alt)
+                
                 // ToDo: test (일단 google api 스킵)
                 self.userElevation = 20.2
                 MainView.elevationDiff = self.userElevation! - alt
@@ -929,7 +931,7 @@ struct MainView: View {
                 MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
                 
                 // (2) ~ (n)
-                self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 1 min x 30
+                self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 30 min
                     // Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
                     // if let location = self.locationManager.lastLocation {
                     // timer2.invalidate()
@@ -939,6 +941,7 @@ struct MainView: View {
                     let alt2 = location.altitude
                     
                     // self.getUserElevation(String(lat2), String(lon2), alt2)
+                    
                     // ToDo: test (일단 google api 스킵)
                     self.userElevation = 20.2
                     MainView.elevationDiff = self.userElevation! - alt2
@@ -957,7 +960,7 @@ struct MainView: View {
                 timer1.invalidate()
                 
                 // (2) ~ (n)
-                self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 1 min x 30
+                self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 30 min
                     let lat2 = location.coordinate.latitude
                     let lon2 = location.coordinate.longitude
                     let alt2 = location.altitude

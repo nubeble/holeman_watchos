@@ -87,6 +87,8 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         
+        // print(#function, location)
+        
         if self.filterLocation(location) {
             // print(#function, location)
             
@@ -110,7 +112,7 @@ extension LocationManager: CLLocationManagerDelegate {
             return false
         }
         
-        if location.horizontalAccuracy > 30 { // ToDo: 30 meters
+        if location.horizontalAccuracy > 100 { // ToDo: 100 meters
             return false
         }
         

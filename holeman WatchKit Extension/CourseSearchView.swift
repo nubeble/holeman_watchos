@@ -37,6 +37,8 @@ struct CourseSearchView: View {
     
     @State var textMessage2: String = ""
     
+    @State var textMessage3: String = "" // 검색된 골프장이 맞나요? / 선택하신 골프장이 맞나요?
+    
     var body: some View {
         if self.mode == 0 {
             
@@ -183,9 +185,9 @@ struct CourseSearchView: View {
                                             self.mode = 20 // move next
                                         }
                                     } else {
+                                        self.textMessage3 = "선택하신 골프장이 맞나요?"
                                         withAnimation {
-                                            self.mode = 50 // payment
-                                            // self.mode = 20 // ToDo: internal test (skip payment)
+                                            self.mode = 50
                                         }
                                     }
                                 }) {
@@ -390,7 +392,7 @@ struct CourseSearchView: View {
                 ScrollView {
                     VStack {
                         Text("Select Course").font(.system(size: 20, weight: .semibold))
-                        Text("선택하신 골프장이 맞나요?").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                        Text(self.textMessage3).font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                         
                         VStack {
                             if let name = self.courses[self.selectedCourseIndex].name {
@@ -843,6 +845,8 @@ struct CourseSearchView: View {
     }
     
     func getCountryCode(location: CLLocation) {
+        // print(#function, location)
+        
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
             // always good to check if no error
             // also we have to unwrap the placemark because it's optional
@@ -988,10 +992,9 @@ struct CourseSearchView: View {
                     onComplete(false)
                 } else if count == 1 {
                     self.selectedCourseIndex = 0
-                    
+                    self.textMessage3 = "검색된 골프장이 맞나요?"
                     withAnimation {
-                        self.mode = 50 // payment
-                        // self.mode = 20 // ToDo: internal test (skip payment)
+                        self.mode = 50
                     }
                 } else {
                     // show list
