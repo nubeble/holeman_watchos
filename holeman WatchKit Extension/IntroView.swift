@@ -536,12 +536,12 @@ struct IntroView: View {
             i2 = time.index(time.startIndex, offsetBy: 10)
             let date1 = time[i1..<i2]
             
-            if date1 == date2 { // 이전 플레이 홀에 이어서 실행
+            if date1 == date2 { // 플레이 중인 홀에 이어서 진행
                 
                 if halftime == 1 { // 전반 중 앱이 죽었다가 다시 실행
                     loadHole()
                     
-                    self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
+                    self.textMessage = "플레이 중인 라운드가 있습니다. 이어서 하시겠어요?"
                     
                     withAnimation {
                         self.mode = 11
@@ -549,7 +549,7 @@ struct IntroView: View {
                 } else if halftime == 2 { // 전반 종료 후 앱이 죽었다가 다시 실행
                     loadHole()
                     
-                    self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
+                    self.textMessage = "플레이 중인 라운드가 있습니다. 이어서 하시겠어요?"
                     
                     withAnimation {
                         self.mode = 12
@@ -557,7 +557,7 @@ struct IntroView: View {
                 } else if halftime == 3 { // 후반 중 앱이 죽었다가 다시 실행
                     loadHole()
                     
-                    self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
+                    self.textMessage = "플레이 중인 라운드가 있습니다. 이어서 하시겠어요?"
                     
                     withAnimation {
                         self.mode = 13
@@ -570,7 +570,7 @@ struct IntroView: View {
                 
                 loadCourse()
                 
-                self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
+                self.textMessage = "플레이 중인 라운드가 있습니다. 이어서 하시겠어요?"
                 
                 withAnimation {
                     self.mode = 15
@@ -580,7 +580,7 @@ struct IntroView: View {
             
             loadCourse()
             
-            self.textMessage = "플레이 중인 라운드와 이어서 하시겠습니까?"
+            self.textMessage = "플레이 중인 라운드가 있습니다. 이어서 하시겠어요?"
             
             withAnimation {
                 self.mode = 14
