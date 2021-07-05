@@ -21,6 +21,7 @@ struct MainView: View {
     let __lat = 1.753586614270796
     let __lon = -2.033034733589
     
+    let altitudeDiff: Double = 46 // ToDo: 안드로이드와의 차이 (m)
     
     let sensorUpdatedNotification = NotificationCenter.default.publisher(for: .sensorUpdated)
     
@@ -83,8 +84,8 @@ struct MainView: View {
         if let location = self.locationManager.lastLocation {
             if MainView.elevationDiff == nil || self.elevation == nil { return "0" }
             
-            let altitude = location.altitude
-            // print(#function, "altitude", location.altitude)
+            let altitude = location.altitude + self.altitudeDiff
+            // print(#function, "altitude", altitude)
             
             let height = altitude + MainView.elevationDiff!
             let d = self.elevation! - height
@@ -920,7 +921,7 @@ struct MainView: View {
                 
                 let lat = location.coordinate.latitude
                 let lon = location.coordinate.longitude
-                let alt = location.altitude
+                let alt = location.altitude + self.altitudeDiff
                 
                 // self.getUserElevation(String(lat), String(lon), alt)
                 
@@ -938,7 +939,7 @@ struct MainView: View {
                     
                     let lat2 = location.coordinate.latitude
                     let lon2 = location.coordinate.longitude
-                    let alt2 = location.altitude
+                    let alt2 = location.altitude + self.altitudeDiff
                     
                     // self.getUserElevation(String(lat2), String(lon2), alt2)
                     
@@ -963,7 +964,7 @@ struct MainView: View {
                 self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 30 min
                     let lat2 = location.coordinate.latitude
                     let lon2 = location.coordinate.longitude
-                    let alt2 = location.altitude
+                    let alt2 = location.altitude + self.altitudeDiff
                     
                     // self.getUserElevation(String(lat2), String(lon2), alt2)
                     // ToDo: test (일단 google api 스킵)
