@@ -915,10 +915,11 @@ struct CourseSearchView: View {
                     let id = record["id"] as! Int64
                     let location = record["location"] as! CLLocation
                     let name = record["name"] as! String
+                    let email = record["email"] as! String
                     
                     // set data
                     // --
-                    var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "")
+                    var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "", email: "")
                     
                     c.address = address
                     c.countryCode = countryCode!
@@ -950,6 +951,7 @@ struct CourseSearchView: View {
                     c.id = id
                     c.location = location
                     c.name = name
+                    c.email = email
                     
                     self.courses.append(c)
                     // --

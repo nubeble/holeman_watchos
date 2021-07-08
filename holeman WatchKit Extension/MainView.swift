@@ -1356,6 +1356,9 @@ struct MainView: View {
             
             // name
             UserDefaults.standard.set(course.name, forKey: "LAST_PLAYED_HOLE_COURSE_NAME")
+            
+            // email
+            UserDefaults.standard.set(course.email, forKey: "LAST_PLAYED_HOLE_COURSE_EMAIL")
         }
         
         // 3. hole number

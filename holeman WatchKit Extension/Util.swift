@@ -232,6 +232,9 @@ struct Util {
         
         // name
         UserDefaults.standard.set(course.name, forKey: "LAST_PURCHASED_COURSE_COURSE_NAME")
+        
+        // email
+        UserDefaults.standard.set(course.email, forKey: "LAST_PURCHASED_COURSE_COURSE_EMAIL")
     }
     
     static func contains(_ products: [SKProduct], _ id: String) -> Bool {
