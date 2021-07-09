@@ -35,7 +35,7 @@ import Foundation
  */
 
 class Course: ObservableObject {
-    @Published var score:Int = 0
+    @Published var score: Int = 0
     
     
     

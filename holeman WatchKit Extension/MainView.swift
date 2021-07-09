@@ -301,7 +301,8 @@ struct MainView: View {
                 .edgesIgnoringSafeArea(.bottom)
             }
             .onAppear(perform: {
-                let title = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
+                // let title = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
+                let title = Util.convertHoleTitle(self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? "")
                 let name = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
                 
                 self.message1 = title
@@ -1293,8 +1294,8 @@ struct MainView: View {
              return number2
              */
             return 0
-        } else {
-            return 0 // never happen
+        } else { // never come here
+            return 0
         }
     }
     

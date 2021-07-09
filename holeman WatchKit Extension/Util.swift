@@ -26,31 +26,20 @@ struct Util {
     }
     
     static func getOrdinalNumber(_ i: Int) -> String { // hole number
-        if i == 1 { return "1ST"; }
-        else if i == 2 { return "2ND"; }
-        else if i == 3 { return "3TH"; }
+        if i <= 0 { return "" }
+        if i == 1 { return "1ST" }
+        if i == 2 { return "2ND" }
+        if i == 3 { return "3RD" }
         
-        else if i == 11 { return "11ST"; }
-        else if i == 12 { return "12ND"; }
-        else if i == 13 { return "13TH"; }
+        if i >= 20 {
+            if i % 10 == 1 { return String(i) + "ST" }
+            if i % 10 == 2 { return String(i) + "ND" }
+            if i % 10 == 3 { return String(i) + "RD" }
+        } else {
+            return String(i) + "TH"
+        }
         
-        else if i == 21 { return "21ST"; }
-        else if i == 22 { return "22ND"; }
-        else if i == 23 { return "23TH"; }
-        
-        else if i == 31 { return "31ST"; }
-        else if i == 32 { return "32ND"; }
-        else if i == 33 { return "33TH"; }
-        
-        else if i == 41 { return "41ST"; }
-        else if i == 42 { return "42ND"; }
-        else if i == 43 { return "43TH"; }
-        
-        else if i == 51 { return "51ST"; }
-        else if i == 52 { return "52ND"; }
-        else if i == 53 { return "53TH"; }
-        
-        else { return "\(i)" + "TH"; }
+        return ""
     }
     
     static func getColor(_ c: String) -> Color {
@@ -344,8 +333,7 @@ struct Util {
                     }
                 }
                 
-            } else {
-                // never happen
+            } else { // never come here
                 onComplete(false)
             }
         }
@@ -391,8 +379,7 @@ struct Util {
                     }
                 }
                 
-            } else {
-                // never happen
+            } else { // never come here
                 let nextId = "com.nubeble.holeman.iap.course.1"
                 onComplete(nextId)
             }
@@ -407,5 +394,35 @@ struct Util {
         if let userId = Global.userId {
             CloudManager.setProductId(userId, id)
         }
+    }
+    
+    static func convertHoleTitle(_ title: String) -> String {
+        if title == "" { return "" }
+        
+        let index = title.firstIndex(of: " ")
+        let index2 = title.index(index!, offsetBy: 1)
+        let index3 = title.index(index!, offsetBy: 2)
+        
+        let courseName = title[title.startIndex..<index!]
+        let holeNumber = title[index2..<index3]
+        
+        return courseName + " 코스 " + holeNumber + "번 홀"
+    }
+    
+    static func splitHoleTitle(_ title: String) -> [String] {
+        if title == "" { return [] }
+        
+        let index = title.firstIndex(of: " ")
+        let index2 = title.index(index!, offsetBy: 1)
+        let index3 = title.index(index!, offsetBy: 2)
+        
+        let courseName = title[title.startIndex..<index!]
+        let holeNumber = title[index2..<index3]
+        
+        var titles: [String] = []
+        titles.append(courseName + " 코스")
+        titles.append(holeNumber + "번 홀")
+        
+        return titles
     }
 }

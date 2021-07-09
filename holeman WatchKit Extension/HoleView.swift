@@ -40,6 +40,7 @@ struct HoleView: View {
                                 let index = $0
                                 
                                 let title = self.titles[index]
+                                let titles = Util.splitHoleTitle(title)
                                 
                                 Button(action: {
                                     self.selectedIndex = index
@@ -51,9 +52,13 @@ struct HoleView: View {
                                     
                                 }) {
                                     HStack(spacing: 10) {
-                                        // Text(name).font(.system(size: 18))
-                                        Text(title).font(.system(size: 20))
-                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                        VStack {
+                                            Text(titles[0]).font(.system(size: 18))
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                            
+                                            Text(titles[1]).font(.system(size: 20))
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                        }
                                         
                                         if index == self.selectedIndex {
                                             Spacer()

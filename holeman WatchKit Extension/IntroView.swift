@@ -272,7 +272,8 @@ struct IntroView: View {
                     
                     if self.mode == 11 || self.mode == 13 {
                         let course = Util.getCourseName(self.course?.name)
-                        let hole = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
+                        // let hole = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
+                        let hole = Util.convertHoleTitle(self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? "")
                         
                         Text(course).font(.system(size: 18))
                             .fixedSize(horizontal: false, vertical: true)

@@ -425,28 +425,37 @@ struct HoleSearchView: View {
                         // let distances = Util.convertToDictionary(text: decodedData.distance)
                         let distances = decodedData.distance
                         
-                        // set name
-                        if self.course?.courses.count == 0 {
-                            let number = i
-                            tg.title = Util.getOrdinalNumber(number) + " HOLE"
-                        } else {
-                            var number = i
-                            
-                            for course in self.course!.courses {
-                                let name = course.name
-                                let startNumber = course.range[0]
-                                let endNumber = course.range[1]
-                                
-                                if startNumber <= number && number <= endNumber {
-                                    number = (number + 9) % 9;
-                                    if number == 0 { number = 9; }
-                                    // tg.name = name + " " + number;
-                                    // tg.name = name + " HOLE " + number;
-                                    tg.title = name + " " + Util.getOrdinalNumber(number);
-                                    break;
-                                }
-                            }
-                        }
+                        // set title
+                        var title: String = "";
+                        let number = i
+                        
+                        /*
+                         if self.course?.courses.count == 0 { // never come here
+                         title = Util.getOrdinalNumber(number) + " HOLE"
+                         } else {
+                         for course in self.course!.courses {
+                         let name = course.name
+                         let start = course.range[0]
+                         let end = course.range[1]
+                         
+                         if start <= number && number <= end {
+                         var n = (number + 9) % 9 // 0 ~ 8
+                         if n == 0 { n = 9 } // 1 ~ 9
+                         
+                         title = name + " " + Util.getOrdinalNumber(n)
+                         
+                         break
+                         }
+                         }
+                         
+                         if title == "" {
+                         title = Util.getOrdinalNumber(number) + " HOLE"
+                         }
+                         }
+                         */
+                        title = self.getHoleTitle(number)
+                        
+                        tg.title = title
                         
                         // set distance
                         
@@ -568,26 +577,30 @@ struct HoleSearchView: View {
         }
     } // getHole()
     
-    func getHoleTitle(_ number:Int) -> String {
-        var title: String = "";
+    func getHoleTitle(_ number: Int) -> String {
+        var title: String = ""
         
         let courses = self.course?.courses
-        if courses?.count == 0 {
+        if courses?.count == 0 { // never come here
             title = Util.getOrdinalNumber(number) + " HOLE"
         } else {
             for course in courses! {
                 let name = course.name
-                let startNumber = course.range[0]
-                let endNumber = course.range[1]
+                let start = course.range[0]
+                let end = course.range[1]
                 
-                if startNumber <= number && number <= endNumber {
-                    var n = (number + 9) % 9
-                    if n == 0 { n = 9 }
+                if start <= number && number <= end {
+                    var n = (number + 9) % 9 // 0 ~ 8
+                    if n == 0 { n = 9 } // 1 ~ 9
                     
                     title = name + " " + Util.getOrdinalNumber(n)
                     
                     break
                 }
+            }
+            
+            if title == "" { // never come here
+                title = Util.getOrdinalNumber(number) + " HOLE"
             }
         }
         
