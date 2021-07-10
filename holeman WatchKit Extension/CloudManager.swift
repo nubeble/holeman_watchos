@@ -9,30 +9,21 @@ import Foundation
 import CloudKit
 import SwiftUI
 
-// MARK: - notes
-// good to read: https://www.hackingwithswift.com/read/33/overview
-//
-// important setup in CloudKit Dashboard:
-//
-// https://www.hackingwithswift.com/read/33/4/writing-to-icloud-with-cloudkit-ckrecord-and-ckasset
-// https://www.hackingwithswift.com/read/33/5/a-hands-on-guide-to-the-cloudkit-dashboard
-//
-// On your device (or in the simulator) you should make sure you are logged into iCloud and have iCloud Drive enabled.
-
 struct CloudManager {
-    
-    // record type
-    struct RecordType {
-        static let Items = "Items"
-    }
-    
-    // MARK: - errors
-    enum CloudManagerError: Error {
-        case recordFailure
-        case recordIDFailure
-        case castFailure
-        case cursorFailure
-    }
+    /*
+     // record type
+     struct RecordType {
+     static let Items = "Items"
+     }
+     
+     // MARK: - errors
+     enum CloudManagerError: Error {
+     case recordFailure
+     case recordIDFailure
+     case castFailure
+     case cursorFailure
+     }
+     */
     
     static func subscribe() {
         let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
@@ -171,79 +162,82 @@ struct CloudManager {
     }
     
     // MARK: - save to CloudKit
-    static func save(item: ListElement, completion: @escaping (Result<ListElement, Error>) -> ()) {
-        
-        // create item record (CKRecord)
-        let itemRecord = CKRecord(recordType: RecordType.Items)
-        itemRecord["text"] = item.text as CKRecordValue
-        
-        // public db, default zone
-        
-        // CKContainer(identifier: "iCloud.com.nubeble.holeman")
-        // CKContainer.default()
-        CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.save(itemRecord) { (record, err) in // completion handler
-            DispatchQueue.main.async {
-                
-                if let err = err {
-                    completion(.failure(err))
-                    return
-                }
-                
-                guard let record = record else {
-                    completion(.failure(CloudManagerError.recordFailure))
-                    return
-                }
-                
-                // means success
-                let id = record.recordID
-                guard let text = record["text"] as? String else {
-                    completion(.failure(CloudManagerError.castFailure))
-                    return
-                }
-                
-                let element = ListElement(recordID: id, text: text)
-                completion(.success(element))
-                
-            }
-        }
-    }
-    
-    static func fetch(completion: @escaping (Result<ListElement, Error>) -> ()) {
-        let pred = NSPredicate(value: true)
-        let sort = NSSortDescriptor(key: "creationDate", ascending: false)
-        let query = CKQuery(recordType: RecordType.Items, predicate: pred)
-        query.sortDescriptors = [sort]
-        
-        let operation = CKQueryOperation(query: query)
-        operation.desiredKeys = ["text"]
-        operation.resultsLimit = 50
-        
-        operation.recordFetchedBlock = { record in
-            DispatchQueue.main.async {
-                let recordID = record.recordID
-                guard let text = record["text"] as? String else { return }
-                let listElement = ListElement(recordID: recordID, text: text)
-                completion(.success(listElement))
-            }
-        }
-        
-        operation.queryCompletionBlock = { (/*cursor*/ _, err) in
-            DispatchQueue.main.async {
-                if let err = err {
-                    completion(.failure(err))
-                    return
-                }
-                //                guard let cursor = cursor else {
-                //                    completion(.failure(CloudManagerError.cursorFailure))
-                //                    return
-                //                }
-                //                print("Cursor: \(String(describing: cursor))")
-            }
-            
-        }
-        
-        CKContainer.default().publicCloudDatabase.add(operation)
-    }
+    /*
+     static func save(item: ListElement, completion: @escaping (Result<ListElement, Error>) -> ()) {
+     
+     // create item record (CKRecord)
+     let itemRecord = CKRecord(recordType: RecordType.Items)
+     itemRecord["text"] = item.text as CKRecordValue
+     
+     // public db, default zone
+     
+     // CKContainer(identifier: "iCloud.com.nubeble.holeman")
+     // CKContainer.default()
+     CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase.save(itemRecord) { (record, err) in // completion handler
+     DispatchQueue.main.async {
+     
+     if let err = err {
+     completion(.failure(err))
+     return
+     }
+     
+     guard let record = record else {
+     completion(.failure(CloudManagerError.recordFailure))
+     return
+     }
+     
+     // means success
+     let id = record.recordID
+     guard let text = record["text"] as? String else {
+     completion(.failure(CloudManagerError.castFailure))
+     return
+     }
+     
+     let element = ListElement(recordID: id, text: text)
+     completion(.success(element))
+     
+     }
+     }
+     }
+     */
+    /*
+     static func fetch(completion: @escaping (Result<ListElement, Error>) -> ()) {
+     let pred = NSPredicate(value: true)
+     let sort = NSSortDescriptor(key: "creationDate", ascending: false)
+     let query = CKQuery(recordType: RecordType.Items, predicate: pred)
+     query.sortDescriptors = [sort]
+     
+     let operation = CKQueryOperation(query: query)
+     operation.desiredKeys = ["text"]
+     operation.resultsLimit = 50
+     
+     operation.recordFetchedBlock = { record in
+     DispatchQueue.main.async {
+     let recordID = record.recordID
+     guard let text = record["text"] as? String else { return }
+     let listElement = ListElement(recordID: recordID, text: text)
+     completion(.success(listElement))
+     }
+     }
+     
+     operation.queryCompletionBlock = { (/*cursor*/ _, err) in
+     DispatchQueue.main.async {
+     if let err = err {
+     completion(.failure(err))
+     return
+     }
+     //                guard let cursor = cursor else {
+     //                    completion(.failure(CloudManagerError.cursorFailure))
+     //                    return
+     //                }
+     //                print("Cursor: \(String(describing: cursor))")
+     }
+     
+     }
+     
+     CKContainer.default().publicCloudDatabase.add(operation)
+     }
+     */
     
     static func fetchNearbyLocations(_ countryCode: String, _ location: CLLocation, onComplete: @escaping (_ records: [CKRecord]?) -> Void) {
         print(#function)
