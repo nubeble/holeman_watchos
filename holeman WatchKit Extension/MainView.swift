@@ -76,7 +76,7 @@ struct MainView: View {
                 if returnValue > 999 { returnValue = 999 }
             }
             
-            return "\(returnValue)"
+            return "\(returnValue)" // never come here
         } else {
             return "0"
         }
