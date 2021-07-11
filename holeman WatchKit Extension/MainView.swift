@@ -926,7 +926,7 @@ struct MainView: View {
                 let lon = location.coordinate.longitude
                 let alt = location.altitude + self.altitudeDiff
                 
-                // self.getUserElevation(String(lat), String(lon), alt)
+                // getUserElevation(String(lat), String(lon), alt)
                 
                 // ToDo: test (일단 google api 스킵)
                 self.userElevation = 20.2
@@ -944,7 +944,7 @@ struct MainView: View {
                     let lon2 = location.coordinate.longitude
                     let alt2 = location.altitude + self.altitudeDiff
                     
-                    // self.getUserElevation(String(lat2), String(lon2), alt2)
+                    // getUserElevation(String(lat2), String(lon2), alt2)
                     
                     // ToDo: test (일단 google api 스킵)
                     self.userElevation = 20.2
@@ -969,7 +969,7 @@ struct MainView: View {
                     let lon2 = location.coordinate.longitude
                     let alt2 = location.altitude + self.altitudeDiff
                     
-                    // self.getUserElevation(String(lat2), String(lon2), alt2)
+                    // getUserElevation(String(lat2), String(lon2), alt2)
                     // ToDo: test (일단 google api 스킵)
                     self.userElevation = 20.2
                     MainView.elevationDiff = self.userElevation! - alt2
@@ -1073,15 +1073,15 @@ struct MainView: View {
         self.timer2 = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in // 1 sec
             if let location = self.locationManager.lastLocation {
                 if self.latitude != nil && self.longitude != nil {
-                    self.checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
+                    checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
                 }
             }
         }
     }
     
     func checkHolePass(_ lat1: Double, _ lon1: Double, _ lat2: Double, _ lon2: Double) {
-        let coordinate1 = CLLocation(latitude: lat1, longitude: lon1)
-        let coordinate2 = CLLocation(latitude: lat2, longitude: lon2)
+        let coordinate1 = CLLocation(latitude: lat1, longitude: lon1) // 내 위치
+        let coordinate2 = CLLocation(latitude: lat2, longitude: lon2) // 홀 위치
         
         // 현재 홀의 홀컵과 나 사이의 거리
         let distance = coordinate1.distance(from: coordinate2) // result is in meters
@@ -1117,7 +1117,7 @@ struct MainView: View {
             
             // ToDo: 현재 홀을 벗어나고 다음 홀을 찾지 못하면? 현재는 그냥 현재 홀에 계속 머문다.
         } else {
-            let result = self.checkHolePass(distance)
+            let result = checkHolePass(distance)
             if result == true {
                 if (self.holeNumber! % 9) == 0 {
                     // 9홀 종료
@@ -1234,7 +1234,7 @@ struct MainView: View {
         // get distance
         let sensor = self.sensors[index]
         
-        let coordinate2 = CLLocation(latitude: sensor.location.coordinate.latitude, longitude: sensor.location.coordinate.longitude)
+        let coordinate2 = CLLocation(latitude: sensor.location.coordinate.latitude + self.__lat, longitude: sensor.location.coordinate.longitude + self.__lon)
         
         let distance = coordinate.distance(from: coordinate2) // result is in meters
         
@@ -1270,9 +1270,9 @@ struct MainView: View {
         // print(#function, "sensors count", self.sensors.count, self.holeNumber!)
         
         if let number = self.holeNumber {
-            let count = self.sensors.count - 1
+            let count = self.sensors.count
             
-            for i in 0...count {
+            for i in 0..<count {
                 var index = number + i // 다음 홀 index
                 
                 if index >= self.sensors.count {
