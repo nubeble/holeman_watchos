@@ -243,7 +243,6 @@ struct CloudManager {
         print(#function)
         
         let radiusInKilometers = 3 // ToDo: static (3 km)
-        // let radiusInKilometers = 50 // ToDo: internal test (50 km)
         
         // let p = NSPredicate(format: "distanceToLocation:fromLocation:(location, %@) < %@", location, NSNumber(value: radiusInKilometers))
         let p = NSPredicate(format: "countryCode = %@ AND distanceToLocation:fromLocation:(location, %@) < %@", countryCode, location, NSNumber(value: radiusInKilometers))

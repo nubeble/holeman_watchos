@@ -1223,7 +1223,6 @@ struct MainView: View {
          */
         
         if Double(fullBack!) + 30 - distance >= 0 {
-            // if Double(fullBack!) + 30 - distance < 0 { // ToDo: internal test
             return true
         } else {
             return false
@@ -1259,7 +1258,6 @@ struct MainView: View {
          */
         
         if Double(fullBack!) + 30 - distance >= 0 {
-            // if Double(fullBack!) + 30 - distance < 0 { // ToDo: internal test
             return true
         } else {
             return false

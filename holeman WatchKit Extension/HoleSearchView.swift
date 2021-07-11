@@ -680,7 +680,7 @@ struct HoleSearchView: View {
                          }
                          */
                         
-                        if Double(fullBack!) + 30 + 20 - distance >= 0 { // 전장 (백티 + 30) - (나와 홀 사이 거리) >= -20 이면 해당 홀 근처로 들어왔다고 간주한다.
+                        if Double(fullBack!) + 30 + 20 - distance >= 0 { // (나와 홀 사이 거리) - 전장(백티 + 30) <= 20 이면 해당 홀 근처로 들어왔다고 간주한다.
                             // if Double(fullBack!) + 30 + 20 - distance < 0 { // ToDo: internal test
                             list.append(startHole.number)
                         }
