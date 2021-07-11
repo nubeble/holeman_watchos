@@ -9,6 +9,13 @@ import SwiftUI
 import StoreKit
 
 struct CourseListView: View {
+    
+    
+    // ToDo: 2021-06-16 debug
+    let __lat = 1.753586614270796
+    let __lon = -2.033034733589
+    
+    
     @State var mode: Int = 0
     
     @State var textMessage: String = ""
@@ -81,15 +88,8 @@ struct CourseListView: View {
                                 Button(action: {
                                     self.selectedCourseIndex = index
                                     
-                                    let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
-                                    if result == true {
-                                        withAnimation {
-                                            self.mode = 20 // move next
-                                        }
-                                    } else {
-                                        withAnimation {
-                                            self.mode = 50
-                                        }
+                                    withAnimation {
+                                        self.mode = 50
                                     }
                                 }) {
                                     /*
@@ -368,41 +368,11 @@ struct CourseListView: View {
                             
                             // button 2
                             Button(action: {
-                                // ToDo: 2021-04-26 IAP
-                                /*
-                                 if self.buttonFlag == false {
-                                 self.buttonFlag = true
-                                 
-                                 Util.purchasedAll() { result in
-                                 if result == true {
-                                 withAnimation {
-                                 self.mode = 54
-                                 }
-                                 } else {
-                                 self.storeManager.initProducts()
-                                 self.storeManager.getProducts(productIDs: Static.productIDs)
-                                 
-                                 withAnimation {
-                                 self.mode = 51
-                                 }
-                                 }
-                                 
-                                 self.buttonFlag = false
-                                 }
-                                 }
-                                 */
+                                // self.checkFreeTrial()
                                 
-                                // ToDo: 2021-06-15 free trial
-                                /*
-                                 self.storeManager.initProducts()
-                                 // self.storeManager.getProducts(productIDs: Static.productIDs)
-                                 self.storeManager.getProducts(productIDs: [Static.productId])
-                                 
-                                 withAnimation {
-                                 self.mode = 51
-                                 }
-                                 */
-                                self.checkFreeTrial()
+                                withAnimation {
+                                    self.mode = 70
+                                }
                             }) {
                                 ZStack {
                                     Circle()
@@ -678,9 +648,6 @@ struct CourseListView: View {
                     Spacer().frame(maxHeight: .infinity)
                     
                     Button(action: {
-                        let c = self.courses[self.selectedCourseIndex]
-                        Util.saveCourse(c)
-                        
                         withAnimation {
                             self.mode = 20 // move next
                         }
@@ -745,7 +712,68 @@ struct CourseListView: View {
                 .edgesIgnoringSafeArea(.bottom)
             }
             
-        } // end of 61
+        } else if self.mode == 70 {
+            
+            // loading indicator
+            ZStack {
+                ProgressView()
+                    .scaleEffect(1.2, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                
+                VStack {
+                    Spacer()
+                    
+                    Text(self.textMessage).font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
+                        .transition(.opacity)
+                        .id(self.textMessage)
+                }
+            }.onAppear {
+                self.checkDistance()
+            }
+            
+        } else if self.mode == 71 {
+            
+            ZStack {
+                // header
+                VStack {
+                    Text("Select Course").font(.system(size: 20, weight: .semibold))
+                    Text("선택하신 골프장이 맞나요?").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Text("선택하신 골프장은 근처에 있지 않습니다. 다시 시도해주세요.").font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
+                
+                // next button
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Button(action: {
+                        // go back
+                        withAnimation {
+                            self.mode = 10
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                .frame(width: 54, height: 54)
+                            
+                            Image(systemName: "arrow.left")
+                                .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
+                                .font(Font.system(size: 28, weight: .heavy))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.bottom, 10)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            
+        } // 71
     }
     
     func onCreate() {
@@ -960,6 +988,9 @@ struct CourseListView: View {
                     // update DB
                     CloudManager.setFreeTrialNumber(userId, freeTrialNumber + 1)
                     
+                    let c = self.courses[self.selectedCourseIndex]
+                    Util.saveCourse(c)
+                    
                     withAnimation {
                         self.mode = 60
                     }
@@ -973,6 +1004,49 @@ struct CourseListView: View {
             }
         }
     } // checkFreeTrial()
+    
+    func checkDistance() {
+        DispatchQueue.main.async {
+            let locationManager = LocationManager()
+            
+            // --
+            var runCount = 0
+            
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                runCount += 1
+                // print(#function, "Timer fired #\(runCount)")
+                
+                if let location = locationManager.lastLocation {
+                    // print("Timer stopped")
+                    timer.invalidate()
+                    
+                    let location2 = self.courses[self.selectedCourseIndex].location
+                    
+                    let coordinate1 = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                    let coordinate2 = CLLocation(latitude: location2.coordinate.latitude + self.__lat, longitude: location2.coordinate.longitude + self.__lon)
+                    
+                    let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                    print(#function, "distance", distance)
+                    
+                    if distance < 3000 { // 3 km
+                        let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
+                        if result == true {
+                            withAnimation {
+                                self.mode = 20 // move next
+                            }
+                        } else {
+                            self.checkFreeTrial()
+                        }
+                    } else {
+                        withAnimation {
+                            self.mode = 71 // go back
+                        }
+                    } // if distance < 3000
+                }
+            }
+            // --
+        }
+    }
 }
 
 struct CourseListView_Previews: PreviewProvider {

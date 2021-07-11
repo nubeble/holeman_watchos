@@ -9,6 +9,13 @@ import SwiftUI
 import StoreKit
 
 struct CourseSearchView: View {
+    
+    
+    // ToDo: 2021-06-16 debug
+    // let __lat = 1.753586614270796
+    // let __lon = -2.033034733589
+    
+    
     @State var mode: Int = 0
     
     @State var textMessage: String = ""
@@ -179,16 +186,10 @@ struct CourseSearchView: View {
                                 Button(action: {
                                     self.selectedCourseIndex = index
                                     
-                                    let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
-                                    if result == true {
-                                        withAnimation {
-                                            self.mode = 20 // move next
-                                        }
-                                    } else {
-                                        self.textMessage3 = "선택하신 골프장이 맞나요?"
-                                        withAnimation {
-                                            self.mode = 50
-                                        }
+                                    self.textMessage3 = "선택하신 골프장이 맞나요?"
+                                    
+                                    withAnimation {
+                                        self.mode = 50
                                     }
                                 }) {
                                     /*
@@ -467,41 +468,11 @@ struct CourseSearchView: View {
                             
                             // button 2
                             Button(action: {
-                                // ToDo: 2021-04-26 IAP
-                                /*
-                                 if self.buttonFlag == false {
-                                 self.buttonFlag = true
-                                 
-                                 Util.purchasedAll() { result in
-                                 if result == true {
-                                 withAnimation {
-                                 self.mode = 54
-                                 }
-                                 } else {
-                                 self.storeManager.initProducts()
-                                 self.storeManager.getProducts(productIDs: Static.productIDs)
-                                 
-                                 withAnimation {
-                                 self.mode = 51
-                                 }
-                                 }
-                                 
-                                 self.buttonFlag = false
-                                 }
-                                 }
-                                 */
+                                // self.checkFreeTrial()
                                 
-                                // ToDo: 2021-06-15 free trial
-                                /*
-                                 self.storeManager.initProducts()
-                                 // self.storeManager.getProducts(productIDs: Static.productIDs)
-                                 self.storeManager.getProducts(productIDs: [Static.productId])
-                                 
-                                 withAnimation {
-                                 self.mode = 51
-                                 }
-                                 */
-                                self.checkFreeTrial()
+                                withAnimation {
+                                    self.mode = 70
+                                }
                             }) {
                                 ZStack {
                                     Circle()
@@ -745,9 +716,6 @@ struct CourseSearchView: View {
                     Spacer().frame(maxHeight: .infinity)
                     
                     Button(action: {
-                        let c = self.courses[self.selectedCourseIndex]
-                        Util.saveCourse(c)
-                        
                         withAnimation {
                             self.mode = 20 // move next
                         }
@@ -812,7 +780,33 @@ struct CourseSearchView: View {
                 .edgesIgnoringSafeArea(.bottom)
             }
             
-        } // end of 61
+        } else if self.mode == 70 {
+            
+            // loading indicator
+            ZStack {
+                ProgressView()
+                    .scaleEffect(1.2, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                
+                VStack {
+                    Spacer()
+                    
+                    Text(self.textMessage).font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
+                        .transition(.opacity)
+                        .id(self.textMessage)
+                }
+            }.onAppear {
+                let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
+                if result == true {
+                    withAnimation {
+                        self.mode = 20 // move next
+                    }
+                } else {
+                    self.checkFreeTrial()
+                }
+            }
+            
+        }
     }
     
     func onCreate() {
@@ -994,7 +988,9 @@ struct CourseSearchView: View {
                     onComplete(false)
                 } else if count == 1 {
                     self.selectedCourseIndex = 0
+                    
                     self.textMessage3 = "검색된 골프장이 맞나요?"
+                    
                     withAnimation {
                         self.mode = 50
                     }
@@ -1065,6 +1061,9 @@ struct CourseSearchView: View {
                     
                     // update DB
                     CloudManager.setFreeTrialNumber(userId, freeTrialNumber + 1)
+                    
+                    let c = self.courses[self.selectedCourseIndex]
+                    Util.saveCourse(c)
                     
                     withAnimation {
                         self.mode = 60

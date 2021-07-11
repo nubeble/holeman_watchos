@@ -12,14 +12,16 @@ extension Notification.Name {
 }
 
 struct MainView: View {
-    @State var mode: Int = 0
-    
-    // var save: Bool?
     
     
     // ToDo: 2021-06-16 debug
     let __lat = 1.753586614270796
     let __lon = -2.033034733589
+    
+    
+    @State var mode: Int = 0
+    
+    // var save: Bool?
     
     let altitudeDiff: Double = 46 // ToDo: 안드로이드와의 차이 (m)
     
