@@ -981,7 +981,35 @@ struct CourseListView: View {
     
     func checkFreeTrial() {
         if let userId = Global.userId {
-            CloudManager.getFreeTrialCount(userId) { freeTrialCount in
+            /*
+             CloudManager.getFreeTrialCount(userId) { freeTrialCount in
+             if freeTrialCount < 10 {
+             let n = 10 - freeTrialCount
+             if n == 10 {
+             self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요."
+             } else {
+             self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (" + String(n) + "회 남았습니다.)"
+             }
+             
+             // update DB
+             CloudManager.setFreeTrialCount(userId, freeTrialCount + 1)
+             
+             let c = self.courses[self.selectedCourseIndex]
+             Util.saveCourse(c)
+             
+             withAnimation {
+             self.mode = 60
+             }
+             } else {
+             self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (모두 사용하셨습니다.)"
+             
+             withAnimation {
+             self.mode = 61
+             }
+             }
+             }
+             */
+            CloudManager.checkFreeTrialCount(userId) { freeTrialCount in
                 if freeTrialCount < 10 {
                     let n = 10 - freeTrialCount
                     if n == 10 {
@@ -989,9 +1017,6 @@ struct CourseListView: View {
                     } else {
                         self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (" + String(n) + "회 남았습니다.)"
                     }
-                    
-                    // update DB
-                    CloudManager.setFreeTrialCount(userId, freeTrialCount + 1)
                     
                     let c = self.courses[self.selectedCourseIndex]
                     Util.saveCourse(c)
@@ -1006,7 +1031,7 @@ struct CourseListView: View {
                         self.mode = 61
                     }
                 }
-            }
+            } // CloudManager.checkFreeTrialCount()
         }
     } // checkFreeTrial()
     
