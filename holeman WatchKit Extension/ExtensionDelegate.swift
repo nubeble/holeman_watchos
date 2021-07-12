@@ -78,7 +78,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                 if let rid = qry["rid"] as? String {
                     // print("rid", rid)
                     
-                    let db = CKContainer(identifier: "iCloud.com.nubeble.holeman.watchkitapp.watchkitextension").publicCloudDatabase
+                    let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
                     let recordID = CKRecord.ID.init(recordName: rid)
                     db.fetch(withRecordID: recordID) { record, error in
                         if let record = record, error == nil {

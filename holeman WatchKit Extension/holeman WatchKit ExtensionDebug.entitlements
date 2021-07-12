@@ -10,7 +10,7 @@
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
-		<string>iCloud.com.nubeble.holeman.watchkitapp.watchkitextension</string>
+		<string>iCloud.com.nubeble.holeman</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>

@@ -13,6 +13,8 @@ struct Static {
     
     static let productId = "com.nubeble.holeman.iap.course"
     
+    static let containerId = "iCloud.com.nubeble.holeman"
+    
     /*
      static let productIDs = [
      "com.nubeble.holeman.iap.course"

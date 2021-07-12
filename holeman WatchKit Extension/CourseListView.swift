@@ -599,6 +599,11 @@ struct CourseListView: View {
                      }
                      */
                     
+                    // update DB
+                    if let userId = Global.userId {
+                        CloudManager.updatePurchaseCount(userId)
+                    }
+                    
                     let c = self.courses[self.selectedCourseIndex]
                     Util.saveCourse(c)
                     
@@ -976,9 +981,9 @@ struct CourseListView: View {
     
     func checkFreeTrial() {
         if let userId = Global.userId {
-            CloudManager.getFreeTrialNumber(userId) { freeTrialNumber in
-                if freeTrialNumber < 10 {
-                    let n = 10 - freeTrialNumber
+            CloudManager.getFreeTrialCount(userId) { freeTrialCount in
+                if freeTrialCount < 10 {
+                    let n = 10 - freeTrialCount
                     if n == 10 {
                         self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요."
                     } else {
@@ -986,7 +991,7 @@ struct CourseListView: View {
                     }
                     
                     // update DB
-                    CloudManager.setFreeTrialNumber(userId, freeTrialNumber + 1)
+                    CloudManager.setFreeTrialCount(userId, freeTrialCount + 1)
                     
                     let c = self.courses[self.selectedCourseIndex]
                     Util.saveCourse(c)
