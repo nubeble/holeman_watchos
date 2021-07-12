@@ -160,11 +160,7 @@ struct IntroView: View {
             
             ZStack {
                 VStack(alignment: HorizontalAlignment.center) {
-                    Image("icon")
-                        .resizable()
-                        // .frame(width: 200 / 5, height: 200 / 5)
-                        .frame(width: 36, height: 36)
-                    // .padding(.bottom, 15)
+                    Image("icon").resizable().frame(width: 40, height: 40)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -189,11 +185,12 @@ struct IntroView: View {
                             // let body = ["appleIdentityToken": identityTokenString]
                             // guard let jsonData = try? JSONEncoder().encode(body) else { return }
                             
-                            // print("credential", credential)
+                            print(#function, "credential", credential)
                             // This is where you'd fire an API request to your server to authenticate with the identity token attached in the request headers.
                             
                             // get fullName, email
                             let userIdentifier = credential.user
+                            print(#function, "user", userIdentifier)
                             
                             var name: String = "noname"
                             if let fullName = credential.fullName {

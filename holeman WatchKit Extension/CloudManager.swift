@@ -451,13 +451,14 @@ struct CloudManager {
          }
          */
         
-        // fetch
         let recordID = CKRecord.ID.init(recordName: id)
         
         let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
         db.fetch(withRecordID: recordID) { (record, error) in
             if let _ = error {
                 print(#function, "User Record not found")
+                
+                // create user
                 
                 let record = CKRecord(recordType: "User", recordID: CKRecord.ID.init(recordName: id))
                 record["id"] = id as String
@@ -479,8 +480,7 @@ struct CloudManager {
                     }
                     
                     if let _ = record {
-                        // print(#function, "success on saving user.")
-                        print("User Record saved")
+                        print("User Record created")
                     }
                 }
                 
@@ -490,15 +490,17 @@ struct CloudManager {
             if let record = record {
                 // print("User Record found")
                 
+                // update user
+                
                 // record["id"] = id as String
                 record["name"] = name as String
                 record["email"] = email as String
                 let valid: Int64 = 100 // 100: valid, 200: invalid (logout)
                 record["valid"] = valid as Int64
-                let freeTrialCount: Int64 = 0
-                record["freeTrialCount"] = freeTrialCount as Int64
-                let purchaseCount: Int64 = 0
-                record["purchaseCount"] = purchaseCount as Int64
+                // let freeTrialCount: Int64 = 0
+                // record["freeTrialCount"] = freeTrialCount as Int64
+                // let purchaseCount: Int64 = 0
+                // record["purchaseCount"] = purchaseCount as Int64
                 
                 // save
                 db.save(record) { (record, error) in
@@ -509,7 +511,6 @@ struct CloudManager {
                     }
                     
                     if let _ = record {
-                        // print(#function, "success on saving user.")
                         print("User Record updated")
                     }
                 }

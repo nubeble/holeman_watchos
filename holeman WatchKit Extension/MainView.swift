@@ -819,7 +819,7 @@ struct MainView: View {
                     let timestamp = record["timestamp"] as! Int64
                     
                     let sensor = SensorModel(id: groupId, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
-                    print("sensor", sensor)
+                    print(#function, "sensor", sensor)
                     
                     self.sensors.append(sensor)
                     
@@ -996,7 +996,7 @@ struct MainView: View {
             
             do {
                 let json = try JSONSerialization.jsonObject(with: data!) as! Dictionary<String, AnyObject>
-                print(json)
+                // print(json)
                 
                 if String(describing: json["status"]) == "OK" {
                     if let results = json["results"] as? [String: Any] {
@@ -1102,7 +1102,8 @@ struct MainView: View {
         if stillIn == false { // 현재 홀을 벗어났다면
             // 2. currentHoleNumber+1 부터 한 바퀴까지 돌면서 각 홀에 있는지 체크
             let number = findHole(coordinate1)
-            print("found hole number", number)
+            print(#function, "found hole number", number)
+            
             if number != 0 {
                 self.holeNumber = number
                 
@@ -1301,6 +1302,7 @@ struct MainView: View {
     
     func saveHole(_ halftime: Int) {
         // print(#function, halftime)
+        
         // 1. time
         let date = Date()
         let dateFormatter = DateFormatter()
@@ -1339,7 +1341,8 @@ struct MainView: View {
                     
                     coursesStringArray.append(jsonString!)
                 } catch {
-                    print(error)
+                    print(#function, error)
+                    
                     return
                 }
             }
@@ -1387,7 +1390,8 @@ struct MainView: View {
                     
                     holesStringArray.append(jsonString!)
                 } catch {
-                    print(error)
+                    print(#function, error)
+                    
                     return
                 }
             }
