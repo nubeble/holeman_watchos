@@ -24,5 +24,6 @@ struct TeeingGrounds {
 struct TeeingGround {
     var name: String
     var color: String
-    var distance: Int
+    // var distance: Int
+    var distances: [Int]
 }

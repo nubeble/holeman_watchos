@@ -24,19 +24,21 @@ struct HoleSearchView: View {
     @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
     @State var teeingGroundIndex: Int = 0
     
+    @State var greenDirection: Int = 100
+    
     @State var startHoles: [StartHole] = []
     
     // @State var selectedStartHoleIndex: Int = 0
     
     @State var holeNumber: Int = 1
     
-    
     struct HoleData: Codable, Hashable {
         let number: Int
         let name: String
         let par: Int
         let handicap: Int
-        let distance: Dictionary<String, Int>
+        // let distance: Dictionary<String, Int>
+        let distances: Dictionary<String, [Int]>
         let tips: [String]
     }
     
@@ -142,6 +144,7 @@ struct HoleSearchView: View {
                             }
                         }
                     } else if from == 400 {
+                        print(#function, "400", self.search, self.course, self.teeingGroundInfo, self.teeingGroundIndex, self.greenDirection, self.holeNumber)
                         // ToDo: test timer
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                             getStartHole() // 1, 10, 19, ...
@@ -364,6 +367,8 @@ struct HoleSearchView: View {
             // 1. teeingGroundIndex
             let teeingGroundIndex = self.teeingGroundIndex
             
+            let greenDirection = self.greenDirection
+            
             // 2. holeNumber
             let holeNumber = self.holeNumber
             
@@ -376,8 +381,7 @@ struct HoleSearchView: View {
             // 5. teeingGroundInfo
             let teeingGroundInfo = self.teeingGroundInfo
             
-            // MainView(save: self.save, course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundIndex: teeingGroundIndex, holeNumber: holeNumber)
-            MainView(course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundIndex: teeingGroundIndex, holeNumber: holeNumber)
+            MainView(course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundIndex: teeingGroundIndex, greenDirection: greenDirection, holeNumber: holeNumber)
             
         } else if self.mode == 21 { // move to CourseSearchView
             
@@ -423,7 +427,7 @@ struct HoleSearchView: View {
                         tg.tips = decodedData.tips
                         
                         // let distances = Util.convertToDictionary(text: decodedData.distance)
-                        let distances = decodedData.distance
+                        let distances = decodedData.distances
                         
                         // set title
                         var title: String = "";
@@ -461,7 +465,7 @@ struct HoleSearchView: View {
                         
                         // sort
                         // let sorted = distances.sorted {$0.1 < $1.1}
-                        let sorted = distances.sorted {$0.1 > $1.1}
+                        let sorted = distances.sorted {$0.1[0] > $1.1[0]} // 좌그린 값으로 비교
                         for (key, value) in sorted {
                             // get name, color
                             let start1 = key.firstIndex(of: "(")
@@ -480,11 +484,11 @@ struct HoleSearchView: View {
                             // print("name", name)
                             // print("color", color)
                             
-                            let distance = value
+                            let d = value
                             
                             // print("distance", distance)
                             
-                            let t = TeeingGround(name: String(name).uppercased(), color: String(color).uppercased(), distance: distance)
+                            let t = TeeingGround(name: String(name).uppercased(), color: String(color).uppercased(), distances: d)
                             tg.teeingGrounds.append(t)
                         }
                     } catch {
@@ -523,7 +527,7 @@ struct HoleSearchView: View {
         let courses = self.course?.courses
         
         if courses?.count == 1 {
-            self.moveToStartHole()
+            moveToStartHole()
         } else {
             for (_, item) in courses!.enumerated() {
                 // print(#function, index, item.range[0])
@@ -663,25 +667,29 @@ struct HoleSearchView: View {
                         
                         let distance = coordinate1.distance(from: coordinate2) // result is in meters
                         
-                        var fullBack = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
-                        
-                        if self.teeingGroundInfo?.unit == "Y" {
-                            let x = Double(fullBack!) * 0.9144
-                            fullBack = Int(x.rounded())
+                        // var backTee = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
+                        var backTee = 0
+                        if let distances = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distances {
+                            backTee = Util.getMaxValue(distances)
                         }
                         
-                        print(#function, startHole.number, fullBack!, distance)
+                        if self.teeingGroundInfo?.unit == "Y" {
+                            let x = Double(backTee) * 0.9144
+                            backTee = Int(x.rounded())
+                        }
+                        
+                        print(#function, startHole.number, backTee, distance)
                         
                         /*
-                         let d = distance - Double(fullBack!)
+                         let d = distance - Double(backTee!)
                          if d < 30 { // ToDo: static (30 m)
                          // if d < 300 * 1000 { // ToDo: internal test (300 km)
                          list.append(startHole.number)
                          }
                          */
                         
-                        if Double(fullBack!) + 30 + 20 - distance >= 0 { // (나와 홀 사이 거리) - 전장(백티 + 30) <= 20 이면 해당 홀 근처로 들어왔다고 간주한다.
-                            // if Double(fullBack!) + 30 + 20 - distance < 0 { // ToDo: internal test
+                        if Double(backTee) + 30 + 20 - distance >= 0 { // (나와 홀 사이 거리) - 전장(백티 + 30) <= 20 이면 해당 홀 근처로 들어왔다고 간주한다.
+                            // if Double(backTee!) + 30 + 20 - distance < 0 { // ToDo: internal test
                             list.append(startHole.number)
                         }
                     }

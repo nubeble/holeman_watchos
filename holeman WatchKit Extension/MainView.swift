@@ -145,13 +145,16 @@ struct MainView: View {
     // static var getUserElevationTimerStarted = false
     static var lastGetUserElevationTime: UInt64?
     static var elevationDiff: Double?
+    // for saveHole
     static var lastHoleNumber: Int?
     static var lastTeeingGroundIndex: Int?
+    static var lastGreenDirection: Int?
     
     
     @State var course: CourseModel? = nil
     @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
     @State var teeingGroundIndex: Int?
+    @State var greenDirection: Int? // 100: left green, 200: right green
     @State var holeNumber: Int? // current hole number
     @State var distanceUnit: Int = -1 // 0: meter, 1: yard
     @State var sensors: [SensorModel] = []
@@ -761,7 +764,20 @@ struct MainView: View {
             let c = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[i].color
             let _c: Color = Util.getColor(c!)
             
-            var distance = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[i].distance
+            // var distance = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[i].distance
+            var distance = 0
+            if let distances = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[i].distances {
+                if distances.count == 1 {
+                    distance = distances[0]
+                } else {
+                    if self.greenDirection == 100 {
+                        distance = distances[0]
+                    } else if self.greenDirection == 200 {
+                        distance = distances[1]
+                    }
+                }
+            }
+            
             var unit: String
             
             if self.distanceUnit == 0 { // meter
@@ -769,10 +785,8 @@ struct MainView: View {
                     // N/A
                 } else {
                     // yard to meter
-                    if let d = distance {
-                        let tmp = Double(d) * 0.9144
-                        distance = Int(tmp.rounded())
-                    }
+                    let tmp = Double(distance) * 0.9144
+                    distance = Int(tmp.rounded())
                 }
                 
                 unit = "m"
@@ -781,16 +795,14 @@ struct MainView: View {
                     // N/A
                 } else {
                     // meter to yard
-                    if let d = distance {
-                        let tmp = Double(d) * 1.09361
-                        distance = Int(tmp.rounded())
-                    }
+                    let tmp = Double(distance) * 1.09361
+                    distance = Int(tmp.rounded())
                 }
                 
                 unit = "yd"
             }
             
-            let d = String(distance!) + " " + unit
+            let d = String(distance) + " " + unit
             
             names.append(name!)
             color.append(_c)
@@ -840,17 +852,27 @@ struct MainView: View {
         
         // var name = teeingGround?.name
         
-        var distance = teeingGround?.distance
+        // var distance = teeingGround?.distance
+        var distance = 0
+        if let distances = teeingGround?.distances {
+            if distances.count == 0 {
+                distance = distances[0]
+            } else {
+                if self.greenDirection == 100 {
+                    distance = distances[0]
+                } else if self.greenDirection == 200 {
+                    distance = distances[1]
+                }
+            }
+        }
         
         if self.distanceUnit == 0 { // meter
             if self.teeingGroundInfo?.unit == "M" {
                 // N/A
             } else {
                 // yard to meter
-                if let d = distance {
-                    let tmp = Double(d) * 0.9144
-                    distance = Int(tmp.rounded())
-                }
+                let tmp = Double(distance) * 0.9144
+                distance = Int(tmp.rounded())
             }
             
             self.textUnit = "m"
@@ -859,16 +881,14 @@ struct MainView: View {
                 // N/A
             } else {
                 // meter to yard
-                if let d = distance {
-                    let tmp = Double(d) * 1.09361
-                    distance = Int(tmp.rounded())
-                }
+                let tmp = Double(distance) * 1.09361
+                distance = Int(tmp.rounded())
             }
             
             self.textUnit = "yd"
         }
         
-        self.textTeeDistance = "• " + String(distance!)
+        self.textTeeDistance = "• " + String(distance)
         self.colorTeeDistance = _c
     }
     
@@ -1034,7 +1054,7 @@ struct MainView: View {
          }
          */
         
-        if MainView.lastHoleNumber == nil && MainView.lastTeeingGroundIndex == nil { // 최초 로드
+        if MainView.lastHoleNumber == nil && MainView.lastTeeingGroundIndex == nil && MainView.lastGreenDirection == nil { // 최초 로드
             // print(#function, "saveHole()", 2)
             
             if Global.halftime == 1 { saveHole(1) } // 전반 중
@@ -1042,6 +1062,7 @@ struct MainView: View {
             
             MainView.lastHoleNumber = self.holeNumber
             MainView.lastTeeingGroundIndex = self.teeingGroundIndex
+            MainView.lastGreenDirection = self.greenDirection
             
             return
         }
@@ -1064,6 +1085,17 @@ struct MainView: View {
             else { saveHole(3) } // 후반 중
             
             MainView.lastTeeingGroundIndex = self.teeingGroundIndex
+            
+            return
+        }
+        
+        if MainView.lastGreenDirection != self.greenDirection {
+            // print(#function, "saveHole()", 5)
+            
+            if Global.halftime == 1 { saveHole(1) } // 전반 중
+            else { saveHole(3) } // 후반 중
+            
+            MainView.lastGreenDirection = self.greenDirection
             
             return
         }
@@ -1203,27 +1235,31 @@ struct MainView: View {
     }
     
     func stillInCurrentHole(_ distance: Double) -> Bool {
-        var fullBack = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distance
+        // var backTee = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distance
+        var backTee = 0
+        if let distances = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distances {
+            backTee = Util.getMaxValue(distances)
+        }
         
         if self.teeingGroundInfo?.unit == "Y" {
             // yard to meter
-            let x = Double(fullBack!) * 0.9144
-            fullBack = Int(x.rounded())
+            let x = Double(backTee) * 0.9144
+            backTee = Int(x.rounded())
         }
         
-        // print(#function, "full back tee distance (meter)", fullBack!, distance)
+        // print(#function, "full back tee distance (meter)", backTee!, distance)
         
         /*
-         fullBack = fullBack! + 30 // full back tee + 30 m
+         backTee = backTee! + 30 // full back tee + 30 m
          
-         if Double(fullBack!) - distance < 0 {
+         if Double(backTee!) - distance < 0 {
          return false
          }
          
          return true
          */
         
-        if Double(fullBack!) + 30 - distance >= 0 {
+        if Double(backTee) + 30 - distance >= 0 {
             return true
         } else {
             return false
@@ -1238,27 +1274,31 @@ struct MainView: View {
         
         let distance = coordinate.distance(from: coordinate2) // result is in meters
         
-        var fullBack = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distance
+        // var backTee = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distance
+        var backTee = 0
+        if let distances = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distances {
+            backTee = Util.getMaxValue(distances)
+        }
         
         if self.teeingGroundInfo?.unit == "Y" {
             // yard to meter
-            let x = Double(fullBack!) * 0.9144
-            fullBack = Int(x.rounded())
+            let x = Double(backTee) * 0.9144
+            backTee = Int(x.rounded())
         }
         
-        // print(#function, "full back tee distance (meter)", fullBack!)
+        // print(#function, "full back tee distance (meter)", backTee!)
         
         /*
-         fullBack = fullBack! + 30 // full back tee + 30 m
+         backTee = backTee! + 30 // full back tee + 30 m
          
-         if Double(fullBack!) - distance < 0 {
+         if Double(backTee!) - distance < 0 {
          return false
          }
          
          return true
          */
         
-        if Double(fullBack!) + 30 - distance >= 0 {
+        if Double(backTee) + 30 - distance >= 0 {
             return true
         } else {
             return false
@@ -1378,7 +1418,7 @@ struct MainView: View {
             for hole in holes {
                 var teeingGroundDataArray: [TeeingGroundData] = []
                 for teeingGround in hole.teeingGrounds {
-                    let teeingGroundData = TeeingGroundData(name: teeingGround.name, color: teeingGround.color, distance: teeingGround.distance)
+                    let teeingGroundData = TeeingGroundData(name: teeingGround.name, color: teeingGround.color, distances: teeingGround.distances)
                     teeingGroundDataArray.append(teeingGroundData)
                 }
                 
@@ -1405,6 +1445,9 @@ struct MainView: View {
         
         // 6. halftime
         UserDefaults.standard.set(halftime, forKey: "LAST_PLAYED_HOLE_HALFTIME")
+        
+        // 7. green direction
+        UserDefaults.standard.set(self.greenDirection, forKey: "LAST_PLAYED_HOLE_GREEN_DIRECTION")
     }
     
     func moveToHoleSearchView(_ halftime: Int) { // 200: 전반 종료, 300: 후반 종료

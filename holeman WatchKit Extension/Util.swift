@@ -250,9 +250,10 @@ struct Util {
             }
         }
         
+        // never come here
         if count == 0 {
             return true
-        } else { // ToDo
+        } else {
             return false
         }
     }
@@ -424,5 +425,17 @@ struct Util {
         titles.append(holeNumber + "번 홀")
         
         return titles
+    }
+    
+    static func getMaxValue(_ list: [Int]) -> Int {
+        var maxValue = 0
+        
+        for value in list {
+            if value > maxValue {
+                maxValue = value
+            }
+        }
+        
+        return maxValue
     }
 }

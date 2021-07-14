@@ -20,5 +20,6 @@ struct TeeingGroundsData: Codable, Hashable {
 struct TeeingGroundData: Codable, Hashable {
     let name: String
     let color: String
-    let distance: Int
+    // let distance: Int
+    let distances: [Int]
 }
