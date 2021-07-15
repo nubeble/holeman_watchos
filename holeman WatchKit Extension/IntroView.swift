@@ -51,7 +51,7 @@ struct IntroView: View {
                 // N/A
             }
             .onAppear {
-                // ToDo: test (remove all UserDefaults)
+                // ToDo: internal test (remove all UserDefaults)
                 // --
                 /*
                  let defaults = UserDefaults.standard

@@ -16,6 +16,7 @@ struct MenuView: View {
     var __course: CourseModel?
     var __teeingGroundInfo: TeeingGroundInfoModel?
     var __teeingGroundIndex: Int?
+    var __greenDirection: Int?
     var __holeNumber: Int?
     var __distanceUnit: Int?
     var __sensors: [SensorModel]?
@@ -265,7 +266,7 @@ struct MenuView: View {
             
             MainView(mode: 1,
                      course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.__teeingGroundIndex,
-                     holeNumber: self.__holeNumber, distanceUnit: self.__distanceUnit!,
+                     greenDirection: self.__greenDirection, holeNumber: self.__holeNumber, distanceUnit: self.__distanceUnit!,
                      sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
                      userElevation: self.__userElevation
             )

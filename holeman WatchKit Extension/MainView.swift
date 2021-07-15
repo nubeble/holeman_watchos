@@ -164,11 +164,31 @@ struct MainView: View {
     // 3.
     @State var userElevation: Double? // user elevation (meter)
     
+    @State var showGreenButton: Bool = false
+    
     struct Menu: ButtonStyle {
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
                 .padding(6)
-                .background(configuration.isPressed ? Color.green : Color.green.opacity(0))
+                .background(configuration.isPressed ? Color.gray.opacity(0.5) : Color.gray.opacity(0))
+                .clipShape(Circle())
+        }
+    }
+    
+    struct GreenNormal: ButtonStyle {
+        func makeBody(configuration: Self.Configuration) -> some View {
+            configuration.label
+                .padding(1)
+                .background(configuration.isPressed ? Color.gray.opacity(0.5) : Color.gray.opacity(0))
+                .clipShape(Circle())
+        }
+    }
+    
+    struct GreenSelected: ButtonStyle {
+        func makeBody(configuration: Self.Configuration) -> some View {
+            configuration.label
+                .padding(1)
+                .background(configuration.isPressed ? Color.gray.opacity(0.5) : Color.gray.opacity(0))
                 .clipShape(Circle())
         }
     }
@@ -177,7 +197,7 @@ struct MainView: View {
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
                 .padding(2)
-                .background(configuration.isPressed ? Color.green : Color.green.opacity(0))
+                .background(configuration.isPressed ? Color.gray.opacity(0.5) : Color.gray.opacity(0))
                 .cornerRadius(2)
         }
     }
@@ -373,6 +393,46 @@ struct MainView: View {
                 }
             })
             
+        } else if self.mode == 8 { // notice
+            
+            ZStack {
+                // header
+                VStack {
+                    Text("Notice").font(.system(size: 20, weight: .semibold))
+                    Text("홀 정보가 변경되었습니다.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Text("홀컵이 이동하여 남은 거리를 다시 계산하였습니다.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
+                
+                // next button
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Button(action: {
+                        withAnimation {
+                            self.mode = 1
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 54, height: 54)
+                            
+                            Image(systemName: "arrow.right")
+                                .font(Font.system(size: 28, weight: .heavy))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.bottom, 10)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            
         } else if self.mode == 1 { // main
             
             // main //
@@ -409,6 +469,59 @@ struct MainView: View {
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
                     
+                    // green button
+                    if self.showGreenButton == true {
+                        ZStack {
+                            HStack(alignment: .center) {
+                                Button(action: {
+                                    self.greenDirection = 100
+                                    
+                                    // change distance
+                                    changeTeeDistance()
+                                    
+                                    // save hole
+                                    if Global.halftime == 1 { saveHole(1) } // 전반 중
+                                    else { saveHole(3) } // 후반 중
+                                    
+                                    MainView.lastGreenDirection = self.greenDirection
+                                }) {
+                                    Image(systemName: "l.circle")
+                                        .foregroundColor(self.greenDirection == 100 ? Color.green : Color.gray)
+                                        .font(Font.system(size: 20, weight: .light))
+                                }
+                                // .buttonStyle(PlainButtonStyle())
+                                .buttonStyle(GreenNormal())
+                                // .padding(.leading, 8)
+                                
+                                Spacer()
+                            }.padding(9)
+                            
+                            HStack(alignment: .center) {
+                                Spacer()
+                                
+                                Button(action: {
+                                    self.greenDirection = 200
+                                    
+                                    // change distance
+                                    changeTeeDistance()
+                                    
+                                    // save hole
+                                    if Global.halftime == 1 { saveHole(1) } // 전반 중
+                                    else { saveHole(3) } // 후반 중
+                                    
+                                    MainView.lastGreenDirection = self.greenDirection
+                                }) {
+                                    Image(systemName: "r.circle")
+                                        .foregroundColor(self.greenDirection == 200 ? Color.green : Color.gray)
+                                        .font(Font.system(size: 20, weight: .light))
+                                }
+                                // .buttonStyle(PlainButtonStyle())
+                                .buttonStyle(GreenSelected())
+                                // .padding(.leading, 8)
+                            }.padding(9)
+                        }
+                    }
+                    
                     VStack {
                         Circle()
                             .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
@@ -434,10 +547,8 @@ struct MainView: View {
                             Text(self.textHoleTitle).font(.system(size: 14))
                         }
                         .padding(.top, 46)
-                        
                         //.buttonStyle(PlainButtonStyle())
                         .buttonStyle(HoleTitle())
-                        
                         
                         HStack(spacing: 4) {
                             Text(self.textPar).font(.system(size: 14))
@@ -531,6 +642,12 @@ struct MainView: View {
                     }
                 }
                 
+                if self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!].distances.count == 1 {
+                    self.showGreenButton = false
+                } else {
+                    self.showGreenButton = true
+                }
+                
                 // update UI
                 self.textHoleTitle = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
                 self.textPar = "PAR " + String(self.teeingGroundInfo?.holes[self.holeNumber! - 1].par ?? 0)
@@ -620,20 +737,37 @@ struct MainView: View {
                 let timestamp = s.timestamp
                 let battery = s.battery
                 
-                for (index, item) in self.sensors.enumerated() {
-                    if item.holeNumber == holeNumber {
-                        // print(#function, "updated.")
-                        
-                        self.sensors[index].location = location
-                        self.sensors[index].elevation = elevation
-                        self.sensors[index].timestamp = timestamp
-                        self.sensors[index].battery = battery
-                        
-                        self.latitude = location.coordinate.latitude + self.__lat
-                        self.longitude = location.coordinate.longitude + self.__lon
-                        self.elevation = elevation
-                        
-                        break
+                /*
+                 for (index, item) in self.sensors.enumerated() {
+                 if item.holeNumber == holeNumber {
+                 // print(#function, "updated.")
+                 
+                 self.sensors[index].location = location
+                 self.sensors[index].elevation = elevation
+                 self.sensors[index].timestamp = timestamp
+                 self.sensors[index].battery = battery
+                 
+                 self.latitude = location.coordinate.latitude + self.__lat
+                 self.longitude = location.coordinate.longitude + self.__lon
+                 self.elevation = elevation
+                 
+                 break
+                 }
+                 }
+                 */
+                self.sensors[Int(holeNumber) - 1].location = location
+                self.sensors[Int(holeNumber) - 1].elevation = elevation
+                self.sensors[Int(holeNumber) - 1].timestamp = timestamp
+                self.sensors[Int(holeNumber) - 1].battery = battery
+                
+                self.latitude = location.coordinate.latitude + self.__lat
+                self.longitude = location.coordinate.longitude + self.__lon
+                self.elevation = elevation
+                
+                if self.mode == 1 && self.holeNumber! == holeNumber {
+                    // show notice
+                    withAnimation {
+                        self.mode = 8
                     }
                 }
             }
@@ -643,7 +777,7 @@ struct MainView: View {
             HoleView(titles: self.titles!, selectedIndex: self.holeNumber! - 1,
                      // backup
                      __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundIndex: self.teeingGroundIndex,
-                     /*__holeNumber: self.holeNumber,*/ __distanceUnit: self.distanceUnit,
+                     __greenDirection: self.greenDirection, /*__holeNumber: self.holeNumber,*/ __distanceUnit: self.distanceUnit,
                      __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
                      __userElevation: self.userElevation
             )
@@ -653,7 +787,7 @@ struct MainView: View {
             TeeView(names: self.names!, color: self.color!, distances: self.distances!, selectedIndex: self.teeingGroundIndex!,
                     // backup
                     __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, /*__teeingGroundIndex: self.teeingGroundIndex,*/
-                    __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
+                    __greenDirection: self.greenDirection, __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
                     __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
                     __userElevation: self.userElevation
             )
@@ -663,7 +797,7 @@ struct MainView: View {
             MenuView(
                 // backup
                 __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundIndex: self.teeingGroundIndex,
-                __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
+                __greenDirection: self.greenDirection, __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
                 __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
                 __userElevation: self.userElevation
             )
@@ -855,7 +989,7 @@ struct MainView: View {
         // var distance = teeingGround?.distance
         var distance = 0
         if let distances = teeingGround?.distances {
-            if distances.count == 0 {
+            if distances.count == 1 {
                 distance = distances[0]
             } else {
                 if self.greenDirection == 100 {
@@ -890,6 +1024,43 @@ struct MainView: View {
         
         self.textTeeDistance = "• " + String(distance)
         self.colorTeeDistance = _c
+    }
+    
+    func changeTeeDistance() {
+        let teeingGround = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!]
+        
+        var distance = 0
+        if let distances = teeingGround?.distances {
+            if self.greenDirection == 100 {
+                distance = distances[0]
+            } else if self.greenDirection == 200 {
+                distance = distances[1]
+            }
+        }
+        
+        if self.distanceUnit == 0 { // meter
+            if self.teeingGroundInfo?.unit == "M" {
+                // N/A
+            } else {
+                // yard to meter
+                let tmp = Double(distance) * 0.9144
+                distance = Int(tmp.rounded())
+            }
+            
+            self.textUnit = "m"
+        } else { // yard
+            if self.teeingGroundInfo?.unit == "Y" {
+                // N/A
+            } else {
+                // meter to yard
+                let tmp = Double(distance) * 1.09361
+                distance = Int(tmp.rounded())
+            }
+            
+            self.textUnit = "yd"
+        }
+        
+        self.textTeeDistance = "• " + String(distance)
     }
     
     func toggleUnit() {
@@ -948,7 +1119,7 @@ struct MainView: View {
                 
                 // getUserElevation(String(lat), String(lon), alt)
                 
-                // ToDo: test (일단 google api 스킵)
+                // ToDo: internal test (일단 google api 스킵)
                 self.userElevation = 20.2
                 MainView.elevationDiff = self.userElevation! - alt
                 
@@ -966,7 +1137,7 @@ struct MainView: View {
                     
                     // getUserElevation(String(lat2), String(lon2), alt2)
                     
-                    // ToDo: test (일단 google api 스킵)
+                    // ToDo: internal test (일단 google api 스킵)
                     self.userElevation = 20.2
                     MainView.elevationDiff = self.userElevation! - alt2
                     
@@ -990,7 +1161,7 @@ struct MainView: View {
                     let alt2 = location.altitude + self.altitudeDiff
                     
                     // getUserElevation(String(lat2), String(lon2), alt2)
-                    // ToDo: test (일단 google api 스킵)
+                    // ToDo: internal test (일단 google api 스킵)
                     self.userElevation = 20.2
                     MainView.elevationDiff = self.userElevation! - alt2
                     
@@ -1134,7 +1305,7 @@ struct MainView: View {
         if stillIn == false { // 현재 홀을 벗어났다면
             // 2. currentHoleNumber+1 부터 한 바퀴까지 돌면서 각 홀에 있는지 체크
             let number = findHole(coordinate1)
-            print(#function, "found hole number", number)
+            // print(#function, "found hole number", number)
             
             if number != 0 {
                 self.holeNumber = number
