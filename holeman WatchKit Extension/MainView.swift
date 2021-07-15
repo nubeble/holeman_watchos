@@ -755,19 +755,22 @@ struct MainView: View {
                  }
                  }
                  */
-                self.sensors[Int(holeNumber) - 1].location = location
-                self.sensors[Int(holeNumber) - 1].elevation = elevation
-                self.sensors[Int(holeNumber) - 1].timestamp = timestamp
-                self.sensors[Int(holeNumber) - 1].battery = battery
+                let index = Int(holeNumber) - 1
+                self.sensors[index].location = location
+                self.sensors[index].elevation = elevation
+                self.sensors[index].timestamp = timestamp
+                self.sensors[index].battery = battery
                 
-                self.latitude = location.coordinate.latitude + self.__lat
-                self.longitude = location.coordinate.longitude + self.__lon
-                self.elevation = elevation
-                
-                if self.mode == 1 && self.holeNumber! == holeNumber {
-                    // show notice
-                    withAnimation {
-                        self.mode = 8
+                if self.holeNumber! == holeNumber {
+                    self.latitude = location.coordinate.latitude + self.__lat
+                    self.longitude = location.coordinate.longitude + self.__lon
+                    self.elevation = elevation
+                    
+                    if self.mode == 1 {
+                        // show notice
+                        withAnimation {
+                            self.mode = 8
+                        }
                     }
                 }
             }
