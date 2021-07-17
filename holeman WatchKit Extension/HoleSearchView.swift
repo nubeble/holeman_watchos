@@ -663,7 +663,7 @@ struct HoleSearchView: View {
                     var list: [Int] = []
                     
                     for startHole in self.startHoles {
-                        let coordinate2 = CLLocation(latitude: startHole.latitude, longitude: startHole.longitude)
+                        let coordinate2 = CLLocation(latitude: startHole.latitude + Static.__lat, longitude: startHole.longitude + Static.__lon)
                         
                         let distance = coordinate1.distance(from: coordinate2) // result is in meters
                         
@@ -678,18 +678,13 @@ struct HoleSearchView: View {
                             backTee = Int(x.rounded())
                         }
                         
-                        print(#function, startHole.number, backTee, distance)
+                        // print(#function, startHole.number, backTee, distance)
                         
-                        /*
-                         let d = distance - Double(backTee!)
-                         if d < 30 { // ToDo: static (30 m)
-                         // if d < 300 * 1000 { // ToDo: internal test (300 km)
-                         list.append(startHole.number)
-                         }
-                         */
+                        let diff = distance - (Double(backTee) + 30) // (나와 홀 사이 거리) - 전장(백티 + 30)
+                        print(#function, "diff:", diff)
                         
-                        if Double(backTee) + 30 + 20 - distance >= 0 { // (나와 홀 사이 거리) - 전장(백티 + 30) <= 20 이면 해당 홀 근처로 들어왔다고 간주한다.
-                            // if Double(backTee!) + 30 + 20 - distance < 0 { // ToDo: internal test
+                        // 20 m
+                        if diff <= 20 { // 20미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
                             list.append(startHole.number)
                         }
                     }

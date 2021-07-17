@@ -9,13 +9,6 @@ import SwiftUI
 import StoreKit
 
 struct CourseSearchView: View {
-    
-    
-    // ToDo: 2021-06-16 debug
-    // let __lat = 1.753586614270796
-    // let __lon = -2.033034733589
-    
-    
     @State var mode: Int = 0
     
     @State var textMessage: String = ""
@@ -896,7 +889,9 @@ struct CourseSearchView: View {
     }
     
     func findNearbyCourse(_ location: CLLocation, onComplete: @escaping (_ result: Bool) -> Void) {
-        CloudManager.fetchNearbyLocations(String(self.countryCode!), location) { records in
+        let __lo = CLLocation(latitude: location.coordinate.latitude + Static.__lat, longitude: location.coordinate.longitude + Static.__lon)
+        // CloudManager.fetchNearbyLocations(String(self.countryCode!), location) { records in
+        CloudManager.fetchNearbyLocations(String(self.countryCode!), __lo) { records in
             // print(#function, records)
             if let records = records {
                 var count = 0

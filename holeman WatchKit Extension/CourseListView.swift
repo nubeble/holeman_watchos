@@ -9,13 +9,6 @@ import SwiftUI
 import StoreKit
 
 struct CourseListView: View {
-    
-    
-    // ToDo: 2021-06-16 debug
-    let __lat = 1.753586614270796
-    let __lon = -2.033034733589
-    
-    
     @State var mode: Int = 0
     
     @State var textMessage: String = ""
@@ -1053,7 +1046,7 @@ struct CourseListView: View {
                     let location2 = self.courses[self.selectedCourseIndex].location
                     
                     let coordinate1 = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-                    let coordinate2 = CLLocation(latitude: location2.coordinate.latitude + self.__lat, longitude: location2.coordinate.longitude + self.__lon)
+                    let coordinate2 = CLLocation(latitude: location2.coordinate.latitude + Static.__lat, longitude: location2.coordinate.longitude + Static.__lon)
                     
                     let distance = coordinate1.distance(from: coordinate2) // result is in meters
                     print(#function, "distance", distance)

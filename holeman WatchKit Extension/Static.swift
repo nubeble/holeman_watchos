@@ -25,4 +25,14 @@ struct Static {
      */
      ]
      */
+    
+    // ToDo: debug
+    // (골드그린)
+    // static let __lat = 1.753586614270796
+    // static let __lon = -2.033034733589
+    // (신안)
+    static let __lat = 0.16496653122842
+    static let __lon = -0.20835852071767
+    
+    // (이천실크밸리)
 }

@@ -12,13 +12,6 @@ extension Notification.Name {
 }
 
 struct MainView: View {
-    
-    
-    // ToDo: 2021-06-16 debug
-    let __lat = 1.753586614270796
-    let __lon = -2.033034733589
-    
-    
     @State var mode: Int = 0
     
     // var save: Bool?
@@ -680,8 +673,8 @@ struct MainView: View {
                         if self.holeNumber! - 1 < self.sensors.count {
                             let sensor = self.sensors[self.holeNumber! - 1]
                             
-                            self.latitude = sensor.location.coordinate.latitude + self.__lat
-                            self.longitude = sensor.location.coordinate.longitude + self.__lon
+                            self.latitude = sensor.location.coordinate.latitude + Static.__lat
+                            self.longitude = sensor.location.coordinate.longitude + Static.__lon
                             self.elevation = sensor.elevation
                         }
                     }
@@ -701,8 +694,8 @@ struct MainView: View {
                     if self.holeNumber! - 1 < self.sensors.count {
                         let sensor = self.sensors[self.holeNumber! - 1]
                         
-                        self.latitude = sensor.location.coordinate.latitude + self.__lat
-                        self.longitude = sensor.location.coordinate.longitude + self.__lon
+                        self.latitude = sensor.location.coordinate.latitude + Static.__lat
+                        self.longitude = sensor.location.coordinate.longitude + Static.__lon
                         self.elevation = sensor.elevation
                     }
                 }
@@ -747,8 +740,8 @@ struct MainView: View {
                  self.sensors[index].timestamp = timestamp
                  self.sensors[index].battery = battery
                  
-                 self.latitude = location.coordinate.latitude + self.__lat
-                 self.longitude = location.coordinate.longitude + self.__lon
+                 self.latitude = location.coordinate.latitude + Static.__lat
+                 self.longitude = location.coordinate.longitude + Static.__lon
                  self.elevation = elevation
                  
                  break
@@ -762,8 +755,8 @@ struct MainView: View {
                 self.sensors[index].battery = battery
                 
                 if self.holeNumber! == holeNumber {
-                    self.latitude = location.coordinate.latitude + self.__lat
-                    self.longitude = location.coordinate.longitude + self.__lon
+                    self.latitude = location.coordinate.latitude + Static.__lat
+                    self.longitude = location.coordinate.longitude + Static.__lon
                     self.elevation = elevation
                     
                     if self.mode == 1 {
@@ -1444,7 +1437,7 @@ struct MainView: View {
         // get distance
         let sensor = self.sensors[index]
         
-        let coordinate2 = CLLocation(latitude: sensor.location.coordinate.latitude + self.__lat, longitude: sensor.location.coordinate.longitude + self.__lon)
+        let coordinate2 = CLLocation(latitude: sensor.location.coordinate.latitude + Static.__lat, longitude: sensor.location.coordinate.longitude + Static.__lon)
         
         let distance = coordinate.distance(from: coordinate2) // result is in meters
         
