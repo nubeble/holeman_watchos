@@ -406,12 +406,12 @@ struct CourseSearchView: View {
                                 Text(str1).font(.system(size: 20))
                                     .fixedSize(horizontal: false, vertical: true)
                                     .lineLimit(1)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .frame(maxWidth: .infinity, alignment: .center)
                                 
                                 Text(str2).font(.system(size: 14)) // 영문 코스명은 12로 고정, BUT 여기는 확대
                                     .fixedSize(horizontal: false, vertical: true)
                                     .lineLimit(1)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .frame(maxWidth: .infinity, alignment: .center)
                             }
                             
                             if let address = self.courses[self.selectedCourseIndex].address {
@@ -432,8 +432,7 @@ struct CourseSearchView: View {
                                 Text(str1).font(.system(size: 14)).foregroundColor(Color.gray)
                                     .fixedSize(horizontal: false, vertical: true)
                                     .lineLimit(1)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                // .padding(.top, 2)
+                                    .frame(maxWidth: .infinity, alignment: .center)
                             }
                         }
                         .padding(.all, 8)
