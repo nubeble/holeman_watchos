@@ -30,6 +30,7 @@ struct MainView: View {
     // @State var textHeight: String = "-9"
     @State var message1: String = ""
     @State var message2: String = ""
+    @State var message1FontSize: CGFloat = 24
     @State var progressValue: Float = 0.0
     @State var tips: String = ""
     
@@ -270,13 +271,13 @@ struct MainView: View {
                 if self.message2 == "" {
                     VStack {
                         // textMessage 폰트 크기는 20이지만, holeTitle만 24로 키운다
-                        Text(self.message1).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
+                        Text(self.message1).font(.system(size: self.message1FontSize)).fontWeight(.medium).multilineTextAlignment(.center)
                         // .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 } else {
                     VStack {
                         // hole title
-                        Text(self.message1).font(.system(size: 24)).fontWeight(.medium).multilineTextAlignment(.center)
+                        Text(self.message1).font(.system(size: self.message1FontSize)).fontWeight(.medium).multilineTextAlignment(.center)
                     }
                     
                     VStack {
@@ -324,6 +325,9 @@ struct MainView: View {
                 let name = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
                 
                 self.message1 = title
+                if title.count >= 14 {
+                    self.message1FontSize = 22
+                }
                 self.message2 = name
             })
             
