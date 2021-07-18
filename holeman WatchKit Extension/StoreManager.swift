@@ -130,8 +130,6 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
                 }
                 
             case .purchased:
-                // UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap, save to UserDefaults
-                
                 /*
                  print(#function, "purchased: \(String(describing: transaction.payment.productIdentifier))",
                  String(describing: transaction.transactionIdentifier), String(describing: transaction.transactionDate),
@@ -152,11 +150,12 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
             // receiptValidation()
             
             case .restored:
-                // UserDefaults.standard.setValue(true, forKey: transaction.payment.productIdentifier) // ToDo: iap, save to UserDefaults
-                
-                print(#function, "restored: \(String(describing: transaction.payment.productIdentifier))",
-                      String(describing: transaction.transactionIdentifier), String(describing: transaction.transactionDate)
-                )
+                /*
+                 print(#function, "restored: \(String(describing: transaction.payment.productIdentifier))",
+                 String(describing: transaction.transactionIdentifier), String(describing: transaction.transactionDate)
+                 )
+                 */
+                print(#function, "restored")
                 
                 DispatchQueue.main.async {
                     self.transactionState = .restored

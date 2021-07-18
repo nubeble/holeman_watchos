@@ -889,7 +889,7 @@ struct CourseSearchView: View {
     }
     
     func findNearbyCourse(_ location: CLLocation, onComplete: @escaping (_ result: Bool) -> Void) {
-        let __lo = CLLocation(latitude: location.coordinate.latitude + Static.__lat, longitude: location.coordinate.longitude + Static.__lon)
+        let __lo = CLLocation(latitude: location.coordinate.latitude - Static.__lat, longitude: location.coordinate.longitude - Static.__lon)
         // CloudManager.fetchNearbyLocations(String(self.countryCode!), location) { records in
         CloudManager.fetchNearbyLocations(String(self.countryCode!), __lo) { records in
             // print(#function, records)

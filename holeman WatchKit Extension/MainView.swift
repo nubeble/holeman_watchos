@@ -197,7 +197,7 @@ struct MainView: View {
     
     // @ObservedObject var compassHeading = CompassHeading()
     
-    // ToDo: static (30 m)
+    // 30 m
     static let HOLE_PASS_DISTANCE: Double = 30 // meter
     @State var holePassFlag = 100 // 100: normal state, 200: 홀까지 남은 거리가 30미터 안으로 들어왔을 때, 300: 10초 머물렀을 때, 400: 다시 30미터 (+ 10미터) 밖으로 나갔을 때
     @State var holePassCount = 0
@@ -1285,16 +1285,6 @@ struct MainView: View {
         // 현재 홀의 홀컵과 나 사이의 거리
         let distance = coordinate1.distance(from: coordinate2) // result is in meters
         
-        /*
-         // ToDo: internal test (distance)
-         // print(distance)
-         distance = distance - 289642 + 380 // 매탄동
-         // distance = distance - 307348 + 380 // 우면동
-         if distance < 0 {
-         distance *= -1
-         }
-         */
-        
         // ToDo: 2021-03-15 hole pass check
         // 1. 현재 홀에 있는지 확인
         let stillIn = stillInCurrentHole(distance)
@@ -1315,7 +1305,7 @@ struct MainView: View {
                 self.holePassCount = 0
             }
             
-            // ToDo: 현재 홀을 벗어나고 다음 홀을 찾지 못하면? 현재는 그냥 현재 홀에 계속 머문다.
+            // Consider: 현재 홀을 벗어나고 다음 홀을 찾지 못하면? 현재는 그냥 현재 홀에 계속 머문다.
         } else {
             let result = checkHolePass(distance)
             if result == true {

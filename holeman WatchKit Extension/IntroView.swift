@@ -204,31 +204,51 @@ struct IntroView: View {
                                     } else {
                                         name = firstName
                                     }
-                                    
-                                    self.name = name
                                 } else {
-                                    let nickname = fullName.nickname ?? "noname"
-                                    name = nickname
+                                    if let nickname = fullName.nickname {
+                                        name = nickname
+                                    } else {
+                                        name = "noname"
+                                    }
                                 }
                             }
                             
+                            // self.name = name
+                            
                             let email: String = credential.email ?? "noemail"
                             
-                            // print(userIdentifier, name, email)
                             
-                            // 1. save to db
-                            CloudManager.saveUser(userIdentifier, name, email)
                             
-                            // 2. save to UserDefaults
-                            UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
-                            
-                            Global.userId = userIdentifier
-                            
-                            // move to welcome
-                            // withAnimation {
-                            self.mode = 4
-                        // }
-                        
+                            if name == "noname" {
+                                // load from DB
+                                CloudManager.getUserName(userIdentifier) { userName in
+                                    var __name = userName
+                                    
+                                    if __name == "" {
+                                        __name = "noname"
+                                    } else {
+                                        self.name = __name
+                                    }
+                                    
+                                    CloudManager.saveUser(userIdentifier, __name, email)
+                                    
+                                    UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
+                                    
+                                    Global.userId = userIdentifier
+                                    
+                                    self.mode = 4 // move to welcome
+                                }
+                            } else {
+                                self.name = name
+                                
+                                CloudManager.saveUser(userIdentifier, name, email)
+                                
+                                UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
+                                
+                                Global.userId = userIdentifier
+                                
+                                self.mode = 4 // move to welcome
+                            }
                         case .failure (let error):
                             print("Authorisation failed: \(error.localizedDescription)")
                         }
@@ -757,8 +777,6 @@ struct IntroView: View {
                 // print(error.localizedDescription)
                 print(error)
                 
-                // ToDo: error handling
-                
                 return
             }
             
@@ -857,8 +875,6 @@ struct IntroView: View {
                 array.append(item)
             } catch {
                 print(error)
-                
-                // ToDo: error handling
                 
                 return
             }

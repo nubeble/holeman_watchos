@@ -112,7 +112,7 @@ extension LocationManager: CLLocationManagerDelegate {
             return false
         }
         
-        if location.horizontalAccuracy > 100 { // ToDo: 100 meters
+        if location.horizontalAccuracy > 100 { // 100 meters
             return false
         }
         

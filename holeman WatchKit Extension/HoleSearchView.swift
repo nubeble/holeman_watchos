@@ -385,7 +385,7 @@ struct HoleSearchView: View {
             
         } else if self.mode == 21 { // move to CourseSearchView
             
-            CourseSearchView() // ToDo
+            CourseSearchView() // Consider
             
         }
     }
@@ -396,7 +396,6 @@ struct HoleSearchView: View {
             //if records.count == 1 {
             //let record = records[0]
             if let record = record {
-                
                 var info = TeeingGroundInfoModel(unit: "", holes: [])
                 
                 // let id = record["id"] as! Int64
@@ -506,8 +505,6 @@ struct HoleSearchView: View {
                 onComplete()
             } else {
                 print(#function, "No record found")
-                
-                // ToDo: error handling
             }
         }
     } // getHoles()

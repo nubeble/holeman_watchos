@@ -242,7 +242,7 @@ struct CloudManager {
     static func fetchNearbyLocations(_ countryCode: String, _ location: CLLocation, onComplete: @escaping (_ records: [CKRecord]?) -> Void) {
         print(#function)
         
-        let radiusInKilometers = 3 // ToDo: static (3 km)
+        let radiusInKilometers = 3 // 3 km
         
         // let p = NSPredicate(format: "distanceToLocation:fromLocation:(location, %@) < %@", location, NSNumber(value: radiusInKilometers))
         let p = NSPredicate(format: "countryCode = %@ AND distanceToLocation:fromLocation:(location, %@) < %@", countryCode, location, NSNumber(value: radiusInKilometers))
@@ -554,62 +554,91 @@ struct CloudManager {
         }
     }
     
-    static func setProductId(_ userId: String, _ productId: String) { // update user with purchased product id
-        // fetch
-        let recordID = CKRecord.ID.init(recordName: userId)
-        
-        let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
-        db.fetch(withRecordID: recordID) { (record, error) in
-            if let _ = error {
-                print(#function, "User Record not found")
-                
-                return
-            }
-            
-            if let record = record {
-                // print("User Record found")
-                
-                if record["valid"] as! Int64 == 100 { // valid
-                    record["lastPurchasedProductId"] = productId as String
-                    
-                    // save
-                    db.save(record) { (record, error) in
-                        if let error = error {
-                            print(#function, error)
-                            
-                            return
-                        }
-                        
-                        if let _ = record {
-                            print("User Record updated with purchased product id")
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    static func getProductId(_ userId: String, onComplete: @escaping ((_ productId: String) -> Void)) {
+    static func getUserName(_ userId: String, onComplete: @escaping ((_ name: String) -> Void)) {
         let recordID = CKRecord.ID.init(recordName: userId)
         
         CKContainer(identifier: Static.containerId).publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
             if let _ = error {
                 print(#function, "User Record not found")
                 
+                onComplete("")
+                
                 return
             }
             
             if let record = record {
-                guard let lastPurchasedProductId = record["lastPurchasedProductId"] as? String else {
-                    print(#function, "lastPurchasedProductId error")
+                guard let name = record["name"] as? String else {
+                    print(#function, "name error")
+                    
+                    onComplete("")
                     
                     return
                 }
                 
-                onComplete(lastPurchasedProductId)
+                onComplete(name)
             }
         }
     }
+    
+    /*
+     static func setProductId(_ userId: String, _ productId: String) { // update user with purchased product id
+     // fetch
+     let recordID = CKRecord.ID.init(recordName: userId)
+     
+     let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
+     db.fetch(withRecordID: recordID) { (record, error) in
+     if let _ = error {
+     print(#function, "User Record not found")
+     
+     return
+     }
+     
+     if let record = record {
+     // print("User Record found")
+     
+     if record["valid"] as! Int64 == 100 { // valid
+     record["lastPurchasedProductId"] = productId as String
+     
+     // save
+     db.save(record) { (record, error) in
+     if let error = error {
+     print(#function, error)
+     
+     return
+     }
+     
+     if let _ = record {
+     print("User Record updated with purchased product id")
+     }
+     }
+     }
+     }
+     }
+     }
+     */
+    /*
+     static func getProductId(_ userId: String, onComplete: @escaping ((_ productId: String) -> Void)) {
+     let recordID = CKRecord.ID.init(recordName: userId)
+     
+     CKContainer(identifier: Static.containerId).publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
+     if let _ = error {
+     print(#function, "User Record not found")
+     
+     return
+     }
+     
+     if let record = record {
+     guard let lastPurchasedProductId = record["lastPurchasedProductId"] as? String else {
+     print(#function, "lastPurchasedProductId error")
+     
+     return
+     }
+     
+     onComplete(lastPurchasedProductId)
+     }
+     }
+     }
+     */
     
     static func getFreeTrialCount(_ userId: String, onComplete: @escaping ((_ freeTrialCount: Int64) -> Void)) {
         let recordID = CKRecord.ID.init(recordName: userId)

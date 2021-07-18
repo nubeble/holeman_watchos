@@ -1051,7 +1051,7 @@ struct CourseListView: View {
                     let distance = coordinate1.distance(from: coordinate2) // result is in meters
                     print(#function, "distance", distance)
                     
-                    if distance < 300000 { // 3 km // ToDo: internal test
+                    if distance < 3000 { // 3 km
                         let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
                         if result == true {
                             withAnimation {

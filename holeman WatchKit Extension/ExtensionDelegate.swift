@@ -114,26 +114,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             }
         }
         
-        // CKNotification noti;
-        
-        
-        
-        
-        /*
-         
-         let info : NSDictionary! = userInfo as! NSDictionary
-         
-         if info != nil
-         {
-         let aps = info["aps"] as? NSDictionary
-         UserDefaults.standard.set(aps, forKey: "aps")
-         }*/
-        
-        
-        // ToDo: call fetchCompletionHandler
-        // You should call the fetchCompletionHandler as soon as you're finished performing that operation, so the system can accurately estimate its power and data cost.
-        
-        // completionHandler(.failed)
         completionHandler(.newData)
     }
 }

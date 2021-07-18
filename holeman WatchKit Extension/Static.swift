@@ -26,7 +26,7 @@ struct Static {
      ]
      */
     
-    // ToDo: debug
+    // ToDo: debug location
     // (골드그린)
     // static let __lat = 1.753586614270796
     // static let __lon = -2.033034733589
