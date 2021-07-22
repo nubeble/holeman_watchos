@@ -68,7 +68,7 @@ struct IntroView: View {
         } else if self.mode == 0 {
             
             VStack {
-                Text(text1).font(.system(size: 24)).fontWeight(.medium).opacity(text1Opacity)
+                Text(self.text1).font(.system(size: 24)).fontWeight(.medium).opacity(self.text1Opacity)
             }
             .onAppear {
                 
@@ -99,8 +99,8 @@ struct IntroView: View {
             
             ZStack {
                 VStack {
-                    Text(text2).font(.system(size: 24)).fontWeight(.medium).opacity(text2Opacity)
-                    Text(text3).font(.system(size: 24)).fontWeight(.medium).opacity(text3Opacity)
+                    Text(self.text2).font(.system(size: 24)).fontWeight(.medium).opacity(self.text2Opacity)
+                    Text(self.text3).font(.system(size: 24)).fontWeight(.medium).opacity(self.text3Opacity)
                 }
                 
                 VStack {
@@ -130,7 +130,7 @@ struct IntroView: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                     .padding(.bottom, 10)
-                    .opacity(button1Opacity)
+                    .opacity(self.button1Opacity)
                 } // VStack
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)

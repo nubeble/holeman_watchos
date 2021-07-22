@@ -45,17 +45,6 @@ struct MainView: View {
             
             let distance = coordinate1.distance(from: coordinate2) // result is in meters
             
-            /*
-             // ToDo: internal test (distance)
-             // print(distance)
-             distance = distance - 289642 + 380 // 매탄동
-             // distance = distance - 307348 + 380 // 우면동
-             if distance < 0 {
-             distance *= -1
-             }
-             */
-            
-            // var returnValue: Double = 0
             var returnValue: Int = 0
             if self.distanceUnit == 0 {
                 // returnValue = round(distance * 10) / 10
@@ -70,8 +59,8 @@ struct MainView: View {
                 if returnValue > 999 { returnValue = 999 }
             }
             
-            return "\(returnValue)" // never come here
-        } else {
+            return "\(returnValue)"
+        } else { // never come here
             return "0"
         }
     }
@@ -1291,8 +1280,7 @@ struct MainView: View {
         
         // ToDo: 2021-03-15 hole pass check
         // 1. 현재 홀에 있는지 확인
-        let stillIn = stillInCurrentHole(distance)
-        if stillIn == false { // 현재 홀을 벗어났다면
+        if stillInCurrentHole(distance) == false { // 현재 홀을 벗어났다면
             // 2. currentHoleNumber+1 부터 한 바퀴까지 돌면서 각 홀에 있는지 체크
             let number = findHole(coordinate1)
             // print(#function, "found hole number", number)
@@ -1311,23 +1299,18 @@ struct MainView: View {
             
             // Consider: 현재 홀을 벗어나고 다음 홀을 찾지 못하면? 현재는 그냥 현재 홀에 계속 머문다.
         } else {
-            let result = checkHolePass(distance)
-            if result == true {
-                if (self.holeNumber! % 9) == 0 {
-                    // 9홀 종료
+            if checkHolePass(distance) == true {
+                if checkLastHole() == true {
+                    // 전반 또는 후반 종료
+                    
+                    if Global.halftime == 1 { saveHole(2) } // 전반 종료
+                    else { saveHole(4) } // 후반 종료
                     
                     if Global.halftime == 1 {
-                        // 전반 종료
-                        
-                        saveHole(2)
-                    } else if Global.halftime == 2 {
-                        // 후반 종료
-                        
-                        saveHole(4)
+                        moveToHoleSearchView(200)
+                    } else {
+                        moveToHoleSearchView(300)
                     }
-                    
-                    if Global.halftime == 1 { moveToHoleSearchView(200) }
-                    else if Global.halftime == 2 { moveToHoleSearchView(300) }
                 } else {
                     // 일반 홀 종료. 다음 홀로 이동
                     
@@ -1393,6 +1376,27 @@ struct MainView: View {
         default:
             return false
         }
+    }
+    
+    func checkLastHole() -> Bool {
+        let number = self.holeNumber!
+        
+        let courses = self.course?.courses
+        
+        for course in courses! {
+            let start = course.range[0]
+            let end = course.range[1]
+            
+            if start <= number && number <= end {
+                if number == end {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        }
+        
+        return false
     }
     
     func stillInCurrentHole(_ distance: Double) -> Bool {
@@ -1467,38 +1471,27 @@ struct MainView: View {
     }
     
     func findHole(_ coordinate: CLLocation) -> Int {
-        // print(#function, "sensors count", self.sensors.count, self.holeNumber!)
+        let number = self.holeNumber!
         
-        if let number = self.holeNumber {
-            let count = self.sensors.count
+        let count = self.sensors.count
+        
+        for i in 0..<count {
+            var index = number + i // 다음 홀 index
             
-            for i in 0..<count {
-                var index = number + i // 다음 홀 index
-                
-                if index >= self.sensors.count {
-                    index = index - self.sensors.count
-                }
-                
-                let result = inHole(index, coordinate)
-                if result == true {
-                    return (index + 1) // 다음 홀 number
-                }
+            if index >= self.sensors.count {
+                index = index - self.sensors.count
             }
             
-            // return (number + 1)
-            /*
-             var number2 = number + 1 // 다음 홀 number
-             let count2 = self.teeingGroundInfo?.holes.count
-             if number2 > count2! {
-             number2 = number2 - count2!
-             }
-             
-             return number2
-             */
-            return 0
-        } else { // never come here
-            return 0
+            if inHole(index, coordinate) == true {
+                let n = index + 1 // 다음 홀 number
+                
+                print(#function, "hole number", n)
+                
+                return n
+            }
         }
+        
+        return 0
     }
     
     func saveHole(_ halftime: Int) {

@@ -404,7 +404,7 @@ struct CourseListView: View {
              .foregroundColor(.green)
              } else {
              Button(action: {
-             // ToDo: Purchase particular ILO product
+             // Purchase particular ILO product
              }) {
              Text("Buy for \(product.price) $") // 4
              }

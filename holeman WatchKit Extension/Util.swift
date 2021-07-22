@@ -421,7 +421,8 @@ struct Util {
         
         let index = title.firstIndex(of: " ")
         let index2 = title.index(index!, offsetBy: 1)
-        let index3 = title.index(index!, offsetBy: 2)
+        // let index3 = title.index(index!, offsetBy: 2)
+        let index3 = Util.getSuffixIndex(title)
         
         let courseName = title[title.startIndex..<index!]
         let holeNumber = title[index2..<index3]
@@ -431,6 +432,27 @@ struct Util {
         titles.append(holeNumber + "번 홀")
         
         return titles
+    }
+    
+    static func getSuffixIndex(_ str: String) -> String.Index {
+        if let range1 = str.range(of: "ST") {
+            return range1.lowerBound
+        } else {
+            if let range2 = str.range(of: "ND") {
+                return range2.lowerBound
+            } else {
+                if let range3 = str.range(of: "RD") {
+                    return range3.lowerBound
+                } else {
+                    if let range4 = str.range(of: "TH") {
+                        return range4.lowerBound
+                    } else {
+                        // N/A
+                        return str.index(str.firstIndex(of: " ")!, offsetBy: 2)
+                    }
+                }
+            }
+        }
     }
     
     static func getMaxValue(_ list: [Int]) -> Int {
