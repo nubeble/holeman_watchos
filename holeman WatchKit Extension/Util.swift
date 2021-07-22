@@ -408,7 +408,8 @@ struct Util {
         
         let index = title.firstIndex(of: " ")
         let index2 = title.index(index!, offsetBy: 1)
-        let index3 = title.index(index!, offsetBy: 2)
+        // let index3 = title.index(index!, offsetBy: 2)
+        let index3 = Util.getSuffixIndex(title)
         
         let courseName = title[title.startIndex..<index!]
         let holeNumber = title[index2..<index3]

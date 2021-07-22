@@ -201,13 +201,13 @@
 		5130AA064D336B415AEFDD0F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B923CCB52546AC3400E09B40 /* CloudKit.framework */,
+				5292857C5D6C05E66F95BBC5 /* Pods_holeman_WatchKit_App.framework */,
+				00D7FDA89E2D64FA64417793 /* Pods_holeman_WatchKit_Extension.framework */,
+				65B35E43AAEA6C2CB3023E89 /* Pods_holeman.framework */,
 				B908DDD925E40290005DB11F /* StoreKit.framework */,
 				B98FF37625504DDC00CA1ECA /* UserNotifications.framework */,
 				B98FF37825504E4F00CA1ECA /* UserNotifications.framework */,
-				B923CCB52546AC3400E09B40 /* CloudKit.framework */,
-				65B35E43AAEA6C2CB3023E89 /* Pods_holeman.framework */,
-				5292857C5D6C05E66F95BBC5 /* Pods_holeman_WatchKit_App.framework */,
-				00D7FDA89E2D64FA64417793 /* Pods_holeman_WatchKit_Extension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -215,12 +215,12 @@
 		7C33865F025B4664086AD7F9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5E66D5973B3B1F1CAD64765A /* Pods-holeman.debug.xcconfig */,
-				64ACAFA693CB2A20AD144575 /* Pods-holeman.release.xcconfig */,
 				C700C7FE490DB195F77C2FD8 /* Pods-holeman WatchKit App.debug.xcconfig */,
 				42B5662824151ECF255B3E20 /* Pods-holeman WatchKit App.release.xcconfig */,
 				77B069F833FCB46B26C43952 /* Pods-holeman WatchKit Extension.debug.xcconfig */,
 				B0DF725CA6FF565437AAEB9B /* Pods-holeman WatchKit Extension.release.xcconfig */,
+				5E66D5973B3B1F1CAD64765A /* Pods-holeman.debug.xcconfig */,
+				64ACAFA693CB2A20AD144575 /* Pods-holeman.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -228,19 +228,19 @@
 		B9AA29DA2535BA2A0057FA8D = {
 			isa = PBXGroup;
 			children = (
-				B96EFAB025EB25710045C051 /* IAPHelper.swift */,
-				B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */,
 				B923CCA8254671BF00E09B40 /* Article.swift */,
 				B923CCA6254671BF00E09B40 /* ArticleDetail.swift */,
 				B923CCA7254671BF00E09B40 /* ArticleFetcher.swift */,
 				B923CCA4254671BF00E09B40 /* ArticleRow.swift */,
-				B923CCDC2547E24D00E09B40 /* ListElement.swift */,
 				B923CCA5254671BF00E09B40 /* ArticlesView.swift */,
+				B96EFAB025EB25710045C051 /* IAPHelper.swift */,
+				B923CCDC2547E24D00E09B40 /* ListElement.swift */,
+				B98FF37125504D4700CA1ECA /* RegistrationHelper.swift */,
+				5130AA064D336B415AEFDD0F /* Frameworks */,
 				B9AA29E92535BA2A0057FA8D /* holeman WatchKit App */,
 				B9AA29F52535BA2B0057FA8D /* holeman WatchKit Extension */,
-				B9AA29E22535BA2A0057FA8D /* Products */,
 				7C33865F025B4664086AD7F9 /* Pods */,
-				5130AA064D336B415AEFDD0F /* Frameworks */,
+				B9AA29E22535BA2A0057FA8D /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -257,8 +257,8 @@
 		B9AA29E92535BA2A0057FA8D /* holeman WatchKit App */ = {
 			isa = PBXGroup;
 			children = (
-				B9AA29EA2535BA2B0057FA8D /* Assets.xcassets */,
 				B9AA29EC2535BA2B0057FA8D /* Info.plist */,
+				B9AA29EA2535BA2B0057FA8D /* Assets.xcassets */,
 			);
 			path = "holeman WatchKit App";
 			sourceTree = "<group>";
@@ -266,43 +266,43 @@
 		B9AA29F52535BA2B0057FA8D /* holeman WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				B912E90626076C1600D61969 /* holeman WatchKit ExtensionRelease.entitlements */,
 				B923CCB12546AC0800E09B40 /* holeman WatchKit ExtensionDebug.entitlements */,
-				B99531122581BE76001D5FBF /* SplashView.swift */,
-				B995311A2583094C001D5FBF /* IntroView.swift */,
-				B96885B825A9560900C046E8 /* CourseView.swift */,
-				B975BBF425AE9A8C00EFD939 /* CourseSearchView.swift */,
-				B975BBFC25B292ED00EFD939 /* HoleSearchView.swift */,
-				B9AA298225FC1C4400550AE0 /* TeeIndicator.swift */,
-				B975BBEF25AE982C00EFD939 /* CourseListView.swift */,
-				B9AA29F62535BA2B0057FA8D /* ContentView.swift */,
-				B92DB5092569F84000511383 /* MainView.swift */,
-				B9AD0F9925CE21A500CE247B /* ProgressBar.swift */,
-				B91AB1FC25CA85EC0050B157 /* TeeView.swift */,
-				B9AD0F8625CC160400CE247B /* HoleView.swift */,
-				B92A41DC25D4C5840067F39B /* MenuView.swift */,
-				B956D2E7256031E00056007B /* HomeView.swift */,
-				B9AA29F82535BA2B0057FA8D /* holemanApp.swift */,
-				B9AA29FA2535BA2B0057FA8D /* ComplicationController.swift */,
-				B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */,
-				B95329F2262D159D00C06B69 /* InterfaceController.swift */,
-				B923CCD72547E1B500E09B40 /* CloudManager.swift */,
-				B956D2F525609A0E0056007B /* LocationManager.swift */,
-				B92DB504256409E100511383 /* CompassHeading.swift */,
-				B95C909425E3C0FC00315DF2 /* StoreManager.swift */,
-				B9EA9D6A2609E48400B5FE52 /* Configuration.storekit */,
-				B975BC0925B8E7F800EFD939 /* Util.swift */,
-				B9AD0F9425CE0E9700CE247B /* Global.swift */,
-				B9E5249225F3569A00C93741 /* Static.swift */,
-				B975BC0125B2963200EFD939 /* CourseModel.swift */,
-				B9AD0F9E25CE4EBF00CE247B /* CourseData.swift */,
-				B975BC1125BEDECD00EFD939 /* TeeingGroundInfoModel.swift */,
-				B925136225D00B79006EEC0A /* TeeingGroundData.swift */,
-				B975BC1625C0028E00EFD939 /* HoleModel.swift */,
-				B91AB1E225C4E44A0050B157 /* SensorModel.swift */,
-				B9BACF46256CB7DD00F7B07D /* Course.swift */,
-				B9AA29FC2535BA2B0057FA8D /* Assets.xcassets */,
+				B912E90626076C1600D61969 /* holeman WatchKit ExtensionRelease.entitlements */,
 				B9AA2A012535BA2B0057FA8D /* Info.plist */,
+				B9EA9D6A2609E48400B5FE52 /* Configuration.storekit */,
+				B923CCD72547E1B500E09B40 /* CloudManager.swift */,
+				B92DB504256409E100511383 /* CompassHeading.swift */,
+				B9AA29FA2535BA2B0057FA8D /* ComplicationController.swift */,
+				B9AA29F62535BA2B0057FA8D /* ContentView.swift */,
+				B9BACF46256CB7DD00F7B07D /* Course.swift */,
+				B9AD0F9E25CE4EBF00CE247B /* CourseData.swift */,
+				B975BBEF25AE982C00EFD939 /* CourseListView.swift */,
+				B975BC0125B2963200EFD939 /* CourseModel.swift */,
+				B975BBF425AE9A8C00EFD939 /* CourseSearchView.swift */,
+				B96885B825A9560900C046E8 /* CourseView.swift */,
+				B98FF39725536D4E00CA1ECA /* ExtensionDelegate.swift */,
+				B9AD0F9425CE0E9700CE247B /* Global.swift */,
+				B9AA29F82535BA2B0057FA8D /* holemanApp.swift */,
+				B975BC1625C0028E00EFD939 /* HoleModel.swift */,
+				B975BBFC25B292ED00EFD939 /* HoleSearchView.swift */,
+				B9AD0F8625CC160400CE247B /* HoleView.swift */,
+				B956D2E7256031E00056007B /* HomeView.swift */,
+				B95329F2262D159D00C06B69 /* InterfaceController.swift */,
+				B995311A2583094C001D5FBF /* IntroView.swift */,
+				B956D2F525609A0E0056007B /* LocationManager.swift */,
+				B92DB5092569F84000511383 /* MainView.swift */,
+				B92A41DC25D4C5840067F39B /* MenuView.swift */,
+				B9AD0F9925CE21A500CE247B /* ProgressBar.swift */,
+				B91AB1E225C4E44A0050B157 /* SensorModel.swift */,
+				B99531122581BE76001D5FBF /* SplashView.swift */,
+				B9E5249225F3569A00C93741 /* Static.swift */,
+				B95C909425E3C0FC00315DF2 /* StoreManager.swift */,
+				B9AA298225FC1C4400550AE0 /* TeeIndicator.swift */,
+				B925136225D00B79006EEC0A /* TeeingGroundData.swift */,
+				B975BC1125BEDECD00EFD939 /* TeeingGroundInfoModel.swift */,
+				B91AB1FC25CA85EC0050B157 /* TeeView.swift */,
+				B975BC0925B8E7F800EFD939 /* Util.swift */,
+				B9AA29FC2535BA2B0057FA8D /* Assets.xcassets */,
 				B9AA29FE2535BA2B0057FA8D /* Preview Content */,
 			);
 			path = "holeman WatchKit Extension";
@@ -715,7 +715,7 @@
 				CODE_SIGN_ENTITLEMENTS = "holeman WatchKit Extension/holeman WatchKit ExtensionDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				ENABLE_PREVIEWS = YES;
@@ -745,7 +745,7 @@
 				CODE_SIGN_ENTITLEMENTS = "holeman WatchKit Extension/holeman WatchKit ExtensionRelease.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				ENABLE_PREVIEWS = YES;
@@ -776,7 +776,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
@@ -801,7 +801,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
@@ -823,8 +823,9 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
+				INFOPLIST_FILE = Info.plist;
 				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman;
 				PRODUCT_NAME = Holeman;
@@ -840,8 +841,9 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
+				INFOPLIST_FILE = Info.plist;
 				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman;
 				PRODUCT_NAME = Holeman;

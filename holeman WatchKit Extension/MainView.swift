@@ -314,9 +314,9 @@ struct MainView: View {
                 let name = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
                 
                 self.message1 = title
-                if title.count >= 14 {
-                    self.message1FontSize = 22
-                }
+                if title.count >= 14 { self.message1FontSize = 22 }
+                if title.count >= 16 { self.message1FontSize = 20 }
+                
                 self.message2 = name
             })
             
