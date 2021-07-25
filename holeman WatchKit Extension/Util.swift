@@ -302,7 +302,7 @@ struct Util {
     
     /*
      // static func purchasedAll() -> Bool { // check if the last purchased product id is 99
-     static func purchasedAll(onComplete: @escaping ((_ result: Bool) -> Void)) {
+     static func purchasedAll(onCompletion: @escaping ((_ result: Bool) -> Void)) {
      // check UserDefaults
      let id = UserDefaults.standard.string(forKey: "IAP_PRODUCT_ID") // last purchased product id
      print(#function, "IAP_PRODUCT_ID", id)
@@ -313,9 +313,9 @@ struct Util {
      print(#function, "num", num)
      
      if String(num) == "99" {
-     onComplete(true)
+     onCompletion(true)
      } else {
-     onComplete(false)
+     onCompletion(false)
      }
      } else {
      // check CloudKit
@@ -325,25 +325,25 @@ struct Util {
      print(#function, "last purchased product id", productId)
      
      if productId == "" {
-     onComplete(false)
+     onCompletion(false)
      } else {
      if productId == "99" {
-     onComplete(true)
+     onCompletion(true)
      } else {
-     onComplete(false)
+     onCompletion(false)
      }
      }
      }
      
      } else { // never come here
-     onComplete(false)
+     onCompletion(false)
      }
      }
      }
      */
     
     /*
-     static func getProductId(onComplete: @escaping ((_ productId: String) -> Void)) {
+     static func getProductId(onCompletion: @escaping ((_ productId: String) -> Void)) {
      // check UserDefaults
      let id = UserDefaults.standard.string(forKey: "IAP_PRODUCT_ID") // last purchased product id
      print(#function, "IAP_PRODUCT_ID", id)
@@ -365,7 +365,7 @@ struct Util {
      // print(#function, "nextNumber", nextNumber)
      
      let nextId = "com.nubeble.holeman.iap.course." + String(nextNumber)
-     onComplete(nextId)
+     onCompletion(nextId)
      } else {
      // check CloudKit
      
@@ -377,15 +377,15 @@ struct Util {
      
      if productId == "" {
      let nextId = "com.nubeble.holeman.iap.course.1"
-     onComplete(nextId)
+     onCompletion(nextId)
      } else {
-     onComplete(productId)
+     onCompletion(productId)
      }
      }
      
      } else { // never come here
      let nextId = "com.nubeble.holeman.iap.course.1"
-     onComplete(nextId)
+     onCompletion(nextId)
      }
      }
      }

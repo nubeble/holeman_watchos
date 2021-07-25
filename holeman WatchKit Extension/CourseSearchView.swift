@@ -442,8 +442,9 @@ struct CourseSearchView: View {
                         HStack(spacing: 40) {
                             // button 1
                             Button(action: {
+                                // go back
                                 withAnimation {
-                                    self.mode = 10 // go back
+                                    self.mode = 10
                                 }
                             }) {
                                 ZStack {
@@ -818,17 +819,28 @@ struct CourseSearchView: View {
             let locationManager = LocationManager()
             
             // --
-            var runCount = 0
-            
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                runCount += 1
-                print(#function, "Timer fired #\(runCount)")
-                
-                if let location = locationManager.lastLocation {
-                    // print("Timer stopped")
-                    timer.invalidate()
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
+                if let status = locationManager.locationStatus {
+                    // timer1.invalidate()
                     
-                    self.getCountryCode(location: location)
+                    if status == .authorizedWhenInUse || status == .authorizedAlways {
+                        timer1.invalidate()
+                        
+                        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
+                            if let location = locationManager.lastLocation {
+                                timer2.invalidate()
+                                
+                                self.getCountryCode(location: location)
+                            }
+                        }
+                    } else if status == .denied {
+                        timer1.invalidate()
+                        
+                        // go back
+                        withAnimation {
+                            self.mode = 10
+                        }
+                    }
                 }
             }
             // --
@@ -887,7 +899,7 @@ struct CourseSearchView: View {
         }
     }
     
-    func findNearbyCourse(_ location: CLLocation, onComplete: @escaping (_ result: Bool) -> Void) {
+    func findNearbyCourse(_ location: CLLocation, onCompletion: @escaping (_ result: Bool) -> Void) {
         let lat = location.coordinate.latitude - Static.__lat
         let lon = location.coordinate.longitude - Static.__lon
         let __lo = CLLocation(latitude: lat, longitude: lon)
@@ -985,7 +997,7 @@ struct CourseSearchView: View {
                 if count == 0 {
                     print(#function, "no course nearby. try again in 3 seconds")
                     
-                    onComplete(false)
+                    onCompletion(false)
                 } else if count == 1 {
                     self.selectedCourseIndex = 0
                     
@@ -1000,7 +1012,7 @@ struct CourseSearchView: View {
                         self.mode = 1
                     }
                     
-                    onComplete(true)
+                    onCompletion(true)
                 }
             } else {
                 // N/A

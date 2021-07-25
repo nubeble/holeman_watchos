@@ -87,7 +87,7 @@ struct CloudManager {
          */
     }
     
-    static func deleteAllSubscriptions(subscriptions: [CKSubscription], onComplete: @escaping ((Int) -> Void)) {
+    static func deleteAllSubscriptions(subscriptions: [CKSubscription], onCompletion: @escaping ((Int) -> Void)) {
         let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
         
         var index: Int = 0
@@ -120,13 +120,13 @@ struct CloudManager {
                 }
                 
                 if index == subscriptions.count {
-                    onComplete(index)
+                    onCompletion(index)
                 }
             })
         } // for
     }
     
-    static func saveSubscription(_ type: String, _ id: Int64, onComplete: @escaping ((String) -> Void)) {
+    static func saveSubscription(_ type: String, _ id: Int64, onCompletion: @escaping ((String) -> Void)) {
         // create subscription
         // predicate: You can customize this to only get notified when particular records are changed.
         
@@ -156,7 +156,7 @@ struct CloudManager {
             if let subscription = subscription {
                 print("success on saving subscription.")
                 
-                onComplete(subscription.subscriptionID)
+                onCompletion(subscription.subscriptionID)
             }
         }
     }
@@ -239,7 +239,7 @@ struct CloudManager {
      }
      */
     
-    static func fetchNearbyLocations(_ countryCode: String, _ location: CLLocation, onComplete: @escaping (_ records: [CKRecord]?) -> Void) {
+    static func fetchNearbyLocations(_ countryCode: String, _ location: CLLocation, onCompletion: @escaping (_ records: [CKRecord]?) -> Void) {
         print(#function)
         
         let radiusInKilometers = 3 // 3 km
@@ -265,12 +265,12 @@ struct CloudManager {
             if let records = records {
                 print(#function, records)
                 
-                onComplete(records)
+                onCompletion(records)
             }
         }
     }
     
-    static func fetchAllCourses(_ countryCode: String, onComplete: @escaping (_ records: [CKRecord]?) -> Void) {
+    static func fetchAllCourses(_ countryCode: String, onCompletion: @escaping (_ records: [CKRecord]?) -> Void) {
         let p = NSPredicate(format: "countryCode = %@", countryCode)
         let query = CKQuery(recordType: "Course", predicate: p)
         query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
@@ -285,13 +285,13 @@ struct CloudManager {
             if let records = records {
                 // print("#function", records)
                 
-                onComplete(records)
+                onCompletion(records)
             }
         }
     }
     
-    // static func getHoles(_ groupId: Int64, onComplete: @escaping (_ records:[CKRecord]?) -> Void) {
-    static func getHoles(_ groupId: Int64, onComplete: @escaping (_ record: CKRecord?) -> Void) {
+    // static func getHoles(_ groupId: Int64, onCompletion: @escaping (_ records:[CKRecord]?) -> Void) {
+    static func getHoles(_ groupId: Int64, onCompletion: @escaping (_ record: CKRecord?) -> Void) {
         
         /*
          let p = NSPredicate(format: "id = %d", groupId)
@@ -305,7 +305,7 @@ struct CloudManager {
          }
          } else {
          // print(records)
-         onComplete(records)
+         onCompletion(records)
          }
          }
          */
@@ -323,12 +323,12 @@ struct CloudManager {
             if let record = record {
                 // print(#function, record)
                 
-                onComplete(record)
+                onCompletion(record)
             }
         }
     }
     
-    static func getSensor(_ groupId: Int64, _ holeNumber: Int64, onComplete: @escaping (_ record: CKRecord?) -> Void) {
+    static func getSensor(_ groupId: Int64, _ holeNumber: Int64, onCompletion: @escaping (_ record: CKRecord?) -> Void) {
         let rid = "sensor-" + String(groupId) + "-" + String(holeNumber)
         let recordID = CKRecord.ID.init(recordName: rid)
         
@@ -342,12 +342,12 @@ struct CloudManager {
             if let record = record {
                 // print("#function", record)
                 
-                onComplete(record)
+                onCompletion(record)
             }
         }
     }
     
-    static func getSensors(_ groupId: Int64, onComplete: @escaping (_ records:[CKRecord]?) -> Void) {
+    static func getSensors(_ groupId: Int64, onCompletion: @escaping (_ records:[CKRecord]?) -> Void) {
         let p = NSPredicate(format: "id = %d", groupId)
         let query = CKQuery(recordType: "Sensor", predicate: p)
         query.sortDescriptors = [NSSortDescriptor(key: "holeNumber", ascending: true)]
@@ -362,7 +362,7 @@ struct CloudManager {
             if let records = records {
                 // print(#function, records) // sorted by holeNumber
                 
-                onComplete(records)
+                onCompletion(records)
             }
         }
     }
@@ -518,7 +518,7 @@ struct CloudManager {
         }
     }
     
-    static func removeUser(_ id: String, onComplete: @escaping ((Int) -> Void)) { // update: fetch + save
+    static func removeUser(_ id: String, onCompletion: @escaping ((Int) -> Void)) { // update: fetch + save
         // fetch
         let recordID = CKRecord.ID.init(recordName: id)
         
@@ -547,21 +547,21 @@ struct CloudManager {
                     if let _ = record {
                         print(#function, "success on saving user.")
                         
-                        onComplete(1)
+                        onCompletion(1)
                     }
                 }
             }
         }
     }
     
-    static func getUserName(_ userId: String, onComplete: @escaping ((_ name: String) -> Void)) {
+    static func getUserName(_ userId: String, onCompletion: @escaping ((_ name: String) -> Void)) {
         let recordID = CKRecord.ID.init(recordName: userId)
         
         CKContainer(identifier: Static.containerId).publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
             if let _ = error {
                 print(#function, "User Record not found")
                 
-                onComplete("")
+                onCompletion("")
                 
                 return
             }
@@ -570,12 +570,12 @@ struct CloudManager {
                 guard let name = record["name"] as? String else {
                     print(#function, "name error")
                     
-                    onComplete("")
+                    onCompletion("")
                     
                     return
                 }
                 
-                onComplete(name)
+                onCompletion(name)
             }
         }
     }
@@ -617,7 +617,7 @@ struct CloudManager {
      }
      */
     /*
-     static func getProductId(_ userId: String, onComplete: @escaping ((_ productId: String) -> Void)) {
+     static func getProductId(_ userId: String, onCompletion: @escaping ((_ productId: String) -> Void)) {
      let recordID = CKRecord.ID.init(recordName: userId)
      
      CKContainer(identifier: Static.containerId).publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
@@ -634,13 +634,13 @@ struct CloudManager {
      return
      }
      
-     onComplete(lastPurchasedProductId)
+     onCompletion(lastPurchasedProductId)
      }
      }
      }
      */
     
-    static func getFreeTrialCount(_ userId: String, onComplete: @escaping ((_ freeTrialCount: Int64) -> Void)) {
+    static func getFreeTrialCount(_ userId: String, onCompletion: @escaping ((_ freeTrialCount: Int64) -> Void)) {
         let recordID = CKRecord.ID.init(recordName: userId)
         
         CKContainer(identifier: Static.containerId).publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
@@ -657,7 +657,7 @@ struct CloudManager {
                     return
                 }
                 
-                onComplete(freeTrialCount)
+                onCompletion(freeTrialCount)
             }
         }
     }
@@ -697,7 +697,7 @@ struct CloudManager {
         }
     }
     
-    static func checkFreeTrialCount(_ userId: String, onComplete: @escaping ((_ freeTrialCount: Int64) -> Void)) { // get & update
+    static func checkFreeTrialCount(_ userId: String, onCompletion: @escaping ((_ freeTrialCount: Int64) -> Void)) { // get & update
         let recordID = CKRecord.ID.init(recordName: userId)
         
         let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
@@ -732,9 +732,9 @@ struct CloudManager {
                         }
                     }
                     
-                    onComplete(freeTrialCount)
+                    onCompletion(freeTrialCount)
                 } else {
-                    onComplete(10) // never come here
+                    onCompletion(10) // never come here
                 }
             }
         }

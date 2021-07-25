@@ -27,8 +27,9 @@ struct IntroView: View {
     
     
     @State var textMessage: String = ""
+    @State var textMessage2: String = ""
     
-    @State var onComplete: ((Bool) -> Void)?
+    @State var onCompletion: ((Bool) -> Void)?
     
     @State var name: String?
     
@@ -71,7 +72,6 @@ struct IntroView: View {
                 Text(self.text1).font(.system(size: 24)).fontWeight(.medium).opacity(self.text1Opacity)
             }
             .onAppear {
-                
                 withAnimation(.easeInOut(duration: 1), {
                     self.text1Opacity = 1
                 })
@@ -173,92 +173,113 @@ struct IntroView: View {
                 VStack {
                     Spacer().frame(maxHeight: .infinity)
                     
-                    SignInWithAppleButton(.signIn) { request in
-                        request.requestedScopes = [.fullName, .email]
-                    }
-                    onCompletion: { result in
-                        switch result {
-                        case .success(let authResults):
-                            print("Authorisation successful", authResults)
-                            
-                            guard let credential = authResults.credential as? ASAuthorizationAppleIDCredential, let identityToken = credential.identityToken, let identityTokenString = String(data: identityToken, encoding: .utf8) else { return }
-                            
-                            // let body = ["appleIdentityToken": identityTokenString]
-                            // guard let jsonData = try? JSONEncoder().encode(body) else { return }
-                            
-                            print(#function, "credential", credential)
-                            // This is where you'd fire an API request to your server to authenticate with the identity token attached in the request headers.
-                            
-                            // get fullName, email
-                            let userIdentifier = credential.user
-                            print(#function, "user", userIdentifier)
-                            
-                            var name: String = "noname"
-                            if let fullName = credential.fullName {
-                                let firstName = fullName.givenName ?? ""
-                                let lastName = fullName.familyName ?? ""
-                                
-                                if firstName.count > 0 {
-                                    if lastName.count > 0 {
-                                        name = firstName + " " + lastName
-                                    } else {
-                                        name = firstName
-                                    }
-                                } else {
-                                    if let nickname = fullName.nickname {
-                                        name = nickname
-                                    } else {
-                                        name = "noname"
-                                    }
-                                }
-                            }
-                            
-                            // self.name = name
-                            
-                            let email: String = credential.email ?? "noemail"
-                            
-                            
-                            
-                            if name == "noname" {
-                                // load from DB
-                                CloudManager.getUserName(userIdentifier) { userName in
-                                    var __name = userName
-                                    
-                                    if __name == "" {
-                                        __name = "noname"
-                                    } else {
-                                        self.name = __name
-                                    }
-                                    
-                                    CloudManager.saveUser(userIdentifier, __name, email)
-                                    
-                                    UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
-                                    
-                                    Global.userId = userIdentifier
-                                    
-                                    self.mode = 4 // move to welcome
-                                }
-                            } else {
-                                self.name = name
-                                
-                                CloudManager.saveUser(userIdentifier, name, email)
-                                
-                                UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
-                                
-                                Global.userId = userIdentifier
-                                
-                                self.mode = 4 // move to welcome
-                            }
-                        case .failure (let error):
-                            print("Authorisation failed: \(error.localizedDescription)")
-                        }
-                    }
-                    // .signInWithAppleButtonStyle(.black) // black button
-                    // .signInWithAppleButtonStyle(.white) // white button
-                    .signInWithAppleButtonStyle(.whiteOutline) // white with border
-                    // .frame(width: .infinity, height: 30)
-                    // .frame(width: 100, height: 30)
-                    .frame(height: 30)
+                    SignInWithAppleButton(.signIn,
+                                          onRequest: { request in
+                                            request.requestedScopes = [.fullName, .email]
+                                          },
+                                          onCompletion: { result in
+                                            self.mode = 5
+                                            
+                                            switch result {
+                                            case .success(let authResults):
+                                                print("Authorization successful", authResults)
+                                                
+                                                guard let credential = authResults.credential as? ASAuthorizationAppleIDCredential, let identityToken = credential.identityToken, let identityTokenString = String(data: identityToken, encoding: .utf8) else { return }
+                                                
+                                                // let body = ["appleIdentityToken": identityTokenString]
+                                                // guard let jsonData = try? JSONEncoder().encode(body) else { return }
+                                                
+                                                print(#function, "credential", credential)
+                                                // This is where you'd fire an API request to your server to authenticate with the identity token attached in the request headers.
+                                                
+                                                // get fullName, email
+                                                let userIdentifier = credential.user
+                                                print(#function, "user", userIdentifier)
+                                                
+                                                var name: String = "noname"
+                                                if let fullName = credential.fullName {
+                                                    let firstName = fullName.givenName ?? ""
+                                                    let lastName = fullName.familyName ?? ""
+                                                    
+                                                    if firstName.count > 0 {
+                                                        if lastName.count > 0 {
+                                                            name = firstName + " " + lastName
+                                                        } else {
+                                                            name = firstName
+                                                        }
+                                                    } else {
+                                                        if let nickname = fullName.nickname {
+                                                            name = nickname
+                                                        } else {
+                                                            name = "noname"
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                // self.name = name
+                                                
+                                                let email: String = credential.email ?? "noemail"
+                                                
+                                                
+                                                
+                                                if name == "noname" {
+                                                    // load from DB
+                                                    CloudManager.getUserName(userIdentifier) { userName in
+                                                        var __name = userName
+                                                        
+                                                        if __name == "" {
+                                                            __name = "noname"
+                                                        } else {
+                                                            self.name = __name
+                                                        }
+                                                        
+                                                        CloudManager.saveUser(userIdentifier, __name, email)
+                                                        
+                                                        UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
+                                                        
+                                                        Global.userId = userIdentifier
+                                                        
+                                                        // move to welcome
+                                                        withAnimation {
+                                                            self.mode = 4
+                                                        }
+                                                    }
+                                                } else {
+                                                    self.name = name
+                                                    
+                                                    CloudManager.saveUser(userIdentifier, name, email)
+                                                    
+                                                    UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
+                                                    
+                                                    Global.userId = userIdentifier
+                                                    
+                                                    // move to welcome
+                                                    withAnimation {
+                                                        self.mode = 4
+                                                    }
+                                                }
+                                            case .failure (let error):
+                                                print("Authorisation failed: \(error.localizedDescription)")
+                                                
+                                                // show wait message
+                                                withAnimation(.linear(duration: 0.5)) {
+                                                    self.textMessage2 = "잠시 후 다시 시도해주세요."
+                                                }
+                                                
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                                    withAnimation {
+                                                        self.mode = 2
+                                                    }
+                                                }
+                                                
+                                            }
+                                          })
+                        // .signInWithAppleButtonStyle(.black) // black button
+                        // .signInWithAppleButtonStyle(.white) // white button
+                        .signInWithAppleButtonStyle(.whiteOutline) // white with border
+                        // .frame(width: .infinity, height: 30)
+                        // .frame(width: 100, height: 30)
+                        .frame(height: 30)
                 }
             }
             
@@ -279,6 +300,22 @@ struct IntroView: View {
                     withAnimation {
                         self.mode = 3
                     }
+                }
+            }
+            
+        } else if self.mode == 5 { // loading indicator
+            
+            ZStack {
+                ProgressView()
+                    .scaleEffect(1.2, anchor: .center)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                
+                VStack {
+                    Spacer()
+                    
+                    Text(self.textMessage2).font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
+                        .transition(.opacity)
+                        .id(self.textMessage2)
                 }
             }
             
@@ -460,7 +497,7 @@ struct IntroView: View {
                     Button(action: {
                         requestNotificationAuthorization() { result in
                             if result == true {
-                                if let fun = self.onComplete {
+                                if let fun = self.onCompletion {
                                     fun(true)
                                 }
                             }
@@ -494,7 +531,7 @@ struct IntroView: View {
                         if settings.authorizationStatus == .authorized {
                             print("Push notification is enabled")
                             
-                            if let fun = self.onComplete {
+                            if let fun = self.onCompletion {
                                 fun(true)
                             }
                         } else {
@@ -771,7 +808,7 @@ struct IntroView: View {
         }
     }
     
-    func requestNotificationAuthorization(onComplete: @escaping (_ result: Bool) -> Void) {
+    func requestNotificationAuthorization(onCompletion: @escaping (_ result: Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
             if let error = error {
                 // print(error.localizedDescription)
@@ -787,20 +824,20 @@ struct IntroView: View {
                     WKExtension.shared().registerForRemoteNotifications()
                 }
                 
-                onComplete(true)
+                onCompletion(true)
             } else { // denied
                 print("Permission denied")
                 
-                if self.onComplete == nil {
-                    print("self.onComplete is nil")
-                    self.onComplete = onComplete
+                if self.onCompletion == nil {
+                    print("self.onCompletion is nil")
+                    self.onCompletion = onCompletion
                     
                     // open request window
                     withAnimation {
                         self.mode = 31
                     }
                 } else {
-                    print("self.onComplete is NOT nil")
+                    print("self.onCompletion is NOT nil")
                 }
             }
         }

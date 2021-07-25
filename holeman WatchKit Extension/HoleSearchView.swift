@@ -390,7 +390,7 @@ struct HoleSearchView: View {
         }
     }
     
-    func getHoles(_ groupId: Int64, onComplete: @escaping () -> Void) {
+    func getHoles(_ groupId: Int64, onCompletion: @escaping () -> Void) {
         CloudManager.getHoles(groupId) { record in
             //if let records = records {
             //if records.count == 1 {
@@ -478,7 +478,7 @@ struct HoleSearchView: View {
                 self.teeingGroundInfo = info
                 // print("info", info)
                 
-                onComplete()
+                onCompletion()
             } else {
                 print(#function, "No record found")
             }
@@ -528,7 +528,7 @@ struct HoleSearchView: View {
         moveNext()
     }
     
-    func getSensor(_ groupId: Int64, _ holeNumber: Int64, onComplete: @escaping () -> Void) {
+    func getSensor(_ groupId: Int64, _ holeNumber: Int64, onCompletion: @escaping () -> Void) {
         print("getSensor", groupId, holeNumber)
         
         CloudManager.getSensor(groupId, holeNumber) { record in
@@ -549,7 +549,7 @@ struct HoleSearchView: View {
                 
                 self.startHoles.append(startHole)
                 
-                onComplete()
+                onCompletion()
             }
         }
     } // getHole()

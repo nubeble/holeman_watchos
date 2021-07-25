@@ -72,16 +72,7 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         self.locationStatus = status
         
-        // print(#function, statusString)
-        
-        // ToDo: detect permission change (location)
-        /*
-         if status == .authorizedWhenInUse || status == .authorizedAlways {
-         
-         } else {
-         
-         }
-         */
+        print(#function, self.statusString)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

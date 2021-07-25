@@ -940,7 +940,7 @@ struct MainView: View {
         // self.selectedIndex = self.teeingGroundIndex
     }
     
-    func getSensors(_ groupId: Int64, onComplete: @escaping () -> Void) {
+    func getSensors(_ groupId: Int64, onCompletion: @escaping () -> Void) {
         // print("getSensors", groupId)
         
         CloudManager.getSensors(groupId) { records in
@@ -958,7 +958,7 @@ struct MainView: View {
                     
                     self.sensors.append(sensor)
                     
-                    onComplete()
+                    onCompletion()
                 }
             } else {
                 // N/A
