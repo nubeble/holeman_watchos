@@ -900,8 +900,6 @@ struct CourseSearchView: View {
     }
     
     func getCountryCode(location: CLLocation) {
-        print(#function, location)
-        
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
             // always good to check if no error
             // also we have to unwrap the placemark because it's optional

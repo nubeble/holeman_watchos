@@ -135,6 +135,52 @@ struct CourseListView: View {
                 } // ScrollView
             }
             
+        } else if self.mode == 9 { // notice
+            
+            // 알림을 허용해주세요 (Please Allow Notifications)
+            // iPhone에서 Apple Watch 앱을 열고
+            // '나의 시계' 탭 - '알림' - 'Holeman' - 알림 허용
+            
+            // ToDo: open Notification in iPhone
+            
+            ZStack {
+                VStack {
+                    // Text("위치 서비스를 켜주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text("위치 서비스를 켜주세요.").font(.system(size: 20, weight: .semibold)).padding(.top, 10)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Text("iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - 'Holeman' - '앱을 사용하는 동안' 선택").font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                }
+                
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Button(action: {
+                        // go back
+                        withAnimation {
+                            self.mode = 10
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                .frame(width: 54, height: 54)
+                            
+                            Image(systemName: "xmark")
+                                .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
+                                .font(Font.system(size: 28, weight: .heavy))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.top, 10)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            
         } else if self.mode == 10 { // go back
             
             CourseView()
@@ -793,9 +839,15 @@ struct CourseListView: View {
                     if status == .authorizedWhenInUse || status == .authorizedAlways {
                         timer1.invalidate()
                         
+                        print(#function, "1111")
+                        
                         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
+                            print(#function, "2222")
+                            
                             if let location = locationManager.lastLocation {
                                 timer2.invalidate()
+                                
+                                print(#function, "3333")
                                 
                                 self.getCountryCode(location: location)
                             }
@@ -803,9 +855,9 @@ struct CourseListView: View {
                     } else if status == .denied {
                         timer1.invalidate()
                         
-                        // go back
+                        // notice
                         withAnimation {
-                            self.mode = 10
+                            self.mode = 9
                         }
                     }
                 }
