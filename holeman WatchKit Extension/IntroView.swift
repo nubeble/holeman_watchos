@@ -488,7 +488,7 @@ struct IntroView: View {
                 }
                 
                 VStack {
-                    Text("iPhone에서 Apple Watch 앱을 열고 '나의 시계' - '알림' - 'Holeman' - 알림 허용").font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                    Text("iPhone에서 Apple Watch 앱을 열고 '나의 시계' - '알림' - 'Holeman' - '알림 허용' 선택").font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -544,6 +544,7 @@ struct IntroView: View {
                     print("Background")
                 }
             }
+            
         }
     }
     
