@@ -471,18 +471,14 @@ struct IntroView: View {
             HoleSearchView(from: self.from, search: self.search, course: self.course,
                            teeingGroundInfo: self.teeingGroundInfo, teeingGroundIndex: self.teeingGroundIndex!, greenDirection: self.greenDirection!, holeNumber: self.holeNumber!)
             
-        } else if self.mode == 31 {
-            
-            // 알림을 허용해주세요 (Please Allow Notifications)
-            // iPhone에서 Apple Watch 앱을 열고
-            // '나의 시계' 탭 - '알림' - 'Holeman' - 알림 허용
+        } else if self.mode == 31 { // notice
             
             // ToDo: open Notification in iPhone
             
             ZStack {
                 VStack {
-                    // Text("알림을 허용해주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
-                    Text("알림을 허용해주세요.").font(.system(size: 20, weight: .semibold)).padding(.top, 10)
+                    Text("Notice").font(.system(size: 20, weight: .semibold))
+                    Text("알림을 허용해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }

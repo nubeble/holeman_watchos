@@ -237,16 +237,12 @@ struct CourseSearchView: View {
             
         } else if self.mode == 9 { // notice
             
-            // 알림을 허용해주세요 (Please Allow Notifications)
-            // iPhone에서 Apple Watch 앱을 열고
-            // '나의 시계' 탭 - '알림' - 'Holeman' - 알림 허용
-            
             // ToDo: open Notification in iPhone
             
             ZStack {
                 VStack {
-                    // Text("위치 서비스를 켜주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
-                    Text("위치 서비스를 켜주세요.").font(.system(size: 20, weight: .semibold)).padding(.top, 10)
+                    Text("Notice").font(.system(size: 20, weight: .semibold))
+                    Text("위치 서비스를 켜주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -872,15 +868,9 @@ struct CourseSearchView: View {
                     if status == .authorizedWhenInUse || status == .authorizedAlways {
                         timer1.invalidate()
                         
-                        print(#function, "1111")
-                        
                         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
-                            print(#function, "2222")
-                            
                             if let location = locationManager.lastLocation {
                                 timer2.invalidate()
-                                
-                                print(#function, "3333")
                                 
                                 self.getCountryCode(location: location)
                             }

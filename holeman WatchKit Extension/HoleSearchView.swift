@@ -254,6 +254,48 @@ struct HoleSearchView: View {
                 } // ScrollView
             }
             
+        } else if self.mode == 9 { // notice
+            
+            // ToDo: open Notification in iPhone
+            
+            ZStack {
+                VStack {
+                    Text("Notice").font(.system(size: 20, weight: .semibold))
+                    Text("위치 서비스를 켜주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Text("iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - 'Holeman' - '앱을 사용하는 동안' 선택").font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                }
+                
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Button(action: {
+                        // go back
+                        withAnimation {
+                            self.mode = 10
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                .frame(width: 54, height: 54)
+                            
+                            Image(systemName: "xmark")
+                                .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
+                                .font(Font.system(size: 28, weight: .heavy))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.top, 10)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            
         } else if self.mode == 10 { // go back
             
             CourseView()
@@ -619,74 +661,86 @@ struct HoleSearchView: View {
         DispatchQueue.main.async {
             let locationManager = LocationManager()
             
-            // var runCount = 0
-            
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                // runCount += 1
-                // print(#function, "Timer fired #\(runCount)")
-                
-                if let location = locationManager.lastLocation {
-                    // print("Timer stopped")
-                    timer.invalidate()
+            // --
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
+                if let status = locationManager.locationStatus {
+                    // timer1.invalidate()
                     
-                    let latitude = location.coordinate.latitude
-                    let longitude = location.coordinate.longitude
-                    let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
-                    
-                    var list: [Int] = []
-                    
-                    for startHole in self.startHoles {
-                        let coordinate2 = CLLocation(latitude: startHole.latitude + Static.__lat, longitude: startHole.longitude + Static.__lon)
+                    if status == .authorizedWhenInUse || status == .authorizedAlways {
+                        timer1.invalidate()
                         
-                        let distance = coordinate1.distance(from: coordinate2) // result is in meters
-                        
-                        // var backTee = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
-                        var backTee = 0
-                        if let distances = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distances {
-                            backTee = Util.getMaxValue(distances)
+                        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
+                            if let location = locationManager.lastLocation {
+                                timer2.invalidate()
+                                
+                                let latitude = location.coordinate.latitude
+                                let longitude = location.coordinate.longitude
+                                let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
+                                
+                                var list: [Int] = []
+                                
+                                for startHole in self.startHoles {
+                                    let coordinate2 = CLLocation(latitude: startHole.latitude + Static.__lat, longitude: startHole.longitude + Static.__lon)
+                                    
+                                    let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                                    
+                                    // var backTee = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
+                                    var backTee = 0
+                                    if let distances = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distances {
+                                        backTee = Util.getMaxValue(distances)
+                                    }
+                                    
+                                    if self.teeingGroundInfo?.unit == "Y" {
+                                        let x = Double(backTee) * 0.9144
+                                        backTee = Int(x.rounded())
+                                    }
+                                    
+                                    // print(#function, startHole.number, backTee, distance)
+                                    
+                                    let diff = distance - (Double(backTee) + 30) // (나와 홀 사이 거리) - 전장(백티 + 30)
+                                    print(#function, "diff:", diff, distance, backTee)
+                                    
+                                    // 20 m
+                                    if diff <= 20 { // 20미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
+                                        list.append(startHole.number)
+                                    }
+                                }
+                                
+                                // update UI
+                                if list.count == 1 {
+                                    let n = list[0]
+                                    self.holeNumber = n
+                                    
+                                    // self.save = true
+                                    
+                                    moveNext()
+                                } else if list.count > 1 {
+                                    showList()
+                                } else { // 0
+                                    // change text message
+                                    withAnimation(.linear(duration: 0.5)) {
+                                        self.textMessage = Util.getWaitMessageForHole(self.findStartHoleCounter)
+                                    }
+                                    self.findStartHoleCounter += 1
+                                    
+                                    // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                        calcDistance()
+                                    }
+                                }
+                            }
                         }
+                    } else if status == .denied {
+                        timer1.invalidate()
                         
-                        if self.teeingGroundInfo?.unit == "Y" {
-                            let x = Double(backTee) * 0.9144
-                            backTee = Int(x.rounded())
-                        }
-                        
-                        // print(#function, startHole.number, backTee, distance)
-                        
-                        let diff = distance - (Double(backTee) + 30) // (나와 홀 사이 거리) - 전장(백티 + 30)
-                        print(#function, "diff:", diff, distance, backTee)
-                        
-                        // 20 m
-                        if diff <= 20 { // 20미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
-                            list.append(startHole.number)
+                        // notice
+                        withAnimation {
+                            self.mode = 9
                         }
                     }
-                    
-                    // update UI
-                    if list.count == 1 {
-                        let n = list[0]
-                        self.holeNumber = n
-                        
-                        // self.save = true
-                        
-                        moveNext()
-                    } else if list.count > 1 {
-                        showList()
-                    } else { // 0
-                        // change text message
-                        withAnimation(.linear(duration: 0.5)) {
-                            self.textMessage = Util.getWaitMessageForHole(self.findStartHoleCounter)
-                        }
-                        self.findStartHoleCounter += 1
-                        
-                        // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                            calcDistance()
-                        }
-                    }
-                } // if let
-            } // Timer
-            
+                }
+            }
+            // --
         }
     }
     

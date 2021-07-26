@@ -137,16 +137,12 @@ struct CourseListView: View {
             
         } else if self.mode == 9 { // notice
             
-            // 알림을 허용해주세요 (Please Allow Notifications)
-            // iPhone에서 Apple Watch 앱을 열고
-            // '나의 시계' 탭 - '알림' - 'Holeman' - 알림 허용
-            
             // ToDo: open Notification in iPhone
             
             ZStack {
                 VStack {
-                    // Text("위치 서비스를 켜주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
-                    Text("위치 서비스를 켜주세요.").font(.system(size: 20, weight: .semibold)).padding(.top, 10)
+                    Text("Notice").font(.system(size: 20, weight: .semibold))
+                    Text("위치 서비스를 켜주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -839,15 +835,9 @@ struct CourseListView: View {
                     if status == .authorizedWhenInUse || status == .authorizedAlways {
                         timer1.invalidate()
                         
-                        print(#function, "1111")
-                        
                         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
-                            print(#function, "2222")
-                            
                             if let location = locationManager.lastLocation {
                                 timer2.invalidate()
-                                
-                                print(#function, "3333")
                                 
                                 self.getCountryCode(location: location)
                             }
@@ -1096,38 +1086,49 @@ struct CourseListView: View {
             let locationManager = LocationManager()
             
             // --
-            var runCount = 0
-            
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                runCount += 1
-                // print(#function, "Timer fired #\(runCount)")
-                
-                if let location = locationManager.lastLocation {
-                    // print("Timer stopped")
-                    timer.invalidate()
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
+                if let status = locationManager.locationStatus {
+                    // timer1.invalidate()
                     
-                    let location2 = self.courses[self.selectedCourseIndex].location
-                    
-                    let coordinate1 = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-                    let coordinate2 = CLLocation(latitude: location2.coordinate.latitude + Static.__lat, longitude: location2.coordinate.longitude + Static.__lon)
-                    
-                    let distance = coordinate1.distance(from: coordinate2) // result is in meters
-                    print(#function, "distance", distance)
-                    
-                    if distance < 3000 { // 3 km
-                        let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
-                        if result == true {
-                            withAnimation {
-                                self.mode = 20 // move next
+                    if status == .authorizedWhenInUse || status == .authorizedAlways {
+                        timer1.invalidate()
+                        
+                        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
+                            if let location = locationManager.lastLocation {
+                                timer2.invalidate()
+                                
+                                let location2 = self.courses[self.selectedCourseIndex].location
+                                
+                                let coordinate1 = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                                let coordinate2 = CLLocation(latitude: location2.coordinate.latitude + Static.__lat, longitude: location2.coordinate.longitude + Static.__lon)
+                                
+                                let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                                print(#function, "distance", distance)
+                                
+                                if distance < 3000 { // 3 km
+                                    let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
+                                    if result == true {
+                                        withAnimation {
+                                            self.mode = 20 // move next
+                                        }
+                                    } else {
+                                        self.checkFreeTrial()
+                                    }
+                                } else {
+                                    withAnimation {
+                                        self.mode = 71 // go back
+                                    }
+                                } // if distance < 3000
                             }
-                        } else {
-                            self.checkFreeTrial()
                         }
-                    } else {
+                    } else if status == .denied {
+                        timer1.invalidate()
+                        
+                        // notice
                         withAnimation {
-                            self.mode = 71 // go back
+                            self.mode = 9
                         }
-                    } // if distance < 3000
+                    }
                 }
             }
             // --
