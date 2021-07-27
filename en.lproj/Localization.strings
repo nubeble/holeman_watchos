@@ -1,0 +1,11 @@
+/* 
+ Localization.strings
+ holeman
+ 
+ Created by Jay Kim on 2021/07/27.
+ 
+ */
+
+"CFBundleName" = "Holeman";
+"CFBundleDisplayName" = "Holeman";
+"NSLocationWhenInUseUsageDescription" = "Your location is required to calculate the distance.";

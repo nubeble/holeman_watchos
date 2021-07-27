@@ -1,0 +1,11 @@
+/* 
+ Localization.strings
+ holeman
+ 
+ Created by Jay Kim on 2021/07/27.
+ 
+ */
+
+"CFBundleName" = "홀맨";
+"CFBundleDisplayName" = "홀맨";
+"NSLocationWhenInUseUsageDescription" = "거리 측정을 위해 위치 권한이 필요합니다.";

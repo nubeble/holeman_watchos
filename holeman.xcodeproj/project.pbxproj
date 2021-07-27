@@ -27,6 +27,9 @@
 		B956D2E8256031E00056007B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956D2E7256031E00056007B /* HomeView.swift */; };
 		B956D2F625609A0E0056007B /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956D2F525609A0E0056007B /* LocationManager.swift */; };
 		B95C909525E3C0FC00315DF2 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95C909425E3C0FC00315DF2 /* StoreManager.swift */; };
+		B962E70E26AFE30600A48B34 /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = B962E71226AFE30600A48B34 /* Localization.strings */; };
+		B962E70F26AFE30600A48B34 /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = B962E71226AFE30600A48B34 /* Localization.strings */; };
+		B962E71026AFE30600A48B34 /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = B962E71226AFE30600A48B34 /* Localization.strings */; };
 		B96885B925A9560900C046E8 /* CourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96885B825A9560900C046E8 /* CourseView.swift */; };
 		B96EFAB125EB25710045C051 /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96EFAB025EB25710045C051 /* IAPHelper.swift */; };
 		B975BBF025AE982C00EFD939 /* CourseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B975BBEF25AE982C00EFD939 /* CourseListView.swift */; };
@@ -131,6 +134,8 @@
 		B956D2E7256031E00056007B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B956D2F525609A0E0056007B /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		B95C909425E3C0FC00315DF2 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		B962E71126AFE30600A48B34 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
+		B962E71326AFE31200A48B34 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localization.strings; sourceTree = "<group>"; };
 		B96885B825A9560900C046E8 /* CourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseView.swift; sourceTree = "<group>"; };
 		B96EFAB025EB25710045C051 /* IAPHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPHelper.swift; sourceTree = "<group>"; };
 		B975BBEF25AE982C00EFD939 /* CourseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListView.swift; sourceTree = "<group>"; };
@@ -239,6 +244,7 @@
 				5130AA064D336B415AEFDD0F /* Frameworks */,
 				B9AA29E92535BA2A0057FA8D /* holeman WatchKit App */,
 				B9AA29F52535BA2B0057FA8D /* holeman WatchKit Extension */,
+				B962E71226AFE30600A48B34 /* Localization.strings */,
 				7C33865F025B4664086AD7F9 /* Pods */,
 				B9AA29E22535BA2A0057FA8D /* Products */,
 			);
@@ -402,7 +408,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
+				ko,
 			);
 			mainGroup = B9AA29DA2535BA2A0057FA8D;
 			productRefGroup = B9AA29E22535BA2A0057FA8D /* Products */;
@@ -421,6 +427,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B962E70E26AFE30600A48B34 /* Localization.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9AA29EB2535BA2B0057FA8D /* Assets.xcassets in Resources */,
+				B962E70F26AFE30600A48B34 /* Localization.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +445,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9AA2A002535BA2B0057FA8D /* Preview Assets.xcassets in Resources */,
+				B962E71026AFE30600A48B34 /* Localization.strings in Resources */,
 				B9AA29FD2535BA2B0057FA8D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -592,11 +601,24 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		B962E71226AFE30600A48B34 /* Localization.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B962E71126AFE30600A48B34 /* en */,
+				B962E71326AFE31200A48B34 /* ko */,
+			);
+			name = Localization.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		B9AA2A022535BA2B0057FA8D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -657,6 +679,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -715,7 +738,7 @@
 				CODE_SIGN_ENTITLEMENTS = "holeman WatchKit Extension/holeman WatchKit ExtensionDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				ENABLE_PREVIEWS = YES;
@@ -745,7 +768,7 @@
 				CODE_SIGN_ENTITLEMENTS = "holeman WatchKit Extension/holeman WatchKit ExtensionRelease.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				ENABLE_PREVIEWS = YES;
@@ -776,7 +799,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
@@ -801,7 +824,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
@@ -823,7 +846,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				INFOPLIST_FILE = Info.plist;
 				MARKETING_VERSION = 1.0.5;
@@ -841,7 +864,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				INFOPLIST_FILE = Info.plist;
 				MARKETING_VERSION = 1.0.5;
