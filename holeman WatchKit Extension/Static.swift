@@ -40,8 +40,8 @@ struct Static {
     // static let __lon = -0.53033352453059
     
     // (용원 from 매탄동)
-    static let __lat = 2.148933074033644
-    static let __lon = -1.78062070655674
+    // static let __lat = 2.148933074033644
+    // static let __lon = -1.78062070655674
     
     // (용원 from 부산 부곡동)
     // static let __lat = 0.12429597950647
@@ -54,4 +54,8 @@ struct Static {
     // (골드그린 from 정관)
     // static let __lat = -0.18721253449693
     // static let __lon = 0.12623824341983
+    
+    // (기흥 from 영등포 타임스퀘어)
+    static let __lat = 0.326821297853516
+    static let __lon = -0.24266730462737
 }
