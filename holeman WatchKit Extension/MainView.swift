@@ -663,6 +663,9 @@ struct MainView: View {
                          }
                          }
                          */
+                        
+                        // print("1 hole number", self.holeNumber, "sensor count", self.sensors.count)
+                        
                         if self.holeNumber! - 1 < self.sensors.count {
                             let sensor = self.sensors[self.holeNumber! - 1]
                             
@@ -684,6 +687,9 @@ struct MainView: View {
                      }
                      }
                      */
+                    
+                    // print("2 hole number", self.holeNumber, "sensor count", self.sensors.count)
+                    
                     if self.holeNumber! - 1 < self.sensors.count {
                         let sensor = self.sensors[self.holeNumber! - 1]
                         
@@ -941,10 +947,12 @@ struct MainView: View {
     }
     
     func getSensors(_ groupId: Int64, onCompletion: @escaping () -> Void) {
-        // print("getSensors", groupId)
+        print("getSensors", groupId)
         
         CloudManager.getSensors(groupId) { records in
             if let records = records {
+                print(#function, "record count", records.count)
+                
                 for record in records {
                     // let id = record["id"] as! Int64
                     let holeNumber = record["holeNumber"] as! Int64
@@ -954,7 +962,7 @@ struct MainView: View {
                     let timestamp = record["timestamp"] as! Int64
                     
                     let sensor = SensorModel(id: groupId, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
-                    print(#function, "sensor", sensor)
+                    print(#function, sensor)
                     
                     self.sensors.append(sensor)
                     

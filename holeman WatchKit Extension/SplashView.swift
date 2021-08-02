@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import struct Kingfisher.KFImage
 
 struct SplashView: View {
     // 1.
@@ -22,7 +23,7 @@ struct SplashView: View {
             VStack {
                 Image("logo")
                     .resizable()
-                    .frame(width: 710 / 4.2, height: 239 / 4.2)
+                    .frame(width: 150.43, height: 26.555)
             }
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {

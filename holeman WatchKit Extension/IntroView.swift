@@ -161,7 +161,9 @@ struct IntroView: View {
             
             ZStack {
                 VStack(alignment: HorizontalAlignment.center) {
-                    Image("icon").resizable().frame(width: 40, height: 40)
+                    Image("icon")
+                        .resizable()
+                        .frame(width: 20.383, height: 32.011)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }

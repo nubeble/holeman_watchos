@@ -56,6 +56,10 @@ struct Static {
     // static let __lon = 0.12623824341983
     
     // (기흥 from 영등포 타임스퀘어)
-    static let __lat = 0.326821297853516
-    static let __lon = -0.24266730462737
+    // static let __lat = 0.326821297853516
+    // static let __lon = -0.24266730462737
+    
+    // (기흥 from 매탄동)
+    static let __lat = 0.071106522737821
+    static let __lon = -0.10368265607794
 }

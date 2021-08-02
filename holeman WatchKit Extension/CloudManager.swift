@@ -120,7 +120,9 @@ struct CloudManager {
                 }
                 
                 if index == subscriptions.count {
-                    onCompletion(index)
+                    DispatchQueue.main.async {
+                        onCompletion(index)
+                    }
                 }
             })
         } // for
@@ -156,7 +158,9 @@ struct CloudManager {
             if let subscription = subscription {
                 print("success on saving subscription.")
                 
-                onCompletion(subscription.subscriptionID)
+                DispatchQueue.main.async {
+                    onCompletion(subscription.subscriptionID)
+                }
             }
         }
     }
@@ -265,29 +269,104 @@ struct CloudManager {
             if let records = records {
                 print(#function, records)
                 
-                onCompletion(records)
+                DispatchQueue.main.async {
+                    onCompletion(records)
+                }
             }
         }
     }
     
+    /*
+     static func fetchAllCourses(_ countryCode: String, onCompletion: @escaping (_ records: [CKRecord]?) -> Void) {
+     let p = NSPredicate(format: "countryCode = %@", countryCode)
+     let query = CKQuery(recordType: "Course", predicate: p)
+     query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+     
+     CKContainer(identifier: Static.containerId).publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
+     if let error = error {
+     print("Cloud Query Error - Fetch Locations: \(error)")
+     
+     return
+     }
+     
+     if let records = records {
+     // print("#function", records)
+     
+     DispatchQueue.main.async {
+     onCompletion(records)
+     }
+     }
+     }
+     }
+     */
     static func fetchAllCourses(_ countryCode: String, onCompletion: @escaping (_ records: [CKRecord]?) -> Void) {
         let p = NSPredicate(format: "countryCode = %@", countryCode)
         let query = CKQuery(recordType: "Course", predicate: p)
         query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
-        CKContainer(identifier: Static.containerId).publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
+        let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
+        
+        var records = [CKRecord]()
+        
+        func recurrentOperations(cursor: CKQueryOperation.Cursor?) {
+            let recurrentOperation = CKQueryOperation(cursor: cursor!)
+            recurrentOperation.qualityOfService = .userInteractive
+            recurrentOperation.resultsLimit = 18
+            
+            recurrentOperation.recordFetchedBlock = { (record:CKRecord!) -> Void in
+                // print("-> cloudKitLoadRecords - recurrentOperations - fetch \(counter)")
+                records.append(record)
+            }
+            
+            recurrentOperation.queryCompletionBlock = { (cursor: CKQueryOperation.Cursor?, error: Error?) -> Void in
+                if let error = error {
+                    print(#function, "recurrentOperation error - \(String(describing: error))")
+                    
+                    return
+                }
+                
+                if let cursor = cursor {
+                    // print("recurrentOperations - records \(records.count) - cursor \(cursor.description)")
+                    recurrentOperations(cursor: cursor)
+                } else {
+                    DispatchQueue.main.async {
+                        onCompletion(records)
+                    }
+                }
+                
+            }
+            
+            db.add(recurrentOperation)
+        }
+        
+        // initial operation
+        let operation = CKQueryOperation(query: query)
+        operation.qualityOfService = .userInteractive
+        operation.resultsLimit = 18
+        
+        operation.recordFetchedBlock = { (record:CKRecord!) -> Void in
+            // print("operation - fetch \(counter)")
+            records.append(record)
+        }
+        
+        operation.queryCompletionBlock = { (cursor: CKQueryOperation.Cursor?, error: Error?) -> Void in
             if let error = error {
-                print("Cloud Query Error - Fetch Locations: \(error)")
+                print(#function, "operation error - \(String(describing: error))")
                 
                 return
             }
             
-            if let records = records {
-                // print("#function", records)
-                
-                onCompletion(records)
+            if let cursor = cursor {
+                // print("operations - records \(records.count) - cursor \(cursor.description)")
+                recurrentOperations(cursor: cursor)
+            } else {
+                DispatchQueue.main.async {
+                    onCompletion(records)
+                }
             }
         }
+        
+        db.add(operation)
     }
     
     // static func getHoles(_ groupId: Int64, onCompletion: @escaping (_ records:[CKRecord]?) -> Void) {
@@ -305,7 +384,9 @@ struct CloudManager {
          }
          } else {
          // print(records)
+         DispatchQueue.main.async {
          onCompletion(records)
+         }
          }
          }
          */
@@ -323,7 +404,9 @@ struct CloudManager {
             if let record = record {
                 // print(#function, record)
                 
-                onCompletion(record)
+                DispatchQueue.main.async {
+                    onCompletion(record)
+                }
             }
         }
     }
@@ -342,30 +425,112 @@ struct CloudManager {
             if let record = record {
                 // print("#function", record)
                 
-                onCompletion(record)
+                DispatchQueue.main.async {
+                    onCompletion(record)
+                }
             }
         }
     }
+    
+    /*
+     static func getSensors(_ groupId: Int64, onCompletion: @escaping (_ records:[CKRecord]?) -> Void) {
+     let p = NSPredicate(format: "id = %d", groupId)
+     let query = CKQuery(recordType: "Sensor", predicate: p)
+     query.sortDescriptors = [NSSortDescriptor(key: "holeNumber", ascending: true)]
+     
+     CKContainer(identifier: Static.containerId).publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
+     if let error = error {
+     print("Cloud Query Error: \(error)")
+     
+     return
+     }
+     
+     if let records = records {
+     // print(#function, records) // sorted by holeNumber
+     
+     DispatchQueue.main.async {
+     onCompletion(records)
+     }
+     }
+     }
+     }
+     */
     
     static func getSensors(_ groupId: Int64, onCompletion: @escaping (_ records:[CKRecord]?) -> Void) {
         let p = NSPredicate(format: "id = %d", groupId)
         let query = CKQuery(recordType: "Sensor", predicate: p)
         query.sortDescriptors = [NSSortDescriptor(key: "holeNumber", ascending: true)]
         
-        CKContainer(identifier: Static.containerId).publicCloudDatabase.perform(query, inZoneWith: CKRecordZone.default().zoneID) { (records, error) in
+        let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
+        
+        var records = [CKRecord]()
+        
+        func recurrentOperations(cursor: CKQueryOperation.Cursor?) {
+            let recurrentOperation = CKQueryOperation(cursor: cursor!)
+            recurrentOperation.qualityOfService = .userInteractive
+            recurrentOperation.resultsLimit = 18
+            
+            recurrentOperation.recordFetchedBlock = { (record:CKRecord!) -> Void in
+                // print("-> cloudKitLoadRecords - recurrentOperations - fetch \(counter)")
+                records.append(record)
+            }
+            
+            recurrentOperation.queryCompletionBlock = { (cursor: CKQueryOperation.Cursor?, error: Error?) -> Void in
+                if let error = error {
+                    print(#function, "recurrentOperation error - \(String(describing: error))")
+                    
+                    return
+                }
+                
+                if let cursor = cursor {
+                    // print("recurrentOperations - records \(records.count) - cursor \(cursor.description)")
+                    recurrentOperations(cursor: cursor)
+                } else {
+                    DispatchQueue.main.async {
+                        onCompletion(records)
+                    }
+                }
+                
+            }
+            
+            db.add(recurrentOperation)
+        }
+        
+        // initial operation
+        let operation = CKQueryOperation(query: query)
+        operation.qualityOfService = .userInteractive
+        operation.resultsLimit = 18
+        
+        operation.recordFetchedBlock = { (record:CKRecord!) -> Void in
+            // print("operation - fetch \(counter)")
+            records.append(record)
+        }
+        
+        operation.queryCompletionBlock = { (cursor: CKQueryOperation.Cursor?, error: Error?) -> Void in
             if let error = error {
-                print("Cloud Query Error: \(error)")
+                print(#function, "operation error - \(String(describing: error))")
                 
                 return
             }
             
-            if let records = records {
-                // print(#function, records) // sorted by holeNumber
-                
-                onCompletion(records)
+            if let cursor = cursor {
+                // print("operations - records \(records.count) - cursor \(cursor.description)")
+                recurrentOperations(cursor: cursor)
+            } else {
+                DispatchQueue.main.async {
+                    onCompletion(records)
+                }
             }
         }
+        
+        db.add(operation)
     }
+    
+    
+    
+    
+    
+    
     
     /*
      static func subscribeToSensors(_ groupId: Int64) {
@@ -401,7 +566,7 @@ struct CloudManager {
         if subId != nil {
             // print("subscription ID", subId)
             let courseId = UserDefaults.standard.integer(forKey: "SUBSCRIPTION_SENSORS_COURSE_ID")
-            print("course id", courseId)
+            // print("course id", courseId)
             if courseId == Int(groupId) {
                 // skip saving
                 return
@@ -547,7 +712,9 @@ struct CloudManager {
                     if let _ = record {
                         print(#function, "success on saving user.")
                         
-                        onCompletion(1)
+                        DispatchQueue.main.async {
+                            onCompletion(1)
+                        }
                     }
                 }
             }
@@ -561,7 +728,9 @@ struct CloudManager {
             if let _ = error {
                 print(#function, "User Record not found")
                 
-                onCompletion("")
+                DispatchQueue.main.async {
+                    onCompletion("")
+                }
                 
                 return
             }
@@ -570,12 +739,16 @@ struct CloudManager {
                 guard let name = record["name"] as? String else {
                     print(#function, "name error")
                     
-                    onCompletion("")
+                    DispatchQueue.main.async {
+                        onCompletion("")
+                    }
                     
                     return
                 }
                 
-                onCompletion(name)
+                DispatchQueue.main.async {
+                    onCompletion(name)
+                }
             }
         }
     }
@@ -634,7 +807,9 @@ struct CloudManager {
      return
      }
      
+     DispatchQueue.main.async {
      onCompletion(lastPurchasedProductId)
+     }
      }
      }
      }
@@ -657,7 +832,9 @@ struct CloudManager {
                     return
                 }
                 
-                onCompletion(freeTrialCount)
+                DispatchQueue.main.async {
+                    onCompletion(freeTrialCount)
+                }
             }
         }
     }
@@ -732,9 +909,13 @@ struct CloudManager {
                         }
                     }
                     
-                    onCompletion(freeTrialCount)
+                    DispatchQueue.main.async {
+                        onCompletion(freeTrialCount)
+                    }
                 } else {
-                    onCompletion(10) // never come here
+                    DispatchQueue.main.async {
+                        onCompletion(10) // never come here
+                    }
                 }
             }
         }

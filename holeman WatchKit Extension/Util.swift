@@ -406,13 +406,13 @@ struct Util {
     static func convertHoleTitle(_ title: String) -> String {
         if title == "" { return "" }
         
-        let index = title.firstIndex(of: " ")
-        let index2 = title.index(index!, offsetBy: 1)
-        // let index3 = title.index(index!, offsetBy: 2)
-        let index3 = Util.getSuffixIndex(title)
+        let words = title.split(separator: " ")
         
-        let courseName = title[title.startIndex..<index!]
-        let holeNumber = title[index2..<index3]
+        let courseName = words[0]
+        
+        let word = String(words[1])
+        let index2 = Util.getSuffixIndex(word)
+        let holeNumber = word[..<index2]
         
         return courseName + " 코스 " + holeNumber + "번 홀"
     }
@@ -420,13 +420,13 @@ struct Util {
     static func splitHoleTitle(_ title: String) -> [String] {
         if title == "" { return [] }
         
-        let index = title.firstIndex(of: " ")
-        let index2 = title.index(index!, offsetBy: 1)
-        // let index3 = title.index(index!, offsetBy: 2)
-        let index3 = Util.getSuffixIndex(title)
+        let words = title.split(separator: " ")
         
-        let courseName = title[title.startIndex..<index!]
-        let holeNumber = title[index2..<index3]
+        let courseName = words[0]
+        
+        let word = String(words[1])
+        let index2 = Util.getSuffixIndex(word)
+        let holeNumber = word[..<index2]
         
         var titles: [String] = []
         titles.append(courseName + " 코스")
