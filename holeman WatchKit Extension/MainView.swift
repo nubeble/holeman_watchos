@@ -187,11 +187,10 @@ struct MainView: View {
     
     // @ObservedObject var compassHeading = CompassHeading()
     
-    // 30 m
-    static let HOLE_PASS_DISTANCE: Double = 30 // meter
+    static let HOLE_PASS_DISTANCE: Double = 30 // 30 m
     @State var holePassFlag = 100 // 100: normal state, 200: 홀까지 남은 거리가 30미터 안으로 들어왔을 때, 300: 10초 머물렀을 때, 400: 다시 30미터 (+ 10미터) 밖으로 나갔을 때
-    @State var holePassCount = 0
-    // @State var holePassStartTime: DispatchTime? = nil
+    // @State var holePassCount = 0
+    @State var holePassStartTime: DispatchTime? = nil
     
     // pass to TeeView & HoleView
     @State var titles: [String]?
@@ -1114,11 +1113,13 @@ struct MainView: View {
                 let lon = location.coordinate.longitude
                 let alt = location.altitude + self.altitudeDiff
                 
-                // getUserElevation(String(lat), String(lon), alt)
+                getUserElevation(String(lat), String(lon), alt)
                 
                 // ToDo: internal test (일단 google api 스킵)
-                self.userElevation = 20.2
-                MainView.elevationDiff = self.userElevation! - alt
+                /*
+                 self.userElevation = 20.2
+                 MainView.elevationDiff = self.userElevation! - alt
+                 */
                 
                 MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
                 
@@ -1132,11 +1133,13 @@ struct MainView: View {
                     let lon2 = location.coordinate.longitude
                     let alt2 = location.altitude + self.altitudeDiff
                     
-                    // getUserElevation(String(lat2), String(lon2), alt2)
+                    getUserElevation(String(lat2), String(lon2), alt2)
                     
                     // ToDo: internal test (일단 google api 스킵)
-                    self.userElevation = 20.2
-                    MainView.elevationDiff = self.userElevation! - alt2
+                    /*
+                     self.userElevation = 20.2
+                     MainView.elevationDiff = self.userElevation! - alt2
+                     */
                     
                     MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
                     // }
@@ -1157,10 +1160,13 @@ struct MainView: View {
                     let lon2 = location.coordinate.longitude
                     let alt2 = location.altitude + self.altitudeDiff
                     
-                    // getUserElevation(String(lat2), String(lon2), alt2)
+                    getUserElevation(String(lat2), String(lon2), alt2)
+                    
                     // ToDo: internal test (일단 google api 스킵)
-                    self.userElevation = 20.2
-                    MainView.elevationDiff = self.userElevation! - alt2
+                    /*
+                     self.userElevation = 20.2
+                     MainView.elevationDiff = self.userElevation! - alt2
+                     */
                     
                     MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
                 }
@@ -1302,10 +1308,22 @@ struct MainView: View {
                 
                 // init
                 self.holePassFlag = 100
-                self.holePassCount = 0
+                // self.holePassCount = 0
+                self.holePassStartTime = nil
+            } else {
+                // 현재 홀을 벗어나서 다음 홀을 찾기 시도하다가 마지막 홀까지 돌아도 못찾으면 종료한다.
+                
+                // 전반 또는 후반 종료
+                
+                if Global.halftime == 1 { saveHole(2) } // 전반 종료
+                else { saveHole(4) } // 후반 종료
+                
+                if Global.halftime == 1 {
+                    moveToHoleSearchView(200)
+                } else {
+                    moveToHoleSearchView(300)
+                }
             }
-            
-            // Consider: 현재 홀을 벗어나고 다음 홀을 찾지 못하면? 현재는 그냥 현재 홀에 계속 머문다.
         } else {
             if checkHolePass(distance) == true {
                 if checkLastHole() == true {
@@ -1340,35 +1358,36 @@ struct MainView: View {
             
         case 200:
             if distance < MainView.HOLE_PASS_DISTANCE {
-                
-                if self.holePassCount >= 10 { // 10 seconds
-                    self.holePassFlag = 300
-                    self.holePassCount = 0
-                    
-                    print(#function, "10 seconds up")
-                } else {
-                    self.holePassCount += 1
-                }
-                
                 /*
-                 if self.holePassStartTime == nil {
-                 self.holePassStartTime = DispatchTime.now()
-                 } else {
-                 let now = DispatchTime.now()
-                 var interval = now.uptimeNanoseconds - self.holePassStartTime!.uptimeNanoseconds
-                 interval = interval / 1_000_000 // millisecond
-                 let sec = interval / 1000 // second
+                 if self.holePassCount >= 10 { // 10 seconds
+                 print(#function, "10 seconds up")
                  
-                 if sec >= 10 {
                  self.holePassFlag = 300
-                 print(#function, "10 seconds")
-                 }
+                 self.holePassCount = 0
+                 } else {
+                 self.holePassCount += 1
                  }
                  */
-                
+                if self.holePassStartTime == nil {
+                    self.holePassStartTime = DispatchTime.now()
+                } else {
+                    let now = DispatchTime.now()
+                    var interval = now.uptimeNanoseconds - self.holePassStartTime!.uptimeNanoseconds
+                    interval = interval / 1_000_000 // millisecond
+                    let sec = interval / 1000 // second
+                    
+                    if sec >= 10 {
+                        print(#function, "10 seconds up")
+                        
+                        self.holePassFlag = 300
+                        self.holePassStartTime = nil
+                    }
+                }
             } else {
+                // init
                 self.holePassFlag = 100
-                self.holePassCount = 0
+                // self.holePassCount = 0
+                self.holePassStartTime = nil
             }
             return false
             
@@ -1377,8 +1396,10 @@ struct MainView: View {
             return false
             
         case 400:
+            // init
             self.holePassFlag = 100
-            self.holePassCount = 0
+            // self.holePassCount = 0
+            self.holePassStartTime = nil
             return true
             
         default:

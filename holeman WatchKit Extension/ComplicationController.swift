@@ -11,8 +11,10 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     // MARK: - Complication Configuration
     func getComplicationDescriptors(handler: @escaping ([CLKComplicationDescriptor]) -> Void) {
+        let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
+        
         let descriptors = [
-            CLKComplicationDescriptor(identifier: "complication", displayName: "Holeman", supportedFamilies: CLKComplicationFamily.allCases)
+            CLKComplicationDescriptor(identifier: "complication", displayName: name, supportedFamilies: CLKComplicationFamily.allCases)
             // Multiple complication support can be added here with more descriptors
         ]
         

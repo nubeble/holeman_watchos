@@ -18,7 +18,7 @@ struct SplashView: View {
             VStack { // should be VStack
                 IntroView()
             }
-            .navigationBarTitle("Holeman")
+            .navigationBarTitle(Locale.current.languageCode == "ko" ? "홀맨" : "Holeman")
         } else {
             VStack {
                 Image("logo")

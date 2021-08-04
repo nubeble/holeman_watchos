@@ -144,7 +144,8 @@ struct HoleSearchView: View {
                             }
                         }
                     } else if from == 400 {
-                        print(#function, "400", self.search, self.course, self.teeingGroundInfo, self.teeingGroundIndex, self.greenDirection, self.holeNumber)
+                        // print(#function, "400", self.search, self.course, self.teeingGroundInfo, self.teeingGroundIndex, self.greenDirection, self.holeNumber)
+                        
                         // ToDo: test timer
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                             getStartHole() // 1, 10, 19, ...
@@ -267,7 +268,9 @@ struct HoleSearchView: View {
                 }
                 
                 VStack {
-                    Text("iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - 'Holeman' - '앱을 사용하는 동안' 선택").font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                    let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
+                    let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - '\(name)' - '앱을 사용하는 동안' 선택"
+                    Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -610,7 +613,7 @@ struct HoleSearchView: View {
                 let end = course.range[1]
                 
                 if start <= number && number <= end {
-                    var n = number - start + 1
+                    let n = number - start + 1
                     
                     title = name + " " + Util.getOrdinalNumber(n)
                     

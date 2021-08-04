@@ -251,7 +251,7 @@ struct CloudManager {
         // let p = NSPredicate(format: "distanceToLocation:fromLocation:(location, %@) < %@", location, NSNumber(value: radiusInKilometers))
         let p = NSPredicate(format: "countryCode = %@ AND distanceToLocation:fromLocation:(location, %@) < %@", countryCode, location, NSNumber(value: radiusInKilometers))
         let query = CKQuery(recordType: "Course", predicate: p)
-        // query.sortDescriptors = [CKLocationSortDescriptor(key: "location", relativeLocation: location)] // ToDo: not working
+        // query.sortDescriptors = [CKLocationSortDescriptor(key: "location", relativeLocation: location)] // Consider: not working
         /*
          let operation = CKQueryOperation(query: query)
          operation.resultsLimit = 50

@@ -137,7 +137,7 @@ struct CourseListView: View {
             
         } else if self.mode == 9 { // notice
             
-            // ToDo: open Notification in iPhone
+            // Consider: open Notification in iPhone
             
             ZStack {
                 VStack {
@@ -148,7 +148,9 @@ struct CourseListView: View {
                 }
                 
                 VStack {
-                    Text("iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - 'Holeman' - '앱을 사용하는 동안' 선택").font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                    let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
+                    let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - '\(name)' - '앱을 사용하는 동안' 선택"
+                    Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -468,7 +470,7 @@ struct CourseListView: View {
                             Text("Payment").font(.system(size: 20, weight: .semibold))
                             Text("바우쳐를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                             
-                            Text("Holeman Voucher")
+                            Text(Locale.current.languageCode == "ko" ? "홀맨 이용권" : "Holeman Voucher")
                                 .font(.system(size: 20, weight: .regular))
                                 // .foregroundColor(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
                                 .foregroundColor(.green)

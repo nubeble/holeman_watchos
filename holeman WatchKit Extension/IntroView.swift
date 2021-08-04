@@ -52,17 +52,6 @@ struct IntroView: View {
                 // N/A
             }
             .onAppear {
-                // ToDo: internal test (remove all UserDefaults)
-                // --
-                /*
-                 let defaults = UserDefaults.standard
-                 let dictionary = defaults.dictionaryRepresentation()
-                 dictionary.keys.forEach { key in
-                 defaults.removeObject(forKey: key)
-                 }
-                 */
-                // --
-                
                 checkLastPurchasedCourse()
             }
             
@@ -188,10 +177,10 @@ struct IntroView: View {
                                                 
                                                 guard let credential = authResults.credential as? ASAuthorizationAppleIDCredential, let identityToken = credential.identityToken, let identityTokenString = String(data: identityToken, encoding: .utf8) else { return }
                                                 
-                                                // let body = ["appleIdentityToken": identityTokenString]
-                                                // guard let jsonData = try? JSONEncoder().encode(body) else { return }
+                                                let body = ["appleIdentityToken": identityTokenString]
+                                                guard let jsonData = try? JSONEncoder().encode(body) else { return }
                                                 
-                                                print(#function, "credential", credential)
+                                                print(#function, "credential", credential, "json data", jsonData)
                                                 // This is where you'd fire an API request to your server to authenticate with the identity token attached in the request headers.
                                                 
                                                 // get fullName, email
@@ -475,7 +464,7 @@ struct IntroView: View {
             
         } else if self.mode == 31 { // notice
             
-            // ToDo: open Notification in iPhone
+            // Consider: open Notification in iPhone
             
             ZStack {
                 VStack {
@@ -486,7 +475,9 @@ struct IntroView: View {
                 }
                 
                 VStack {
-                    Text("iPhone에서 Apple Watch 앱을 열고 '나의 시계' - '알림' - 'Holeman' - '알림 허용' 선택").font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                    let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
+                    let text = "iPhone에서 Apple Watch 앱을 열고 '나의 시계' - '알림' - '\(name)' - '알림 허용' 선택"
+                    Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
                 }
                 
                 VStack {
