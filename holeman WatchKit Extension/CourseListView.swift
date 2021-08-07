@@ -826,12 +826,12 @@ struct CourseListView: View {
     }
     
     func getCountryCodeTimer() {
-        DispatchQueue.main.async {
-            let locationManager = LocationManager()
-            
-            // --
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
-                if let status = locationManager.locationStatus {
+        let locationManager = LocationManager()
+        
+        // --
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
+            if let status = locationManager.locationStatus {
+                DispatchQueue.main.async {
                     // timer1.invalidate()
                     
                     if status == .authorizedWhenInUse || status == .authorizedAlways {
@@ -839,9 +839,11 @@ struct CourseListView: View {
                         
                         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
                             if let location = locationManager.lastLocation {
-                                timer2.invalidate()
-                                
-                                self.getCountryCode(location: location)
+                                DispatchQueue.main.async {
+                                    timer2.invalidate()
+                                    
+                                    self.getCountryCode(location: location)
+                                }
                             }
                         }
                     } else if status == .denied {
@@ -854,8 +856,8 @@ struct CourseListView: View {
                     }
                 }
             }
-            // --
         }
+        // --
     }
     
     func getCountryCode(location: CLLocation) {
@@ -1084,12 +1086,12 @@ struct CourseListView: View {
     } // checkFreeTrial()
     
     func checkDistance() {
-        DispatchQueue.main.async {
-            let locationManager = LocationManager()
-            
-            // --
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
-                if let status = locationManager.locationStatus {
+        let locationManager = LocationManager()
+        
+        // --
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
+            if let status = locationManager.locationStatus {
+                DispatchQueue.main.async {
                     // timer1.invalidate()
                     
                     if status == .authorizedWhenInUse || status == .authorizedAlways {
@@ -1097,30 +1099,32 @@ struct CourseListView: View {
                         
                         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
                             if let location = locationManager.lastLocation {
-                                timer2.invalidate()
-                                
-                                let location2 = self.courses[self.selectedCourseIndex].location
-                                
-                                let coordinate1 = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-                                let coordinate2 = CLLocation(latitude: location2.coordinate.latitude + Static.__lat, longitude: location2.coordinate.longitude + Static.__lon)
-                                
-                                let distance = coordinate1.distance(from: coordinate2) // result is in meters
-                                print(#function, "distance", distance)
-                                
-                                if distance < 3000 { // 3 km
-                                    let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
-                                    if result == true {
-                                        withAnimation {
-                                            self.mode = 20 // move next
+                                DispatchQueue.main.async {
+                                    timer2.invalidate()
+                                    
+                                    let location2 = self.courses[self.selectedCourseIndex].location
+                                    
+                                    let coordinate1 = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                                    let coordinate2 = CLLocation(latitude: location2.coordinate.latitude + Static.__lat, longitude: location2.coordinate.longitude + Static.__lon)
+                                    
+                                    let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                                    print(#function, "distance", distance)
+                                    
+                                    if distance < 3000 { // 3 km
+                                        let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
+                                        if result == true {
+                                            withAnimation {
+                                                self.mode = 20 // move next
+                                            }
+                                        } else {
+                                            self.checkFreeTrial()
                                         }
                                     } else {
-                                        self.checkFreeTrial()
-                                    }
-                                } else {
-                                    withAnimation {
-                                        self.mode = 71 // go back
-                                    }
-                                } // if distance < 3000
+                                        withAnimation {
+                                            self.mode = 71 // go back
+                                        }
+                                    } // if distance < 3000
+                                }
                             }
                         }
                     } else if status == .denied {
@@ -1133,8 +1137,8 @@ struct CourseListView: View {
                     }
                 }
             }
-            // --
         }
+        // --
     }
 }
 

@@ -1107,43 +1107,45 @@ struct MainView: View {
         // (1)
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
             if let location = self.locationManager.lastLocation {
-                timer1.invalidate()
-                
-                let lat = location.coordinate.latitude
-                let lon = location.coordinate.longitude
-                let alt = location.altitude + self.altitudeDiff
-                
-                getUserElevation(String(lat), String(lon), alt)
-                
-                // ToDo: internal test (일단 google api 스킵)
-                /*
-                 self.userElevation = 20.2
-                 MainView.elevationDiff = self.userElevation! - alt
-                 */
-                
-                MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
-                
-                // (2) ~ (n)
-                self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 30 min
-                    // Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
-                    // if let location = self.locationManager.lastLocation {
-                    // timer2.invalidate()
+                DispatchQueue.main.async {
+                    timer1.invalidate()
                     
-                    let lat2 = location.coordinate.latitude
-                    let lon2 = location.coordinate.longitude
-                    let alt2 = location.altitude + self.altitudeDiff
+                    let lat = location.coordinate.latitude
+                    let lon = location.coordinate.longitude
+                    let alt = location.altitude + self.altitudeDiff
                     
-                    getUserElevation(String(lat2), String(lon2), alt2)
+                    getUserElevation(String(lat), String(lon), alt)
                     
                     // ToDo: internal test (일단 google api 스킵)
                     /*
                      self.userElevation = 20.2
-                     MainView.elevationDiff = self.userElevation! - alt2
+                     MainView.elevationDiff = self.userElevation! - alt
                      */
                     
                     MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
-                    // }
-                    // }
+                    
+                    // (2) ~ (n)
+                    self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 30 min
+                        // Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
+                        // if let location = self.locationManager.lastLocation {
+                        // timer2.invalidate()
+                        
+                        let lat2 = location.coordinate.latitude
+                        let lon2 = location.coordinate.longitude
+                        let alt2 = location.altitude + self.altitudeDiff
+                        
+                        getUserElevation(String(lat2), String(lon2), alt2)
+                        
+                        // ToDo: internal test (일단 google api 스킵)
+                        /*
+                         self.userElevation = 20.2
+                         MainView.elevationDiff = self.userElevation! - alt2
+                         */
+                        
+                        MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
+                        // }
+                        // }
+                    }
                 }
             }
         }
@@ -1152,23 +1154,25 @@ struct MainView: View {
     func startGetUserElevationTimer2() {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
             if let location = self.locationManager.lastLocation {
-                timer1.invalidate()
-                
-                // (2) ~ (n)
-                self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 30 min
-                    let lat2 = location.coordinate.latitude
-                    let lon2 = location.coordinate.longitude
-                    let alt2 = location.altitude + self.altitudeDiff
+                DispatchQueue.main.async {
+                    timer1.invalidate()
                     
-                    getUserElevation(String(lat2), String(lon2), alt2)
-                    
-                    // ToDo: internal test (일단 google api 스킵)
-                    /*
-                     self.userElevation = 20.2
-                     MainView.elevationDiff = self.userElevation! - alt2
-                     */
-                    
-                    MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
+                    // (2) ~ (n)
+                    self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 30 min
+                        let lat2 = location.coordinate.latitude
+                        let lon2 = location.coordinate.longitude
+                        let alt2 = location.altitude + self.altitudeDiff
+                        
+                        getUserElevation(String(lat2), String(lon2), alt2)
+                        
+                        // ToDo: internal test (일단 google api 스킵)
+                        /*
+                         self.userElevation = 20.2
+                         MainView.elevationDiff = self.userElevation! - alt2
+                         */
+                        
+                        MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
+                    }
                 }
             }
         }
@@ -1186,20 +1190,20 @@ struct MainView: View {
         
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
-            // print(response!)
+            // print(#function, response!)
             
             do {
                 let json = try JSONSerialization.jsonObject(with: data!) as! Dictionary<String, AnyObject>
-                // print(json)
+                print(#function, json)
                 
-                if String(describing: json["status"]) == "OK" {
-                    if let results = json["results"] as? [String: Any] {
-                        if let elevation = results["elevation"] as? String {
-                            self.userElevation = Double(elevation)!
-                            
-                            MainView.elevationDiff = self.userElevation! - alt
-                        }
-                    }
+                let status = json["status"] as! String
+                if status == "OK" {
+                    let results = json["results"] as! [[String:Any]]
+                    let elevation = results[0]["elevation"] as? Double
+                    
+                    self.userElevation = elevation
+                    
+                    MainView.elevationDiff = self.userElevation! - alt
                 }
             } catch {
                 print(#function, "error")
@@ -1278,8 +1282,10 @@ struct MainView: View {
     func startCheckHolePassTimer() {
         self.timer2 = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in // 1 sec
             if let location = self.locationManager.lastLocation {
-                if self.latitude != nil && self.longitude != nil {
-                    checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
+                DispatchQueue.main.async {
+                    if self.latitude != nil && self.longitude != nil {
+                        checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
+                    }
                 }
             }
         }

@@ -859,12 +859,12 @@ struct CourseSearchView: View {
     }
     
     func getCountryCodeTimer() {
-        DispatchQueue.main.async {
-            let locationManager = LocationManager()
-            
-            // --
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
-                if let status = locationManager.locationStatus {
+        let locationManager = LocationManager()
+        
+        // --
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
+            if let status = locationManager.locationStatus {
+                DispatchQueue.main.async {
                     // timer1.invalidate()
                     
                     if status == .authorizedWhenInUse || status == .authorizedAlways {
@@ -872,9 +872,11 @@ struct CourseSearchView: View {
                         
                         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
                             if let location = locationManager.lastLocation {
-                                timer2.invalidate()
-                                
-                                self.getCountryCode(location: location)
+                                DispatchQueue.main.async {
+                                    timer2.invalidate()
+                                    
+                                    self.getCountryCode(location: location)
+                                }
                             }
                         }
                     } else if status == .denied {
@@ -887,8 +889,8 @@ struct CourseSearchView: View {
                     }
                 }
             }
-            // --
         }
+        // --
     }
     
     func getCountryCode(location: CLLocation) {

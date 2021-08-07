@@ -661,12 +661,12 @@ struct HoleSearchView: View {
              */
         }
         
-        DispatchQueue.main.async {
-            let locationManager = LocationManager()
-            
-            // --
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
-                if let status = locationManager.locationStatus {
+        let locationManager = LocationManager()
+        
+        // --
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
+            if let status = locationManager.locationStatus {
+                DispatchQueue.main.async {
                     // timer1.invalidate()
                     
                     if status == .authorizedWhenInUse || status == .authorizedAlways {
@@ -674,61 +674,63 @@ struct HoleSearchView: View {
                         
                         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
                             if let location = locationManager.lastLocation {
-                                timer2.invalidate()
-                                
-                                let latitude = location.coordinate.latitude
-                                let longitude = location.coordinate.longitude
-                                let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
-                                
-                                var list: [Int] = []
-                                
-                                for startHole in self.startHoles {
-                                    let coordinate2 = CLLocation(latitude: startHole.latitude + Static.__lat, longitude: startHole.longitude + Static.__lon)
+                                DispatchQueue.main.async {
+                                    timer2.invalidate()
                                     
-                                    let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                                    let latitude = location.coordinate.latitude
+                                    let longitude = location.coordinate.longitude
+                                    let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
                                     
-                                    // var backTee = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
-                                    var backTee = 0
-                                    if let distances = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distances {
-                                        backTee = Util.getMaxValue(distances)
+                                    var list: [Int] = []
+                                    
+                                    for startHole in self.startHoles {
+                                        let coordinate2 = CLLocation(latitude: startHole.latitude + Static.__lat, longitude: startHole.longitude + Static.__lon)
+                                        
+                                        let distance = coordinate1.distance(from: coordinate2) // result is in meters
+                                        
+                                        // var backTee = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
+                                        var backTee = 0
+                                        if let distances = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distances {
+                                            backTee = Util.getMaxValue(distances)
+                                        }
+                                        
+                                        if self.teeingGroundInfo?.unit == "Y" {
+                                            let x = Double(backTee) * 0.9144
+                                            backTee = Int(x.rounded())
+                                        }
+                                        
+                                        // print(#function, startHole.number, backTee, distance)
+                                        
+                                        let diff = distance - (Double(backTee) + 30) // (나와 홀 사이 거리) - 전장(백티 + 30)
+                                        print(#function, "diff:", diff, distance, backTee)
+                                        
+                                        // 20 m
+                                        if diff <= 20 { // 20미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
+                                            list.append(startHole.number)
+                                        }
                                     }
                                     
-                                    if self.teeingGroundInfo?.unit == "Y" {
-                                        let x = Double(backTee) * 0.9144
-                                        backTee = Int(x.rounded())
-                                    }
-                                    
-                                    // print(#function, startHole.number, backTee, distance)
-                                    
-                                    let diff = distance - (Double(backTee) + 30) // (나와 홀 사이 거리) - 전장(백티 + 30)
-                                    print(#function, "diff:", diff, distance, backTee)
-                                    
-                                    // 20 m
-                                    if diff <= 20 { // 20미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
-                                        list.append(startHole.number)
-                                    }
-                                }
-                                
-                                // update UI
-                                if list.count == 1 {
-                                    let n = list[0]
-                                    self.holeNumber = n
-                                    
-                                    // self.save = true
-                                    
-                                    moveNext()
-                                } else if list.count > 1 {
-                                    showList()
-                                } else { // 0
-                                    // change text message
-                                    withAnimation(.linear(duration: 0.5)) {
-                                        self.textMessage = Util.getWaitMessageForHole(self.findStartHoleCounter)
-                                    }
-                                    self.findStartHoleCounter += 1
-                                    
-                                    // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                                        calcDistance()
+                                    // update UI
+                                    if list.count == 1 {
+                                        let n = list[0]
+                                        self.holeNumber = n
+                                        
+                                        // self.save = true
+                                        
+                                        moveNext()
+                                    } else if list.count > 1 {
+                                        showList()
+                                    } else { // 0
+                                        // change text message
+                                        withAnimation(.linear(duration: 0.5)) {
+                                            self.textMessage = Util.getWaitMessageForHole(self.findStartHoleCounter)
+                                        }
+                                        self.findStartHoleCounter += 1
+                                        
+                                        // 하나도 못찾으면 찾을 때까지 계속 돌아야 한다.
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                            calcDistance()
+                                        }
                                     }
                                 }
                             }
@@ -743,8 +745,8 @@ struct HoleSearchView: View {
                     }
                 }
             }
-            // --
         }
+        // --
     }
     
     func showList() {
