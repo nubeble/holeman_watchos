@@ -237,7 +237,7 @@ struct CourseSearchView: View {
             
         } else if self.mode == 9 { // notice
             
-            // ToDo: open Notification in iPhone
+            // Consider: open Notification in iPhone
             
             ZStack {
                 VStack {
@@ -249,7 +249,7 @@ struct CourseSearchView: View {
                 
                 VStack {
                     let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
-                    let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '\(name)' - 'Holeman' - '앱을 사용하는 동안' 선택"
+                    let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - '\(name)' - '앱을 사용하는 동안' 선택"
                     Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
                 }
                 
