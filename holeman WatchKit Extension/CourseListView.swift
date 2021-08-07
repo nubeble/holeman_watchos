@@ -123,7 +123,7 @@ struct CourseListView: View {
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .padding(.top, 6)
+                            .padding(.top, Static.buttonPaddingTop)
                             .padding(.bottom, -20) // check default padding
                             
                         }.onAppear {
@@ -173,7 +173,7 @@ struct CourseListView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.top, 10)
+                    .padding(.bottom, 10)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
@@ -423,7 +423,7 @@ struct CourseListView: View {
                             .buttonStyle(PlainButtonStyle())
                             .padding(.bottom, 10)
                         }
-                        .padding(.top, 6)
+                        .padding(.top, Static.buttonPaddingTop)
                     } // VStack
                 } // ScrollView
             } // GeometryReader
@@ -523,7 +523,7 @@ struct CourseListView: View {
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .padding(.top, 6)
+                            .padding(.top, Static.buttonPaddingTop)
                             .padding(.bottom, -20) // check default padding
                         }
                     }

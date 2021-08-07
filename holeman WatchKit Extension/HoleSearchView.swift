@@ -293,7 +293,7 @@ struct HoleSearchView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.top, 10)
+                    .padding(.bottom, 10)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)

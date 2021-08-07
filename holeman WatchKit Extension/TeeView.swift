@@ -93,7 +93,7 @@ struct TeeView: View {
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .padding(.top, 6)
+                            .padding(.top, Static.buttonPaddingTop)
                             .padding(.bottom, -20) // check default padding
                             
                         }.onAppear {

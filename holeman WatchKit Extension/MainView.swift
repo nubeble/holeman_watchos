@@ -279,8 +279,11 @@ struct MainView: View {
                     Spacer().frame(maxHeight: .infinity)
                     
                     ProgressBar(progress: self.$progressValue)
-                        .frame(width: 54, height: 54)
-                        .padding(10.0)
+                        // .frame(width: 54, height: 54)
+                        .frame(width: 46, height: 46) // 54 - 8 (line width)
+                        // .padding(10.0)
+                        // .padding(.bottom, 10)
+                        .padding(.bottom, 14) // 10 + 4
                         .onAppear(perform: {
                             self.progressValue = 0.0
                             
