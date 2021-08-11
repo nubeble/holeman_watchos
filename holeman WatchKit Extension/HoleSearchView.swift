@@ -484,7 +484,7 @@ struct HoleSearchView: View {
                         // set distance
                         
                         // sort
-                        // 1. 우선 좌그린 (또는 single value) 으로 정렬
+                        // 1. 우선 좌그린 값 (또는 single value) 으로 정렬
                         var sorted = distances.sorted { $0.1[0] > $1.1[0] }
 
                         // 2. 색깔로 정렬 (red < yellow < white < blue < black)
