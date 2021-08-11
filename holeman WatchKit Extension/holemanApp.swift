@@ -14,8 +14,6 @@ struct holemanApp: App {
     
     @StateObject var storeManager = StoreManager()
     
-    // var interfaceController = InterfaceController()
-    
     var body: some Scene {
         WindowGroup {
             NavigationView {

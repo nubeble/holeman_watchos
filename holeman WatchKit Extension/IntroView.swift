@@ -96,8 +96,6 @@ struct IntroView: View {
                     Spacer().frame(maxHeight: .infinity)
                     
                     Button(action: {
-                        print("button click")
-                        
                         // Sign in with Apple
                         // checkUserIdentifierValidation()
                         

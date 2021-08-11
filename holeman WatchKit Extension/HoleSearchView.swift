@@ -484,8 +484,44 @@ struct HoleSearchView: View {
                         // set distance
                         
                         // sort
-                        // let sorted = distances.sorted {$0.1 < $1.1}
-                        let sorted = distances.sorted {$0.1[0] > $1.1[0]} // 좌그린 값으로 비교
+                        // 1. 우선 좌그린 (또는 single value) 으로 정렬
+                        var sorted = distances.sorted { $0.1[0] > $1.1[0] }
+
+                        // 2. 색깔로 정렬 (red < yellow < white < blue < black)
+                        sorted = sorted.sorted { (lhs, rhs) -> Bool in
+                            // white, blue -> blue, white
+                            // blue, black -> black, blue
+                            // red, white -> white, red
+                            
+                            let key1 = lhs.0
+                            let key2 = rhs.0
+                        
+                            let c1 = Util.getColorName(key1)
+                            let c2 = Util.getColorName(key2)
+                            
+                            if c1 == "blue" && c2 == "black" { return false }
+                            
+                            if c1 == "white" && c2 == "blue" { return false }
+                            
+                            if c1 == "yellow" && c2 == "white" { return false }
+                            
+                            if c1 == "red" && c2 == "yellow" { return false }
+                            
+                            if c1 == "red" && c2 == "white" { return false }
+                            
+                            if c1 == "yellow" && c2 == "blue" { return false }
+                            
+                            if c1 == "red" && c2 == "blue" { return false }
+                            
+                            if c1 == "white" && c2 == "black" { return false }
+                            
+                            if c1 == "yellow" && c2 == "black" { return false }
+                            
+                            if c1 == "red" && c2 == "black" { return false }
+                            
+                            return true
+                        }
+                        
                         for (key, value) in sorted {
                             // get name, color
                             let start1 = key.firstIndex(of: "(")

@@ -54,6 +54,7 @@ struct Util {
         else if c == "GOLD" { _c = Color(red: 212 / 255, green: 175 / 255, blue: 55 / 255) }
         else if c == "PINK" { _c = Color.pink }
         else if c == "PURPLE" { _c = Color.purple }
+        else { _c = Color.orange }
         
         return _c
     }
@@ -466,5 +467,18 @@ struct Util {
         }
         
         return maxValue
+    }
+    
+    static func getColorName(_ key: String) -> String {
+        // get color
+        let start1 = key.firstIndex(of: "(")
+        let end1 = key.firstIndex(of: ")")
+        
+        let i2 = key.index(start1!, offsetBy: 1)
+        
+        let range2 = i2..<end1!
+        let color = key[range2]
+        
+        return String(color)
     }
 }

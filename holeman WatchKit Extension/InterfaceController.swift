@@ -9,16 +9,10 @@ import WatchKit
 // import Foundation
 
 class InterfaceController: WKInterfaceController, WKExtendedRuntimeSessionDelegate {
+    
     var session: WKExtendedRuntimeSession!
     
-    //var time = 15
-    //var timer = Timer()
-    
-    //@IBAction func startTimerButtonPressed() {
-    func ready() {
-        
-        print("InterfaceController.init()")
-
+    func startSession() {
         session = WKExtendedRuntimeSession()
         session.delegate = self
         session.start()
@@ -27,12 +21,12 @@ class InterfaceController: WKInterfaceController, WKExtendedRuntimeSessionDelega
     func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
         // Track when your session ends.
         // Also handle errors here.
-        print(#function, Date())
+        print(#function, "Session stopped", Date())
     }
     
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
         // Track when your session starts.
-        print(#function, Date())
+        print(#function, "Session started", Date())
     }
     
     func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
