@@ -150,7 +150,7 @@ struct IntroView: View {
                 VStack(alignment: HorizontalAlignment.center) {
                     Image("icon")
                         .resizable()
-                        .frame(width: 20.383, height: 32.011)
+                        .frame(width: 48, height: 48)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }

@@ -1304,11 +1304,22 @@ struct MainView: View {
         // ToDo: 2021-03-15 hole pass check
         // 1. 현재 홀에 있는지 확인
         if stillInCurrentHole(distance) == false { // 현재 홀을 벗어났다면
-            // 2. currentHoleNumber+1 부터 한 바퀴까지 돌면서 각 홀에 있는지 체크
             let number = findHole(coordinate1)
-            // print(#function, "found hole number", number)
-            
             if number != 0 {
+                if checkHalftimePass(self.holeNumber!, number) == true {
+                    if Global.halftime == 2 {
+                        // 후반 진행 중에 홀을 벗어나서 코스 밖으로 나왔다..
+                        
+                        saveHole(4) // 후반 종료
+                        
+                        moveToHoleSearchView(300)
+                        
+                        return
+                    } else {
+                        Global.halftime = 2
+                    }
+                }
+                
                 self.holeNumber = number
                 
                 withAnimation {
@@ -1530,6 +1541,25 @@ struct MainView: View {
         }
         
         return 0
+    }
+    
+    func checkHalftimePass(_ prevHoleNumber: Int, _ curHoleNumber: Int) -> Bool {
+        let courses = self.course?.courses
+        
+        for course in courses! {
+            let start = course.range[0]
+            let end = course.range[1]
+            
+            if start <= prevHoleNumber && prevHoleNumber <= end {
+                if start <= curHoleNumber && curHoleNumber <= end {
+                    return false
+                }
+                
+                return true
+            }
+        }
+        
+        return false
     }
     
     func saveHole(_ halftime: Int) {

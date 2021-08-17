@@ -2,10 +2,15 @@
   "colors" : [
     {
       "color" : {
-        "platform" : "ios",
-        "reference" : "systemGreenColor"
+        "color-space" : "extended-srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0.349",
+          "green" : "0.780",
+          "red" : "0.204"
+        }
       },
-      "idiom" : "universal"
+      "idiom" : "watch"
     }
   ],
   "info" : {
