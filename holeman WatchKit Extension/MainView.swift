@@ -187,9 +187,8 @@ struct MainView: View {
     
     // @ObservedObject var compassHeading = CompassHeading()
     
-    static let HOLE_PASS_DISTANCE: Double = 30 // 30 m
-    @State var holePassFlag = 100 // 100: normal state, 200: 홀까지 남은 거리가 30미터 안으로 들어왔을 때, 300: 10초 머물렀을 때, 400: 다시 30미터 (+ 10미터) 밖으로 나갔을 때
-    // @State var holePassCount = 0
+    static let HOLE_PASS_DISTANCE: Double = 50 // 50 m
+    @State var holePassFlag = 100 // 100: normal state, 200: 홀까지 남은 거리가 50미터 안으로 들어왔을 때, 300: 10초 머물렀을 때, 400: 다시 50미터 밖으로 나갔을 때
     @State var holePassStartTime: DispatchTime? = nil
     
     // pass to TeeView & HoleView
@@ -1254,6 +1253,10 @@ struct MainView: View {
             if Global.halftime == 1 { saveHole(1) } // 전반 중
             else { saveHole(3) } // 후반 중
             
+            // init
+            self.holePassFlag = 100
+            self.holePassStartTime = nil
+            
             MainView.lastHoleNumber = self.holeNumber
             
             return
@@ -1328,7 +1331,6 @@ struct MainView: View {
                 
                 // init
                 self.holePassFlag = 100
-                // self.holePassCount = 0
                 self.holePassStartTime = nil
             } else {
                 // 현재 홀을 벗어나서 다음 홀을 찾기 시도하다가 마지막 홀까지 돌아도 못찾으면 종료한다.
@@ -1373,55 +1375,70 @@ struct MainView: View {
     func checkHolePass(_ distance: Double) -> Bool {
         switch self.holePassFlag {
         case 100:
-            if distance < MainView.HOLE_PASS_DISTANCE { self.holePassFlag = 200 }
+            if distance < MainView.HOLE_PASS_DISTANCE {
+                self.holePassFlag = 200
+                
+                // set timer start time
+                self.holePassStartTime = DispatchTime.now()
+            }
             return false
             
         case 200:
             if distance < MainView.HOLE_PASS_DISTANCE {
                 /*
-                 if self.holePassCount >= 10 { // 10 seconds
+                 if self.holePassStartTime == nil {
+                 self.holePassStartTime = DispatchTime.now()
+                 } else {
+                 let now = DispatchTime.now()
+                 var interval = now.uptimeNanoseconds - self.holePassStartTime!.uptimeNanoseconds
+                 interval = interval / 1_000_000 // millisecond
+                 let sec = interval / 1000 // second
+                 
+                 if sec >= 10 {
                  print(#function, "10 seconds up")
                  
                  self.holePassFlag = 300
-                 self.holePassCount = 0
-                 } else {
-                 self.holePassCount += 1
+                 self.holePassStartTime = nil
+                 }
                  }
                  */
-                if self.holePassStartTime == nil {
-                    self.holePassStartTime = DispatchTime.now()
-                } else {
-                    let now = DispatchTime.now()
-                    var interval = now.uptimeNanoseconds - self.holePassStartTime!.uptimeNanoseconds
-                    interval = interval / 1_000_000 // millisecond
-                    let sec = interval / 1000 // second
+                let now = DispatchTime.now()
+                var interval = now.uptimeNanoseconds - self.holePassStartTime!.uptimeNanoseconds
+                interval = interval / 1_000_000 // millisecond
+                let sec = interval / 1000 // second
+                
+                if sec >= 10 {
+                    print(#function, "10 seconds up")
                     
-                    if sec >= 10 {
-                        print(#function, "10 seconds up")
-                        
-                        self.holePassFlag = 300
-                        self.holePassStartTime = nil
-                    }
+                    self.holePassFlag = 300
+                    self.holePassStartTime = nil
                 }
             } else {
                 // init
                 self.holePassFlag = 100
-                // self.holePassCount = 0
                 self.holePassStartTime = nil
             }
             return false
             
         case 300:
-            if distance > (MainView.HOLE_PASS_DISTANCE + 10) { self.holePassFlag = 400 }
+            // if distance > (MainView.HOLE_PASS_DISTANCE + 10) { self.holePassFlag = 400 }
+            if distance >= MainView.HOLE_PASS_DISTANCE {
+                // init
+                self.holePassFlag = 100
+                self.holePassStartTime = nil
+                
+                return true
+            }
             return false
             
-        case 400:
-            // init
-            self.holePassFlag = 100
-            // self.holePassCount = 0
-            self.holePassStartTime = nil
-            return true
-            
+        /*
+         case 400:
+         // init
+         self.holePassFlag = 100
+         self.holePassStartTime = nil
+         return true
+         */
+        
         default:
             return false
         }
