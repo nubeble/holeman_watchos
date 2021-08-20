@@ -17,6 +17,8 @@ struct HoleSearchView: View {
     @State var from: Int?
     var search: Bool?
     
+    @State var showBeerIcon: Bool?
+    
     // @ObservedObject var locationManager = LocationManager()
     
     @State var course: CourseModel? = nil
@@ -97,7 +99,7 @@ struct HoleSearchView: View {
                 VStack(alignment: HorizontalAlignment.center) {
                     Spacer().frame(maxHeight: .infinity)
                     
-                    if self.from == 200 {
+                    if self.showBeerIcon == true {
                         ZStack {
                             Image("beer")
                                 .resizable()
@@ -130,7 +132,6 @@ struct HoleSearchView: View {
                                 // ToDo: test timer
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                                     // getStartHole() // 1, 10, 19, ...
-                                    
                                     let groupId = self.course?.id
                                     onGetHoles(groupId!)
                                 }
@@ -153,14 +154,17 @@ struct HoleSearchView: View {
                     } else if from == 200 {
                         // 전반 종료. 앱이 계속 떠 있는 상태에서 홀 근처로 가면 후반 시작
                         
-                        self.textMessage = "전반 플레이가 끝났습니다. 그늘집에서 쉬시고 스타트 홀로 가시면 자동 시작됩니다."
+                        self.textMessage = "전반 9홀이 끝났습니다. 그늘집에서 쉬시고 스타트 홀로 가시면 자동 시작됩니다."
+                        
+                        self.showBeerIcon = true
                         
                         // self.save = false
                         
                         // ToDo: test timer
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                            // getStartHole() // 1, 10, 19, ...
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+                            self.showBeerIcon = false
                             
+                            // getStartHole() // 1, 10, 19, ...
                             let groupId = self.course?.id
                             onGetHoles(groupId!)
                         }
@@ -169,7 +173,7 @@ struct HoleSearchView: View {
                         
                         self.textMessage = "전후반 플레이가 모두 끝났습니다. 수고하셨습니다."
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
                             withAnimation {
                                 self.mode = 21
                             }
@@ -486,7 +490,7 @@ struct HoleSearchView: View {
                         // sort
                         // 1. 우선 좌그린 값 (또는 single value) 으로 정렬
                         var sorted = distances.sorted { $0.1[0] > $1.1[0] }
-
+                        
                         // 2. 색깔로 정렬 (red < yellow < white < blue < black)
                         sorted = sorted.sorted { (lhs, rhs) -> Bool in
                             // white, blue -> blue, white
@@ -495,7 +499,7 @@ struct HoleSearchView: View {
                             
                             let key1 = lhs.0
                             let key2 = rhs.0
-                        
+                            
                             let c1 = Util.getColorName(key1)
                             let c2 = Util.getColorName(key2)
                             
