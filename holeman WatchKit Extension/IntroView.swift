@@ -331,7 +331,7 @@ struct IntroView: View {
                     } else if self.mode == 12 {
                         // let course = self.course?.name ?? ""
                         let course = Util.getCourseName(self.course?.name)
-                        let hole = "후반전 시작" // ToDo: language bundle
+                        let hole = "후반전 시작"
                         
                         Text(course).font(.system(size: 18))
                             .fixedSize(horizontal: false, vertical: true)
@@ -344,7 +344,7 @@ struct IntroView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     } else { // 14, 15
                         let course = Util.getCourseName(self.course?.name)
-                        let hole = "전반전 시작" // ToDo: language bundle
+                        let hole = "전반전 시작"
                         
                         Text(course).font(.system(size: 18))
                             .fixedSize(horizontal: false, vertical: true)
