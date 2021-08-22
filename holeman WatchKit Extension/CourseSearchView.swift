@@ -536,7 +536,7 @@ struct CourseSearchView: View {
                     ScrollView {
                         VStack {
                             Text("Payment").font(.system(size: 20, weight: .semibold))
-                            Text("바우쳐를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                            Text("바우처를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                             
                             Text(Locale.current.languageCode == "ko" ? "홀맨 이용권" : "Holeman Voucher")
                                 .font(.system(size: 20, weight: .regular))
