@@ -16,6 +16,7 @@ struct CourseModel {
     var location: CLLocation
     var name: String
     var email: String
+    var hlds: Int64
 }
 
 struct CourseItem {

@@ -920,7 +920,6 @@ struct CourseListView: View {
                 for record in records {
                     count += 1
                     // print("course #\(count)", record)
-                    
                     print("course #\(count)")
                     
                     let address = record["address"] as! String
@@ -930,10 +929,11 @@ struct CourseListView: View {
                     let location = record["location"] as! CLLocation
                     let name = record["name"] as! String
                     let email = record["email"] as! String
+                    let hlds = record["hlds"] as! Int64
                     
                     // set data
                     // --
-                    var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "", email: "")
+                    var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "", email: "", hlds: 0)
                     
                     c.address = address
                     c.countryCode = countryCode!
@@ -966,6 +966,7 @@ struct CourseListView: View {
                     c.location = location
                     c.name = name
                     c.email = email
+                    c.hlds = hlds
                     
                     self.courses.append(c)
                     // --

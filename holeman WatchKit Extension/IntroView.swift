@@ -840,7 +840,7 @@ struct IntroView: View {
         // if time != nil {
         // get course
         // --
-        var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "", email: "")
+        var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "", email: "", hlds: 0)
         
         let address = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_ADDRESS")
         let countryCode = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_COUNTRY_CODE")
@@ -868,11 +868,13 @@ struct IntroView: View {
         let longitude = UserDefaults.standard.double(forKey: "LAST_PLAYED_HOLE_COURSE_LONGITUDE")
         let name = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_NAME")
         let email = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_COURSE_EMAIL")
+        let hlds = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_COURSE_HLDS")
         
         c.id = Int64(id)
         c.location = CLLocation(latitude: latitude, longitude: longitude)
         c.name = name!
         c.email = email!
+        c.hlds = Int64(hlds)
         // --
         
         // get teeingGroundInfo
@@ -919,7 +921,7 @@ struct IntroView: View {
     func loadCourse() {
         // get course
         // --
-        var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "", email: "")
+        var c: CourseModel = CourseModel(address: "", countryCode: "", courses: [], id: 0, location: CLLocation(latitude: 0.0, longitude: 0.0), name: "", email: "", hlds: 0)
         
         let address = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_ADDRESS")
         let countryCode = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_COUNTRY_CODE")
@@ -947,11 +949,13 @@ struct IntroView: View {
         let longitude = UserDefaults.standard.double(forKey: "LAST_PURCHASED_COURSE_COURSE_LONGITUDE")
         let name = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_NAME")
         let email = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_COURSE_EMAIL")
+        let hlds = UserDefaults.standard.integer(forKey: "LAST_PURCHASED_COURSE_COURSE_HLDS")
         
         c.id = Int64(id)
         c.location = CLLocation(latitude: latitude, longitude: longitude)
         c.name = name!
         c.email = email!
+        c.hlds = Int64(hlds)
         // --
         
         self.course = c

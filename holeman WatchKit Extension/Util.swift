@@ -178,15 +178,6 @@ struct Util {
         UserDefaults.standard.set(dateString, forKey: "LAST_PURCHASED_COURSE_TIME")
         
         // 2. course
-        /*
-         var address: String
-         var countryCode: String
-         var courses: [CourseItem]
-         var id: Int64
-         var location: CLLocation
-         var name: String
-         */
-        
         // address
         UserDefaults.standard.set(course.address, forKey: "LAST_PURCHASED_COURSE_COURSE_ADDRESS")
         
@@ -225,6 +216,9 @@ struct Util {
         
         // email
         UserDefaults.standard.set(course.email, forKey: "LAST_PURCHASED_COURSE_COURSE_EMAIL")
+        
+        // hlds
+        UserDefaults.standard.set(course.hlds, forKey: "LAST_PURCHASED_COURSE_COURSE_HLDS")
     }
     
     static func contains(_ products: [SKProduct], _ id: String) -> Bool {

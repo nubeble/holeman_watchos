@@ -1593,15 +1593,6 @@ struct MainView: View {
         UserDefaults.standard.set(dateString, forKey: "LAST_PLAYED_HOLE_TIME")
         
         // 2. course
-        /*
-         var address: String
-         var countryCode: String
-         var courses: [CourseItem]
-         var id: Int64
-         var location: CLLocation
-         var name: String
-         */
-        
         if let course = self.course {
             // address
             UserDefaults.standard.set(course.address, forKey: "LAST_PLAYED_HOLE_COURSE_ADDRESS")
@@ -1642,6 +1633,9 @@ struct MainView: View {
             
             // email
             UserDefaults.standard.set(course.email, forKey: "LAST_PLAYED_HOLE_COURSE_EMAIL")
+            
+            // hlds
+            UserDefaults.standard.set(course.hlds, forKey: "LAST_PLAYED_HOLE_COURSE_HLDS")
         }
         
         // 3. hole number
