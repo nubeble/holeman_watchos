@@ -713,7 +713,7 @@ struct CourseSearchView: View {
                     Util.saveCourse(c)
                     
                     // ToDo: test timer
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                         withAnimation {
                             self.mode = 20 // move next
                         }
