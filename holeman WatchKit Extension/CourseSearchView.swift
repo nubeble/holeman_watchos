@@ -907,7 +907,7 @@ struct CourseSearchView: View {
                 if result == true {
                     withAnimation {
                         // self.mode = 20 // move next
-
+                        
                         // 2021-08-24
                         self.mode = 22
                     }

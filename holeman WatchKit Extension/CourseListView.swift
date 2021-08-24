@@ -465,7 +465,7 @@ struct CourseListView: View {
              
              }
              */
-        
+            
         } else if self.mode == 22 { // HLDS
             
             ZStack {
