@@ -55,7 +55,11 @@ struct CourseSearchView: View {
                         .transition(.opacity)
                         .id(self.textMessage)
                 }
-            }.onAppear(perform: onCreate)
+            }
+            .onAppear {
+                // get country code
+                getCountryCodeTimer()
+            }
             
         } else if self.mode == 1 {
             
@@ -226,7 +230,8 @@ struct CourseSearchView: View {
                             .padding(.top, Static.buttonPaddingTop)
                             .padding(.bottom, -20) // check default padding
                             
-                        }.onAppear {
+                        }
+                        .onAppear {
                             // scroll
                             // value.scrollTo(2)
                         }
@@ -506,7 +511,7 @@ struct CourseSearchView: View {
                             
                             // button 2
                             Button(action: {
-                                // self.checkFreeTrial()
+                                // checkFreeTrial()
                                 
                                 withAnimation {
                                     self.mode = 70
@@ -529,6 +534,49 @@ struct CourseSearchView: View {
                 } // ScrollView
             } // GeometryReader
             
+        } else if self.mode == 22 { // HLDS
+            
+            ZStack {
+                VStack {
+                    Text("Notice").font(.system(size: 20, weight: .semibold))
+                    Text("HLDS™를 확인해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    let c = self.courses[self.selectedCourseIndex]
+                    let name = Util.getCourseName(self.courses[self.selectedCourseIndex].name)
+                    let text = c.hlds == 100 ? name + "은 HLDS™가 적용되어 있습니다.😃 홀맨이 정확한 거리를 알려드릴게요." : name + "은 HLDS™가 아직 적용되어 있지 않네요.😥 하지만 홀맨이 그린 정중앙을 기준으로 남은 거리를 알려드릴게요."
+                    
+                    Text(text).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
+                
+                // next button
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Button(action: {
+                        withAnimation {
+                            self.mode = 20 // move next
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 54, height: 54)
+                            
+                            Image(systemName: "arrow.right")
+                                .font(Font.system(size: 28, weight: .heavy))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.bottom, 10)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            
         } else if self.mode == 51 {
             
             if Util.contains(self.storeManager.myProducts, Static.productId) == true {
@@ -540,7 +588,9 @@ struct CourseSearchView: View {
                             Text("바우처를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
                             
                             Text(Locale.current.languageCode == "ko" ? "홀맨 이용권" : "Holeman Voucher")
-                                .font(.system(size: 20, weight: .regular))
+                                // .font(.system(size: 20, weight: .regular))
+                                .font(.system(size: 20, weight: .semibold))
+                                
                                 // .foregroundColor(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
                                 .foregroundColor(.green)
                                 // .frame(maxWidth: .infinity, alignment: .leading)
@@ -549,7 +599,9 @@ struct CourseSearchView: View {
                             
                             Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + " 18홀의 정확한 거리 측정 서비스를 1,000원에 이용하세요.")
                                 .font(.system(size: 16))
-                                .fontWeight(.light)
+                                // .fontWeight(.light)
+                                .fontWeight(.medium)
+                                
                                 // .frame(maxWidth: .infinity, alignment: .leading)
                                 .multilineTextAlignment(.center)
                                 .padding(.bottom, 8)
@@ -694,7 +746,8 @@ struct CourseSearchView: View {
                     Image(systemName: "checkmark")
                         .font(Font.system(size: 40, weight: .semibold))
                         .foregroundColor(.green)
-                }.onAppear {
+                }
+                .onAppear {
                     self.storeManager.destroy()
                     
                     // ToDo: 2021-04-26 IAP
@@ -716,7 +769,10 @@ struct CourseSearchView: View {
                     // ToDo: test timer
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                         withAnimation {
-                            self.mode = 20 // move next
+                            // self.mode = 20 // move next
+                            
+                            // 2021-08-24
+                            self.mode = 22
                         }
                     }
                 }
@@ -728,13 +784,17 @@ struct CourseSearchView: View {
             
             VStack {
                 Text("홀맨을 사랑해주셔서 감사합니다. 이제부터 무료로 이용하세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
-            }.onAppear {
+            }
+            .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     let c = self.courses[self.selectedCourseIndex]
                     Util.saveCourse(c)
                     
                     withAnimation {
-                        self.mode = 20 // move next
+                        // self.mode = 20 // move next
+                        
+                        // 2021-08-24
+                        self.mode = 22
                     }
                 }
             }
@@ -760,7 +820,10 @@ struct CourseSearchView: View {
                     
                     Button(action: {
                         withAnimation {
-                            self.mode = 20 // move next
+                            // self.mode = 20 // move next
+                            
+                            // 2021-08-24
+                            self.mode = 22
                         }
                     }) {
                         ZStack {
@@ -838,25 +901,22 @@ struct CourseSearchView: View {
                         .transition(.opacity)
                         .id(self.textMessage)
                 }
-            }.onAppear {
+            }
+            .onAppear {
                 let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)
                 if result == true {
                     withAnimation {
-                        self.mode = 20 // move next
+                        // self.mode = 20 // move next
+
+                        // 2021-08-24
+                        self.mode = 22
                     }
                 } else {
-                    self.checkFreeTrial()
+                    checkFreeTrial()
                 }
             }
             
         }
-    }
-    
-    func onCreate() {
-        // print(#function, "onCreate()")
-        
-        // get country code
-        getCountryCodeTimer()
     }
     
     func getCountryCodeTimer() {
