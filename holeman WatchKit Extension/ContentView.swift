@@ -121,7 +121,8 @@ struct ContentView: View {
              */
             
             
-        }.onAppear(perform: onCreate)
+        }
+        .onAppear(perform: onCreate)
         
     } // body
     

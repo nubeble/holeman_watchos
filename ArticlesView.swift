@@ -29,7 +29,8 @@ struct ArticlesView: View {
                 }
             }
             
-        }.onAppear{
+        }
+        .onAppear{
             self.articleManager.fetchArticles()
         }
     }

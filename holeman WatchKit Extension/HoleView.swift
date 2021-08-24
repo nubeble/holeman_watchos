@@ -91,7 +91,8 @@ struct HoleView: View {
                             .padding(.top, Static.buttonPaddingTop)
                             .padding(.bottom, -20) // check default padding
                             
-                        }.onAppear {
+                        }
+                        .onAppear {
                             // scroll
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                 withAnimation {

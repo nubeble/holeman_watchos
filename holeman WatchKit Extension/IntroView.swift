@@ -284,7 +284,8 @@ struct IntroView: View {
                 
                 Text(str1 + "님,").font(.system(size: 24)).fontWeight(.medium)
                 Text(str2).font(.system(size: 24)).fontWeight(.medium)
-            }.onAppear {
+            }
+            .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     withAnimation {
                         self.mode = 3
@@ -475,7 +476,8 @@ struct IntroView: View {
                 VStack {
                     let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
                     let text = "iPhone에서 Apple Watch 앱을 열고 '나의 시계' - '알림' - '\(name)' - '알림 허용' 선택"
-                    Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                    // Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                    Text(text).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {

@@ -122,7 +122,7 @@ struct HoleSearchView: View {
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
             }
-            .onAppear(perform: {
+            .onAppear {
                 if let from = self.from {
                     if from == 100 {
                         if let search = self.search {
@@ -191,7 +191,7 @@ struct HoleSearchView: View {
                         getStartHole() // 1, 10, 19, ...
                     }
                 }
-            })
+            }
             
         } else if self.mode == 1 {
             
@@ -250,7 +250,8 @@ struct HoleSearchView: View {
                              .padding(.bottom, -20) // check default padding
                              */
                             
-                        }.onAppear {
+                        }
+                        .onAppear {
                             // scroll
                             // value.scrollTo(2)
                         }
@@ -274,7 +275,8 @@ struct HoleSearchView: View {
                 VStack {
                     let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
                     let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - '\(name)' - '앱을 사용하는 동안' 선택"
-                    Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                    // Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                    Text(text).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {

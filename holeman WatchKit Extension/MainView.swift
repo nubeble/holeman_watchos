@@ -283,7 +283,7 @@ struct MainView: View {
                         // .padding(10.0)
                         // .padding(.bottom, 10)
                         .padding(.bottom, 14) // 10 + 4
-                        .onAppear(perform: {
+                        .onAppear {
                             self.progressValue = 0.0
                             
                             Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { timer in
@@ -304,12 +304,11 @@ struct MainView: View {
                                     }
                                 }
                             }
-                        })
+                        }
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
-            }
-            .onAppear(perform: {
+            }.onAppear {
                 // let title = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
                 let title = Util.convertHoleTitle(self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? "")
                 let name = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
@@ -319,7 +318,7 @@ struct MainView: View {
                 if title.count >= 16 { self.message1FontSize = 20 }
                 
                 self.message2 = name
-            })
+            }
             
         } else if self.mode == 9 { // tips
             
@@ -361,7 +360,7 @@ struct MainView: View {
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
             }
-            .onAppear(perform: {
+            .onAppear {
                 if let tips = self.teeingGroundInfo?.holes[self.holeNumber! - 1].tips {
                     var str = ""
                     var size = tips.count
@@ -378,7 +377,7 @@ struct MainView: View {
                     
                     self.tips = str
                 }
-            })
+            }
             
         } else if self.mode == 8 { // notice
             
