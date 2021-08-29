@@ -68,6 +68,10 @@ struct Static {
     // static let __lat = 0.274504618438766
     // static let __lon = -0.12371567874762
     
+    // (스카이72 하늘코스 from 매탄동)
+    // static let __lat = -0.18453440281145
+    // static let __lon = 0.55975353068125
+    
     static let __lat = 0.0
     static let __lon = 0.0
 }

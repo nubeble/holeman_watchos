@@ -39,7 +39,8 @@ struct IntroView: View {
     @State var course: CourseModel?
     @State var holeNumber: Int?
     @State var teeingGroundInfo: TeeingGroundInfoModel?
-    @State var teeingGroundIndex: Int?
+    // @State var teeingGroundIndex: Int?
+    @State var teeingGroundName: String?
     @State var greenDirection: Int?
     
     // @State private var textValue: String = "Sample Data"
@@ -458,8 +459,12 @@ struct IntroView: View {
         } else if self.mode == 21 {
             
             // move to HoleSearchView
+            /*
+             HoleSearchView(from: self.from, search: self.search, course: self.course,
+             teeingGroundInfo: self.teeingGroundInfo, teeingGroundIndex: self.teeingGroundIndex!, greenDirection: self.greenDirection!, holeNumber: self.holeNumber!)
+             */
             HoleSearchView(from: self.from, search: self.search, course: self.course,
-                           teeingGroundInfo: self.teeingGroundInfo, teeingGroundIndex: self.teeingGroundIndex!, greenDirection: self.greenDirection!, holeNumber: self.holeNumber!)
+                           teeingGroundInfo: self.teeingGroundInfo, teeingGroundName: self.teeingGroundName, greenDirection: self.greenDirection!, holeNumber: self.holeNumber!)
             
         } else if self.mode == 31 { // notice
             
@@ -646,13 +651,15 @@ struct IntroView: View {
         }
     }
     
-    func moveToHoleSearchView(_ from: Int, _ search: Bool, _ course: CourseModel?, _ holeNumber: Int?, _ teeingGroundInfo: TeeingGroundInfoModel?, _ teeingGroundIndex: Int?, _ greenDirection: Int?) {
+    // func moveToHoleSearchView(_ from: Int, _ search: Bool, _ course: CourseModel?, _ holeNumber: Int?, _ teeingGroundInfo: TeeingGroundInfoModel?, _ teeingGroundIndex: Int?, _ greenDirection: Int?) {
+    func moveToHoleSearchView(_ from: Int, _ search: Bool, _ course: CourseModel?, _ holeNumber: Int?, _ teeingGroundInfo: TeeingGroundInfoModel?, _ teeingGroundName: String?, _ greenDirection: Int?) {
         self.from = from
         self.search = search
         self.course = course
         self.holeNumber = holeNumber
         self.teeingGroundInfo = teeingGroundInfo
-        self.teeingGroundIndex = teeingGroundIndex
+        // self.teeingGroundIndex = teeingGroundIndex
+        self.teeingGroundName = teeingGroundName
         self.greenDirection = greenDirection
         
         withAnimation {
@@ -679,7 +686,8 @@ struct IntroView: View {
         self.from = 400
         // self.search = true // not used
         self.holeNumber = 1 // set default
-        self.teeingGroundIndex = 0 // set default
+        // self.teeingGroundIndex = 0 // set default
+        // self.teeingGroundName = ""
         self.greenDirection = 100 // set default
         
         withAnimation {
@@ -836,7 +844,8 @@ struct IntroView: View {
     func loadHole() {
         // let time = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TIME")
         let holeNumber = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_HOLE_NUMBER")
-        let teeingGroundIndex = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INDEX")
+        // let teeingGroundIndex = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INDEX")
+        let teeingGroundName = UserDefaults.standard.string(forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_NAME")
         let greenDirection = UserDefaults.standard.integer(forKey: "LAST_PLAYED_HOLE_GREEN_DIRECTION")
         
         // if time != nil {
@@ -915,7 +924,8 @@ struct IntroView: View {
         self.course = c
         self.holeNumber = holeNumber
         self.teeingGroundInfo = t
-        self.teeingGroundIndex = teeingGroundIndex
+        // self.teeingGroundIndex = teeingGroundIndex
+        self.teeingGroundName = teeingGroundName
         self.greenDirection = greenDirection
         // }
     } // loadHole()

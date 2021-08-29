@@ -19,6 +19,7 @@ struct TeeView: View {
     var __course: CourseModel?
     var __teeingGroundInfo: TeeingGroundInfoModel?
     // var __teeingGroundIndex: Int?
+    var __teeingGroundName: String?
     var __greenDirection: Int?
     var __holeNumber: Int?
     var __distanceUnit: Int?
@@ -57,7 +58,7 @@ struct TeeView: View {
                                 }) {
                                     HStack(spacing: 10) {
                                         VStack {
-                                            Text(name).font(.system(size: 20))
+                                            Text(name).font(.system(size: name.count > 8 ? 16 : 20))
                                                 .foregroundColor(c)
                                                 .frame(maxWidth: .infinity, alignment: .leading)
                                             
@@ -114,8 +115,20 @@ struct TeeView: View {
             
         } else if self.mode == 1 { // go back to MainView
             
+            /*
+             MainView(mode: 1,
+             course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.selectedIndex,
+             greenDirection: self.__greenDirection, holeNumber: self.__holeNumber, distanceUnit: self.__distanceUnit!,
+             sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
+             userElevation: self.__userElevation
+             )
+             */
+            
+            let tgs = (self.__teeingGroundInfo?.holes[self.__holeNumber! - 1].teeingGrounds)!
+            let teeingGroundName = Util.getName(tgs[self.selectedIndex])
+            
             MainView(mode: 1,
-                     course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.selectedIndex,
+                     course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundName: teeingGroundName,
                      greenDirection: self.__greenDirection, holeNumber: self.__holeNumber, distanceUnit: self.__distanceUnit!,
                      sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
                      userElevation: self.__userElevation

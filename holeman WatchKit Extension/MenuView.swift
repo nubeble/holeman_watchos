@@ -15,7 +15,8 @@ struct MenuView: View {
     // backup of MainView
     var __course: CourseModel?
     var __teeingGroundInfo: TeeingGroundInfoModel?
-    var __teeingGroundIndex: Int?
+    // var __teeingGroundIndex: Int?
+    var __teeingGroundName: String?
     var __greenDirection: Int?
     var __holeNumber: Int?
     var __distanceUnit: Int?
@@ -263,9 +264,16 @@ struct MenuView: View {
             CourseView()
             
         } else if self.mode == 9 { // go back to MainView
-            
+            /*
+             MainView(mode: 1,
+             course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.__teeingGroundIndex,
+             greenDirection: self.__greenDirection, holeNumber: self.__holeNumber, distanceUnit: self.__distanceUnit!,
+             sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
+             userElevation: self.__userElevation
+             )
+             */
             MainView(mode: 1,
-                     course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.__teeingGroundIndex,
+                     course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundName: self.__teeingGroundName,
                      greenDirection: self.__greenDirection, holeNumber: self.__holeNumber, distanceUnit: self.__distanceUnit!,
                      sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
                      userElevation: self.__userElevation

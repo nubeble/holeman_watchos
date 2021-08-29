@@ -24,7 +24,8 @@ struct HoleSearchView: View {
     @State var course: CourseModel? = nil
     
     @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
-    @State var teeingGroundIndex: Int = 0
+    // @State var teeingGroundIndex: Int = 0
+    @State var teeingGroundName: String? = nil
     
     @State var greenDirection: Int = 100
     
@@ -39,7 +40,6 @@ struct HoleSearchView: View {
         let name: String
         let par: Int
         let handicap: Int
-        // let distance: Dictionary<String, Int>
         let distances: Dictionary<String, [Int]>
         let tips: [String]
     }
@@ -416,15 +416,13 @@ struct HoleSearchView: View {
         } else if self.mode == 20 { // move to next (MainView)
             
             // 1. teeingGroundIndex
-            let teeingGroundIndex = self.teeingGroundIndex
+            // let teeingGroundIndex = self.teeingGroundIndex
+            let teeingGroundName = self.teeingGroundName != nil ? self.teeingGroundName : Util.getName((self.teeingGroundInfo?.holes[self.holeNumber - 1].teeingGrounds[0])!)
             
             let greenDirection = self.greenDirection
             
             // 2. holeNumber
             let holeNumber = self.holeNumber
-            
-            // 3. groupId
-            // let groupdId = self.course?.id
             
             // 4. course
             let course = self.course
@@ -432,7 +430,8 @@ struct HoleSearchView: View {
             // 5. teeingGroundInfo
             let teeingGroundInfo = self.teeingGroundInfo
             
-            MainView(course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundIndex: teeingGroundIndex, greenDirection: greenDirection, holeNumber: holeNumber)
+            // MainView(course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundIndex: teeingGroundIndex, greenDirection: greenDirection, holeNumber: holeNumber)
+            MainView(course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundName: teeingGroundName, greenDirection: greenDirection, holeNumber: holeNumber)
             
         } else if self.mode == 21 { // move to CourseSearchView
             
@@ -476,7 +475,6 @@ struct HoleSearchView: View {
                         tg.handicap = decodedData.handicap
                         tg.tips = decodedData.tips
                         
-                        // let distances = Util.convertToDictionary(text: decodedData.distance)
                         let distances = decodedData.distances
                         
                         // set title
@@ -493,6 +491,8 @@ struct HoleSearchView: View {
                         // 1. 우선 좌그린 값 (또는 single value) 으로 정렬
                         var sorted = distances.sorted { $0.1[0] > $1.1[0] }
                         
+                        // print(#function, sorted)
+                        
                         // 2. 색깔로 정렬 (red < yellow < white < blue < black)
                         sorted = sorted.sorted { (lhs, rhs) -> Bool in
                             // white, blue -> blue, white
@@ -506,27 +506,26 @@ struct HoleSearchView: View {
                             let c2 = Util.getColorName(key2)
                             
                             if c1 == "blue" && c2 == "black" { return false }
-                            
                             if c1 == "white" && c2 == "blue" { return false }
-                            
                             if c1 == "yellow" && c2 == "white" { return false }
-                            
                             if c1 == "red" && c2 == "yellow" { return false }
-                            
                             if c1 == "red" && c2 == "white" { return false }
-                            
                             if c1 == "yellow" && c2 == "blue" { return false }
-                            
                             if c1 == "red" && c2 == "blue" { return false }
-                            
                             if c1 == "white" && c2 == "black" { return false }
-                            
                             if c1 == "yellow" && c2 == "black" { return false }
-                            
                             if c1 == "red" && c2 == "black" { return false }
+                            
+                            if c1 == "black" && c2 == "black" { return false }
+                            if c1 == "blue" && c2 == "blue" { return false }
+                            if c1 == "white" && c2 == "white" { return false }
+                            if c1 == "yellow" && c2 == "yellow" { return false }
+                            if c1 == "red" && c2 == "red" { return false }
                             
                             return true
                         }
+                        
+                        print(#function, sorted)
                         
                         for (key, value) in sorted {
                             // get name, color
@@ -730,7 +729,6 @@ struct HoleSearchView: View {
                                         
                                         let distance = coordinate1.distance(from: coordinate2) // result is in meters
                                         
-                                        // var backTee = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distance
                                         var backTee = 0
                                         if let distances = self.teeingGroundInfo?.holes[startHole.number - 1].teeingGrounds[0].distances {
                                             backTee = Util.getMaxValue(distances)

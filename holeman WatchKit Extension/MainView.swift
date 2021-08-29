@@ -130,13 +130,15 @@ struct MainView: View {
     static var elevationDiff: Double?
     // for saveHole
     static var lastHoleNumber: Int?
-    static var lastTeeingGroundIndex: Int?
+    // static var lastTeeingGroundIndex: Int?
+    static var lastTeeingGroundName: String?
     static var lastGreenDirection: Int?
     
     
     @State var course: CourseModel? = nil
     @State var teeingGroundInfo: TeeingGroundInfoModel? = nil
-    @State var teeingGroundIndex: Int?
+    // @State var teeingGroundIndex: Int?
+    @State var teeingGroundName: String?
     @State var greenDirection: Int? // 100: left green, 200: right green
     @State var holeNumber: Int? // current hole number
     @State var distanceUnit: Int = -1 // 0: meter, 1: yard
@@ -628,7 +630,8 @@ struct MainView: View {
                     }
                 }
                 
-                if self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!].distances.count == 1 {
+                // if self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!].distances.count == 1 {
+                if Util.getTeeingGroundDistancesLength((self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds)!, self.teeingGroundName!) == 1 {
                     self.showGreenButton = false
                 } else {
                     self.showGreenButton = true
@@ -771,7 +774,7 @@ struct MainView: View {
             
             HoleView(titles: self.titles!, selectedIndex: self.holeNumber! - 1,
                      // backup
-                     __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundIndex: self.teeingGroundIndex,
+                     __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundName: self.teeingGroundName,
                      __greenDirection: self.greenDirection, /*__holeNumber: self.holeNumber,*/ __distanceUnit: self.distanceUnit,
                      __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
                      __userElevation: self.userElevation
@@ -779,7 +782,7 @@ struct MainView: View {
             
         } else if self.mode == 3 { // open TeeView
             
-            TeeView(names: self.names!, color: self.color!, distances: self.distances!, selectedIndex: self.teeingGroundIndex!,
+            TeeView(names: self.names!, color: self.color!, distances: self.distances!, selectedIndex: Util.getIndex((self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds)!, self.teeingGroundName!),
                     // backup
                     __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, /*__teeingGroundIndex: self.teeingGroundIndex,*/
                     __greenDirection: self.greenDirection, __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
@@ -791,7 +794,7 @@ struct MainView: View {
             
             MenuView(
                 // backup
-                __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundIndex: self.teeingGroundIndex,
+                __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundName: self.teeingGroundName,
                 __greenDirection: self.greenDirection, __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
                 __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
                 __userElevation: self.userElevation
@@ -800,7 +803,7 @@ struct MainView: View {
         } else if self.mode == 21 {
             
             // move to HoleSearchView
-            HoleSearchView(from: self.from, course: self.course, teeingGroundIndex: self.teeingGroundIndex!)
+            HoleSearchView(from: self.from, course: self.course, teeingGroundName: self.teeingGroundName)
             
         } else if self.mode == 99 {
             
@@ -893,7 +896,6 @@ struct MainView: View {
             let c = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[i].color
             let _c: Color = Util.getColor(c!)
             
-            // var distance = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[i].distance
             var distance = 0
             if let distances = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[i].distances {
                 if distances.count == 1 {
@@ -975,7 +977,9 @@ struct MainView: View {
     } // getSensors()
     
     func setTeeDistance() {
-        let teeingGround = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!]
+        // let teeingGround = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!]
+        let index = Util.getIndex((self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds)!, self.teeingGroundName!)
+        let teeingGround = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[index]
         // print(#function, teeingGround)
         
         let color = teeingGround?.color
@@ -1024,7 +1028,9 @@ struct MainView: View {
     }
     
     func changeTeeDistance() {
-        let teeingGround = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!]
+        // let teeingGround = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!]
+        let index = Util.getIndex((self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds)!, self.teeingGroundName!)
+        let teeingGround = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[index]
         
         var distance = 0
         if let distances = teeingGround?.distances {
@@ -1233,14 +1239,16 @@ struct MainView: View {
          }
          */
         
-        if MainView.lastHoleNumber == nil && MainView.lastTeeingGroundIndex == nil && MainView.lastGreenDirection == nil { // 최초 로드
+        // if MainView.lastHoleNumber == nil && MainView.lastTeeingGroundIndex == nil && MainView.lastGreenDirection == nil { // 최초 로드
+        if MainView.lastHoleNumber == nil && MainView.lastTeeingGroundName == nil && MainView.lastGreenDirection == nil { // 최초 로드
             // print(#function, "saveHole()", 2)
             
             if Global.halftime == 1 { saveHole(1) } // 전반 중
             else { saveHole(3) } // 후반 중
             
             MainView.lastHoleNumber = self.holeNumber
-            MainView.lastTeeingGroundIndex = self.teeingGroundIndex
+            // MainView.lastTeeingGroundIndex = self.teeingGroundIndex
+            MainView.lastTeeingGroundName = self.teeingGroundName
             MainView.lastGreenDirection = self.greenDirection
             
             return
@@ -1261,13 +1269,15 @@ struct MainView: View {
             return
         }
         
-        if MainView.lastTeeingGroundIndex != self.teeingGroundIndex {
+        // if MainView.lastTeeingGroundIndex != self.teeingGroundIndex {
+        if MainView.lastTeeingGroundName != self.teeingGroundName {
             // print(#function, "saveHole()", 4)
             
             if Global.halftime == 1 { saveHole(1) } // 전반 중
             else { saveHole(3) } // 후반 중
             
-            MainView.lastTeeingGroundIndex = self.teeingGroundIndex
+            // MainView.lastTeeingGroundIndex = self.teeingGroundIndex
+            MainView.lastTeeingGroundName = self.teeingGroundName
             
             return
         }
@@ -1324,6 +1334,8 @@ struct MainView: View {
                 
                 self.holeNumber = number
                 
+                self.teeingGroundName = Util.getNextTeeingGroundName((self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds)!, self.teeingGroundName!)
+                
                 withAnimation {
                     self.mode = 0
                 }
@@ -1362,6 +1374,8 @@ struct MainView: View {
                     // 일반 홀 종료. 다음 홀로 이동
                     
                     self.holeNumber! += 1
+                    
+                    self.teeingGroundName = Util.getNextTeeingGroundName((self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds)!, self.teeingGroundName!)
                     
                     withAnimation {
                         self.mode = 0
@@ -1673,7 +1687,8 @@ struct MainView: View {
         // --
         
         // 5. teeing ground index
-        UserDefaults.standard.set(self.teeingGroundIndex, forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INDEX")
+        // UserDefaults.standard.set(self.teeingGroundIndex, forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_INDEX")
+        UserDefaults.standard.set(self.teeingGroundName, forKey: "LAST_PLAYED_HOLE_TEEING_GROUND_NAME")
         
         // 6. halftime
         UserDefaults.standard.set(halftime, forKey: "LAST_PLAYED_HOLE_HALFTIME")

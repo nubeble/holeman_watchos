@@ -12,13 +12,15 @@ struct SplashView: View {
     @State var isActive: Bool = false
     
     var body: some View {
-        
         if self.isActive == true {
+            
             VStack { // should be VStack
                 IntroView()
             }
             .navigationBarTitle(Locale.current.languageCode == "ko" ? "홀맨" : "Holeman")
+            
         } else {
+            
             VStack {
                 Image("logo")
                     .resizable()
@@ -31,6 +33,7 @@ struct SplashView: View {
                     }
                 }
             }
+            
         }
         /*
          VStack {

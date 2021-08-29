@@ -475,4 +475,69 @@ struct Util {
         
         return String(color)
     }
+    
+    static func getTeeingGroundDistancesLength(_ tgs: [TeeingGround], _ str: String) -> Int { // str: REGULAR-2 (WHITE)
+        let start1 = str.firstIndex(of: "(")
+        let i1 = str.index(start1!, offsetBy: -1)
+        let range1 = str.startIndex..<i1
+        
+        let name = str[range1] // REGULAR-2
+        // print(#function, "name: " + name)
+        
+        for tg in tgs {
+            if tg.name == name { return tg.distances.count }
+        }
+        
+        return 0
+    }
+    
+    static func getNextTeeingGroundName(_ tgs: [TeeingGround], _ str: String) -> String { // str: REGULAR-2 (WHITE)
+        // 여기서 파라미터로 넘어온 str은 이전 홀의 이름이다. 이 함수에서 구한 이름으로 현재 홀에 셋팅한다.
+        
+        let start1 = str.firstIndex(of: "(")
+        let end1 = str.firstIndex(of: ")")
+        
+        let i1 = str.index(start1!, offsetBy: -1)
+        
+        let range1 = str.startIndex..<i1
+        let name = str[range1]
+        
+        let i2 = str.index(start1!, offsetBy: 1)
+        
+        let range2 = i2..<end1!
+        let color = str[range2]
+        
+        // print(#function, "name: " + name, "color: " + color)
+        
+        // 우선 이름으로 먼저 검색한다.
+        for tg in tgs {
+            if tg.name == name { return str }
+        }
+        
+        // 이름이 같은 티박스가 없으면 색깔로 검색한다.
+        for tg in tgs {
+            if tg.color == color { return tg.name + " (" + tg.color + ")" }
+        }
+        
+        return ""
+    }
+    
+    static func getIndex(_ tgs: [TeeingGround], _ str: String) -> Int { // str: REGULAR-2 (WHITE)
+        let start1 = str.firstIndex(of: "(")
+        let i1 = str.index(start1!, offsetBy: -1)
+        let range1 = str.startIndex..<i1
+        
+        let name = str[range1] // REGULAR-2
+        // print(#function, "name: " + name)
+        
+        for (i, tg) in tgs.enumerated() {
+            if tg.name == name { return i }
+        }
+        
+        return 0
+    }
+    
+    static func getName(_ tg: TeeingGround) -> String {
+        return tg.name + " (" + tg.color + ")" // REGULAR-2 (WHITE)
+    }
 }

@@ -16,7 +16,8 @@ struct HoleView: View {
     // backup of MainView
     var __course: CourseModel?
     var __teeingGroundInfo: TeeingGroundInfoModel?
-    var __teeingGroundIndex: Int?
+    // var __teeingGroundIndex: Int?
+    var __teeingGroundName: String?
     var __greenDirection: Int?
     // var __holeNumber: Int?
     var __distanceUnit: Int?
@@ -108,9 +109,19 @@ struct HoleView: View {
             }
             
         } else if self.mode == 1 {
+            /*
+             MainView(mode: 1,
+             course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.__teeingGroundIndex,
+             greenDirection: self.__greenDirection, holeNumber: self.selectedIndex + 1, distanceUnit: self.__distanceUnit!,
+             sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
+             userElevation: self.__userElevation
+             )
+             */
+            
+            let teeingGroundName = Util.getNextTeeingGroundName((self.__teeingGroundInfo?.holes[self.selectedIndex].teeingGrounds)!, self.__teeingGroundName!)
             
             MainView(mode: 1,
-                     course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.__teeingGroundIndex,
+                     course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundName: teeingGroundName,
                      greenDirection: self.__greenDirection, holeNumber: self.selectedIndex + 1, distanceUnit: self.__distanceUnit!,
                      sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
                      userElevation: self.__userElevation
