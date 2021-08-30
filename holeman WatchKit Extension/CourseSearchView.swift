@@ -201,7 +201,7 @@ struct CourseSearchView: View {
                                             .fixedSize(horizontal: false, vertical: true)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
-
+                                        
                                         Text(str2).font(.system(size: Global.text6Size)) // 영문 코스명은 12로 고정
                                             .fixedSize(horizontal: false, vertical: true)
                                             .lineLimit(1)

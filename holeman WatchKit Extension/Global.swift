@@ -53,12 +53,13 @@ struct Global {
     static var icon3Size: CGFloat = 20
     static var icon4Size: CGFloat = 16
     static var icon5Size: CGFloat = 28
+    static var icon6Size: CGFloat = 32
     
     static var textButtonSize: CGFloat = 50
     
     static var checkIconSize: CGFloat = 40
     static var checkmarkIconSize: CGFloat = 16
-
+    
     static var progressBarSize: CGFloat = 46
     static var progressBarLineWidth: CGFloat = 8
     
@@ -113,12 +114,13 @@ struct Global {
             icon3Size = icon3Size / 183.0 * 161.0
             icon4Size = icon4Size / 183.0 * 161.0
             icon5Size = icon5Size / 183.0 * 161.0
+            icon6Size = icon6Size / 183.0 * 161.0
             
             textButtonSize = textButtonSize / 183.0 * 161.0
             
             checkIconSize = checkIconSize / 183.0 * 161.0
             checkmarkIconSize = checkmarkIconSize / 183.0 * 161.0
-
+            
             progressBarSize = progressBarSize / 183.0 * 161.0
             progressBarLineWidth = progressBarLineWidth / 183.0 * 161.0
             

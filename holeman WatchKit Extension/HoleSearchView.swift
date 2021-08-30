@@ -103,14 +103,14 @@ struct HoleSearchView: View {
                         ZStack {
                             Image("beer")
                                 .resizable()
-                                .frame(width: 32, height: 32)
+                                .frame(width: Global.icon6Size, height: Global.icon6Size)
                         }
                         .padding(.bottom, Global.buttonPaddingBottom)
                     } else {
                         ZStack {
                             Image("tee up")
                                 .resizable()
-                                .frame(width: 32, height: 32)
+                                .frame(width: Global.icon6Size, height: Global.icon6Size)
                             
                             TeeIndicator(isAnimating: .constant(true))
                                 .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
@@ -363,7 +363,7 @@ struct HoleSearchView: View {
                 VStack {
                     Spacer().frame(maxHeight: .infinity)
                     
-                    HStack(spacing: 40) {
+                    HStack(spacing: Global.buttonSpacing2) {
                         // button 1
                         Button(action: {
                             
@@ -387,14 +387,12 @@ struct HoleSearchView: View {
                         
                         // button 2
                         Button(action: {
-                            
                             // self.textMessage = "스타트 홀로 가시면 자동으로 시작됩니다."
                             self.from = 500
                             
                             withAnimation {
                                 self.mode = 0
                             }
-                            
                         }) {
                             ZStack {
                                 Circle()
