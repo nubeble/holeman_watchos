@@ -487,7 +487,7 @@ struct CourseSearchView: View {
                         }
                         .padding(.all, Global.buttonPadding)
                         .background(Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255))
-                        .cornerRadius(Global.buttonPadding)
+                        .cornerRadius(Global.radius1)
                         
                         HStack(spacing: Global.buttonSpacing2) {
                             // button 1
@@ -614,7 +614,7 @@ struct CourseSearchView: View {
                                 HStack {
                                     Spacer()
                                     
-                                    Text("￦1,000 / 18 holes").foregroundColor(.black)
+                                    Text("￦1,000 / 18 holes").foregroundColor(.black) // ToDo: !!! (check text size)
                                     //.font(.system(size: 15))
                                     // .fontWeight(.bold)
                                     
@@ -623,7 +623,7 @@ struct CourseSearchView: View {
                                 .frame(height: Global.textButtonSize)
                                 // .background(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
                                 .background(Color.green)
-                                .cornerRadius(Global.buttonPadding)
+                                .cornerRadius(Global.radius1)
                             }
                             .buttonStyle(PlainButtonStyle())
                             
@@ -952,7 +952,7 @@ struct CourseSearchView: View {
                                             self.mode = 10
                                         }
                                     }
-
+                                    
                                     return
                                 }
                                 

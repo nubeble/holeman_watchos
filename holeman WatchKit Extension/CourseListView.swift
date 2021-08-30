@@ -890,8 +890,6 @@ struct CourseListView: View {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
             if let status = locationManager.locationStatus {
                 DispatchQueue.main.async {
-                    // timer1.invalidate()
-                    
                     if status == .authorizedWhenInUse || status == .authorizedAlways {
                         timer1.invalidate()
                         
