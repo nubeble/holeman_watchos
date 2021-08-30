@@ -203,7 +203,7 @@ struct HoleSearchView: View {
                     ScrollViewReader { value in
                         LazyVStack {
                             Text("Select Hole").font(.system(size: 20, weight: .semibold))
-                            Text("스타트 홀을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                            Text("스타트 홀을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
                             ForEach(0 ..< self.startHoles.count) {
                                 let index = $0
@@ -267,7 +267,7 @@ struct HoleSearchView: View {
             ZStack {
                 VStack {
                     Text("Notice").font(.system(size: 20, weight: .semibold))
-                    Text("위치 서비스를 켜주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    Text("위치 서비스를 켜주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }

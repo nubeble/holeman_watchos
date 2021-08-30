@@ -36,7 +36,7 @@ struct HoleView: View {
                     ScrollViewReader { value in
                         LazyVStack {
                             Text("Select Hole").font(.system(size: 20, weight: .semibold))
-                            Text("플레이 홀을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                            Text("플레이 홀을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
                             ForEach(0 ..< self.titles.count) {
                                 let index = $0
@@ -89,7 +89,7 @@ struct HoleView: View {
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .padding(.top, Static.buttonPaddingTop)
+                            .padding(.top, Global.buttonPaddingTop)
                             .padding(.bottom, -20) // check default padding
                             
                         }

@@ -33,7 +33,7 @@ struct MenuView: View {
                 ScrollView {
                     VStack {
                         Text("Settings").font(.system(size: 20, weight: .semibold))
-                        Text("원하시는 기능을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                        Text("원하시는 기능을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                         
                         // item 1
                         Button(action: {
@@ -148,7 +148,7 @@ struct MenuView: View {
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .padding(.top, Static.buttonPaddingTop)
+                        .padding(.top, Global.buttonPaddingTop)
                         .padding(.bottom, -20) // check default padding
                         
                     } // VStack

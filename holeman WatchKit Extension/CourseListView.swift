@@ -60,7 +60,7 @@ struct CourseListView: View {
                     ScrollViewReader { value in
                         LazyVStack {
                             Text("Select Course").font(.system(size: 20, weight: .semibold))
-                            Text("골프장을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                            Text("골프장을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
                             // Divider()
                             
@@ -127,7 +127,7 @@ struct CourseListView: View {
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .padding(.top, Static.buttonPaddingTop)
+                            .padding(.top, Global.buttonPaddingTop)
                             .padding(.bottom, -20) // check default padding
                             
                         }
@@ -147,7 +147,7 @@ struct CourseListView: View {
             ZStack {
                 VStack {
                     Text("Notice").font(.system(size: 20, weight: .semibold))
-                    Text("위치 서비스를 켜주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    Text("위치 서비스를 켜주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -336,7 +336,7 @@ struct CourseListView: View {
                 ScrollView {
                     VStack {
                         Text("Select Course").font(.system(size: 20, weight: .semibold))
-                        Text("선택하신 골프장이 맞나요?").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                        Text("선택하신 골프장이 맞나요?").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                         
                         VStack {
                             if let name = self.courses[self.selectedCourseIndex].name {
@@ -429,7 +429,7 @@ struct CourseListView: View {
                             .buttonStyle(PlainButtonStyle())
                             .padding(.bottom, 10)
                         }
-                        .padding(.top, Static.buttonPaddingTop)
+                        .padding(.top, Global.buttonPaddingTop)
                     } // VStack
                 } // ScrollView
             } // GeometryReader
@@ -471,7 +471,7 @@ struct CourseListView: View {
             ZStack {
                 VStack {
                     Text("Notice").font(.system(size: 20, weight: .semibold))
-                    Text("HLDS™를 확인해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    Text("HLDS™를 확인해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -517,7 +517,7 @@ struct CourseListView: View {
                     ScrollView {
                         VStack {
                             Text("Payment").font(.system(size: 20, weight: .semibold))
-                            Text("바우처를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                            Text("바우처를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
                             Text(Locale.current.languageCode == "ko" ? "홀맨 이용권" : "Holeman Voucher")
                                 // .font(.system(size: 20, weight: .regular))
@@ -576,7 +576,7 @@ struct CourseListView: View {
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .padding(.top, Static.buttonPaddingTop)
+                            .padding(.top, Global.buttonPaddingTop)
                             .padding(.bottom, -20) // check default padding
                         }
                     }
@@ -737,7 +737,7 @@ struct CourseListView: View {
                 // header
                 VStack {
                     Text("Free Trial").font(.system(size: 20, weight: .semibold))
-                    Text("무료로 체험하세요!").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    Text("무료로 체험하세요!").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -780,7 +780,7 @@ struct CourseListView: View {
                 // header
                 VStack {
                     Text("Free Trial").font(.system(size: 20, weight: .semibold))
-                    Text("무료로 체험하세요!").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    Text("무료로 체험하세요!").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -844,7 +844,7 @@ struct CourseListView: View {
                 // header
                 VStack {
                     Text("Select Course").font(.system(size: 20, weight: .semibold))
-                    Text("선택하신 골프장이 맞나요?").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    Text("선택하신 골프장이 맞나요?").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }

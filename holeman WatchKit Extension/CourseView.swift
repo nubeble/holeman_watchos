@@ -17,8 +17,8 @@ struct CourseView: View {
             GeometryReader { geometry in
                 ScrollView {
                     VStack {
-                        Text("Select Course").font(.system(size: 20, weight: .semibold))
-                        Text("골프장을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                        Text("Select Course").font(.system(size: Global.text2Size, weight: .semibold))
+                        Text("골프장을 선택하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                         
                         /*
                          Picker(selection: self.$selectedTimeIndex, label: Text("select Time")) {
@@ -62,13 +62,13 @@ struct CourseView: View {
                                 ZStack {
                                     Circle()
                                         .fill(Color.orange)
-                                        .frame(width: 26, height: 26)
+                                        .frame(width: Global.circleIconSize, height: Global.circleIconSize)
                                     
                                     Image(systemName: "magnifyingglass")
-                                        .font(Font.system(size: 13, weight: .heavy))
+                                        .font(Font.system(size: Global.icon1Size, weight: .heavy))
                                 }
                                 
-                                Text("자동으로 검색").font(Font.system(size: 20, weight: .semibold))
+                                Text("자동으로 검색").font(Font.system(size: Global.text2Size, weight: .semibold))
                                 
                                 Spacer()
                             }
@@ -80,17 +80,17 @@ struct CourseView: View {
                                 self.mode = 2
                             }
                         }) {
-                            HStack(spacing: 10) {
+                            HStack(spacing: Global.buttonPaddingBottom) {
                                 ZStack {
                                     Circle()
                                         .fill(Color.blue)
-                                        .frame(width: 26, height: 26)
+                                        .frame(width: Global.circleIconSize, height: Global.circleIconSize)
                                     
                                     Image(systemName: "list.bullet")
-                                        .font(Font.system(size: 13, weight: .heavy))
+                                        .font(Font.system(size: Global.icon1Size, weight: .heavy))
                                 }
                                 
-                                Text("목록에서 선택").font(Font.system(size: 20, weight: .semibold))
+                                Text("목록에서 선택").font(Font.system(size: Global.text2Size, weight: .semibold))
                                 
                                 Spacer()
                             }

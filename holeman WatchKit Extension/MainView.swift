@@ -328,7 +328,7 @@ struct MainView: View {
                 // header
                 VStack {
                     Text("Tips").font(.system(size: 20, weight: .semibold))
-                    Text("홀을 공략하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    Text("홀을 공략하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -387,7 +387,7 @@ struct MainView: View {
                 // header
                 VStack {
                     Text("Notice").font(.system(size: 20, weight: .semibold))
-                    Text("홀 정보가 변경되었습니다.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    Text("홀 정보가 변경되었습니다.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }

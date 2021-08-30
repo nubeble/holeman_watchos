@@ -15,21 +15,38 @@ struct SplashView: View {
         if self.isActive == true {
             
             VStack { // should be VStack
-                IntroView()
+                // IntroView()
+                // ToDo: !!!
+                CourseView()
             }
             .navigationBarTitle(Locale.current.languageCode == "ko" ? "홀맨" : "Holeman")
             
         } else {
             
-            VStack {
-                Image("logo")
-                    .resizable()
-                    .frame(width: 147.89, height: 26.11)
-            }
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                    withAnimation {
-                        self.isActive = true
+            GeometryReader { proxy in
+                VStack {
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        Image("logo")
+                            .resizable()
+                            .frame(width: Global.logoWidth, height: Global.logoHeight)
+                        
+                        Spacer()
+                    }
+                    
+                    Spacer()
+                }
+                .onAppear {
+                    print(#function, proxy.size.width)
+                    Global.setDeviceResolution(proxy.size.width)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                        withAnimation {
+                            self.isActive = true
+                        }
                     }
                 }
             }

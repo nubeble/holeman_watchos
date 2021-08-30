@@ -59,7 +59,7 @@ struct IntroView: View {
         } else if self.mode == 0 {
             
             VStack {
-                Text(self.text1).font(.system(size: 24)).fontWeight(.medium).opacity(self.text1Opacity)
+                Text(self.text1).font(.system(size: Global.text1Size)).fontWeight(.medium).opacity(self.text1Opacity)
             }
             .onAppear {
                 withAnimation(.easeInOut(duration: 1), {
@@ -89,8 +89,8 @@ struct IntroView: View {
             
             ZStack {
                 VStack {
-                    Text(self.text2).font(.system(size: 24)).fontWeight(.medium).opacity(self.text2Opacity)
-                    Text(self.text3).font(.system(size: 24)).fontWeight(.medium).opacity(self.text3Opacity)
+                    Text(self.text2).font(.system(size: Global.text1Size)).fontWeight(.medium).opacity(self.text2Opacity)
+                    Text(self.text3).font(.system(size: Global.text1Size)).fontWeight(.medium).opacity(self.text3Opacity)
                 }
                 
                 VStack {
@@ -110,14 +110,14 @@ struct IntroView: View {
                         ZStack {
                             Circle()
                                 .fill(Color.green)
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                             
                             Image(systemName: "arrow.right")
-                                .font(Font.system(size: 28, weight: .heavy))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Global.buttonPaddingBottom)
                     .opacity(self.button1Opacity)
                 } // VStack
                 .frame(maxHeight: .infinity)
@@ -151,13 +151,13 @@ struct IntroView: View {
                 VStack(alignment: HorizontalAlignment.center) {
                     Image("icon")
                         .resizable()
-                        .frame(width: 48, height: 48)
+                        .frame(width: Global.iconWidth, height: Global.iconWidth)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
                 
                 VStack {
-                    Text("홀맨을 이용하시려면 로그인이 필요합니다.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text("홀맨을 이용하시려면 로그인이 필요합니다.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -267,9 +267,7 @@ struct IntroView: View {
                         // .signInWithAppleButtonStyle(.black) // black button
                         // .signInWithAppleButtonStyle(.white) // white button
                         .signInWithAppleButtonStyle(.whiteOutline) // white with border
-                        // .frame(width: .infinity, height: 30)
-                        // .frame(width: 100, height: 30)
-                        .frame(height: 30)
+                        .frame(width: Global.signInWithAppleButtonWidth, height: Global.signInWithAppleButtonHeight)
                 }
             }
             
@@ -283,8 +281,8 @@ struct IntroView: View {
                 let str1 = self.name ?? "홀맨 회원"
                 let str2 = "즐거운 라운드 되세요."
                 
-                Text(str1 + "님,").font(.system(size: 24)).fontWeight(.medium)
-                Text(str2).font(.system(size: 24)).fontWeight(.medium)
+                Text(str1 + "님,").font(.system(size: Global.text1Size)).fontWeight(.medium)
+                Text(str2).font(.system(size: Global.text1Size)).fontWeight(.medium)
             }
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
@@ -304,7 +302,7 @@ struct IntroView: View {
                 VStack {
                     Spacer()
                     
-                    Text(self.textMessage2).font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
+                    Text(self.textMessage2).font(.system(size: Global.text4Size)).foregroundColor(Color.gray).fontWeight(.medium)
                         .transition(.opacity)
                         .id(self.textMessage2)
                 }
@@ -321,12 +319,12 @@ struct IntroView: View {
                         // let hole = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
                         let hole = Util.convertHoleTitle(self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? "")
                         
-                        Text(course).font(.system(size: 18))
+                        Text(course).font(.system(size: Global.text3Size))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(hole).font(.system(size: 16))
+                        Text(hole).font(.system(size: Global.text4Size))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -335,12 +333,12 @@ struct IntroView: View {
                         let course = Util.getCourseName(self.course?.name)
                         let hole = "후반전 시작"
                         
-                        Text(course).font(.system(size: 18))
+                        Text(course).font(.system(size: Global.text3Size))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(hole).font(.system(size: 16))
+                        Text(hole).font(.system(size: Global.text4Size))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -348,12 +346,12 @@ struct IntroView: View {
                         let course = Util.getCourseName(self.course?.name)
                         let hole = "전반전 시작"
                         
-                        Text(course).font(.system(size: 18))
+                        Text(course).font(.system(size: Global.text3Size))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(hole).font(.system(size: 16))
+                        Text(hole).font(.system(size: Global.text4Size))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -363,7 +361,7 @@ struct IntroView: View {
                 }
                 
                 VStack {
-                    Text(self.textMessage).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -379,14 +377,14 @@ struct IntroView: View {
                             ZStack {
                                 Circle()
                                     .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                    .frame(width: 54, height: 54)
+                                    .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                 
                                 Image(systemName: "xmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                    .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
+                        .padding(.bottom, Global.buttonPaddingBottom)
                         // .opacity(button1Opacity)
                         
                         // button 2
@@ -441,14 +439,14 @@ struct IntroView: View {
                             ZStack {
                                 Circle()
                                     .fill(Color.green)
-                                    .frame(width: 54, height: 54)
+                                    .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                 
                                 Image(systemName: "checkmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                    .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
+                        .padding(.bottom, Global.buttonPaddingBottom)
                         // .opacity(button1Opacity)
                     }
                 }
@@ -472,8 +470,8 @@ struct IntroView: View {
             
             ZStack {
                 VStack {
-                    Text("Notice").font(.system(size: 20, weight: .semibold))
-                    Text("알림을 허용해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Static.title2PaddingBottom)
+                    Text("Notice").font(.system(size: Global.text2Size, weight: .semibold))
+                    Text("알림을 허용해주세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -482,7 +480,7 @@ struct IntroView: View {
                     let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
                     let text = "iPhone에서 Apple Watch 앱을 열고 '나의 시계' - '알림' - '\(name)' - '알림 허용' 선택"
                     // Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
-                    Text(text).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(text).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -500,14 +498,14 @@ struct IntroView: View {
                         ZStack {
                             Circle()
                                 .fill(Color.green)
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                             
                             Image(systemName: "arrow.right")
-                                .font(Font.system(size: 28, weight: .heavy))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Global.buttonPaddingBottom)
                     // .opacity(button1Opacity)
                 }
                 .frame(maxHeight: .infinity)
