@@ -243,12 +243,12 @@ struct MainView: View {
                         let range2 = i2..<end1!
                         let str2 = name[range2]
                         
-                        Text(str1).font(.system(size: 18))
+                        Text(str1).font(.system(size: Global.text3Size))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text(str2).font(.system(size: 12)) // 영문 코스명은 12로 고정
+                        Text(str2).font(.system(size: Global.text6Size)) // 영문 코스명은 12로 고정
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -271,7 +271,7 @@ struct MainView: View {
                     
                     VStack {
                         // hole name
-                        Text(self.message2).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                        Text(self.message2).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                             .padding(.top, 48)
                     }
                 }
@@ -281,10 +281,10 @@ struct MainView: View {
                     
                     ProgressBar(progress: self.$progressValue)
                         // .frame(width: 54, height: 54)
-                        .frame(width: 46, height: 46) // 54 - 8 (line width)
-                        // .padding(10.0)
+                        .frame(width: Global.progressBarSize, height: Global.progressBarSize) // 54 - 8 (line width)
                         // .padding(.bottom, 10)
-                        .padding(.bottom, 14) // 10 + 4
+                        // .padding(.bottom, 14) // 10 + 4
+                        .padding(.bottom, Global.buttonPaddingBottom + Global.progressBarLineWidth / 2) // 10 + 4
                         .onAppear {
                             self.progressValue = 0.0
                             
@@ -327,15 +327,15 @@ struct MainView: View {
             ZStack {
                 // header
                 VStack {
-                    Text("Tips").font(.system(size: 20, weight: .semibold))
-                    Text("홀을 공략하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                    Text("Tips").font(.system(size: Global.text2Size, weight: .semibold))
+                    Text("홀을 공략하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
                 
                 // tips
                 VStack {
-                    Text(self.tips).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.tips).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button
@@ -350,14 +350,14 @@ struct MainView: View {
                         ZStack {
                             Circle()
                                 .fill(Color.green)
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                             
                             Image(systemName: "arrow.right")
-                                .font(Font.system(size: 28, weight: .heavy))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Global.buttonPaddingBottom)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
@@ -386,14 +386,14 @@ struct MainView: View {
             ZStack {
                 // header
                 VStack {
-                    Text("Notice").font(.system(size: 20, weight: .semibold))
-                    Text("홀 정보가 변경되었습니다.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                    Text("Notice").font(.system(size: Global.text2Size, weight: .semibold))
+                    Text("홀 정보가 변경되었습니다.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
                 
                 VStack {
-                    Text("홀컵이 이동하여 남은 거리를 다시 계산하였습니다.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text("홀컵이 이동하여 남은 거리를 다시 계산하였습니다.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button
@@ -408,14 +408,14 @@ struct MainView: View {
                         ZStack {
                             Circle()
                                 .fill(Color.green)
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                             
                             Image(systemName: "arrow.right")
-                                .font(Font.system(size: 28, weight: .heavy))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Global.buttonPaddingBottom)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
@@ -436,7 +436,7 @@ struct MainView: View {
                                 }
                             }) {
                                 Image(systemName: "list.bullet")
-                                    .font(Font.system(size: 14, weight: .heavy))
+                                    .font(Font.system(size: Global.icon2Size, weight: .heavy))
                             }
                             // .buttonStyle(PlainButtonStyle())
                             .buttonStyle(Menu())
@@ -475,7 +475,7 @@ struct MainView: View {
                                 }) {
                                     Image(systemName: "l.circle")
                                         .foregroundColor(self.greenDirection == 100 ? Color.green : Color.gray)
-                                        .font(Font.system(size: 20, weight: .light))
+                                        .font(Font.system(size: Global.icon3Size, weight: .light))
                                 }
                                 // .buttonStyle(PlainButtonStyle())
                                 .buttonStyle(GreenNormal())
@@ -501,7 +501,7 @@ struct MainView: View {
                                 }) {
                                     Image(systemName: "r.circle")
                                         .foregroundColor(self.greenDirection == 200 ? Color.green : Color.gray)
-                                        .font(Font.system(size: 20, weight: .light))
+                                        .font(Font.system(size: Global.icon3Size, weight: .light))
                                 }
                                 // .buttonStyle(PlainButtonStyle())
                                 .buttonStyle(GreenSelected())
@@ -522,8 +522,6 @@ struct MainView: View {
                     
                     // text 1
                     VStack(alignment: HorizontalAlignment.center, spacing: 0)  {
-                        // Text("별우(STAR) 9TH").font(.system(size: 14)).padding(.top, 46)
-                        
                         Button(action: {
                             getHoleViewInfo()
                             
@@ -532,15 +530,15 @@ struct MainView: View {
                                 self.mode = 2
                             }
                         }) {
-                            Text(self.textHoleTitle).font(.system(size: 14))
+                            Text(self.textHoleTitle).font(.system(size: Global.text5Size))
                         }
                         .padding(.top, 46)
                         //.buttonStyle(PlainButtonStyle())
                         .buttonStyle(HoleTitle())
                         
                         HStack(spacing: 4) {
-                            Text(self.textPar).font(.system(size: 14))
-                            Text(self.textHandicap).font(.system(size: 14))
+                            Text(self.textPar).font(.system(size: Global.text5Size))
+                            Text(self.textHandicap).font(.system(size: Global.text5Size))
                             // Text("• 330").font(.system(size: 14))
                             
                             
@@ -552,7 +550,7 @@ struct MainView: View {
                                     self.mode = 3
                                 }
                             }) {
-                                Text(self.textTeeDistance).font(.system(size: 14)).foregroundColor(self.colorTeeDistance)
+                                Text(self.textTeeDistance).font(.system(size: Global.text5Size)).foregroundColor(self.colorTeeDistance)
                             }
                             .buttonStyle(HoleTitle())
                         }
@@ -569,7 +567,7 @@ struct MainView: View {
                                     setTeeDistance()
                                 }
                             
-                            Text(self.textUnit).font(.system(size: 14))
+                            Text(self.textUnit).font(.system(size: Global.text5Size))
                                 .onTapGesture {
                                     toggleUnit()
                                     setTeeDistance()
@@ -584,7 +582,7 @@ struct MainView: View {
                         HStack(spacing: 2) {
                             Image("hills")
                                 .resizable()
-                                .frame(width: 28, height: 28)
+                                .frame(width: Global.icon5Size, height: Global.icon5Size)
                                 .padding(.top, 4)
                             
                             HStack(alignment: .firstTextBaseline, spacing: 0) {
@@ -608,7 +606,7 @@ struct MainView: View {
                     VStack {
                         Spacer().frame(maxHeight: .infinity)
                         
-                        Text(Util.getCourseName(self.course?.name)).font(.system(size: 12))
+                        Text(Util.getCourseName(self.course?.name)).font(.system(size: Global.text6Size))
                             .foregroundColor(.gray)
                         //.fixedSize(horizontal: false, vertical: true)
                         //.lineLimit(1)

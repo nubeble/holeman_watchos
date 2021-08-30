@@ -35,8 +35,8 @@ struct HoleView: View {
                     // VStack {
                     ScrollViewReader { value in
                         LazyVStack {
-                            Text("Select Hole").font(.system(size: 20, weight: .semibold))
-                            Text("플레이 홀을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                            Text("Select Hole").font(.system(size: Global.text2Size, weight: .semibold))
+                            Text("플레이 홀을 선택하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
                             ForEach(0 ..< self.titles.count) {
                                 let index = $0
@@ -55,10 +55,10 @@ struct HoleView: View {
                                 }) {
                                     HStack(spacing: 10) {
                                         VStack {
-                                            Text(titles[0]).font(.system(size: 18))
+                                            Text(titles[0]).font(.system(size: Global.text3Size))
                                                 .frame(maxWidth: .infinity, alignment: .leading)
                                             
-                                            Text(titles[1]).font(.system(size: 20))
+                                            Text(titles[1]).font(.system(size: Global.text2Size))
                                                 .frame(maxWidth: .infinity, alignment: .leading)
                                         }
                                         
@@ -67,7 +67,7 @@ struct HoleView: View {
                                             
                                             Image(systemName: "checkmark")
                                                 .foregroundColor(Color.green)
-                                                .font(Font.system(size: 16, weight: .heavy))
+                                                .font(Font.system(size: Global.checkmarkIconSize, weight: .heavy))
                                         }
                                     }
                                 }.id($0)
@@ -81,16 +81,16 @@ struct HoleView: View {
                                 ZStack {
                                     Circle()
                                         .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                        .frame(width: 54, height: 54)
+                                        .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                     
                                     Image(systemName: "arrow.left")
                                         .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
-                                        .font(Font.system(size: 28, weight: .heavy))
+                                        .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
                             .padding(.top, Global.buttonPaddingTop)
-                            .padding(.bottom, -20) // check default padding
+                            .padding(.bottom, Global.buttonPaddingBottom2) // check default padding
                             
                         }
                         .onAppear {

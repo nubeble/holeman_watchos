@@ -32,8 +32,8 @@ struct MenuView: View {
             GeometryReader { geometry in
                 ScrollView {
                     VStack {
-                        Text("Settings").font(.system(size: 20, weight: .semibold))
-                        Text("원하시는 기능을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                        Text("Settings").font(.system(size: Global.text2Size, weight: .semibold))
+                        Text("원하시는 기능을 선택하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                         
                         // item 1
                         Button(action: {
@@ -54,11 +54,11 @@ struct MenuView: View {
                                 }
                                 
                                 VStack(spacing: 2) {
-                                    Text("메인으로").font(.system(size: 18))
+                                    Text("메인으로").font(.system(size: Global.text3Size))
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("라운드를 종료하고 코스 선택으로 돌아갑니다.").font(.system(size: 12)).foregroundColor(Color.gray)
+                                    Text("라운드를 종료하고 코스 선택으로 돌아갑니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -118,11 +118,11 @@ struct MenuView: View {
                                 }
                                 
                                 VStack(spacing: 2) {
-                                    Text("로그아웃").font(.system(size: 18))
+                                    Text("로그아웃").font(.system(size: Global.text3Size))
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("로그아웃 후 계정 정보를 삭제합니다.").font(.system(size: 12)).foregroundColor(Color.gray)
+                                    Text("로그아웃 후 계정 정보를 삭제합니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -140,16 +140,16 @@ struct MenuView: View {
                             ZStack {
                                 Circle()
                                     .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                    .frame(width: 54, height: 54)
+                                    .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                 
                                 Image(systemName: "arrow.left")
                                     .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                    .font(Font.system(size: Global.icon5Size, weight: .heavy))
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.top, Global.buttonPaddingTop)
-                        .padding(.bottom, -20) // check default padding
+                        .padding(.bottom, Global.buttonPaddingBottom2) // check default padding
                         
                     } // VStack
                 } // ScrollView
@@ -159,7 +159,7 @@ struct MenuView: View {
             
             ZStack {
                 VStack {
-                    Text(self.textMessage).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -176,14 +176,14 @@ struct MenuView: View {
                             ZStack {
                                 Circle()
                                     .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                    .frame(width: 54, height: 54)
+                                    .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                 
                                 Image(systemName: "xmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                    .font(Font.system(size: Global.icon5Size, weight: .heavy))
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
+                        .padding(.bottom, Global.buttonPaddingBottom)
                         
                         // button 2
                         Button(action: {
@@ -202,14 +202,14 @@ struct MenuView: View {
                             ZStack {
                                 Circle()
                                     .fill(Color.green)
-                                    .frame(width: 54, height: 54)
+                                    .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                 
                                 Image(systemName: "checkmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                    .font(Font.system(size: Global.icon5Size, weight: .heavy))
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
+                        .padding(.bottom, Global.buttonPaddingBottom)
                     }
                 }
                 .frame(maxHeight: .infinity)

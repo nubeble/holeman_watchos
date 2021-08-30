@@ -42,7 +42,7 @@ struct CourseListView: View {
                 VStack {
                     Spacer()
                     
-                    Text(self.textMessage).font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
+                    Text(self.textMessage).font(.system(size: Global.text4Size)).foregroundColor(Color.gray).fontWeight(.medium)
                         .transition(.opacity)
                         .id(self.textMessage)
                 }
@@ -59,8 +59,8 @@ struct CourseListView: View {
                     // VStack {
                     ScrollViewReader { value in
                         LazyVStack {
-                            Text("Select Course").font(.system(size: 20, weight: .semibold))
-                            Text("골프장을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                            Text("Select Course").font(.system(size: Global.text2Size, weight: .semibold))
+                            Text("골프장을 선택하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
                             // Divider()
                             
@@ -96,13 +96,13 @@ struct CourseListView: View {
                                      // .multilineTextAlignment(.leading)
                                      .frame(maxWidth: .infinity, alignment: .leading)
                                      */
-                                    VStack(spacing: 2) {
-                                        Text(str1).font(.system(size: 18))
+                                    VStack(spacing: Global.buttonSpacing1) {
+                                        Text(str1).font(.system(size: Global.text3Size))
                                             .fixedSize(horizontal: false, vertical: true)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
-                                        // Text(str2).font(.system(size: 14))
-                                        Text(str2).font(.system(size: 12)) // 영문 코스명은 12로 고정
+
+                                        Text(str2).font(.system(size: Global.text6Size)) // 영문 코스명은 12로 고정
                                             .fixedSize(horizontal: false, vertical: true)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -119,17 +119,16 @@ struct CourseListView: View {
                                 ZStack {
                                     Circle()
                                         .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                        .frame(width: 54, height: 54)
+                                        .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                     
                                     Image(systemName: "arrow.left")
                                         .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
-                                        .font(Font.system(size: 28, weight: .heavy))
+                                        .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
                             .padding(.top, Global.buttonPaddingTop)
-                            .padding(.bottom, -20) // check default padding
-                            
+                            .padding(.bottom, Global.buttonPaddingBottom2) // check default padding
                         }
                         .onAppear {
                             // scroll
@@ -146,8 +145,8 @@ struct CourseListView: View {
             
             ZStack {
                 VStack {
-                    Text("Notice").font(.system(size: 20, weight: .semibold))
-                    Text("위치 서비스를 켜주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                    Text("Notice").font(.system(size: Global.text2Size, weight: .semibold))
+                    Text("위치 서비스를 켜주세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -156,7 +155,7 @@ struct CourseListView: View {
                     let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
                     let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - '\(name)' - '앱을 사용하는 동안' 선택"
                     // Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
-                    Text(text).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(text).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -171,15 +170,15 @@ struct CourseListView: View {
                         ZStack {
                             Circle()
                                 .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                             
                             Image(systemName: "xmark")
                                 .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
-                                .font(Font.system(size: 28, weight: .heavy))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Global.buttonPaddingBottom)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
@@ -335,8 +334,8 @@ struct CourseListView: View {
             GeometryReader { geometry in
                 ScrollView {
                     VStack {
-                        Text("Select Course").font(.system(size: 20, weight: .semibold))
-                        Text("선택하신 골프장이 맞나요?").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                        Text("Select Course").font(.system(size: Global.text2Size, weight: .semibold))
+                        Text(self.textMessage3).font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                         
                         VStack {
                             if let name = self.courses[self.selectedCourseIndex].name {
@@ -353,12 +352,12 @@ struct CourseListView: View {
                                 let range2 = i2..<end1!
                                 let str2 = name[range2]
                                 
-                                Text(str1).font(.system(size: 20))
+                                Text(str1).font(.system(size: Global.text2Size))
                                     .fixedSize(horizontal: false, vertical: true)
                                     .lineLimit(1)
                                     .frame(maxWidth: .infinity, alignment: .center)
                                 
-                                Text(str2).font(.system(size: 14)) // 영문 코스명은 12로 고정, BUT 여기는 확대
+                                Text(str2).font(.system(size: Global.text5Size)) // 영문 코스명은 12로 고정, BUT 여기는 확대
                                     .fixedSize(horizontal: false, vertical: true)
                                     .lineLimit(1)
                                     .frame(maxWidth: .infinity, alignment: .center)
@@ -379,17 +378,17 @@ struct CourseListView: View {
                                 // let str2 = address[range2]
                                 
                                 // local language only
-                                Text(str1).font(.system(size: 14)).foregroundColor(Color.gray)
+                                Text(str1).font(.system(size: Global.text5Size)).foregroundColor(Color.gray)
                                     .fixedSize(horizontal: false, vertical: true)
                                     .lineLimit(1)
                                     .frame(maxWidth: .infinity, alignment: .center)
                             }
                         }
-                        .padding(.all, 8)
+                        .padding(.all, Global.buttonPadding)
                         .background(Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255))
-                        .cornerRadius(8)
+                        .cornerRadius(Global.buttonPadding)
                         
-                        HStack(spacing: 40) {
+                        HStack(spacing: Global.buttonSpacing2) {
                             // button 1
                             Button(action: {
                                 // go back
@@ -400,14 +399,14 @@ struct CourseListView: View {
                                 ZStack {
                                     Circle()
                                         .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                        .frame(width: 54, height: 54)
+                                        .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                     
                                     Image(systemName: "xmark")
-                                        .font(Font.system(size: 28, weight: .heavy))
+                                        .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .padding(.bottom, 10)
+                            .padding(.bottom, Global.buttonPaddingBottom)
                             
                             // button 2
                             Button(action: {
@@ -420,14 +419,14 @@ struct CourseListView: View {
                                 ZStack {
                                     Circle()
                                         .fill(Color.green)
-                                        .frame(width: 54, height: 54)
+                                        .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                     
                                     Image(systemName: "checkmark")
-                                        .font(Font.system(size: 28, weight: .heavy))
+                                        .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .padding(.bottom, 10)
+                            .padding(.bottom, Global.buttonPaddingBottom)
                         }
                         .padding(.top, Global.buttonPaddingTop)
                     } // VStack
@@ -470,8 +469,8 @@ struct CourseListView: View {
             
             ZStack {
                 VStack {
-                    Text("Notice").font(.system(size: 20, weight: .semibold))
-                    Text("HLDS™를 확인해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                    Text("Notice").font(.system(size: Global.text2Size, weight: .semibold))
+                    Text("HLDS™를 확인해주세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -481,7 +480,7 @@ struct CourseListView: View {
                     let name = Util.getCourseName(self.courses[self.selectedCourseIndex].name)
                     let text = c.hlds == 100 ? name + "에는 HLDS™가 적용되어 있습니다.😃 홀맨이 정확한 거리를 알려드릴게요." : name + "에는 HLDS™가 아직 적용되어 있지 않네요.😥 하지만 홀맨이 그린 정중앙을 기준으로 남은 거리를 알려드릴게요."
                     
-                    Text(text).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(text).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button
@@ -496,14 +495,14 @@ struct CourseListView: View {
                         ZStack {
                             Circle()
                                 .fill(Color.green)
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                             
                             Image(systemName: "arrow.right")
-                                .font(Font.system(size: 28, weight: .heavy))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Global.buttonPaddingBottom)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
@@ -516,27 +515,27 @@ struct CourseListView: View {
                 GeometryReader { geometry in
                     ScrollView {
                         VStack {
-                            Text("Payment").font(.system(size: 20, weight: .semibold))
-                            Text("바우처를 구매해주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                            Text("Payment").font(.system(size: Global.text2Size, weight: .semibold))
+                            Text("바우처를 구매해주세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
                             Text(Locale.current.languageCode == "ko" ? "홀맨 이용권" : "Holeman Voucher")
                                 // .font(.system(size: 20, weight: .regular))
-                                .font(.system(size: 20, weight: .semibold))
+                                .font(.system(size: Global.text2Size, weight: .semibold))
                                 
                                 // .foregroundColor(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
                                 .foregroundColor(.green)
                                 // .frame(maxWidth: .infinity, alignment: .leading)
                                 .multilineTextAlignment(.center)
-                                .padding(.top, -6)
+                                .padding(.top, Global.textPaddingTop)
                             
                             Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + " 18홀의 정확한 거리 측정 서비스를 1,000원에 이용하세요.")
-                                .font(.system(size: 16))
+                                .font(.system(size: Global.text4Size))
                                 // .fontWeight(.light)
                                 .fontWeight(.medium)
                                 
                                 // .frame(maxWidth: .infinity, alignment: .leading)
                                 .multilineTextAlignment(.center)
-                                .padding(.bottom, 8)
+                                .padding(.bottom, Global.buttonPadding)
                             
                             Button(action: {
                                 withAnimation {
@@ -546,16 +545,16 @@ struct CourseListView: View {
                                 HStack {
                                     Spacer()
                                     
-                                    Text("￦1,000 / 18 holes").foregroundColor(.black)
+                                    Text("￦1,000 / 18 holes").foregroundColor(.black) // ToDo: !!! (check text size)
                                     //.font(.system(size: 15))
                                     // .fontWeight(.bold)
                                     
                                     Spacer()
                                 }
-                                .frame(height: 50)
+                                .frame(height: Global.textButtonSize)
                                 // .background(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
                                 .background(Color.green)
-                                .cornerRadius(8)
+                                .cornerRadius(Global.buttonPadding)
                             }
                             .buttonStyle(PlainButtonStyle())
                             
@@ -568,16 +567,16 @@ struct CourseListView: View {
                                 ZStack {
                                     Circle()
                                         .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                        .frame(width: 54, height: 54)
+                                        .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                     
                                     Image(systemName: "arrow.left")
                                         .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
-                                        .font(Font.system(size: 28, weight: .heavy))
+                                        .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
                             .padding(.top, Global.buttonPaddingTop)
-                            .padding(.bottom, -20) // check default padding
+                            .padding(.bottom, Global.buttonPaddingBottom2) // check default padding
                         }
                     }
                 }
@@ -644,7 +643,7 @@ struct CourseListView: View {
                 // back to payment
                 ZStack {
                     VStack {
-                        Text("잠시 후 다시 시도해주세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                        Text("잠시 후 다시 시도해주세요.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                     }
                     
                     VStack {
@@ -658,15 +657,15 @@ struct CourseListView: View {
                             ZStack {
                                 Circle()
                                     .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                    .frame(width: 54, height: 54)
+                                    .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                 
                                 Image(systemName: "arrow.left")
                                     .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                    .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
+                        .padding(.bottom, Global.buttonPaddingBottom)
                     } // VStack
                     .frame(maxHeight: .infinity)
                     .edgesIgnoringSafeArea(.bottom)
@@ -676,7 +675,7 @@ struct CourseListView: View {
                 
                 VStack {
                     Image(systemName: "checkmark")
-                        .font(Font.system(size: 40, weight: .semibold))
+                        .font(Font.system(size: Global.checkIconSize, weight: .semibold))
                         .foregroundColor(.green)
                 }
                 .onAppear {
@@ -715,7 +714,7 @@ struct CourseListView: View {
         } else if self.mode == 54 {
             
             VStack {
-                Text("홀맨을 사랑해주셔서 감사합니다. 이제부터 무료로 이용하세요.").font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                Text("홀맨을 사랑해주셔서 감사합니다. 이제부터 무료로 이용하세요.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
             }
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
@@ -736,14 +735,14 @@ struct CourseListView: View {
             ZStack {
                 // header
                 VStack {
-                    Text("Free Trial").font(.system(size: 20, weight: .semibold))
-                    Text("무료로 체험하세요!").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                    Text("Free Trial").font(.system(size: Global.text2Size, weight: .semibold))
+                    Text("무료로 체험하세요!").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
                 
                 VStack {
-                    Text(self.textMessage2).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage2).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button
@@ -761,14 +760,14 @@ struct CourseListView: View {
                         ZStack {
                             Circle()
                                 .fill(Color.green)
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                             
                             Image(systemName: "arrow.right")
-                                .font(Font.system(size: 28, weight: .heavy))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Global.buttonPaddingBottom)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
@@ -779,14 +778,14 @@ struct CourseListView: View {
             ZStack {
                 // header
                 VStack {
-                    Text("Free Trial").font(.system(size: 20, weight: .semibold))
-                    Text("무료로 체험하세요!").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                    Text("Free Trial").font(.system(size: Global.text2Size, weight: .semibold))
+                    Text("무료로 체험하세요!").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
                 
                 VStack {
-                    Text(self.textMessage2).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage2).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button
@@ -805,14 +804,14 @@ struct CourseListView: View {
                         ZStack {
                             Circle()
                                 .fill(Color.green)
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                             
                             Image(systemName: "arrow.right")
-                                .font(Font.system(size: 28, weight: .heavy))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Global.buttonPaddingBottom)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
@@ -829,7 +828,7 @@ struct CourseListView: View {
                 VStack {
                     Spacer()
                     
-                    Text(self.textMessage).font(.system(size: 16)).foregroundColor(Color.gray).fontWeight(.medium)
+                    Text(self.textMessage).font(.system(size: Global.text4Size)).foregroundColor(Color.gray).fontWeight(.medium)
                         .transition(.opacity)
                         .id(self.textMessage)
                 }
@@ -843,14 +842,14 @@ struct CourseListView: View {
             ZStack {
                 // header
                 VStack {
-                    Text("Select Course").font(.system(size: 20, weight: .semibold))
-                    Text("선택하신 골프장이 맞나요?").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                    Text("Select Course").font(.system(size: Global.text2Size, weight: .semibold))
+                    Text("선택하신 골프장이 맞나요?").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
                 
                 VStack {
-                    Text("선택하신 골프장은 근처에 있지 않습니다. 다시 시도해주세요.").font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text("선택하신 골프장은 근처에 있지 않습니다. 다시 시도해주세요.").font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button
@@ -866,15 +865,15 @@ struct CourseListView: View {
                         ZStack {
                             Circle()
                                 .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                             
                             Image(systemName: "arrow.left")
                                 .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
-                                .font(Font.system(size: 28, weight: .heavy))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Global.buttonPaddingBottom)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)

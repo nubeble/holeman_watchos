@@ -37,8 +37,8 @@ struct TeeView: View {
                     // VStack {
                     ScrollViewReader { value in
                         LazyVStack {
-                            Text("Tee Box").font(.system(size: 20, weight: .semibold))
-                            Text("티 박스를 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                            Text("Tee Box").font(.system(size: Global.text2Size, weight: .semibold))
+                            Text("티 박스를 선택하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
                             ForEach(0 ..< self.names.count) {
                                 let index = $0
@@ -62,7 +62,7 @@ struct TeeView: View {
                                                 .foregroundColor(c)
                                                 .frame(maxWidth: .infinity, alignment: .leading)
                                             
-                                            Text(distance).font(.system(size: 18))
+                                            Text(distance).font(.system(size: Global.text3Size))
                                                 .foregroundColor(c)
                                                 .frame(maxWidth: .infinity, alignment: .leading)
                                         }
@@ -72,7 +72,7 @@ struct TeeView: View {
                                             
                                             Image(systemName: "checkmark")
                                                 .foregroundColor(Color.green)
-                                                .font(Font.system(size: 16, weight: .heavy))
+                                                .font(Font.system(size: Global.icon4Size, weight: .heavy))
                                         }
                                     }
                                 }.id($0)
@@ -86,16 +86,16 @@ struct TeeView: View {
                                 ZStack {
                                     Circle()
                                         .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                        .frame(width: 54, height: 54)
+                                        .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                     
                                     Image(systemName: "arrow.left")
                                         .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
-                                        .font(Font.system(size: 28, weight: .heavy))
+                                        .font(Font.system(size: Global.icon5Size, weight: .heavy))
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
                             .padding(.top, Global.buttonPaddingTop)
-                            .padding(.bottom, -20) // check default padding
+                            .padding(.bottom, Global.buttonPaddingBottom2) // check default padding
                             
                         }
                         .onAppear {

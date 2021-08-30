@@ -74,13 +74,13 @@ struct HoleSearchView: View {
                         let range2 = i2..<end1!
                         let str2 = name[range2]
                         
-                        Text(str1).font(.system(size: 18))
+                        Text(str1).font(.system(size: Global.text3Size))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         // .padding(.leading, 2)
                         
-                        Text(str2).font(.system(size: 12)) // 영문 코스명은 12로 고정
+                        Text(str2).font(.system(size: Global.text6Size)) // 영문 코스명은 12로 고정
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -91,7 +91,7 @@ struct HoleSearchView: View {
                 }
                 
                 VStack {
-                    Text(self.textMessage).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                         .transition(.opacity)
                         .id(self.textMessage)
                 }
@@ -105,7 +105,7 @@ struct HoleSearchView: View {
                                 .resizable()
                                 .frame(width: 32, height: 32)
                         }
-                        .padding(.bottom, 10)
+                        .padding(.bottom, Global.buttonPaddingBottom)
                     } else {
                         ZStack {
                             Image("tee up")
@@ -113,10 +113,10 @@ struct HoleSearchView: View {
                                 .frame(width: 32, height: 32)
                             
                             TeeIndicator(isAnimating: .constant(true))
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                 .foregroundColor(.white)
                         }
-                        .padding(.bottom, 10)
+                        .padding(.bottom, Global.buttonPaddingBottom)
                     }
                 }
                 .frame(maxHeight: .infinity)
@@ -202,8 +202,8 @@ struct HoleSearchView: View {
                     // VStack {
                     ScrollViewReader { value in
                         LazyVStack {
-                            Text("Select Hole").font(.system(size: 20, weight: .semibold))
-                            Text("스타트 홀을 선택하세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                            Text("Select Hole").font(.system(size: Global.text2Size, weight: .semibold))
+                            Text("스타트 홀을 선택하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
                             ForEach(0 ..< self.startHoles.count) {
                                 let index = $0
@@ -220,7 +220,7 @@ struct HoleSearchView: View {
                                     // move to MainView
                                     moveNext()
                                 }) {
-                                    Text(title).font(.system(size: 20))
+                                    Text(title).font(.system(size: Global.text2Size))
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(2)
                                         // .multilineTextAlignment(.leading)
@@ -266,8 +266,8 @@ struct HoleSearchView: View {
             
             ZStack {
                 VStack {
-                    Text("Notice").font(.system(size: 20, weight: .semibold))
-                    Text("위치 서비스를 켜주세요.").font(.system(size: 14, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                    Text("Notice").font(.system(size: Global.text2Size, weight: .semibold))
+                    Text("위치 서비스를 켜주세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                     
                     Spacer().frame(maxHeight: .infinity)
                 }
@@ -276,7 +276,7 @@ struct HoleSearchView: View {
                     let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
                     let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - '\(name)' - '앱을 사용하는 동안' 선택"
                     // Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
-                    Text(text).font(.system(size: 16)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(text).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -291,15 +291,15 @@ struct HoleSearchView: View {
                         ZStack {
                             Circle()
                                 .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                .frame(width: 54, height: 54)
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                             
                             Image(systemName: "xmark")
                                 .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
-                                .font(Font.system(size: 28, weight: .heavy))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Global.buttonPaddingBottom)
                 }
                 .frame(maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
@@ -327,13 +327,13 @@ struct HoleSearchView: View {
                         let range2 = i2..<end1!
                         let str2 = name[range2]
                         
-                        Text(str1).font(.system(size: 18))
+                        Text(str1).font(.system(size: Global.text3Size))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         // Text(str2).font(.system(size: 14))
-                        Text(str2).font(.system(size: 12)) // 영문 코스명은 12로 고정
+                        Text(str2).font(.system(size: Global.text6Size)) // 영문 코스명은 12로 고정
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(1)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -343,7 +343,7 @@ struct HoleSearchView: View {
                 }
                 
                 VStack {
-                    Text(self.textMessage).font(.system(size: 20)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 /*
@@ -376,14 +376,14 @@ struct HoleSearchView: View {
                             ZStack {
                                 Circle()
                                     .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
-                                    .frame(width: 54, height: 54)
+                                    .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                 
                                 Image(systemName: "xmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                    .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
+                        .padding(.bottom, Global.buttonPaddingBottom)
                         
                         // button 2
                         Button(action: {
@@ -399,14 +399,14 @@ struct HoleSearchView: View {
                             ZStack {
                                 Circle()
                                     .fill(Color.green)
-                                    .frame(width: 54, height: 54)
+                                    .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
                                 
                                 Image(systemName: "checkmark")
-                                    .font(Font.system(size: 28, weight: .heavy))
+                                    .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .padding(.bottom, 10)
+                        .padding(.bottom, Global.buttonPaddingBottom)
                     }
                 }
                 .frame(maxHeight: .infinity)

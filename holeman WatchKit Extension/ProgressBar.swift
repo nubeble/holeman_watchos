@@ -13,7 +13,7 @@ struct ProgressBar: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(lineWidth: 8.0)
+                .stroke(lineWidth: Global.progressBarLineWidth)
                 .opacity(0.3)
                 .foregroundColor(Color.red)
             
@@ -26,7 +26,7 @@ struct ProgressBar: View {
             
             Text(String(format: "%.0f%%", min(self.progress, 1.0)*100.0))
                 // .font(.largeTitle)
-                .font(.system(size: 12))
+                .font(.system(size: Global.text6Size))
                 // .bold()
                 .foregroundColor(Color.white)
         }
