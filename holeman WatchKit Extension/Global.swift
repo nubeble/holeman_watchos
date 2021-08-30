@@ -72,7 +72,7 @@ struct Global {
     static func setDeviceResolution(_ width: CGFloat) -> Void {
         
         if width < 160 { // 150.0 ?
-            // 38 mm
+            // 38 mm ?
 
             title2PaddingBottom = title2PaddingBottom / 183.0 * 150.0
             buttonPaddingTop = buttonPaddingTop / 183.0 * 150.0
@@ -251,7 +251,7 @@ struct Global {
             // N/A
             
             return
-        } else { // 190
+        } else {
             // Consider: next model
             
             return
