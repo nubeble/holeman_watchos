@@ -13,6 +13,7 @@ struct CourseListView: View {
     
     @State var textMessage: String = ""
     @State var findNearbyCourseCounter = 0
+    @State var getLastLocationCounter = 0
     
     // @ObservedObject var locationManager = LocationManager()
     @State var placemark: CLPlacemark?
@@ -335,7 +336,7 @@ struct CourseListView: View {
                 ScrollView {
                     VStack {
                         Text("Select Course").font(.system(size: Global.text2Size, weight: .semibold))
-                        Text(self.textMessage3).font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                        Text("선택하신 골프장이 맞나요?").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                         
                         VStack {
                             if let name = self.courses[self.selectedCourseIndex].name {
@@ -386,7 +387,7 @@ struct CourseListView: View {
                         }
                         .padding(.all, Global.buttonPadding)
                         .background(Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255))
-                        .cornerRadius(Global.buttonPadding)
+                        .cornerRadius(Global.radius1)
                         
                         HStack(spacing: Global.buttonSpacing2) {
                             // button 1
@@ -554,7 +555,7 @@ struct CourseListView: View {
                                 .frame(height: Global.textButtonSize)
                                 // .background(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
                                 .background(Color.green)
-                                .cornerRadius(Global.buttonPadding)
+                                .cornerRadius(Global.radius1)
                             }
                             .buttonStyle(PlainButtonStyle())
                             
@@ -901,6 +902,32 @@ struct CourseListView: View {
                                     
                                     self.getCountryCode(location: location)
                                 }
+                            } else {
+                                self.getLastLocationCounter += 1
+                                
+                                if self.getLastLocationCounter == 18 {
+                                    timer2.invalidate()
+                                    
+                                    withAnimation(.linear(duration: 0.5)) {
+                                        self.textMessage = "잠시 후 다시 시도해주세요."
+                                    }
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                        // back to CourseView
+                                        withAnimation {
+                                            self.mode = 10
+                                        }
+                                    }
+                                    
+                                    return
+                                }
+                                
+                                if self.getLastLocationCounter % 3 == 0 { // 3, 6, 9, 12, 15
+                                    // show wait message
+                                    withAnimation(.linear(duration: 0.5)) {
+                                        self.textMessage = Util.getWaitMessageForLocation(self.getLastLocationCounter)
+                                    }
+                                }
                             }
                         }
                     } else if status == .denied {
@@ -1185,6 +1212,32 @@ struct CourseListView: View {
                                             self.mode = 71 // go back
                                         }
                                     } // if distance < 3000
+                                }
+                            } else {
+                                self.getLastLocationCounter += 1
+                                
+                                if self.getLastLocationCounter == 18 {
+                                    timer2.invalidate()
+                                    
+                                    withAnimation(.linear(duration: 0.5)) {
+                                        self.textMessage = "잠시 후 다시 시도해주세요."
+                                    }
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                        // back to CourseView
+                                        withAnimation {
+                                            self.mode = 10
+                                        }
+                                    }
+                                    
+                                    return
+                                }
+                                
+                                if self.getLastLocationCounter % 3 == 0 { // 3, 6, 9, 12, 15
+                                    // show wait message
+                                    withAnimation(.linear(duration: 0.5)) {
+                                        self.textMessage = Util.getWaitMessageForLocation(self.getLastLocationCounter)
+                                    }
                                 }
                             }
                         }

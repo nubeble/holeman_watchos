@@ -165,6 +165,32 @@ struct Util {
         }
     }
     
+    static func getWaitMessageForLocation(_ number: Int) -> String { // 3, 6, 9, 12, 15
+        var num = number
+        
+        num = num / 3 // 1, 2, 3, 4, 5
+        
+        switch num {
+        case 1:
+            return "잠시만 기다려주세요."
+            
+        case 2:
+            return "실내에서는 GPS가 안잡혀요. 😥"
+            
+        case 3:
+            return "클럽하우스 밖으로 나와주세요."
+            
+        case 4:
+            return "위치 정보를 가져올 수 없네요."
+            
+        case 5:
+            return "가만히 있지 마시고 움직여주세요."
+            
+        default:
+            return "잠시만 기다려주세요."
+        }
+    }
+    
     // billing success 후 코스 정보 저장 (CourseSearchView, CourseListView에서 호출)
     static func saveCourse(_ course: CourseModel) {
         // 1. time

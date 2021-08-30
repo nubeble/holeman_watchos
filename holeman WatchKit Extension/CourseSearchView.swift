@@ -13,6 +13,7 @@ struct CourseSearchView: View {
     
     @State var textMessage: String = ""
     @State var findNearbyCourseCounter = 0
+    @State var getLastLocationCounter = 0
     
     // @ObservedObject var locationManager = LocationManager()
     @State var placemark: CLPlacemark?
@@ -925,8 +926,6 @@ struct CourseSearchView: View {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
             if let status = locationManager.locationStatus {
                 DispatchQueue.main.async {
-                    // timer1.invalidate()
-                    
                     if status == .authorizedWhenInUse || status == .authorizedAlways {
                         timer1.invalidate()
                         
@@ -936,6 +935,32 @@ struct CourseSearchView: View {
                                     timer2.invalidate()
                                     
                                     self.getCountryCode(location: location)
+                                }
+                            } else {
+                                self.getLastLocationCounter += 1
+                                
+                                if self.getLastLocationCounter == 18 {
+                                    timer2.invalidate()
+                                    
+                                    withAnimation(.linear(duration: 0.5)) {
+                                        self.textMessage = "잠시 후 다시 시도해주세요."
+                                    }
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                        // back to CourseView
+                                        withAnimation {
+                                            self.mode = 10
+                                        }
+                                    }
+
+                                    return
+                                }
+                                
+                                if self.getLastLocationCounter % 3 == 0 { // 3, 6, 9, 12, 15
+                                    // show wait message
+                                    withAnimation(.linear(duration: 0.5)) {
+                                        self.textMessage = Util.getWaitMessageForLocation(self.getLastLocationCounter)
+                                    }
                                 }
                             }
                         }

@@ -63,6 +63,8 @@ struct Global {
     static var progressBarSize: CGFloat = 46
     static var progressBarLineWidth: CGFloat = 8
     
+    static var radius1: CGFloat = 8
+    
     
     // 8:9
     static func setDeviceResolution(_ width: CGFloat) -> Void {
@@ -123,6 +125,8 @@ struct Global {
             
             progressBarSize = progressBarSize / 183.0 * 161.0
             progressBarLineWidth = progressBarLineWidth / 183.0 * 161.0
+            
+            radius1 = radius1 / 183.0 * 161.0
             
             return
         }

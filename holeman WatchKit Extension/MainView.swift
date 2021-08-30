@@ -1152,6 +1152,8 @@ struct MainView: View {
                         // }
                     }
                 }
+            } else {
+                // N/A
             }
         }
     }
@@ -1179,6 +1181,8 @@ struct MainView: View {
                         MainView.lastGetUserElevationTime = DispatchTime.now().uptimeNanoseconds
                     }
                 }
+            } else {
+                // N/A
             }
         }
     }
@@ -1300,6 +1304,8 @@ struct MainView: View {
                         checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
                     }
                 }
+            } else {
+                // N/A
             }
         }
     }
