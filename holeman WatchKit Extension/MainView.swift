@@ -30,7 +30,7 @@ struct MainView: View {
     // @State var textHeight: String = "-9"
     @State var message1: String = ""
     @State var message2: String = ""
-    @State var message1FontSize: CGFloat = 24
+    @State var message1FontSize: CGFloat = Global.text1Size
     @State var progressValue: Float = 0.0
     @State var tips: String = ""
     
@@ -154,7 +154,7 @@ struct MainView: View {
     struct Menu: ButtonStyle {
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
-                .padding(6)
+                .padding(Global.buttonStyle1Padding)
                 .background(configuration.isPressed ? Color.gray.opacity(0.5) : Color.gray.opacity(0))
                 .clipShape(Circle())
         }
@@ -163,7 +163,7 @@ struct MainView: View {
     struct GreenNormal: ButtonStyle {
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
-                .padding(1)
+                .padding(Global.buttonStyle2Padding)
                 .background(configuration.isPressed ? Color.gray.opacity(0.5) : Color.gray.opacity(0))
                 .clipShape(Circle())
         }
@@ -172,7 +172,7 @@ struct MainView: View {
     struct GreenSelected: ButtonStyle {
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
-                .padding(1)
+                .padding(Global.buttonStyle2Padding)
                 .background(configuration.isPressed ? Color.gray.opacity(0.5) : Color.gray.opacity(0))
                 .clipShape(Circle())
         }
@@ -181,9 +181,9 @@ struct MainView: View {
     struct HoleTitle: ButtonStyle {
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
-                .padding(2)
+                .padding(Global.buttonStyle3Padding)
                 .background(configuration.isPressed ? Color.gray.opacity(0.5) : Color.gray.opacity(0))
-                .cornerRadius(2)
+                .cornerRadius(Global.radius2)
         }
     }
     
@@ -272,7 +272,7 @@ struct MainView: View {
                     VStack {
                         // hole name
                         Text(self.message2).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
-                            .padding(.top, 48)
+                            .padding(.top, Global.holeNamePaddingTop)
                     }
                 }
                 
@@ -316,8 +316,8 @@ struct MainView: View {
                 let name = self.teeingGroundInfo?.holes[self.holeNumber! - 1].name ?? ""
                 
                 self.message1 = title
-                if title.count >= 14 { self.message1FontSize = 22 }
-                if title.count >= 16 { self.message1FontSize = 20 }
+                if title.count >= 14 { self.message1FontSize = Global.text8Size }
+                if title.count >= 16 { self.message1FontSize = Global.text2Size }
                 
                 self.message2 = name
             }
@@ -440,11 +440,11 @@ struct MainView: View {
                             }
                             // .buttonStyle(PlainButtonStyle())
                             .buttonStyle(Menu())
-                            .padding(.leading, 8)
+                            .padding(.leading, Global.buttonPadding)
                             // .padding(.leading, 108)
                             
                             Spacer()
-                        }.padding(.top, 4)
+                        }.padding(.top, Global.menuButtonPaddingTop)
                         
                         Spacer().frame(maxHeight: .infinity)
                     }
@@ -452,7 +452,7 @@ struct MainView: View {
                     // circle
                     VStack {
                         Circle()
-                            .strokeBorder(Color(red: 51/255, green: 51/255, blue: 51/255), lineWidth: 8)
+                            .strokeBorder(Color(red: 51/255, green: 51/255, blue: 51/255), lineWidth: Global.edgeLineWidth)
                             .frame(width: geometry.size.width, height: geometry.size.width)
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
@@ -482,7 +482,7 @@ struct MainView: View {
                                 // .padding(.leading, 8)
                                 
                                 Spacer()
-                            }.padding(9)
+                            }.padding(Global.greenButtonPadding)
                             
                             HStack(alignment: .center) {
                                 Spacer()
@@ -506,7 +506,7 @@ struct MainView: View {
                                 // .buttonStyle(PlainButtonStyle())
                                 .buttonStyle(GreenSelected())
                                 // .padding(.leading, 8)
-                            }.padding(9)
+                            }.padding(Global.greenButtonPadding)
                         }
                     }
                     
@@ -514,8 +514,8 @@ struct MainView: View {
                         Circle()
                             .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
                             // .frame(width: geometry.size.width, height: geometry.size.width)
-                            .frame(width: 8, height: 8)
-                        Spacer().frame(height: geometry.size.width - 8)
+                            .frame(width: Global.edgeLineWidth, height: Global.edgeLineWidth)
+                        Spacer().frame(height: geometry.size.width - Global.edgeLineWidth)
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
                     .rotationEffect(Angle(degrees: self.bearing))
@@ -532,15 +532,14 @@ struct MainView: View {
                         }) {
                             Text(self.textHoleTitle).font(.system(size: Global.text5Size))
                         }
-                        .padding(.top, 46)
+                        .padding(.top, Global.holeTextPaddingTop)
                         //.buttonStyle(PlainButtonStyle())
                         .buttonStyle(HoleTitle())
                         
-                        HStack(spacing: 4) {
+                        HStack(spacing: Global.buttonSpacing4) {
                             Text(self.textPar).font(.system(size: Global.text5Size))
                             Text(self.textHandicap).font(.system(size: Global.text5Size))
                             // Text("• 330").font(.system(size: 14))
-                            
                             
                             Button(action: {
                                 getTeeViewInfo()
@@ -561,7 +560,7 @@ struct MainView: View {
                     // text 2
                     VStack(alignment: .center)  {
                         HStack(alignment: .firstTextBaseline, spacing: 0) {
-                            Text(self.distance).font(.system(size: 56))
+                            Text(self.distance).font(.system(size: Global.text9Size))
                                 .onTapGesture {
                                     toggleUnit()
                                     setTeeDistance()
@@ -579,27 +578,27 @@ struct MainView: View {
                     VStack(alignment: .leading)  {
                         Spacer().frame(maxHeight: .infinity)
                         
-                        HStack(spacing: 2) {
+                        HStack(spacing: Global.buttonSpacing1) {
                             Image("hills")
                                 .resizable()
                                 .frame(width: Global.icon5Size, height: Global.icon5Size)
-                                .padding(.top, 4)
+                                .padding(.top, Global.menuButtonPaddingTop)
                             
                             HStack(alignment: .firstTextBaseline, spacing: 0) {
-                                Text(self.height).font(.system(size: 32))
+                                Text(self.height).font(.system(size: Global.text10Size))
                                     .onTapGesture {
                                         toggleUnit()
                                         setTeeDistance()
                                     }
                                 
-                                Text(self.textUnit).font(.system(size: 8))
+                                Text(self.textUnit).font(.system(size: Global.text11Size))
                                     .onTapGesture {
                                         toggleUnit()
                                         setTeeDistance()
                                     }
                             }
                         }
-                        .padding(.bottom, 48)
+                        .padding(.bottom, Global.holeNamePaddingTop)
                     }
                     
                     // course name
@@ -848,8 +847,8 @@ struct MainView: View {
                     Circle()
                         .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
                         // .frame(width: geometry.size.width, height: geometry.size.width)
-                        .frame(width: 8, height: 8)
-                    Spacer().frame(height: geometry.size.width - 8)
+                        .frame(width: Global.edgeLineWidth, height: Global.edgeLineWidth)
+                    Spacer().frame(height: geometry.size.width - Global.edgeLineWidth)
                 }
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
             }

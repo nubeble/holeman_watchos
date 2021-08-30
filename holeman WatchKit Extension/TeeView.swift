@@ -56,9 +56,9 @@ struct TeeView: View {
                                     }
                                     
                                 }) {
-                                    HStack(spacing: 10) {
+                                    HStack(spacing: Global.buttonSpacing3) {
                                         VStack {
-                                            Text(name).font(.system(size: name.count > 8 ? 16 : 20))
+                                            Text(name).font(.system(size: name.count > 8 ? Global.text4Size : Global.text2Size))
                                                 .foregroundColor(c)
                                                 .frame(maxWidth: .infinity, alignment: .leading)
                                             

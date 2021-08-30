@@ -281,8 +281,8 @@ struct IntroView: View {
                 let str1 = self.name ?? "홀맨 회원"
                 let str2 = "즐거운 라운드 되세요."
                 
-                Text(str1 + "님,").font(.system(size: Global.text1Size)).fontWeight(.medium)
-                Text(str2).font(.system(size: Global.text1Size)).fontWeight(.medium)
+                Text(str1 + "님,").font(.system(size: Global.text1Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                Text(str2).font(.system(size: Global.text1Size)).fontWeight(.medium).multilineTextAlignment(.center)
             }
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
@@ -367,7 +367,7 @@ struct IntroView: View {
                 VStack {
                     Spacer().frame(maxHeight: .infinity)
                     
-                    HStack(spacing: 40) {
+                    HStack(spacing: Global.buttonSpacing2) {
                         // button 1
                         Button(action: {
                             // 새 게임으로 시작

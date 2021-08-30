@@ -19,7 +19,7 @@ struct ProgressBar: View {
             
             Circle()
                 .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))
-                .stroke(style: StrokeStyle(lineWidth: 8.0, lineCap: .round, lineJoin: .round))
+                .stroke(style: StrokeStyle(lineWidth: Global.progressBarLineWidth, lineCap: .round, lineJoin: .round))
                 .foregroundColor(Color.red)
                 .rotationEffect(Angle(degrees: 270.0))
                 .animation(.linear)

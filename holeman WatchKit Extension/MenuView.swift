@@ -43,17 +43,17 @@ struct MenuView: View {
                                 self.mode = 1
                             }
                         }) {
-                            HStack(spacing: 10) {
+                            HStack(spacing: Global.buttonSpacing3) {
                                 ZStack {
                                     Circle()
                                         .fill(Color.green)
-                                        .frame(width: 26, height: 26)
+                                        .frame(width: Global.circleIconSize, height: Global.circleIconSize)
                                     
                                     Image(systemName: "flag.fill")
-                                        .font(Font.system(size: 13, weight: .heavy))
+                                        .font(Font.system(size: Global.icon1Size, weight: .heavy))
                                 }
                                 
-                                VStack(spacing: 2) {
+                                VStack(spacing: Global.buttonSpacing1) {
                                     Text("메인으로").font(.system(size: Global.text3Size))
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(1)
@@ -107,17 +107,17 @@ struct MenuView: View {
                                 self.mode = 3
                             }
                         }) {
-                            HStack(spacing: 10) {
+                            HStack(spacing: Global.buttonSpacing3) {
                                 ZStack {
                                     Circle()
                                         .fill(Color.orange)
-                                        .frame(width: 26, height: 26)
+                                        .frame(width: Global.circleIconSize, height: Global.circleIconSize)
                                     
                                     Image(systemName: "stop.fill")
-                                        .font(Font.system(size: 13, weight: .heavy))
+                                        .font(Font.system(size: Global.icon1Size, weight: .heavy))
                                 }
                                 
-                                VStack(spacing: 2) {
+                                VStack(spacing: Global.buttonSpacing1) {
                                     Text("로그아웃").font(.system(size: Global.text3Size))
                                         // .fixedSize(horizontal: false, vertical: true)
                                         // .lineLimit(1)
@@ -165,7 +165,7 @@ struct MenuView: View {
                 VStack {
                     Spacer().frame(maxHeight: .infinity)
                     
-                    HStack(spacing: 40) {
+                    HStack(spacing: Global.buttonSpacing3) {
                         // button 1
                         Button(action: {
                             // go back to MainView

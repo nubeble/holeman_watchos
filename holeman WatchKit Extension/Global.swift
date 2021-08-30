@@ -36,6 +36,11 @@ struct Global {
     static var text4Size: CGFloat = 16
     static var text5Size: CGFloat = 14
     static var text6Size: CGFloat = 12
+    static var text7Size: CGFloat = 17
+    static var text8Size: CGFloat = 22
+    static var text9Size: CGFloat = 56
+    static var text10Size: CGFloat = 32
+    static var text11Size: CGFloat = 8
     
     static var buttonPaddingBottom: CGFloat = 10
     static var circleButtonSize: CGFloat = 54
@@ -46,6 +51,8 @@ struct Global {
     
     static var buttonSpacing1: CGFloat = 2
     static var buttonSpacing2: CGFloat = 40
+    static var buttonSpacing3: CGFloat = 10
+    static var buttonSpacing4: CGFloat = 4
     
     static var circleIconSize: CGFloat = 26
     static var icon1Size: CGFloat = 13
@@ -64,6 +71,24 @@ struct Global {
     static var progressBarLineWidth: CGFloat = 8
     
     static var radius1: CGFloat = 8
+    static var radius2: CGFloat = 2
+    
+    static var teeIndicatorSize: CGFloat = 3
+    
+    static var buttonStyle1Padding: CGFloat = 6
+    static var buttonStyle2Padding: CGFloat = 1
+    static var buttonStyle3Padding: CGFloat = 2
+    
+    static var holeNamePaddingTop: CGFloat = 48
+    
+    static var menuButtonPaddingTop: CGFloat = 4
+    
+    static var edgeLineWidth: CGFloat = 8
+    
+    static var greenButtonPadding: CGFloat = 9
+    
+    static var holeTextPaddingTop: CGFloat = 46
+    
     
     
     // 8:9
@@ -99,6 +124,11 @@ struct Global {
             text4Size = text4Size / 183.0 * 161.0
             text5Size = text5Size / 183.0 * 161.0
             text6Size = text6Size / 183.0 * 161.0
+            text7Size = text7Size / 183.0 * 161.0
+            text8Size = text8Size / 183.0 * 161.0
+            text9Size = text9Size / 183.0 * 161.0
+            text10Size = text10Size / 183.0 * 161.0
+            text11Size = text11Size / 183.0 * 161.0
             
             buttonPaddingBottom = buttonPaddingBottom / 183.0 * 161.0
             circleButtonSize = circleButtonSize / 183.0 * 161.0
@@ -109,6 +139,8 @@ struct Global {
             
             buttonSpacing1 = buttonSpacing1 / 183.0 * 161.0
             buttonSpacing2 = buttonSpacing2 / 183.0 * 161.0
+            buttonSpacing3 = buttonSpacing3 / 183.0 * 161.0
+            buttonSpacing4 = buttonSpacing4 / 183.0 * 161.0
             
             circleIconSize = circleIconSize / 183.0 * 161.0
             icon1Size = icon1Size / 183.0 * 161.0
@@ -127,6 +159,23 @@ struct Global {
             progressBarLineWidth = progressBarLineWidth / 183.0 * 161.0
             
             radius1 = radius1 / 183.0 * 161.0
+            radius2 = radius2 / 183.0 * 161.0
+            
+            teeIndicatorSize = teeIndicatorSize / 183.0 * 161.0
+            
+            buttonStyle1Padding = buttonStyle1Padding / 183.0 * 161.0
+            buttonStyle2Padding = buttonStyle2Padding / 183.0 * 161.0
+            buttonStyle3Padding = buttonStyle3Padding / 183.0 * 161.0
+            
+            holeNamePaddingTop = holeNamePaddingTop / 183.0 * 161.0
+            
+            menuButtonPaddingTop = menuButtonPaddingTop / 183.0 * 161.0
+            
+            edgeLineWidth = edgeLineWidth / 183.0 * 161.0
+            
+            greenButtonPadding = greenButtonPadding / 183.0 * 161.0
+            
+            holeTextPaddingTop = holeTextPaddingTop / 183.0 * 161.0
             
             return
         }

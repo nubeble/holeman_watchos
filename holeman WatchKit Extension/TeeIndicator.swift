@@ -59,7 +59,7 @@ struct TeeIndicator: View {
             ForEach(0..<self.count) { index in
                 Circle()
                     .fill(Color.white)
-                    .frame(width: 3.0, height: 3.0)
+                    .frame(width: Global.teeIndicatorSize, height: Global.teeIndicatorSize)
                     .animation(nil)
                     .opacity(self.opacity)
                     .scaleEffect(self.scale)

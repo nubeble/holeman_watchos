@@ -546,7 +546,7 @@ struct CourseListView: View {
                                 HStack {
                                     Spacer()
                                     
-                                    Text("￦1,000 / 18 holes").foregroundColor(.black) // ToDo: !!! (check text size)
+                                    Text("￦1,000 / 18 holes").foregroundColor(.black).font(.system(size: Global.text7Size))
                                     //.font(.system(size: 15))
                                     // .fontWeight(.bold)
                                     

@@ -15,9 +15,7 @@ struct SplashView: View {
         if self.isActive == true {
             
             VStack { // should be VStack
-                // IntroView()
-                // ToDo: !!!
-                CourseView()
+                IntroView()
             }
             .navigationBarTitle(Locale.current.languageCode == "ko" ? "홀맨" : "Holeman")
             

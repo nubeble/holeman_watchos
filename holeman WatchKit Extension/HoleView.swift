@@ -53,7 +53,7 @@ struct HoleView: View {
                                     }
                                     
                                 }) {
-                                    HStack(spacing: 10) {
+                                    HStack(spacing: Global.buttonSpacing3) {
                                         VStack {
                                             Text(titles[0]).font(.system(size: Global.text3Size))
                                                 .frame(maxWidth: .infinity, alignment: .leading)

@@ -58,7 +58,7 @@ struct CourseView: View {
                                 self.mode = 1
                             }
                         }) {
-                            HStack(spacing: 10) {
+                            HStack(spacing: Global.buttonSpacing3) {
                                 ZStack {
                                     Circle()
                                         .fill(Color.orange)
@@ -80,7 +80,7 @@ struct CourseView: View {
                                 self.mode = 2
                             }
                         }) {
-                            HStack(spacing: Global.buttonPaddingBottom) {
+                            HStack(spacing: Global.buttonSpacing3) {
                                 ZStack {
                                     Circle()
                                         .fill(Color.blue)
