@@ -26,8 +26,8 @@ struct Static {
     
     // ToDo: debug (현재 좌표 - 골프장 좌표)
     // (골드그린 from 매탄동)
-    // static let __lat = 1.753586614270796
-    // static let __lon = -2.033034733589
+    static let __lat = 1.753586614270796
+    static let __lon = -2.033034733589
     
     // (신안 from 매탄동)
     // static let __lat = 0.16496653122842
@@ -70,8 +70,8 @@ struct Static {
     // static let __lon = 0.55975353068125
     
     // (용원 from 광진홈)
-    static let __lat = 2.49713544226966
-    static let __lon = -1.81610715835253
+    // static let __lat = 2.49713544226966
+    // static let __lon = -1.81610715835253
     
     // ToDo: !!!
     // static let __lat = 0.0
