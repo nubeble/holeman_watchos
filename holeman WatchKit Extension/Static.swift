@@ -69,6 +69,11 @@ struct Static {
     // static let __lat = -0.18453440281145
     // static let __lon = 0.55975353068125
     
-    static let __lat = 0.0
-    static let __lon = 0.0
+    // (용원 from 광진홈)
+    static let __lat = 2.49713544226966
+    static let __lon = -1.81610715835253
+    
+    // ToDo: !!!
+    // static let __lat = 0.0
+    // static let __lon = 0.0
 }
