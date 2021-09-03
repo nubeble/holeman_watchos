@@ -81,8 +81,6 @@ extension LocationManager: CLLocationManagerDelegate {
         // print(#function, location)
         
         if self.filterLocation(location) {
-            // print(#function, location)
-            
             self.lastLocation = location
         }
     }

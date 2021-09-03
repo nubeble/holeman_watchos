@@ -666,7 +666,7 @@ struct MainView: View {
                         
                         // print("1 hole number", self.holeNumber, "sensor count", self.sensors.count)
                         
-                        if self.holeNumber! - 1 < self.sensors.count {
+                        if (self.holeNumber! - 1) < self.sensors.count {
                             let sensor = self.sensors[self.holeNumber! - 1]
                             
                             self.latitude = sensor.location.coordinate.latitude + Static.__lat
@@ -800,7 +800,12 @@ struct MainView: View {
         } else if self.mode == 21 {
             
             // move to HoleSearchView
-            HoleSearchView(from: self.from, course: self.course, teeingGroundName: self.teeingGroundName)
+            
+            if self.from == 200 { // 전반 종료
+                HoleSearchView(from: self.from, course: self.course, teeingGroundInfo: self.teeingGroundInfo, teeingGroundName: self.teeingGroundName, greenDirection: self.greenDirection!)
+            } else { // 300 후반 종료
+                HoleSearchView(from: self.from, course: self.course, teeingGroundName: self.teeingGroundName)
+            }
             
         } else if self.mode == 99 {
             

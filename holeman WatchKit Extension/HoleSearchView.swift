@@ -10,7 +10,7 @@ import SwiftUI
 struct HoleSearchView: View {
     @State var mode: Int = 0
     
-    @State var textMessage: String = "스타트 홀로 가시면 자동으로 시작됩니다."
+    @State var textMessage: String = "스타트 홀로 가시면 자동으로 라운드가 시작됩니다."
     @State var findStartHoleCounter = 0
     @State var getLastLocationCounter = 0
     
@@ -18,7 +18,8 @@ struct HoleSearchView: View {
     @State var from: Int?
     var search: Bool?
     
-    @State var showBeerIcon: Bool?
+    // @State var showBeerIcon: Bool?
+    @State var showIcon: Int = 2 // 0: hide, 1: beer, 2: tee up (+ animation)
     
     // @ObservedObject var locationManager = LocationManager()
     
@@ -100,14 +101,36 @@ struct HoleSearchView: View {
                 VStack(alignment: HorizontalAlignment.center) {
                     Spacer().frame(maxHeight: .infinity)
                     
-                    if self.showBeerIcon == true {
+                    /*
+                     if self.showBeerIcon == true {
+                     ZStack {
+                     Image("beer")
+                     .resizable()
+                     .frame(width: Global.icon6Size, height: Global.icon6Size)
+                     }
+                     .padding(.bottom, Global.buttonPaddingBottom)
+                     } else {
+                     ZStack {
+                     Image("tee up")
+                     .resizable()
+                     .frame(width: Global.icon6Size, height: Global.icon6Size)
+                     
+                     TeeIndicator(isAnimating: .constant(true))
+                     .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
+                     .foregroundColor(.white)
+                     }
+                     .padding(.bottom, Global.buttonPaddingBottom)
+                     }
+                     */
+                    
+                    if self.showIcon == 1 { // beer
                         ZStack {
                             Image("beer")
                                 .resizable()
                                 .frame(width: Global.icon6Size, height: Global.icon6Size)
                         }
                         .padding(.bottom, Global.buttonPaddingBottom)
-                    } else {
+                    } else if self.showIcon == 2 { // tee up
                         ZStack {
                             Image("tee up")
                                 .resizable()
@@ -157,30 +180,34 @@ struct HoleSearchView: View {
                         
                         self.textMessage = "전반 9홀이 끝났습니다. 그늘집에서 쉬시고 스타트 홀로 가시면 자동 시작됩니다."
                         
-                        self.showBeerIcon = true
+                        // self.showBeerIcon = true
+                        self.showIcon = 1 // beer
                         
                         // self.save = false
                         
                         // ToDo: test timer
                         DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
-                            self.showBeerIcon = false
+                            // self.showBeerIcon = false
+                            self.showIcon = 2 // tee up
                             
                             // getStartHole() // 1, 10, 19, ...
                             let groupId = self.course?.id
                             onGetHoles(groupId!)
                         }
                     } else if from == 300 {
-                        // 후반 종료. move to CourseSearchView
+                        // 후반 종료. move to CourseView
                         
                         self.textMessage = "전후반 플레이가 모두 끝났습니다. 수고하셨습니다."
                         
+                        self.showIcon = 0 // not show
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
                             withAnimation {
-                                self.mode = 21
+                                self.mode = 10
                             }
                         }
                     } else if from == 500 {
-                        self.textMessage = "스타트 홀로 가시면 자동으로 시작됩니다."
+                        self.textMessage = "스타트 홀로 가시면 자동으로 라운드가 시작됩니다."
                         
                         calcDistance()
                     }
@@ -388,7 +415,7 @@ struct HoleSearchView: View {
                         
                         // button 2
                         Button(action: {
-                            // self.textMessage = "스타트 홀로 가시면 자동으로 시작됩니다."
+                            // self.textMessage = "스타트 홀로 가시면 자동으로 라운드가 시작됩니다."
                             self.from = 500
                             
                             withAnimation {
@@ -431,10 +458,6 @@ struct HoleSearchView: View {
             
             // MainView(course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundIndex: teeingGroundIndex, greenDirection: greenDirection, holeNumber: holeNumber)
             MainView(course: course, teeingGroundInfo: teeingGroundInfo, teeingGroundName: teeingGroundName, greenDirection: greenDirection, holeNumber: holeNumber)
-            
-        } else if self.mode == 21 { // move to CourseSearchView
-            
-            CourseSearchView() // Consider
             
         }
     }

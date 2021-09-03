@@ -113,7 +113,7 @@ struct TeeView: View {
                 // .animation(.easeInOut(duration: 5.0))
             }
             
-        } else if self.mode == 1 { // go back to MainView
+        } else if self.mode == 1 { // ßback to MainView
             
             /*
              MainView(mode: 1,

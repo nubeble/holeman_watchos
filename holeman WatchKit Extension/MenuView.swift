@@ -168,7 +168,7 @@ struct MenuView: View {
                     HStack(spacing: Global.buttonSpacing3) {
                         // button 1
                         Button(action: {
-                            // go back to MainView
+                            // back to MainView
                             withAnimation {
                                 self.mode = 9
                             }
@@ -255,15 +255,15 @@ struct MenuView: View {
                     print(#function, "finished removing UserDefaults")
                 }
             }
-        } else if self.mode == 5 { // go back to IntroView
+        } else if self.mode == 5 { // back to IntroView
             
             IntroView(mode: 2)
             
-        } else if self.mode == 8 { // go back to CourseView
+        } else if self.mode == 8 { // back to CourseView
             
             CourseView()
             
-        } else if self.mode == 9 { // go back to MainView
+        } else if self.mode == 9 { // back to MainView
             /*
              MainView(mode: 1,
              course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.__teeingGroundIndex,
