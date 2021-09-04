@@ -151,7 +151,7 @@ struct HoleSearchView: View {
                     if from == 100 {
                         if let search = self.search {
                             if search == true {
-                                self.textMessage = "그늘집에서 잘 쉬셨나요?\n스타트 홀로 가시면\n자동으로 시작됩니다."
+                                self.textMessage = "그늘집에서 잘 쉬셨죠?\n스타트 홀로 가시면\n자동으로 시작됩니다."
                                 
                                 // ToDo: test timer
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {

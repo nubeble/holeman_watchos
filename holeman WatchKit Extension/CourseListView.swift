@@ -851,7 +851,7 @@ struct CourseListView: View {
                 }
                 
                 VStack {
-                    Text(self.textMessage3)).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage3).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button
@@ -1208,8 +1208,8 @@ struct CourseListView: View {
                                         }
                                     } else {
                                         let d = Int(distance / 1000) // km
-                                        self.textMessage3 = "선택하신 골프장은 " + d + " km\n떨어져 있어요."
-
+                                        self.textMessage3 = "선택하신 골프장은\n" + String(d) + " km 떨어져 있어요."
+                                        
                                         withAnimation {
                                             self.mode = 71 // go back
                                         }
