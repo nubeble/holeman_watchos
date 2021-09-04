@@ -70,191 +70,71 @@ struct Global {
     
     
     static func setDeviceResolution(_ width: CGFloat) -> Void {
+        var value: CGFloat = 183.0
         
-        if width < 160 { // 120.0 ?
-            // 38 mm ?
-            
-            title2PaddingBottom = title2PaddingBottom / 183.0 * 120.0
-            buttonPaddingTop = buttonPaddingTop / 183.0 * 120.0
-            buttonPaddingBottom2 = buttonPaddingBottom2 / 183.0 * 120.0
-            buttonPadding = buttonPadding / 183.0 * 120.0
-            textPaddingTop = textPaddingTop / 183.0 * 120.0
-            logoWidth = logoWidth / 183.0 * 120.0
-            logoHeight = logoHeight / 183.0 * 120.0
-            iconWidth = iconWidth / 183.0 * 120.0
-            text1Size = text1Size / 183.0 * 120.0
-            text2Size = text2Size / 183.0 * 120.0
-            text3Size = text3Size / 183.0 * 120.0
-            text4Size = text4Size / 183.0 * 120.0
-            text5Size = text5Size / 183.0 * 120.0
-            text6Size = text6Size / 183.0 * 120.0
-            text7Size = text7Size / 183.0 * 120.0
-            text8Size = text8Size / 183.0 * 120.0
-            text9Size = text9Size / 183.0 * 120.0
-            text10Size = text10Size / 183.0 * 120.0
-            text11Size = text11Size / 183.0 * 120.0
-            buttonPaddingBottom = buttonPaddingBottom / 183.0 * 120.0
-            circleButtonSize = circleButtonSize / 183.0 * 120.0
-            circleButtonArrowSize = circleButtonArrowSize / 183.0 * 120.0
-            signInWithAppleButtonWidth = signInWithAppleButtonWidth / 183.0 * 120.0
-            signInWithAppleButtonHeight = signInWithAppleButtonHeight / 183.0 * 120.0
-            buttonSpacing1 = buttonSpacing1 / 183.0 * 120.0
-            buttonSpacing2 = buttonSpacing2 / 183.0 * 120.0
-            buttonSpacing3 = buttonSpacing3 / 183.0 * 120.0
-            buttonSpacing4 = buttonSpacing4 / 183.0 * 120.0
-            circleIconSize = circleIconSize / 183.0 * 120.0
-            icon1Size = icon1Size / 183.0 * 120.0
-            icon2Size = icon2Size / 183.0 * 120.0
-            icon3Size = icon3Size / 183.0 * 120.0
-            icon4Size = icon4Size / 183.0 * 120.0
-            icon5Size = icon5Size / 183.0 * 120.0
-            icon6Size = icon6Size / 183.0 * 120.0
-            textButtonSize = textButtonSize / 183.0 * 120.0
-            checkIconSize = checkIconSize / 183.0 * 120.0
-            checkmarkIconSize = checkmarkIconSize / 183.0 * 120.0
-            progressBarSize = progressBarSize / 183.0 * 120.0
-            progressBarLineWidth = progressBarLineWidth / 183.0 * 120.0
-            radius1 = radius1 / 183.0 * 120.0
-            radius2 = radius2 / 183.0 * 120.0
-            teeIndicatorSize = teeIndicatorSize / 183.0 * 120.0
-            buttonStyle1Padding = buttonStyle1Padding / 183.0 * 120.0
-            buttonStyle2Padding = buttonStyle2Padding / 183.0 * 120.0
-            buttonStyle3Padding = buttonStyle3Padding / 183.0 * 120.0
-            holeNamePaddingTop = holeNamePaddingTop / 183.0 * 120.0
-            menuButtonPaddingTop = menuButtonPaddingTop / 183.0 * 120.0
-            edgeLineWidth = edgeLineWidth / 183.0 * 120.0
-            greenButtonPadding = greenButtonPadding / 183.0 * 120.0
-            holeTextPaddingTop = holeTextPaddingTop / 183.0 * 120.0
-            
-            return
+        // 38 mm : ?
+        if width < 161.0 {
+            value = 120.0
         }
         
-        if 160 <= width && width < 170 { // 161.0
-            // 40 mm
-            
-            title2PaddingBottom = title2PaddingBottom / 183.0 * 161.0
-            buttonPaddingTop = buttonPaddingTop / 183.0 * 161.0
-            buttonPaddingBottom2 = buttonPaddingBottom2 / 183.0 * 161.0
-            buttonPadding = buttonPadding / 183.0 * 161.0
-            textPaddingTop = textPaddingTop / 183.0 * 161.0
-            logoWidth = logoWidth / 183.0 * 161.0
-            logoHeight = logoHeight / 183.0 * 161.0
-            iconWidth = iconWidth / 183.0 * 161.0
-            text1Size = text1Size / 183.0 * 161.0
-            text2Size = text2Size / 183.0 * 161.0
-            text3Size = text3Size / 183.0 * 161.0
-            text4Size = text4Size / 183.0 * 161.0
-            text5Size = text5Size / 183.0 * 161.0
-            text6Size = text6Size / 183.0 * 161.0
-            text7Size = text7Size / 183.0 * 161.0
-            text8Size = text8Size / 183.0 * 161.0
-            text9Size = text9Size / 183.0 * 161.0
-            text10Size = text10Size / 183.0 * 161.0
-            text11Size = text11Size / 183.0 * 161.0
-            buttonPaddingBottom = buttonPaddingBottom / 183.0 * 161.0
-            circleButtonSize = circleButtonSize / 183.0 * 161.0
-            circleButtonArrowSize = circleButtonArrowSize / 183.0 * 161.0
-            signInWithAppleButtonWidth = signInWithAppleButtonWidth / 183.0 * 161.0
-            signInWithAppleButtonHeight = signInWithAppleButtonHeight / 183.0 * 161.0
-            buttonSpacing1 = buttonSpacing1 / 183.0 * 161.0
-            buttonSpacing2 = buttonSpacing2 / 183.0 * 161.0
-            buttonSpacing3 = buttonSpacing3 / 183.0 * 161.0
-            buttonSpacing4 = buttonSpacing4 / 183.0 * 161.0
-            circleIconSize = circleIconSize / 183.0 * 161.0
-            icon1Size = icon1Size / 183.0 * 161.0
-            icon2Size = icon2Size / 183.0 * 161.0
-            icon3Size = icon3Size / 183.0 * 161.0
-            icon4Size = icon4Size / 183.0 * 161.0
-            icon5Size = icon5Size / 183.0 * 161.0
-            icon6Size = icon6Size / 183.0 * 161.0
-            textButtonSize = textButtonSize / 183.0 * 161.0
-            checkIconSize = checkIconSize / 183.0 * 161.0
-            checkmarkIconSize = checkmarkIconSize / 183.0 * 161.0
-            progressBarSize = progressBarSize / 183.0 * 161.0
-            progressBarLineWidth = progressBarLineWidth / 183.0 * 161.0
-            radius1 = radius1 / 183.0 * 161.0
-            radius2 = radius2 / 183.0 * 161.0
-            teeIndicatorSize = teeIndicatorSize / 183.0 * 161.0
-            buttonStyle1Padding = buttonStyle1Padding / 183.0 * 161.0
-            buttonStyle2Padding = buttonStyle2Padding / 183.0 * 161.0
-            buttonStyle3Padding = buttonStyle3Padding / 183.0 * 161.0
-            holeNamePaddingTop = holeNamePaddingTop / 183.0 * 161.0
-            menuButtonPaddingTop = menuButtonPaddingTop / 183.0 * 161.0
-            edgeLineWidth = edgeLineWidth / 183.0 * 161.0
-            greenButtonPadding = greenButtonPadding / 183.0 * 161.0
-            holeTextPaddingTop = holeTextPaddingTop / 183.0 * 161.0
-            
-            return
+        // 40 mm : 161.0
+        // 44 mm : 183.0
+        if width >= 161.0 {
+            value = width
         }
         
-        if 170 <= width && width < 180 { // 170 ?
-            // 42 mm ?
-            
-            title2PaddingBottom = title2PaddingBottom / 183.0 * 170.0
-            buttonPaddingTop = buttonPaddingTop / 183.0 * 170.0
-            buttonPaddingBottom2 = buttonPaddingBottom2 / 183.0 * 170.0
-            buttonPadding = buttonPadding / 183.0 * 170.0
-            textPaddingTop = textPaddingTop / 183.0 * 170.0
-            logoWidth = logoWidth / 183.0 * 170.0
-            logoHeight = logoHeight / 183.0 * 170.0
-            iconWidth = iconWidth / 183.0 * 170.0
-            text1Size = text1Size / 183.0 * 170.0
-            text2Size = text2Size / 183.0 * 170.0
-            text3Size = text3Size / 183.0 * 170.0
-            text4Size = text4Size / 183.0 * 170.0
-            text5Size = text5Size / 183.0 * 170.0
-            text6Size = text6Size / 183.0 * 170.0
-            text7Size = text7Size / 183.0 * 170.0
-            text8Size = text8Size / 183.0 * 170.0
-            text9Size = text9Size / 183.0 * 170.0
-            text10Size = text10Size / 183.0 * 170.0
-            text11Size = text11Size / 183.0 * 170.0
-            buttonPaddingBottom = buttonPaddingBottom / 183.0 * 170.0
-            circleButtonSize = circleButtonSize / 183.0 * 170.0
-            circleButtonArrowSize = circleButtonArrowSize / 183.0 * 170.0
-            signInWithAppleButtonWidth = signInWithAppleButtonWidth / 183.0 * 170.0
-            signInWithAppleButtonHeight = signInWithAppleButtonHeight / 183.0 * 170.0
-            buttonSpacing1 = buttonSpacing1 / 183.0 * 170.0
-            buttonSpacing2 = buttonSpacing2 / 183.0 * 170.0
-            buttonSpacing3 = buttonSpacing3 / 183.0 * 170.0
-            buttonSpacing4 = buttonSpacing4 / 183.0 * 170.0
-            circleIconSize = circleIconSize / 183.0 * 170.0
-            icon1Size = icon1Size / 183.0 * 170.0
-            icon2Size = icon2Size / 183.0 * 170.0
-            icon3Size = icon3Size / 183.0 * 170.0
-            icon4Size = icon4Size / 183.0 * 170.0
-            icon5Size = icon5Size / 183.0 * 170.0
-            icon6Size = icon6Size / 183.0 * 170.0
-            textButtonSize = textButtonSize / 183.0 * 170.0
-            checkIconSize = checkIconSize / 183.0 * 170.0
-            checkmarkIconSize = checkmarkIconSize / 183.0 * 170.0
-            progressBarSize = progressBarSize / 183.0 * 170.0
-            progressBarLineWidth = progressBarLineWidth / 183.0 * 170.0
-            radius1 = radius1 / 183.0 * 170.0
-            radius2 = radius2 / 183.0 * 170.0
-            teeIndicatorSize = teeIndicatorSize / 183.0 * 170.0
-            buttonStyle1Padding = buttonStyle1Padding / 183.0 * 170.0
-            buttonStyle2Padding = buttonStyle2Padding / 183.0 * 170.0
-            buttonStyle3Padding = buttonStyle3Padding / 183.0 * 170.0
-            holeNamePaddingTop = holeNamePaddingTop / 183.0 * 170.0
-            menuButtonPaddingTop = menuButtonPaddingTop / 183.0 * 170.0
-            edgeLineWidth = edgeLineWidth / 183.0 * 170.0
-            greenButtonPadding = greenButtonPadding / 183.0 * 170.0
-            holeTextPaddingTop = holeTextPaddingTop / 183.0 * 170.0
-            
-            return
-        }
         
-        if 180 < width && width < 190 { // 183.0
-            // 44 mm
-            
-            // N/A
-            
-            return
-        } else {
-            // Consider: next model
-            
-            return
-        }
+        
+        title2PaddingBottom = title2PaddingBottom / 183.0 * value
+        buttonPaddingTop = buttonPaddingTop / 183.0 * value
+        buttonPaddingBottom2 = buttonPaddingBottom2 / 183.0 * value
+        buttonPadding = buttonPadding / 183.0 * value
+        textPaddingTop = textPaddingTop / 183.0 * value
+        logoWidth = logoWidth / 183.0 * value
+        logoHeight = logoHeight / 183.0 * value
+        iconWidth = iconWidth / 183.0 * value
+        text1Size = text1Size / 183.0 * value
+        text2Size = text2Size / 183.0 * value
+        text3Size = text3Size / 183.0 * value
+        text4Size = text4Size / 183.0 * value
+        text5Size = text5Size / 183.0 * value
+        text6Size = text6Size / 183.0 * value
+        text7Size = text7Size / 183.0 * value
+        text8Size = text8Size / 183.0 * value
+        text9Size = text9Size / 183.0 * value
+        text10Size = text10Size / 183.0 * value
+        text11Size = text11Size / 183.0 * value
+        buttonPaddingBottom = buttonPaddingBottom / 183.0 * value
+        circleButtonSize = circleButtonSize / 183.0 * value
+        circleButtonArrowSize = circleButtonArrowSize / 183.0 * value
+        signInWithAppleButtonWidth = signInWithAppleButtonWidth / 183.0 * value
+        signInWithAppleButtonHeight = signInWithAppleButtonHeight / 183.0 * value
+        buttonSpacing1 = buttonSpacing1 / 183.0 * value
+        buttonSpacing2 = buttonSpacing2 / 183.0 * value
+        buttonSpacing3 = buttonSpacing3 / 183.0 * value
+        buttonSpacing4 = buttonSpacing4 / 183.0 * value
+        circleIconSize = circleIconSize / 183.0 * value
+        icon1Size = icon1Size / 183.0 * value
+        icon2Size = icon2Size / 183.0 * value
+        icon3Size = icon3Size / 183.0 * value
+        icon4Size = icon4Size / 183.0 * value
+        icon5Size = icon5Size / 183.0 * value
+        icon6Size = icon6Size / 183.0 * value
+        textButtonSize = textButtonSize / 183.0 * value
+        checkIconSize = checkIconSize / 183.0 * value
+        checkmarkIconSize = checkmarkIconSize / 183.0 * value
+        progressBarSize = progressBarSize / 183.0 * value
+        progressBarLineWidth = progressBarLineWidth / 183.0 * value
+        radius1 = radius1 / 183.0 * value
+        radius2 = radius2 / 183.0 * value
+        teeIndicatorSize = teeIndicatorSize / 183.0 * value
+        buttonStyle1Padding = buttonStyle1Padding / 183.0 * value
+        buttonStyle2Padding = buttonStyle2Padding / 183.0 * value
+        buttonStyle3Padding = buttonStyle3Padding / 183.0 * value
+        holeNamePaddingTop = holeNamePaddingTop / 183.0 * value
+        menuButtonPaddingTop = menuButtonPaddingTop / 183.0 * value
+        edgeLineWidth = edgeLineWidth / 183.0 * value
+        greenButtonPadding = greenButtonPadding / 183.0 * value
+        holeTextPaddingTop = holeTextPaddingTop / 183.0 * value
     }
 }
