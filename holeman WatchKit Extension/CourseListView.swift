@@ -30,6 +30,7 @@ struct CourseListView: View {
     // @State var productId: String?
     
     @State var textMessage2: String = ""
+    @State var textMessage3: String = ""
     
     var body: some View {
         if self.mode == 0 {
@@ -850,7 +851,7 @@ struct CourseListView: View {
                 }
                 
                 VStack {
-                    Text("선택하신 골프장은 근처에 있지 않아 플레이 불가능해요.").font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(self.textMessage3)).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button
@@ -1206,6 +1207,9 @@ struct CourseListView: View {
                                             checkFreeTrial()
                                         }
                                     } else {
+                                        let d = Int(distance / 1000) // km
+                                        self.textMessage3 = "선택하신 골프장은 " + d + " km\n떨어져 있어요."
+
                                         withAnimation {
                                             self.mode = 71 // go back
                                         }
