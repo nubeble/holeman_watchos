@@ -393,7 +393,7 @@ struct MainView: View {
                 }
                 
                 VStack {
-                    Text("홀컵이 이동하여 남은 거리를 다시 계산하였습니다.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text("홀컵 위치가 이동하여\n거리를 다시 계산했어요.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button

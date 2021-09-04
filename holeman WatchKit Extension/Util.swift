@@ -149,19 +149,19 @@ struct Util {
         
         switch num {
         case 0:
-            return "근처에 스타트 홀을 찾고 있습니다."
+            return "근처에 스타트 홀을\n찾고 있습니다."
             
         case 1:
-            return "스타트 홀로 가시면 자동으로 라운드가 시작됩니다."
+            return "스타트 홀로 가시면\n자동으로 시작됩니다."
             
         case 2:
-            return "스타트 홀이 멀리 떨어져 있네요."
+            return "스타트 홀이 멀리\n떨어져 있네요."
             
         case 3:
-            return "스타트 홀 근처로 이동해주세요."
+            return "스타트 홀 근처로\n이동해주세요."
             
         default:
-            return "스타트 홀로 가시면 자동으로 라운드가 시작됩니다."
+            return "스타트 홀로 가시면\n자동으로 시작됩니다."
         }
     }
     

@@ -850,7 +850,7 @@ struct CourseListView: View {
                 }
                 
                 VStack {
-                    Text("선택하신 골프장은 근처에 있지 않습니다. 다시 시도해주세요.").font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text("선택하신 골프장은 근처에 있지 않아 플레이 불가능해요.").font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button

@@ -157,7 +157,7 @@ struct IntroView: View {
                 }
                 
                 VStack {
-                    Text("홀맨을 이용하시려면 로그인이 필요합니다.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text("홀맨을 이용하시려면\n로그인이 필요합니다.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack {
@@ -591,7 +591,7 @@ struct IntroView: View {
                 if halftime == 1 { // 전반 중 앱이 죽었다가 다시 실행
                     loadHole()
                     
-                    self.textMessage = "플레이 중인 라운드가 있습니다. 이어서 하시겠어요?"
+                    self.textMessage = "플레이 중인 라운드가\n있습니다. 이어서 할까요?"
                     
                     withAnimation {
                         self.mode = 11
@@ -599,7 +599,7 @@ struct IntroView: View {
                 } else if halftime == 2 { // 전반 종료 후 앱이 죽었다가 다시 실행
                     loadHole()
                     
-                    self.textMessage = "플레이 중인 라운드가 있습니다. 이어서 하시겠어요?"
+                    self.textMessage = "플레이 중인 라운드가\n있습니다. 이어서 할까요?"
                     
                     withAnimation {
                         self.mode = 12
@@ -607,7 +607,7 @@ struct IntroView: View {
                 } else if halftime == 3 { // 후반 중 앱이 죽었다가 다시 실행
                     loadHole()
                     
-                    self.textMessage = "플레이 중인 라운드가 있습니다. 이어서 하시겠어요?"
+                    self.textMessage = "플레이 중인 라운드가\n있습니다. 이어서 할까요?"
                     
                     withAnimation {
                         self.mode = 13
@@ -620,7 +620,7 @@ struct IntroView: View {
                 
                 loadCourse()
                 
-                self.textMessage = "플레이 중인 라운드가 있습니다. 이어서 하시겠어요?"
+                self.textMessage = "플레이 중인 라운드가\n있습니다. 이어서 할까요?"
                 
                 withAnimation {
                     self.mode = 15
@@ -630,7 +630,7 @@ struct IntroView: View {
             
             loadCourse()
             
-            self.textMessage = "플레이 중인 라운드가 있습니다. 이어서 하시겠어요?"
+            self.textMessage = "플레이 중인 라운드가\n있습니다. 이어서 할까요?"
             
             withAnimation {
                 self.mode = 14
