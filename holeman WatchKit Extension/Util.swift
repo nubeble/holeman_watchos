@@ -545,7 +545,11 @@ struct Util {
             if tg.color == color { return tg.name + " (" + tg.color + ")" }
         }
         
-        return ""
+        // return ""
+        
+        // 색깔로 검색이 안되면 디폴트 0번째 티박스를 선택한다. (이전 홀에서는 YELLOW 티를 선택했는데, 이번 홀에서는 사라졌다.)
+        let tg = tgs[0]
+        return tg.name + " (" + tg.color + ")"
     }
     
     static func getIndex(_ tgs: [TeeingGround], _ str: String) -> Int { // str: REGULAR-2 (WHITE)
