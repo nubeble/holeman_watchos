@@ -165,6 +165,32 @@ struct Util {
         }
     }
     
+    static func getWaitMessageForLocation2(_ number: Int) -> String { // 3, 6, 9, 12, 15
+        var num = number
+        
+        num = num / 3 // 1, 2, 3, 4, 5
+        
+        switch num {
+        case 1:
+            return "잠시만 기다려주세요."
+            
+        case 2:
+            return "실내에서는 GPS가\n잡히지 않아요. 😥"
+            
+        case 3:
+            return "클럽하우스 밖으로\n나와주세요."
+            
+        case 4:
+            return "위치 정보를 확인할 수\n 없습니다. 👀"
+            
+        case 5:
+            return "가만히 있지 마시고\n움직여주세요."
+            
+        default:
+            return "잠시만 기다려주세요."
+        }
+    }
+    
     static func getWaitMessageForLocation(_ number: Int) -> String { // 3, 6, 9, 12, 15
         var num = number
         

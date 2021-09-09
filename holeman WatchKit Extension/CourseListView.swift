@@ -480,7 +480,7 @@ struct CourseListView: View {
                 VStack {
                     let c = self.courses[self.selectedCourseIndex]
                     let name = Util.getCourseName(self.courses[self.selectedCourseIndex].name)
-                    let text = c.hlds == 100 ? name + "에는 HLDS™가 적용되어 있습니다.😃 홀맨이 정확한 거리를 알려드릴게요." : name + "에는 HLDS™가 적용되어 있지 않네요.😥 하지만 홀맨이 그린 정중앙을 기준으로 거리를 알려드릴게요."
+                    let text = c.hlds == 100 ? name + "에는\nHLDS™가 적용되어 있어요.😃\n홀맨이 정확한 거리를 알려드릴게요." : name + "에는\nHLDS™가 적용되어 있지 않네요.😥\n하지만 홀맨이 그린 정중앙을\n기준으로 거리를 알려드릴게요."
                     
                     Text(text).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
@@ -530,7 +530,8 @@ struct CourseListView: View {
                                 .multilineTextAlignment(.center)
                                 .padding(.top, Global.textPaddingTop)
                             
-                            Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + " 18홀의 정확한 거리 측정 서비스를 1,000원에 이용하세요.")
+                            // Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + " 18홀의 정확한 거리 측정 서비스를 1,000원에 이용하세요.")
+                            Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + "의\n정확한 거리 측정 서비스를\n1,000원에 이용하세요.")
                                 .font(.system(size: Global.text4Size))
                                 // .fontWeight(.light)
                                 .fontWeight(.medium)
@@ -1115,41 +1116,13 @@ struct CourseListView: View {
     
     func checkFreeTrial() {
         if let userId = Global.userId {
-            /*
-             CloudManager.getFreeTrialCount(userId) { freeTrialCount in
-             if freeTrialCount < 10 {
-             let n = 10 - freeTrialCount
-             if n == 10 {
-             self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요."
-             } else {
-             self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (" + String(n) + "회 남았습니다.)"
-             }
-             
-             // update DB
-             CloudManager.setFreeTrialCount(userId, freeTrialCount + 1)
-             
-             let c = self.courses[self.selectedCourseIndex]
-             Util.saveCourse(c)
-             
-             withAnimation {
-             self.mode = 60
-             }
-             } else {
-             self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (모두 사용하셨습니다.)"
-             
-             withAnimation {
-             self.mode = 61
-             }
-             }
-             }
-             */
             CloudManager.checkFreeTrialCount(userId) { freeTrialCount in
                 if freeTrialCount < 10 {
                     let n = 10 - freeTrialCount
                     if n == 10 {
-                        self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요."
+                        self.textMessage2 = "새로운 골프 경험의 시작, 홀맨을\n10회까지 무료로 이용 가능해요."
                     } else {
-                        self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (" + String(n) + "회 남았습니다.)"
+                        self.textMessage2 = "새로운 골프 경험의 시작, 홀맨을\n10회까지 무료로 이용 가능해요.\n(" + String(n) + "회 남았습니다.)"
                     }
                     
                     let c = self.courses[self.selectedCourseIndex]
@@ -1159,7 +1132,7 @@ struct CourseListView: View {
                         self.mode = 60
                     }
                 } else {
-                    self.textMessage2 = "홀맨의 정확한 거리 측정 서비스를 10회까지 무료로 이용하실 수 있어요. (모두 사용하셨습니다.)"
+                    self.textMessage2 = "새로운 골프 경험의 시작, 홀맨을\n10회까지 무료로 이용 가능해요.\n(모두 사용하셨습니다.)"
                     
                     withAnimation {
                         self.mode = 61

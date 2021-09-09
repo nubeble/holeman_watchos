@@ -802,7 +802,7 @@ struct HoleSearchView: View {
                                     timer2.invalidate()
                                     
                                     withAnimation(.linear(duration: 0.5)) {
-                                        self.textMessage = "잠시 후 다시\n시도해주세요."
+                                        self.textMessage = "잠시 후에 다시\n시도해주세요."
                                     }
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
@@ -818,7 +818,7 @@ struct HoleSearchView: View {
                                 if self.getLastLocationCounter % 3 == 0 { // 3, 6, 9, 12, 15
                                     // show wait message
                                     withAnimation(.linear(duration: 0.5)) {
-                                        self.textMessage = Util.getWaitMessageForLocation(self.getLastLocationCounter)
+                                        self.textMessage = Util.getWaitMessageForLocation2(self.getLastLocationCounter)
                                     }
                                 }
                             }
