@@ -253,9 +253,9 @@ struct CourseSearchView: View {
                 }
                 
                 VStack {
-                    let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
-                    let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - '\(name)' - '앱을 사용하는 동안' 선택"
-                    // Text(text).font(.system(size: 16)).padding(.top, 10).multilineTextAlignment(.center)
+                    // let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
+                    // let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - '\(name)' - '앱을 사용하는 동안' 선택"
+                    let text = "iPhone에서 설정 앱을 열고\n'개인 정보 보호' > '위치 서비스' >\n'홀맨' - '앱을 사용하는 동안' 선택"
                     Text(text).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
