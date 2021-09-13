@@ -596,4 +596,60 @@ struct Util {
     static func getName(_ tg: TeeingGround) -> String {
         return tg.name + " (" + tg.color + ")" // REGULAR-2 (WHITE)
     }
+    
+    static func checkTips(_ str: String) -> String { // 전방 끝 카트도로 좌측 끝부분을 겨냥하세요. 티샷이 짧거나 벙커로 들어가면 그린이 보이지 않아요. 세컨샷 지점에서 그린까지 내리막이에요.
+        var result = ""
+        
+        let length = str.count
+        var i = 0
+        
+        var count = 0
+        var startOffset = 0
+        var endOffset = 0
+        
+        while i < length {
+            if (count >= 17) { // '하'
+                let startIndex = str.index(str.startIndex, offsetBy: startOffset)
+                let endIndex = str.index(str.startIndex, offsetBy: endOffset)
+                let range = startIndex..<endIndex
+                
+                let sub = String(str[range])
+                
+                if result == "" {
+                    result = sub
+                } else {
+                    result = result + "\n" + sub
+                }
+                
+                startOffset = endOffset + 1
+                count = i - endOffset
+            } else {
+                let index = str.index(str.startIndex, offsetBy: i)
+                
+                let ch = str[index]
+                if (ch == " ") {
+                    endOffset = i // 2, 4, 9, 12, 17
+                }
+                
+                count += 1
+            }
+            
+            i += 1
+        }
+        
+        if (count != 0) {
+            let startIndex = str.index(str.startIndex, offsetBy: startOffset)
+            let range = startIndex..<str.endIndex
+            
+            let sub = String(str[range])
+            
+            if result == "" {
+                result = sub
+            } else {
+                result = result + "\n" + sub
+            }
+        }
+        
+        return result
+    }
 }

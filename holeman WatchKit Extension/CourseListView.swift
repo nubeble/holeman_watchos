@@ -480,7 +480,7 @@ struct CourseListView: View {
                 VStack {
                     let c = self.courses[self.selectedCourseIndex]
                     let name = Util.getCourseName(self.courses[self.selectedCourseIndex].name)
-                    let text = c.hlds == 100 ? name + "에는\nHLDS™가 적용되어 있어요.😃\n홀맨이 정확한 거리를 알려드릴게요." : name + "에는\nHLDS™가 적용되어 있지 않네요.😥\n하지만 홀맨이 그린 정중앙을\n기준으로 거리를 알려드릴게요."
+                    let text = c.hlds == 100 ? name + "에는\nHLDS™가 설치되어 있어요.\n홀맨이 정확한 거리를 알려드릴게요." : name + "에는\nHLDS™가 미설치되어 있어요.\n하지만 홀맨이 그린 정중앙을\n기준으로 거리를 알려드릴게요."
                     
                     Text(text).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
