@@ -178,7 +178,7 @@ struct HoleSearchView: View {
                     } else if from == 200 {
                         // 전반 종료. 앱이 계속 떠 있는 상태에서 홀 근처로 가면 후반 시작
                         
-                        self.textMessage = "전반 9홀이 끝났습니다.\n그늘집에서 푹 쉬신 후\n스타트 홀에서 뵙지요."
+                        self.textMessage = "전반 9홀이 끝났습니다.\n그늘집에서 푹 쉬신 후\n스타트 홀에서 만나요."
                         
                         // self.showBeerIcon = true
                         self.showIcon = 1 // beer
