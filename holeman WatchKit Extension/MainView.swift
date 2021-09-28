@@ -365,11 +365,7 @@ struct MainView: View {
             .onAppear {
                 if let tips = self.teeingGroundInfo?.holes[self.holeNumber! - 1].tips {
                     var str = ""
-                    var size = tips.count
-                    if size > 3 {
-                        size = 3
-                    }
-                    
+                    let size = tips.count
                     for i in 0 ..< size {
                         str += tips[i]
                         if i != (size - 1) {
@@ -377,7 +373,7 @@ struct MainView: View {
                         }
                     }
                     
-                    self.tips = str
+                    self.tips = Util.checkTips(str)
                 }
             }
             

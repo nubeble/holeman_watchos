@@ -4,7 +4,5 @@
 <dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is required to calculate the distance.</string>
 </dict>
 </plist>
