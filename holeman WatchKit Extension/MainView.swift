@@ -369,7 +369,7 @@ struct MainView: View {
                     for i in 0 ..< size {
                         str += tips[i]
                         if i != (size - 1) {
-                            str += "\n"
+                            str += " "
                         }
                     }
                     
