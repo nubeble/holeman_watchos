@@ -652,4 +652,16 @@ struct Util {
         
         return result
     }
+    
+    static func getSentenceCount(_ str: String) -> Int {
+        var count = 1
+        for c in str {
+            if c == "\n" {
+                count += 1
+            }
+            
+        }
+        
+        return count
+    }
 }

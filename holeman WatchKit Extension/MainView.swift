@@ -280,10 +280,10 @@ struct MainView: View {
                     Spacer().frame(maxHeight: .infinity)
                     
                     ProgressBar(progress: self.$progressValue)
-                        // .frame(width: 54, height: 54)
+                    // .frame(width: 54, height: 54)
                         .frame(width: Global.progressBarSize, height: Global.progressBarSize) // 54 - 8 (line width)
-                        // .padding(.bottom, 10)
-                        // .padding(.bottom, 14) // 10 + 4
+                    // .padding(.bottom, 10)
+                    // .padding(.bottom, 14) // 10 + 4
                         .padding(.bottom, Global.buttonPaddingBottom + Global.progressBarLineWidth / 2) // 10 + 4
                         .onAppear {
                             self.progressValue = 0.0
@@ -325,42 +325,91 @@ struct MainView: View {
         } else if self.mode == 9 { // tips
             
             ZStack {
-                // header
-                VStack {
-                    Text("Tips").font(.system(size: Global.text2Size, weight: .semibold))
-                    Text("홀을 공략하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
-                    
-                    Spacer().frame(maxHeight: .infinity)
-                }
                 
-                // tips
-                VStack {
-                    Text(self.tips).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
-                }
-                
-                // next button
-                VStack {
-                    Spacer().frame(maxHeight: .infinity)
+                if Util.getSentenceCount(self.tips) <= 4 {
                     
-                    Button(action: {
-                        withAnimation {
-                            self.mode = 1
-                        }
-                    }) {
-                        ZStack {
-                            Circle()
-                                .fill(Color.green)
-                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
+                    ZStack {
+                        // header
+                        VStack {
+                            Text("Tips").font(.system(size: Global.text2Size, weight: .semibold))
+                            Text("홀을 공략하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
-                            Image(systemName: "arrow.right")
-                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
+                            Spacer().frame(maxHeight: .infinity)
                         }
+                        
+                        // tips
+                        VStack {
+                            Text(self.tips).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                        }
+                        
+                        // next button
+                        VStack {
+                            Spacer().frame(maxHeight: .infinity)
+                            
+                            Button(action: {
+                                withAnimation {
+                                    self.mode = 1
+                                }
+                            }) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.green)
+                                        .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
+                                    
+                                    Image(systemName: "arrow.right")
+                                        .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
+                                }
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .padding(.bottom, Global.buttonPaddingBottom)
+                        }
+                        .frame(maxHeight: .infinity)
+                        .edgesIgnoringSafeArea(.bottom)
                     }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, Global.buttonPaddingBottom)
+                    
+                } else { // >= 5
+                    
+                    GeometryReader { geometry in
+                        ScrollView {
+                            // VStack {
+                            ScrollViewReader { value in
+                                LazyVStack {
+                                    // header
+                                    Text("Tips").font(.system(size: Global.text2Size, weight: .semibold))
+                                    Text("홀을 공략하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                                    
+                                    //  tips
+                                    Text(self.tips).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                                    
+                                    // next button
+                                    Button(action: {
+                                        withAnimation {
+                                            self.mode = 1
+                                        }
+                                    }) {
+                                        ZStack {
+                                            Circle()
+                                                .fill(Color.green)
+                                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
+                                            
+                                            Image(systemName: "arrow.right")
+                                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
+                                        }
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .padding(.top, Global.buttonPaddingTop)
+                                    .padding(.bottom, Global.buttonPaddingBottom2)
+                                }
+                                .onAppear {
+                                    // scroll
+                                    // value.scrollTo(2)
+                                }
+                            }
+                            // }
+                        } // ScrollView
+                    }
+                    
                 }
-                .frame(maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.bottom)
             }
             .onAppear {
                 if let tips = self.teeingGroundInfo?.holes[self.holeNumber! - 1].tips {
@@ -509,7 +558,7 @@ struct MainView: View {
                     VStack {
                         Circle()
                             .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
-                            // .frame(width: geometry.size.width, height: geometry.size.width)
+                        // .frame(width: geometry.size.width, height: geometry.size.width)
                             .frame(width: Global.edgeLineWidth, height: Global.edgeLineWidth)
                         Spacer().frame(height: geometry.size.width - Global.edgeLineWidth)
                     }
@@ -847,7 +896,7 @@ struct MainView: View {
                 VStack {
                     Circle()
                         .fill(Color(red: 255 / 255, green: 0 / 255, blue: 0 / 255))
-                        // .frame(width: geometry.size.width, height: geometry.size.width)
+                    // .frame(width: geometry.size.width, height: geometry.size.width)
                         .frame(width: Global.edgeLineWidth, height: Global.edgeLineWidth)
                     Spacer().frame(height: geometry.size.width - Global.edgeLineWidth)
                 }
@@ -1448,14 +1497,14 @@ struct MainView: View {
             }
             return false
             
-        /*
-         case 400:
-         // init
-         self.holePassFlag = 100
-         self.holePassStartTime = nil
-         return true
-         */
-        
+            /*
+             case 400:
+             // init
+             self.holePassFlag = 100
+             self.holePassStartTime = nil
+             return true
+             */
+            
         default:
             return false
         }

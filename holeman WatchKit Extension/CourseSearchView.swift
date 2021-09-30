@@ -229,7 +229,7 @@ struct CourseSearchView: View {
                             }
                             .buttonStyle(PlainButtonStyle())
                             .padding(.top, Global.buttonPaddingTop)
-                            .padding(.bottom, Global.buttonPaddingBottom2) // check default padding
+                            .padding(.bottom, Global.buttonPaddingBottom2)
                         }
                         .onAppear {
                             // scroll
@@ -646,7 +646,7 @@ struct CourseSearchView: View {
                             }
                             .buttonStyle(PlainButtonStyle())
                             .padding(.top, Global.buttonPaddingTop)
-                            .padding(.bottom, Global.buttonPaddingBottom2) // check default padding
+                            .padding(.bottom, Global.buttonPaddingBottom2)
                         }
                     }
                 }
