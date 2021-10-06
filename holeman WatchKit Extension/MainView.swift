@@ -1401,12 +1401,15 @@ struct MainView: View {
                 
                 // 전반 또는 후반 종료
                 
-                if Global.halftime == 1 { saveHole(2) } // 전반 종료
-                else { saveHole(4) } // 후반 종료
-                
-                if Global.halftime == 1 {
+                if Global.halftime == 1 { // 전반 종료
+                    Global.halftime = 2
+
+                    saveHole(2)
+
                     moveToHoleSearchView(200)
-                } else {
+                } else { // 후반 종료
+                    saveHole(4)
+
                     moveToHoleSearchView(300)
                 }
             }
