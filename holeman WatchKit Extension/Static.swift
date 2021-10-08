@@ -12,6 +12,8 @@ struct Static {
     static let containerId = "iCloud.com.nubeble.holeman"
     
     static let productId = "com.nubeble.holeman.iap.course"
+
+    static let buildMode = "공식" // ToDo: !!!
     
     /*
      static let productIDs = [

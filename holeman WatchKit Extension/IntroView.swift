@@ -8,6 +8,7 @@
 import SwiftUI
 import AuthenticationServices
 import UserNotifications
+import AlertToast
 
 struct IntroView: View {
     @Environment(\.scenePhase) var scenePhase
@@ -45,6 +46,10 @@ struct IntroView: View {
     
     // @State private var textValue: String = "Sample Data"
     // @State private var opacity: Double = 1
+
+    @State var clickCount = 0
+
+    @State var showToast = false
     
     var body: some View {
         if self.mode == -1 {
@@ -90,7 +95,19 @@ struct IntroView: View {
             ZStack {
                 VStack {
                     Text(self.text2).font(.system(size: Global.text1Size)).fontWeight(.medium).opacity(self.text2Opacity)
+                    .onTapGesture {
+                        self.clickCount += 1
+
+                        if self.clickCount == 10 {
+
+                            self.clickCount = 0
+                        }
+                    }
+
                     Text(self.text3).font(.system(size: Global.text1Size)).fontWeight(.medium).opacity(self.text3Opacity)
+                    .onTapGesture {
+                        self.clickCount += 1
+                    }
                 }
                 
                 VStack {
@@ -142,6 +159,13 @@ struct IntroView: View {
                             self.button1Opacity = 1
                         })
                     }
+                }
+            }
+            .toast(isPresenting: $showToast) {
+                if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                    let message = "버전 " + appVersion + " (" + Static.buildMode + " 빌드)"
+
+                    AlertToast(type: .regular, title: message)
                 }
             }
             

@@ -1257,11 +1257,11 @@ struct MainView: View {
                 let status = json["status"] as! String
                 if status == "OK" {
                     let results = json["results"] as! [[String:Any]]
-                    let elevation = results[0]["elevation"] as? Double
+                    if let elevation = results[0]["elevation"] as? Double {
+                        self.userElevation = elevation
                     
-                    self.userElevation = elevation
-                    
-                    MainView.elevationDiff = self.userElevation! - alt
+                        MainView.elevationDiff = elevation - alt
+                    }
                 }
             } catch {
                 print(#function, "error")
