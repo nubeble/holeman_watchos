@@ -55,8 +55,12 @@ struct HoleSearchView: View {
     
     // pass to MainView
     // @State var save: Bool?
-    
-    
+
+    // 2021-10-08
+    @State var startHoleNumber: Int?
+    @State var startHoleLatitude: Double?
+    @State var startHoleLongitude: Double?
+
     var body: some View {
         if self.mode == 0 {
             
@@ -631,9 +635,163 @@ struct HoleSearchView: View {
     }
     
     func moveToStartHole() {
+        // ToDo: 2021-10-08
+        /*
         self.holeNumber = 1
         
         moveNext()
+        */
+
+        let locationManager = LocationManager()
+        
+        // --
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer1 in
+            if let status = locationManager.locationStatus {
+                DispatchQueue.main.async {
+                    // timer1.invalidate()
+                    
+                    if status == .authorizedWhenInUse || status == .authorizedAlways {
+                        timer1.invalidate()
+                        
+                        getLastLocationTimer()
+                    } else if status == .denied {
+                        timer1.invalidate()
+                        
+                        // notice
+                        withAnimation {
+                            self.mode = 9
+                        }
+                    }
+                }
+            }
+        }
+        // --
+    }
+
+    func getLastLocationTimer() {
+        if self.findStartHoleCounter == 10 {
+            self.findStartHoleCounter = 0
+            
+            self.textMessage = "스타트 홀을 찾을 수\n없네요. 계속 찾을까요?"
+            
+            withAnimation {
+                self.mode = 11
+            }
+            
+            return
+        }
+        
+        let locationManager = LocationManager()
+
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
+            if let location = locationManager.lastLocation {
+                DispatchQueue.main.async {
+                    timer2.invalidate()
+
+                    let latitude = location.coordinate.latitude
+                    let longitude = location.coordinate.longitude
+
+                    checkDistance(latitude, longitude)
+                }
+            } else {
+                self.getLastLocationCounter += 1
+                
+                if self.getLastLocationCounter == 18 {
+                    timer2.invalidate()
+                    
+                    withAnimation(.linear(duration: 0.5)) {
+                        self.textMessage = "잠시 후에 다시\n시도해주세요."
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                        // back to CourseView
+                        withAnimation {
+                            self.mode = 10
+                        }
+                    }
+                    
+                    return
+                }
+                
+                if self.getLastLocationCounter % 3 == 0 { // 3, 6, 9, 12, 15
+                    // show wait message
+                    withAnimation(.linear(duration: 0.5)) {
+                        self.textMessage = Util.getWaitMessageForLocation2(self.getLastLocationCounter)
+                    }
+                }
+            }
+        }
+    }
+
+    func checkDistance(_ latitude: Double, _ longitude: Double) {
+        if let startHoleNumber = self.startHoleNumber {
+            checkDistance(startHoleNumber, self.startHoleLatitude, self.startHoleLongitude, latitude, longitude)
+        } else {
+            // read from server
+
+            let groupId = self.course?.id
+
+            // start hole number
+            let courses = self.course?.courses
+            let number = courses![0].range[0]
+
+            CloudManager.getSensor(groupId, number) { record in
+                if let record = record {
+                    // let id = record["id"] as! Int64
+                    // let holeNumber = record["holeNumber"] as! Int64
+                    // let elevation = record["elevation"] as! Double
+                    let location = record["location"] as! CLLocation
+                    // let battery = record["battery"] as! Int64
+                    // let timestamp = record["timestamp"] as! Int64
+                    
+                    self.startHoleNumber = number
+                    self.startHoleLatitude = location.coordinate.latitude
+                    self.startHoleLongitude = location.coordinate.longitude
+
+                    checkDistance(self.startHoleNumber, self.startHoleLatitude, self.startHoleLongitude, latitude, longitude)
+                }
+            }
+        }
+    }
+
+    func checkDistance(_ number: Int, _ lat1: Double, _ lon1: Double, _ lat2: Double, _ lon2: Double) {
+        let coordinate1 = CLLocation(latitude: lat2, longitude: lolon2ngitude)
+
+        let coordinate2 = CLLocation(latitude: lat1 + Static.__lat, longitude: lon1 + Static.__lon)
+
+        let distance = coordinate1.distance(from: coordinate2) // result is in meters
+            
+        var backTee = 0
+        if let distances = self.teeingGroundInfo?.holes[number - 1].teeingGrounds[0].distances {
+            backTee = Util.getMaxValue(distances)
+        }
+        
+        if self.teeingGroundInfo?.unit == "Y" {
+            let x = Double(backTee) * 0.9144
+            backTee = Int(x.rounded())
+        }
+        
+        let diff = distance - (Double(backTee) + 30) // (나와 홀 사이 거리) - 전장(백티 + 30)
+        print(#function, "diff:", diff, distance, backTee)
+        
+        // 20 m
+        if diff <= 20 { // 20미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
+            self.holeNumber = number
+
+            moveNext()
+        } else {
+            // change text message
+            withAnimation(.linear(duration: 0.5)) {
+                self.textMessage = Util.getWaitMessageForHole(self.findStartHoleCounter)
+            }
+            self.findStartHoleCounter += 1
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                self.getLastLocationCounter = 0
+
+                getLastLocationTimer() // 재귀 (상위 호출)
+            }
+        }
     }
     
     func getSensor(_ groupId: Int64, _ holeNumber: Int64, onCompletion: @escaping () -> Void) {
