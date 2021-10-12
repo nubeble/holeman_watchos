@@ -230,6 +230,8 @@ struct MenuView: View {
                 if let id = id {
                     // update DB
                     CloudManager.removeUser(id) { result in
+                        Global.halftime = 1
+
                         // go to IntroView (Sign in with Apple)
                         withAnimation {
                             self.mode = 5

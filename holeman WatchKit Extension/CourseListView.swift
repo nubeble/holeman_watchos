@@ -34,7 +34,6 @@ struct CourseListView: View {
     
     var body: some View {
         if self.mode == 0 {
-            
             // loading indicator
             ZStack {
                 ProgressView()
@@ -821,7 +820,6 @@ struct CourseListView: View {
             }
             
         } else if self.mode == 70 {
-            
             // loading indicator
             ZStack {
                 ProgressView()
@@ -837,6 +835,8 @@ struct CourseListView: View {
                 }
             }
             .onAppear {
+                self.textMessage = ""
+                
                 checkDistance()
             }
             

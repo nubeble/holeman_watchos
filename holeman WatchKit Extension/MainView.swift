@@ -1381,6 +1381,7 @@ struct MainView: View {
                         
                         return
                     } else {
+                        // 전반 진행하다가 후반 홀로 넘어갔다.
                         Global.halftime = 2
                     }
                 }
@@ -1401,14 +1402,14 @@ struct MainView: View {
                 
                 // 전반 또는 후반 종료
                 
-                if Global.halftime == 1 { // 전반 종료
+                if Global.halftime == 1 {
                     Global.halftime = 2
 
-                    saveHole(2)
+                    saveHole(2) // 전반 종료
 
                     moveToHoleSearchView(200)
-                } else { // 후반 종료
-                    saveHole(4)
+                } else {
+                    saveHole(4) // 후반 종료
 
                     moveToHoleSearchView(300)
                 }
@@ -1418,12 +1419,15 @@ struct MainView: View {
                 if checkLastHole() == true {
                     // 전반 또는 후반 종료
                     
-                    if Global.halftime == 1 { saveHole(2) } // 전반 종료
-                    else { saveHole(4) } // 후반 종료
-                    
                     if Global.halftime == 1 {
+                        Global.halftime = 2
+
+                        saveHole(2) // 전반 종료
+
                         moveToHoleSearchView(200)
                     } else {
+                        saveHole(4) // 후반 종료
+
                         moveToHoleSearchView(300)
                     }
                 } else {

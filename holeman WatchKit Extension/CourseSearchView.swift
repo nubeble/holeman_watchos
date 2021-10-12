@@ -42,7 +42,6 @@ struct CourseSearchView: View {
     
     var body: some View {
         if self.mode == 0 {
-            
             // loading indicator
             ZStack {
                 ProgressView()
@@ -888,13 +887,12 @@ struct CourseSearchView: View {
             }
             
         } else if self.mode == 70 {
-            
             // loading indicator
             ZStack {
                 ProgressView()
                     .scaleEffect(1.2, anchor: .center)
                     .progressViewStyle(CircularProgressViewStyle(tint: .red))
-                
+                /*
                 VStack {
                     Spacer()
                     
@@ -902,6 +900,7 @@ struct CourseSearchView: View {
                         .transition(.opacity)
                         .id(self.textMessage)
                 }
+                */
             }
             .onAppear {
                 let result = Util.checkLastPurchasedCourse(self.courses[self.selectedCourseIndex].id)

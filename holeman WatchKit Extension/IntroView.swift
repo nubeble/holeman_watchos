@@ -114,8 +114,7 @@ struct IntroView: View {
                     Spacer().frame(maxHeight: .infinity)
                     
                     Button(action: {
-                        // Sign in with Apple
-                        // checkUserIdentifierValidation()
+                        Global.halftime = 1
                         
                         requestNotificationAuthorization() { result in
                             if result == true {
@@ -316,8 +315,8 @@ struct IntroView: View {
                 }
             }
             
-        } else if self.mode == 5 { // loading indicator
-            
+        } else if self.mode == 5 {
+            // loading indicator
             ZStack {
                 ProgressView()
                     .scaleEffect(1.2, anchor: .center)
@@ -769,14 +768,12 @@ struct IntroView: View {
             }
         }
         
-        Global.halftime = 1
         
         if showTextAnimation == true {
             self.mode = 0
         } else {
-            // Sign in with Apple
-            // checkUserIdentifierValidation()
-            
+            Global.halftime = 1
+
             requestNotificationAuthorization() { result in
                 if result == true {
                     // Sign in with Apple
