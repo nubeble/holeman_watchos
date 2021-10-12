@@ -30,6 +30,7 @@ struct CourseListView: View {
     // @State var productId: String?
     
     @State var textMessage2: String = ""
+    
     @State var textMessage3: String = ""
     
     var body: some View {
