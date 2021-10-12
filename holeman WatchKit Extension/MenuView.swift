@@ -55,12 +55,12 @@ struct MenuView: View {
                                 
                                 VStack(spacing: Global.buttonSpacing1) {
                                     Text("메인으로").font(.system(size: Global.text3Size))
-                                        // .fixedSize(horizontal: false, vertical: true)
-                                        // .lineLimit(1)
+                                    // .fixedSize(horizontal: false, vertical: true)
+                                    // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Text("라운드를 종료하고 코스 선택으로 돌아갑니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
-                                        // .fixedSize(horizontal: false, vertical: true)
-                                        // .lineLimit(1)
+                                    // .fixedSize(horizontal: false, vertical: true)
+                                    // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
                             }
@@ -119,12 +119,12 @@ struct MenuView: View {
                                 
                                 VStack(spacing: Global.buttonSpacing1) {
                                     Text("로그아웃").font(.system(size: Global.text3Size))
-                                        // .fixedSize(horizontal: false, vertical: true)
-                                        // .lineLimit(1)
+                                    // .fixedSize(horizontal: false, vertical: true)
+                                    // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Text("로그아웃 후 계정 정보를 삭제합니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
-                                        // .fixedSize(horizontal: false, vertical: true)
-                                        // .lineLimit(1)
+                                    // .fixedSize(horizontal: false, vertical: true)
+                                    // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
                             }
@@ -231,7 +231,7 @@ struct MenuView: View {
                     // update DB
                     CloudManager.removeUser(id) { result in
                         Global.halftime = 1
-
+                        
                         // go to IntroView (Sign in with Apple)
                         withAnimation {
                             self.mode = 5

@@ -1259,7 +1259,7 @@ struct MainView: View {
                     let results = json["results"] as! [[String:Any]]
                     if let elevation = results[0]["elevation"] as? Double {
                         self.userElevation = elevation
-                    
+                        
                         MainView.elevationDiff = elevation - alt
                     }
                 }
@@ -1404,13 +1404,13 @@ struct MainView: View {
                 
                 if Global.halftime == 1 {
                     Global.halftime = 2
-
+                    
                     saveHole(2) // 전반 종료
-
+                    
                     moveToHoleSearchView(200)
                 } else {
                     saveHole(4) // 후반 종료
-
+                    
                     moveToHoleSearchView(300)
                 }
             }
@@ -1421,13 +1421,13 @@ struct MainView: View {
                     
                     if Global.halftime == 1 {
                         Global.halftime = 2
-
+                        
                         saveHole(2) // 전반 종료
-
+                        
                         moveToHoleSearchView(200)
                     } else {
                         saveHole(4) // 후반 종료
-
+                        
                         moveToHoleSearchView(300)
                     }
                 } else {

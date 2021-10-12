@@ -520,22 +520,22 @@ struct CourseListView: View {
                             Text("바우처를 구매해주세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
                             Text(Locale.current.languageCode == "ko" ? "홀맨 이용권" : "Holeman Voucher")
-                                // .font(.system(size: 20, weight: .regular))
+                            // .font(.system(size: 20, weight: .regular))
                                 .font(.system(size: Global.text2Size, weight: .semibold))
-                                
-                                // .foregroundColor(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
+                            
+                            // .foregroundColor(Color(red: 137 / 255, green: 209 / 255, blue: 254 / 255))
                                 .foregroundColor(.green)
-                                // .frame(maxWidth: .infinity, alignment: .leading)
+                            // .frame(maxWidth: .infinity, alignment: .leading)
                                 .multilineTextAlignment(.center)
                                 .padding(.top, Global.textPaddingTop)
                             
                             // Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + " 18홀의 정확한 거리 측정 서비스를 1,000원에 이용하세요.")
                             Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + "의\n정확한 거리 측정 서비스를\n1,000원에 이용하세요.")
                                 .font(.system(size: Global.text4Size))
-                                // .fontWeight(.light)
+                            // .fontWeight(.light)
                                 .fontWeight(.medium)
-                                
-                                // .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            // .frame(maxWidth: .infinity, alignment: .leading)
                                 .multilineTextAlignment(.center)
                                 .padding(.bottom, Global.buttonPadding)
                             

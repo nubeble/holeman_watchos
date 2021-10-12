@@ -55,12 +55,12 @@ struct HoleSearchView: View {
     
     // pass to MainView
     // @State var save: Bool?
-
+    
     // 2021-10-08
     @State var startHoleNumber: Int?
     @State var startHoleLatitude: Double?
     @State var startHoleLongitude: Double?
-
+    
     var body: some View {
         if self.mode == 0 {
             
@@ -253,9 +253,9 @@ struct HoleSearchView: View {
                                     moveNext()
                                 }) {
                                     Text(title).font(.system(size: Global.text2Size))
-                                        // .fixedSize(horizontal: false, vertical: true)
-                                        // .lineLimit(2)
-                                        // .multilineTextAlignment(.leading)
+                                    // .fixedSize(horizontal: false, vertical: true)
+                                    // .lineLimit(2)
+                                    // .multilineTextAlignment(.leading)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }.id($0)
                             }
@@ -637,11 +637,11 @@ struct HoleSearchView: View {
     func moveToStartHole() {
         // ToDo: 2021-10-08
         /*
-        self.holeNumber = 1
+         self.holeNumber = 1
+         
+         moveNext()
+         */
         
-        moveNext()
-        */
-
         let locationManager = LocationManager()
         
         // --
@@ -667,7 +667,7 @@ struct HoleSearchView: View {
         }
         // --
     }
-
+    
     func getLastLocationTimer() {
         if self.findStartHoleCounter == 10 {
             self.findStartHoleCounter = 0
@@ -682,15 +682,15 @@ struct HoleSearchView: View {
         }
         
         let locationManager = LocationManager()
-
+        
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer2 in
             if let location = locationManager.lastLocation {
                 DispatchQueue.main.async {
                     timer2.invalidate()
-
+                    
                     let latitude = location.coordinate.latitude
                     let longitude = location.coordinate.longitude
-
+                    
                     checkDistance(latitude, longitude)
                 }
             } else {
@@ -722,20 +722,21 @@ struct HoleSearchView: View {
             }
         }
     }
-
+    
     func checkDistance(_ latitude: Double, _ longitude: Double) {
         if let startHoleNumber = self.startHoleNumber {
-            checkDistance(startHoleNumber, self.startHoleLatitude, self.startHoleLongitude, latitude, longitude)
+            checkDistance(startHoleNumber, self.startHoleLatitude!, self.startHoleLongitude!, latitude, longitude)
         } else {
             // read from server
-
+            
             let groupId = self.course?.id
-
+            
             // start hole number
             let courses = self.course?.courses
             let number = courses![0].range[0]
-
-            CloudManager.getSensor(groupId, number) { record in
+            
+            
+            CloudManager.getSensor(groupId!, Int64(number)) { record in
                 if let record = record {
                     // let id = record["id"] as! Int64
                     // let holeNumber = record["holeNumber"] as! Int64
@@ -747,20 +748,20 @@ struct HoleSearchView: View {
                     self.startHoleNumber = number
                     self.startHoleLatitude = location.coordinate.latitude
                     self.startHoleLongitude = location.coordinate.longitude
-
-                    checkDistance(self.startHoleNumber, self.startHoleLatitude, self.startHoleLongitude, latitude, longitude)
+                    
+                    checkDistance(self.startHoleNumber!, self.startHoleLatitude!, self.startHoleLongitude!, latitude, longitude)
                 }
             }
         }
     }
-
+    
     func checkDistance(_ number: Int, _ lat1: Double, _ lon1: Double, _ lat2: Double, _ lon2: Double) {
-        let coordinate1 = CLLocation(latitude: lat2, longitude: lolon2ngitude)
-
+        let coordinate1 = CLLocation(latitude: lat2, longitude: lon2)
+        
         let coordinate2 = CLLocation(latitude: lat1 + Static.__lat, longitude: lon1 + Static.__lon)
-
+        
         let distance = coordinate1.distance(from: coordinate2) // result is in meters
-            
+        
         var backTee = 0
         if let distances = self.teeingGroundInfo?.holes[number - 1].teeingGrounds[0].distances {
             backTee = Util.getMaxValue(distances)
@@ -777,7 +778,7 @@ struct HoleSearchView: View {
         // 20 m
         if diff <= 20 { // 20미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
             self.holeNumber = number
-
+            
             moveNext()
         } else {
             // change text message
@@ -788,7 +789,7 @@ struct HoleSearchView: View {
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 self.getLastLocationCounter = 0
-
+                
                 getLastLocationTimer() // 재귀 (상위 호출)
             }
         }

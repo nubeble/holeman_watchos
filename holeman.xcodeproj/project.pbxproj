@@ -706,7 +706,7 @@
 				CODE_SIGN_ENTITLEMENTS = "holeman WatchKit Extension/holeman WatchKit ExtensionDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				ENABLE_PREVIEWS = YES;
@@ -716,7 +716,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.6;
+				MARKETING_VERSION = 1.1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -736,7 +736,7 @@
 				CODE_SIGN_ENTITLEMENTS = "holeman WatchKit Extension/holeman WatchKit ExtensionRelease.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				ENABLE_PREVIEWS = YES;
@@ -746,7 +746,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.6;
+				MARKETING_VERSION = 1.1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -767,11 +767,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
-				MARKETING_VERSION = 1.1.6;
+				MARKETING_VERSION = 1.1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -792,11 +792,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
-				MARKETING_VERSION = 1.1.6;
+				MARKETING_VERSION = 1.1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -814,11 +814,11 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is required to calculate the distance.";
-				MARKETING_VERSION = 1.1.6;
+				MARKETING_VERSION = 1.1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman;
 				PRODUCT_NAME = Holeman;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -833,11 +833,11 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is required to calculate the distance.";
-				MARKETING_VERSION = 1.1.6;
+				MARKETING_VERSION = 1.1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman;
 				PRODUCT_NAME = Holeman;
 				PROVISIONING_PROFILE_SPECIFIER = "";
