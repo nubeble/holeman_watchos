@@ -339,10 +339,12 @@ struct IntroView: View {
             
             VStack {
                 let str1 = self.name ?? "홀맨 회원"
-                let str2 = "즐거운 라운드 되세요."
+                let str2 = "오늘도 홀맨과 함께"
+                let str3 = "즐거운 라운드 되세요."
                 
-                Text(str1 + "님,").font(.system(size: Global.text1Size)).fontWeight(.medium).multilineTextAlignment(.center)
-                Text(str2).font(.system(size: Global.text1Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                Text(str1 + "님,").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                Text(str2).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                Text(str3).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
             }
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
