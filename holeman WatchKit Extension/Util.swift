@@ -82,17 +82,17 @@ struct Util {
     
     static func getBearing(_ lat1: Double, _ lon1: Double, _ lat2: Double, _ lon2: Double) -> Double {
         /*
-         let dLon = (lon2 - lon1);
-         let y = sin(dLon) * cos(lat2);
-         let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
+         let dLon = (lon2 - lon1)
+         let y = sin(dLon) * cos(lat2)
+         let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
          
-         var bearing = Util.toDegrees(atan2(y, x));
-         // bearing = (bearing + 360) % 360;
+         var bearing = Util.toDegrees(atan2(y, x))
+         // bearing = (bearing + 360) % 360
          
          let tmp = bearing + 360
          bearing = tmp.truncatingRemainder(dividingBy: 360)
          
-         return bearing;
+         return bearing
          */
         let _lat1 = degreesToRadians(degrees: lat1)
         let _lon1 = degreesToRadians(degrees: lon1)

@@ -504,7 +504,7 @@ struct HoleSearchView: View {
                         let distances = decodedData.distances
                         
                         // set title
-                        var title: String = "";
+                        var title: String = ""
                         let number = i
                         
                         title = self.getHoleTitle(number)

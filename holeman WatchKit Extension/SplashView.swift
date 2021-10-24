@@ -14,10 +14,22 @@ struct SplashView: View {
     var body: some View {
         if self.isActive == true {
             
-            VStack { // should be VStack
-                IntroView()
+            if #available(watchOSApplicationExtension 8.0, *) {
+                
+                VStack { // should be VStack
+                    IntroView()
+                }
+                .navigationBarTitle(Locale.current.languageCode == "ko" ? "홀맨" : "Holeman")
+                .navigationBarTitleDisplayMode(.inline)
+                
+            } else {
+                
+                VStack { // should be VStack
+                    IntroView()
+                }
+                .navigationBarTitle(Locale.current.languageCode == "ko" ? "홀맨" : "Holeman")
+                
             }
-            .navigationBarTitle(Locale.current.languageCode == "ko" ? "홀맨" : "Holeman")
             
         } else {
             

@@ -1239,7 +1239,7 @@ struct MainView: View {
     func getUserElevation(_ lat: String, _ lon: String, _ alt: Double) {
         // let params = ["username":"john", "password":"123456"] as Dictionary<String, String>
         
-        let url = "https://maps.googleapis.com/maps/api/elevation/json?locations=" + lat + "," + lon + "&key=AIzaSyDGeKg4ewR0-MfmHnBWkv6Qfeoc5Ia4vP8";
+        let url = "https://maps.googleapis.com/maps/api/elevation/json?locations=" + lat + "," + lon + "&key=AIzaSyDGeKg4ewR0-MfmHnBWkv6Qfeoc5Ia4vP8"
         
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"

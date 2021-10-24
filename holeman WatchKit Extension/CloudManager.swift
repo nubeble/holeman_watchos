@@ -621,7 +621,7 @@ struct CloudManager {
         let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
         db.fetch(withRecordID: recordID) { (record, error) in
             if let _ = error {
-                print(#function, "User Record not found")
+                // print(#function, "User Record not found")
                 
                 // create user
                 
@@ -649,6 +649,11 @@ struct CloudManager {
                     }
                 }
                 
+                // send welcome email
+                if email != "noemail" {
+                    CloudManager.sendWelcomeEmail(name, email)
+                }
+                
                 return
             }
             
@@ -658,8 +663,8 @@ struct CloudManager {
                 // update user
                 
                 // record["id"] = id as String
-                record["name"] = name as String
-                record["email"] = email as String
+                if name != "noname" { record["name"] = name as String }
+                if email != "noemail" { record["email"] = email as String }
                 let valid: Int64 = 100 // 100: valid, 200: invalid (logout)
                 record["valid"] = valid as Int64
                 // let freeTrialCount: Int64 = 0
@@ -681,6 +686,49 @@ struct CloudManager {
                 }
             }
         }
+    }
+    
+    static func sendWelcomeEmail(_ name: String, _ email: String) {
+        print(#function, name, email)
+        
+        let url = "https://asia-northeast1-holeman-4070a.cloudfunctions.net/welcome_email"
+        
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "POST"
+        
+        // request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+        let data: [String: String] = ["name": name, "email": email]
+        let body = try! JSONSerialization.data(withJSONObject: data, options: [])
+        request.httpBody = body
+        
+        // request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            // print(#function, response!)
+            
+            /*
+             do {
+             let json = try JSONSerialization.jsonObject(with: data!) as! Dictionary<String, AnyObject>
+             print(#function, json)
+             
+             let status = json["status"] as! String
+             if status == "OK" {
+             let results = json["results"] as! [[String:Any]]
+             if let elevation = results[0]["elevation"] as? Double {
+             self.userElevation = elevation
+             
+             MainView.elevationDiff = elevation - alt
+             }
+             }
+             } catch {
+             print(#function, "error")
+             }
+             */
+        })
+        
+        task.resume()
     }
     
     static func removeUser(_ id: String, onCompletion: @escaping ((Int) -> Void)) { // update: fetch + save
