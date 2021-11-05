@@ -35,6 +35,7 @@ struct Global {
     static var text10Size: CGFloat = 32
     static var text11Size: CGFloat = 8
     static var buttonPaddingBottom: CGFloat = 10
+    static var buttonPaddingBottom3: CGFloat = 2
     static var circleButtonSize: CGFloat = 54
     static var circleButtonArrowSize: CGFloat = 28
     static var signInWithAppleButtonWidth: CGFloat = 180
@@ -50,6 +51,7 @@ struct Global {
     static var icon4Size: CGFloat = 16
     static var icon5Size: CGFloat = 28
     static var icon6Size: CGFloat = 32
+    static var icon7Size: CGFloat = 72
     static var textButtonSize: CGFloat = 50
     static var checkIconSize: CGFloat = 40
     static var checkmarkIconSize: CGFloat = 16
@@ -105,6 +107,7 @@ struct Global {
         text10Size = text10Size / 183.0 * value
         text11Size = text11Size / 183.0 * value
         buttonPaddingBottom = buttonPaddingBottom / 183.0 * value
+        buttonPaddingBottom3 = buttonPaddingBottom3 / 183.0 * value
         circleButtonSize = circleButtonSize / 183.0 * value
         circleButtonArrowSize = circleButtonArrowSize / 183.0 * value
         signInWithAppleButtonWidth = signInWithAppleButtonWidth / 183.0 * value
@@ -120,6 +123,7 @@ struct Global {
         icon4Size = icon4Size / 183.0 * value
         icon5Size = icon5Size / 183.0 * value
         icon6Size = icon6Size / 183.0 * value
+        icon7Size = icon7Size / 183.0 * value
         textButtonSize = textButtonSize / 183.0 * value
         checkIconSize = checkIconSize / 183.0 * value
         checkmarkIconSize = checkmarkIconSize / 183.0 * value

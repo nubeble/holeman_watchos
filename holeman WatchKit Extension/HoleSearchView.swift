@@ -18,8 +18,8 @@ struct HoleSearchView: View {
     @State var from: Int?
     var search: Bool?
     
-    // @State var showBeerIcon: Bool?
-    @State var showIcon: Int = 2 // 0: hide, 1: beer, 2: tee up (+ animation)
+    // @State var showIcon: Int = 2 // 0: hide, 1: beer, 2: tee up (+ animation)
+    @State var showIcon: Int = 300 // 100: rest, 200: end, 300: tee up (+ animation)
     
     // @ObservedObject var locationManager = LocationManager()
     
@@ -106,14 +106,14 @@ struct HoleSearchView: View {
                     Spacer().frame(maxHeight: .infinity)
                     
                     /*
-                     if self.showBeerIcon == true {
+                     if self.showIcon == 1 { // beer
                      ZStack {
                      Image("beer")
                      .resizable()
                      .frame(width: Global.icon6Size, height: Global.icon6Size)
                      }
                      .padding(.bottom, Global.buttonPaddingBottom)
-                     } else {
+                     } else if self.showIcon == 2 { // tee up
                      ZStack {
                      Image("tee up")
                      .resizable()
@@ -126,15 +126,17 @@ struct HoleSearchView: View {
                      .padding(.bottom, Global.buttonPaddingBottom)
                      }
                      */
-                    
-                    if self.showIcon == 1 { // beer
-                        ZStack {
-                            Image("beer")
-                                .resizable()
-                                .frame(width: Global.icon6Size, height: Global.icon6Size)
-                        }
-                        .padding(.bottom, Global.buttonPaddingBottom)
-                    } else if self.showIcon == 2 { // tee up
+                    if self.showIcon == 100 { // rest
+                        Image("rest")
+                            .resizable()
+                            .frame(width: Global.icon7Size, height: Global.icon7Size)
+                            .padding(.bottom, Global.buttonPaddingBottom3)
+                    } else if self.showIcon == 200 { // end
+                        Image("end")
+                            .resizable()
+                            .frame(width: Global.icon7Size, height: Global.icon7Size)
+                            .padding(.bottom, Global.buttonPaddingBottom3)
+                    } else if self.showIcon == 300 { // tee up
                         ZStack {
                             Image("tee up")
                                 .resizable()
@@ -184,15 +186,15 @@ struct HoleSearchView: View {
                         
                         self.textMessage = "전반 9홀이 끝났습니다.\n그늘집에서 푹 쉬신 후\n스타트 홀에서 만나요."
                         
-                        // self.showBeerIcon = true
-                        self.showIcon = 1 // beer
+                        // self.showIcon = 1 // beer
+                        self.showIcon = 100 // rest
                         
                         // self.save = false
                         
                         // ToDo: test timer
                         DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
-                            // self.showBeerIcon = false
-                            self.showIcon = 2 // tee up
+                            // self.showIcon = 2 // tee up
+                            self.showIcon = 300 // tee up
                             
                             // getStartHole() // 1, 10, 19, ...
                             let groupId = self.course?.id
@@ -203,7 +205,8 @@ struct HoleSearchView: View {
                         
                         self.textMessage = "라운드가 끝났네요.\n수고하셨습니다."
                         
-                        self.showIcon = 0 // not show
+                        // self.showIcon = 0 // not show
+                        self.showIcon = 200 // end
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
                             withAnimation {

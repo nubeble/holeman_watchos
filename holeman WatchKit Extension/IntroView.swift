@@ -337,14 +337,27 @@ struct IntroView: View {
             
         } else if self.mode == 4 { // welcome
             
-            VStack {
-                let str1 = self.name ?? "홀맨 회원"
-                let str2 = "오늘도 홀맨과 함께"
-                let str3 = "즐거운 라운드 되세요."
+            ZStack {
+                VStack {
+                    let str1 = self.name ?? "홀맨 회원"
+                    let str2 = "오늘도 홀맨과 함께"
+                    let str3 = "즐거운 라운드 되세요."
+                    
+                    Text(str1 + "님,").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(str2).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(str3).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
                 
-                Text(str1 + "님,").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
-                Text(str2).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
-                Text(str3).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                VStack(alignment: HorizontalAlignment.center) {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Image("welcome")
+                        .resizable()
+                        .frame(width: Global.icon7Size, height: Global.icon7Size)
+                        .padding(.bottom, Global.buttonPaddingBottom3)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
             }
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
