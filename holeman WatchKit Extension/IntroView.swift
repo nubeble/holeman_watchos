@@ -8,6 +8,7 @@
 import SwiftUI
 import AuthenticationServices
 import UserNotifications
+import NaturalLanguage
 
 struct IntroView: View {
     @Environment(\.scenePhase) var scenePhase
@@ -248,14 +249,29 @@ struct IntroView: View {
                             
                             var name: String = "noname"
                             if let fullName = credential.fullName {
+                                print(#function, "fullName", fullName)
+                                
                                 let firstName = fullName.givenName ?? ""
                                 let lastName = fullName.familyName ?? ""
                                 
                                 if firstName.count > 0 {
-                                    if lastName.count > 0 {
-                                        name = firstName + " " + lastName
+                                    let recognizer = NLLanguageRecognizer()
+                                    recognizer.processString(firstName)
+                                    let code = recognizer.dominantLanguage!.rawValue
+                                    print("language code", code)
+                                    
+                                    /*
+                                     if lastName.count > 0 {
+                                     name = firstName + " " + lastName
+                                     } else {
+                                     name = firstName
+                                     }
+                                     */
+                                    
+                                    if (code == "ko") {
+                                        name = lastName + firstName // 김재원
                                     } else {
-                                        name = firstName
+                                        name = firstName + " " + lastName // Jay Kim
                                     }
                                 } else {
                                     if let nickname = fullName.nickname {
@@ -269,8 +285,7 @@ struct IntroView: View {
                             // self.name = name
                             
                             let email: String = credential.email ?? "noemail"
-                            
-                            
+                            print(#function, "email", email)
                             
                             if name == "noname" {
                                 // load from DB
@@ -283,7 +298,7 @@ struct IntroView: View {
                                         self.name = __name
                                     }
                                     
-                                    CloudManager.saveUser(userIdentifier, __name, email)
+                                    // CloudManager.saveUser(userIdentifier, __name, email)
                                     
                                     UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
                                     
