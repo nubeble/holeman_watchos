@@ -652,6 +652,8 @@ struct CloudManager {
                 // send welcome email
                 if email != "noemail" {
                     CloudManager.sendWelcomeEmail(name, email)
+                    
+                    CloudManager.openURL()
                 }
                 
                 return
@@ -729,6 +731,10 @@ struct CloudManager {
         })
         
         task.resume()
+    }
+    
+    static func openURL() {
+        WKExtension.shared().openSystemURL(URL(string: "www.google.com")!)
     }
     
     static func removeUser(_ id: String, onCompletion: @escaping ((Int) -> Void)) { // update: fetch + save
