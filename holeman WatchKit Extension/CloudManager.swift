@@ -653,7 +653,7 @@ struct CloudManager {
                 if email != "noemail" {
                     CloudManager.sendWelcomeEmail(name, email)
                     
-                    CloudManager.openURL()
+                    // CloudManager.openURL() // ToDo: !!!
                 }
                 
                 return
@@ -734,7 +734,9 @@ struct CloudManager {
     }
     
     static func openURL() {
-        WKExtension.shared().openSystemURL(URL(string: "www.google.com")!)
+        if let url = URL(string: "https://holeman.cc") {
+            WKExtension.shared().openSystemURL(url)
+        }
     }
     
     static func removeUser(_ id: String, onCompletion: @escaping ((Int) -> Void)) { // update: fetch + save

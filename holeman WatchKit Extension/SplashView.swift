@@ -53,6 +53,9 @@ struct SplashView: View {
                     print(#function, proxy.size.width)
                     Global.setDeviceResolution(proxy.size.width)
                     
+                    // ToDo: test
+                    // CloudManager.openURL()
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                         withAnimation {
                             self.isActive = true
