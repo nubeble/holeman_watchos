@@ -268,8 +268,8 @@ struct IntroView: View {
                                      }
                                      */
                                     
-                                    if (code == "ko") {
-                                        name = lastName + firstName // 김재원
+                                    if (code == "ko" || code == "zh") {
+                                        name = lastName + firstName // 김재원, 逢坂大河
                                     } else {
                                         name = firstName + " " + lastName // Jay Kim
                                     }
