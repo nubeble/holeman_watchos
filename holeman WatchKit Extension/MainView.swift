@@ -711,7 +711,7 @@ struct MainView: View {
                         
                         // print("1 hole number", self.holeNumber, "sensor count", self.sensors.count)
                         
-                        if (self.holeNumber! - 1) < self.sensors.count {
+                        if self.holeNumber! - 1 < self.sensors.count {
                             let sensor = self.sensors[self.holeNumber! - 1]
                             
                             self.latitude = sensor.location.coordinate.latitude + Static.__lat

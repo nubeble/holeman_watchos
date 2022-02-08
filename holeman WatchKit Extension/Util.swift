@@ -608,7 +608,7 @@ struct Util {
         var endOffset = 0
         
         while i < length {
-            if (count >= 17) { // '하'
+            if count >= 17 { // '하'
                 let startIndex = str.index(str.startIndex, offsetBy: startOffset)
                 let endIndex = str.index(str.startIndex, offsetBy: endOffset)
                 let range = startIndex..<endIndex
@@ -627,7 +627,7 @@ struct Util {
                 let index = str.index(str.startIndex, offsetBy: i)
                 
                 let ch = str[index]
-                if (ch == " ") {
+                if ch == " " {
                     endOffset = i // 2, 4, 9, 12, 17
                 }
                 
@@ -637,7 +637,7 @@ struct Util {
             i += 1
         }
         
-        if (count != 0) {
+        if count != 0 {
             let startIndex = str.index(str.startIndex, offsetBy: startOffset)
             let range = startIndex..<str.endIndex
             
