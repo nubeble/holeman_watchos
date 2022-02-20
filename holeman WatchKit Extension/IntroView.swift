@@ -569,7 +569,7 @@ struct IntroView: View {
                 VStack {
                     // let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
                     // let text = "iPhone에서 Apple Watch 앱을 열고 '나의 시계' - '알림' - '\(name)' - '알림 허용' 선택"
-                    let text = "iPhone에서 Apple Watch 앱을 열고\n\"나의 시계\" > \"알림\" >\n\"홀맨\" > '알림 허용' 선택"
+                    let text = "iPhone에서 Apple Watch\n앱을 열고 \"나의 시계\" >\n\"알림\" > \"홀맨\" >\n'알림 허용' 선택"
                     Text(text).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
