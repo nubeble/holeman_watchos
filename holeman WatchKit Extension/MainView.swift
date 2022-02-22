@@ -682,7 +682,14 @@ struct MainView: View {
                 // update UI
                 self.textHoleTitle = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
                 self.textPar = "PAR " + String(self.teeingGroundInfo?.holes[self.holeNumber! - 1].par ?? 0)
-                self.textHandicap = "HDCP " + String(self.teeingGroundInfo?.holes[self.holeNumber! - 1].handicap ?? 0)
+                
+                // self.textHandicap = "HDCP " + String(self.teeingGroundInfo?.holes[self.holeNumber! - 1].handicap ?? 0)
+                let handicap = self.teeingGroundInfo?.holes[self.holeNumber! - 1].handicap
+                if handicap == 0 {
+                    self.textHandicap = "HDCP -"
+                } else {
+                    self.textHandicap = "HDCP " + String(handicap ?? 0)
+                }
                 
                 // set tee distance
                 setTeeDistance()
