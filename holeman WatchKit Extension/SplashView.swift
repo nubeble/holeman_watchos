@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+// import HealthKit // ToDo: test (get steps)
 
 struct SplashView: View {
     // 1.
@@ -53,8 +54,34 @@ struct SplashView: View {
                     print(#function, proxy.size.width)
                     Global.setDeviceResolution(proxy.size.width)
                     
-                    // ToDo: test
+                    // ToDo: test (open URL)
                     // CloudManager.openURL()
+                    
+                    // ToDo: test (get steps)
+                    /*
+                     if HKHealthStore.isHealthDataAvailable() {
+                     print("available")
+                     
+                     // request authorization
+                     let healthStore = HKHealthStore()
+                     
+                     let healthKitTypes: Set = [
+                     HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
+                     ]
+                     
+                     healthStore.requestAuthorization(toShare: healthKitTypes, read: healthKitTypes) { (bool, error) in
+                     if let e = error {
+                     print("oops.. something went wrong during authorisation \(e.localizedDescription)")
+                     } else {
+                     print("User has completed the authorization flow")
+                     
+                     getTodaysSteps(completion: { steps in
+                     print(steps)
+                     })
+                     }
+                     }
+                     }
+                     */
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                         withAnimation {
@@ -64,30 +91,43 @@ struct SplashView: View {
                 }
             }
             
-        }
-        /*
-         VStack {
-         // 2.
-         if self.isActive {
-         // 3.
-         IntroView()
-         } else {
-         // 4.
-         Image("logo")
-         .resizable()
-         .frame(width: 710 / 4.2, height: 239 / 4.2)
-         }
-         }
-         
-         .onAppear {
-         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-         withAnimation {
-         self.isActive = true
-         }
-         }
-         }
-         */
+        } // elsf if self.isActive == true
     }
+    
+    // ToDo: test (get steps)
+    /*
+     func getTodaysSteps(completion: @escaping (Double) -> Void) {
+     let healthStore = HKHealthStore()
+     
+     let stepsQuantityType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+     
+     let now = Date()
+     let startOfDay = Calendar.current.startOfDay(for: now)
+     let predicate = HKQuery.predicateForSamples(
+     withStart: startOfDay,
+     end: now,
+     options: .strictStartDate
+     )
+     
+     let query = HKStatisticsQuery(
+     quantityType: stepsQuantityType,
+     quantitySamplePredicate: predicate,
+     options: .cumulativeSum
+     ) { (_, result, error) in
+     guard let result = result, let sum = result.sumQuantity() else {
+     print("Failed to fetch steps = \(error?.localizedDescription ?? "N/A")")
+     
+     // print("1")
+     completion(0.0)
+     return
+     }
+     
+     completion(sum.doubleValue(for: HKUnit.count())) // not working
+     }
+     
+     healthStore.execute(query)
+     }
+     */
 }
 
 struct SplashView_Previews: PreviewProvider {

@@ -1177,7 +1177,7 @@ struct MainView: View {
                     
                     getUserElevation(String(lat), String(lon), alt)
                     
-                    // ToDo: internal test (일단 google api 스킵)
+                    // ToDo: test (일단 google api 스킵)
                     /*
                      self.userElevation = 20.2
                      MainView.elevationDiff = self.userElevation! - alt
@@ -1197,7 +1197,7 @@ struct MainView: View {
                         
                         getUserElevation(String(lat2), String(lon2), alt2)
                         
-                        // ToDo: internal test (일단 google api 스킵)
+                        // ToDo: test (일단 google api 스킵)
                         /*
                          self.userElevation = 20.2
                          MainView.elevationDiff = self.userElevation! - alt2
@@ -1228,7 +1228,7 @@ struct MainView: View {
                         
                         getUserElevation(String(lat2), String(lon2), alt2)
                         
-                        // ToDo: internal test (일단 google api 스킵)
+                        // ToDo: test (일단 google api 스킵)
                         /*
                          self.userElevation = 20.2
                          MainView.elevationDiff = self.userElevation! - alt2
@@ -1373,7 +1373,7 @@ struct MainView: View {
         // 현재 홀의 홀컵과 나 사이의 거리
         let distance = coordinate1.distance(from: coordinate2) // result is in meters
         
-        // ToDo: 2021-03-15 hole pass check
+        // 2021-03-15 hole pass check
         // 1. 현재 홀에 있는지 확인
         if stillInCurrentHole(distance) == false { // 현재 홀을 벗어났다면
             let number = findHole(coordinate1)

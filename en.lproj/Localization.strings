@@ -9,3 +9,7 @@
 "CFBundleName" = "Holeman";
 "CFBundleDisplayName" = "Holeman";
 "NSLocationWhenInUseUsageDescription" = "Your location is required to calculate the distance.";
+/*
+ "NSHealthUpdateUsageDescription" = "Your health data is required to calculate the steps.";
+ "NSHealthShareUsageDescription" = "Your health data is required to calculate the steps.";
+ */

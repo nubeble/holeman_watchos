@@ -9,3 +9,7 @@
 "CFBundleName" = "홀맨";
 "CFBundleDisplayName" = "홀맨";
 "NSLocationWhenInUseUsageDescription" = "거리 측정을 위해 위치 권한이 필요합니다.";
+/*
+ "NSHealthUpdateUsageDescription" = "걸음 수를 세기 위해 헬스 데이터 권한이 필요합니다.";
+ "NSHealthShareUsageDescription" = "걸음 수를 세기 위해 헬스 데이터 권한이 필요합니다.";
+ */

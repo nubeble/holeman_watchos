@@ -51,7 +51,7 @@ struct Global {
     static var icon4Size: CGFloat = 16
     static var icon5Size: CGFloat = 28
     static var icon6Size: CGFloat = 32
-    static var icon7Size: CGFloat = 72
+    static var icon7Size: CGFloat = 70
     static var textButtonSize: CGFloat = 50
     static var checkIconSize: CGFloat = 40
     static var checkmarkIconSize: CGFloat = 16

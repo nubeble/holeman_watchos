@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import HealthKit
 
 struct HoleSearchView: View {
     @State var mode: Int = 0
@@ -298,7 +297,7 @@ struct HoleSearchView: View {
             
         } else if self.mode == 9 { // notice
             
-            // ToDo: open Notification in iPhone
+            // ToDo: open notification in iPhone
             
             ZStack {
                 VStack {
@@ -1011,34 +1010,6 @@ struct HoleSearchView: View {
         withAnimation {
             self.mode = 20
         }
-    }
-    
-    func getTodaysSteps(completion: @escaping (Double) -> Void) {
-        let healthStore = HKHealthStore()
-        
-        let stepsQuantityType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-       
-        let now = Date()
-        let startOfDay = Calendar.current.startOfDay(for: now)
-        let predicate = HKQuery.predicateForSamples(
-            withStart: startOfDay,
-            end: now,
-            options: .strictStartDate
-        )
-       
-        let query = HKStatisticsQuery(
-            quantityType: stepsQuantityType,
-            quantitySamplePredicate: predicate,
-            options: .cumulativeSum
-        ) { _, result, _ in
-            guard let result = result, let sum = result.sumQuantity() else {
-                completion(0.0)
-                return
-            }
-            completion(sum.doubleValue(for: HKUnit.count()))
-        }
-       
-        healthStore.execute(query)
     }
 }
 

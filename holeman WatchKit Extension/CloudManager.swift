@@ -653,7 +653,7 @@ struct CloudManager {
                 if email != "noemail" {
                     CloudManager.sendWelcomeEmail(name, email)
                     
-                    // CloudManager.openURL() // ToDo: !!!
+                    // CloudManager.openURL() // ToDo: test (open URL)
                 }
                 
                 return
