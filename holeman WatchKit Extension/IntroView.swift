@@ -120,11 +120,13 @@ struct IntroView: View {
                             
                             if self.clickCount == 10 {
                                 
-                                if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                                    let message = "버전 " + appVersion + " (" + Static.buildMode + " 빌드)"
-                                    
-                                    self.toastMessage = message
-                                    self.showToast = true
+                                if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                                    if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+                                        let message = "버전 " + version + " (" + build + ")" + " (" + Static.buildMode + " 빌드)"
+                                        
+                                        self.toastMessage = message
+                                        self.showToast = true
+                                    }
                                 }
                                 
                                 self.clickCount = 0
@@ -143,11 +145,13 @@ struct IntroView: View {
                             
                             if self.clickCount == 10 {
                                 
-                                if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                                    let message = "버전 " + appVersion + " (" + Static.buildMode + " 빌드)"
-                                    
-                                    self.toastMessage = message
-                                    self.showToast = true
+                                if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                                    if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+                                        let message = "버전 " + version + " (" + build + ")" + " (" + Static.buildMode + " 빌드)"
+                                        
+                                        self.toastMessage = message
+                                        self.showToast = true
+                                    }
                                 }
                                 
                                 self.clickCount = 0

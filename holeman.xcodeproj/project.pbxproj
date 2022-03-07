@@ -51,7 +51,6 @@
 		B9AD0F9F25CE4EBF00CE247B /* CourseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AD0F9E25CE4EBF00CE247B /* CourseData.swift */; };
 		B9BACF47256CB7DD00F7B07D /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BACF46256CB7DD00F7B07D /* Course.swift */; };
 		B9E5249325F3569A00C93741 /* Static.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E5249225F3569A00C93741 /* Static.swift */; };
-		B9F5D26F27CD9CEE006604DC /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F5D26E27CD9CEE006604DC /* HealthKit.framework */; };
 		EFC7243C23315D3887F5CDA8 /* Pods_holeman.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65B35E43AAEA6C2CB3023E89 /* Pods_holeman.framework */; };
 /* End PBXBuildFile section */
 
@@ -165,7 +164,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B98FF381255052D400CA1ECA /* UserNotifications.framework in Frameworks */,
-				B9F5D26F27CD9CEE006604DC /* HealthKit.framework in Frameworks */,
 				75F565A472792D5BC1C03446 /* Pods_holeman_WatchKit_Extension.framework in Frameworks */,
 				B923CCB62546AC3400E09B40 /* CloudKit.framework in Frameworks */,
 			);
@@ -711,7 +709,7 @@
 				CODE_SIGN_ENTITLEMENTS = "holeman WatchKit Extension/holeman WatchKit ExtensionDebug.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				ENABLE_PREVIEWS = YES;
@@ -741,7 +739,7 @@
 				CODE_SIGN_ENTITLEMENTS = "holeman WatchKit Extension/holeman WatchKit ExtensionRelease.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"holeman WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				ENABLE_PREVIEWS = YES;
@@ -772,7 +770,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
@@ -797,7 +795,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
@@ -819,7 +817,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is required to calculate the distance.";
@@ -838,7 +836,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is required to calculate the distance.";
