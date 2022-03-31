@@ -473,11 +473,21 @@ struct Util {
     static func convertHoleTitle(_ title: String) -> String {
         if title == "" { return "" }
         
-        let words = title.split(separator: " ")
+        let words = title.split(separator: " ") // OAK HILL 1ST
         
-        let courseName = words[0]
+        // let courseName = words[0]
+        let size = words.count - 1
+        var str = ""
+        for i in 0 ..< size {
+            str += words[i]
+            if i != (size - 1) {
+                str += " "
+            }
+        }
+        let courseName = str
         
-        let word = String(words[1])
+        // let word = String(words[1])
+        let word = String(words[words.count - 1])
         let index2 = Util.getSuffixIndex(word)
         let holeNumber = word[..<index2]
         
@@ -487,11 +497,21 @@ struct Util {
     static func splitHoleTitle(_ title: String) -> [String] {
         if title == "" { return [] }
         
-        let words = title.split(separator: " ")
+        let words = title.split(separator: " ") // OAK HILL 1ST
         
-        let courseName = words[0]
+        // let courseName = words[0]
+        let size = words.count - 1
+        var str = ""
+        for i in 0 ..< size {
+            str += words[i]
+            if i != (size - 1) {
+                str += " "
+            }
+        }
+        let courseName = str
         
-        let word = String(words[1])
+        // let word = String(words[1])
+        let word = String(words[words.count - 1])
         let index2 = Util.getSuffixIndex(word)
         let holeNumber = word[..<index2]
         

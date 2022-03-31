@@ -66,7 +66,7 @@ struct CourseListView: View {
                             
                             // Divider()
                             
-                            ForEach(0 ..< self.courses.count) {
+                            ForEach(0 ..< self.courses.count, id: \.self) {
                                 let index = $0
                                 
                                 let name = self.courses[index].name

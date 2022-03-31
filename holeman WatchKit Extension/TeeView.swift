@@ -40,7 +40,7 @@ struct TeeView: View {
                             Text("Tee Box").font(.system(size: Global.text2Size, weight: .semibold))
                             Text("티 박스를 선택하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
-                            ForEach(0 ..< self.names.count) {
+                            ForEach(0 ..< self.names.count, id: \.self) {
                                 let index = $0
                                 
                                 let name = self.names[index]

@@ -38,7 +38,7 @@ struct HoleView: View {
                             Text("Select Hole").font(.system(size: Global.text2Size, weight: .semibold))
                             Text("플레이 홀을 선택하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
-                            ForEach(0 ..< self.titles.count) {
+                            ForEach(0 ..< self.titles.count, id: \.self) {
                                 let index = $0
                                 
                                 let title = self.titles[index]

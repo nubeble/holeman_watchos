@@ -240,7 +240,7 @@ struct HoleSearchView: View {
                             Text("Select Hole").font(.system(size: Global.text2Size, weight: .semibold))
                             Text("스타트 홀을 선택하세요.").font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
                             
-                            ForEach(0 ..< self.startHoles.count) {
+                            ForEach(0 ..< self.startHoles.count, id: \.self) {
                                 let index = $0
                                 
                                 let number = self.startHoles[index].number
