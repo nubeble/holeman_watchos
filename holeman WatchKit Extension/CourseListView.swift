@@ -412,10 +412,18 @@ struct CourseListView: View {
                             
                             // button 2
                             Button(action: {
-                                // checkFreeTrial()
-                                
-                                withAnimation {
-                                    self.mode = 70
+                                // ToDo: 2022-04-18 check if hlds == 0
+                                let c = self.courses[self.selectedCourseIndex]
+                                if c.hlds == 0 {
+                                    self.textMessage3 = "해당 골프장은 홀맨을\n지원하지 않네요. 😱\n연락 주시면 72시간 내\n추가해 드리겠습니다!"
+                                    
+                                    withAnimation {
+                                        self.mode = 71
+                                    }
+                                } else {
+                                    withAnimation {
+                                        self.mode = 70
+                                    }
                                 }
                             }) {
                                 ZStack {
@@ -822,6 +830,7 @@ struct CourseListView: View {
             }
             
         } else if self.mode == 70 {
+            
             // loading indicator
             ZStack {
                 ProgressView()
@@ -857,7 +866,7 @@ struct CourseListView: View {
                     Text(self.textMessage3).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
-                // next button
+                // back button
                 VStack {
                     Spacer().frame(maxHeight: .infinity)
                     
@@ -1186,7 +1195,7 @@ struct CourseListView: View {
                                         self.textMessage3 = "선택하신 골프장은\n" + String(d) + " km 떨어져 있어요."
                                         
                                         withAnimation {
-                                            self.mode = 71 // go back
+                                            self.mode = 71
                                         }
                                     } // if distance < 3000
                                 }

@@ -510,10 +510,16 @@ struct CourseSearchView: View {
                             
                             // button 2
                             Button(action: {
-                                // checkFreeTrial()
-                                
-                                withAnimation {
-                                    self.mode = 70
+                                // ToDo: 2022-04-18 check if hlds == 0
+                                let c = self.courses[self.selectedCourseIndex]
+                                if c.hlds == 0 {
+                                    withAnimation {
+                                        self.mode = 71
+                                    }
+                                } else {
+                                    withAnimation {
+                                        self.mode = 70
+                                    }
                                 }
                             }) {
                                 ZStack {
@@ -888,6 +894,7 @@ struct CourseSearchView: View {
             }
             
         } else if self.mode == 70 {
+            
             // loading indicator
             ZStack {
                 ProgressView()
@@ -917,7 +924,49 @@ struct CourseSearchView: View {
                 }
             }
             
-        }
+        } else if self.mode == 71 {
+            
+            ZStack {
+                // header
+                VStack {
+                    Text("Select Course").font(.system(size: Global.text2Size, weight: .semibold))
+                    Text(self.textMessage3).font(.system(size: Global.text5Size, weight: .light)).padding(.bottom, Global.title2PaddingBottom)
+                    
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                
+                VStack {
+                    Text("해당 골프장은 홀맨을\n지원하지 않네요. 😱\n연락 주시면 72시간 내\n추가해 드리겠습니다!").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
+                
+                // back button
+                VStack {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Button(action: {
+                        // go back
+                        withAnimation {
+                            self.mode = 10
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color(red: 49 / 255, green: 49 / 255, blue: 49 / 255))
+                                .frame(width: Global.circleButtonSize, height: Global.circleButtonSize)
+                            
+                            Image(systemName: "arrow.left")
+                                .foregroundColor(Color(red: 187 / 255, green: 187 / 255, blue: 187 / 255))
+                                .font(Font.system(size: Global.circleButtonArrowSize, weight: .heavy))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.bottom, Global.buttonPaddingBottom)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            
+        } // 71
     }
     
     func getCountryCodeTimer() {

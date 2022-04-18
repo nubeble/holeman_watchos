@@ -130,7 +130,7 @@ struct MenuView: View {
                             }
                         }
                         
-                        // cancel button
+                        // back button
                         Button(action: {
                             // go back to MainView
                             withAnimation {
