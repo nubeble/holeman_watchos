@@ -21,10 +21,11 @@ struct HoleView: View {
     var __greenDirection: Int?
     // var __holeNumber: Int?
     var __distanceUnit: Int?
-    var __sensors: [SensorModel]?
-    var __latitude: Double?
-    var __longitude: Double?
-    var __elevation: Double?
+    // var __sensors: [SensorModel]?
+    var __pins: [Pin]?
+    var __latitudes: [Double]?
+    var __longitudes: [Double]?
+    var __elevations: [Double]?
     var __userElevation: Double?
     
     var body: some View {
@@ -109,6 +110,7 @@ struct HoleView: View {
             }
             
         } else if self.mode == 1 {
+            
             /*
              MainView(mode: 1,
              course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.__teeingGroundIndex,
@@ -119,11 +121,18 @@ struct HoleView: View {
              */
             
             let teeingGroundName = Util.getNextTeeingGroundName((self.__teeingGroundInfo?.holes[self.selectedIndex].teeingGrounds)!, self.__teeingGroundName!)
-            
+            /*
+             MainView(mode: 1,
+             course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundName: teeingGroundName,
+             greenDirection: self.__greenDirection, holeNumber: self.selectedIndex + 1, distanceUnit: self.__distanceUnit!,
+             sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
+             userElevation: self.__userElevation
+             )
+             */
             MainView(mode: 1,
                      course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundName: teeingGroundName,
                      greenDirection: self.__greenDirection, holeNumber: self.selectedIndex + 1, distanceUnit: self.__distanceUnit!,
-                     sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
+                     pins: self.__pins!, latitudes: self.__latitudes, longitudes: self.__longitudes, elevations: self.__elevations,
                      userElevation: self.__userElevation
             )
             

@@ -291,20 +291,22 @@ struct IntroView: View {
                             let email: String = credential.email ?? "noemail"
                             print(#function, "email", email)
                             
-                            if name == "noname" {
+                            if name == "noname" { // sign in again
                                 // load from DB
                                 CloudManager.getUserName(userIdentifier) { userName in
-                                    var __name = userName
+                                    var __name = ""
                                     
-                                    if __name == "" {
-                                        __name = "noname"
+                                    if userName == "" {
+                                        __name = "noname" // never happen
                                     } else {
+                                        __name = userName
                                         self.name = __name
                                     }
                                     
                                     // CloudManager.saveUser(userIdentifier, __name, email)
                                     
                                     UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
+                                    // UserDefaults.standard.set(email, forKey: "USER_EMAIL")
                                     
                                     Global.userId = userIdentifier
                                     
@@ -319,6 +321,7 @@ struct IntroView: View {
                                 CloudManager.saveUser(userIdentifier, name, email)
                                 
                                 UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
+                                // UserDefaults.standard.set(email, forKey: "USER_EMAIL")
                                 
                                 Global.userId = userIdentifier
                                 
@@ -341,12 +344,12 @@ struct IntroView: View {
                                 }
                             }
                             
-                        }
+                        } // end of onCompletion
                     })
                     // .signInWithAppleButtonStyle(.black) // black button
                     // .signInWithAppleButtonStyle(.white) // white button
-                        .signInWithAppleButtonStyle(.whiteOutline) // white with border
-                        .frame(width: Global.signInWithAppleButtonWidth, height: Global.signInWithAppleButtonHeight)
+                    .signInWithAppleButtonStyle(.whiteOutline) // white with border
+                    .frame(width: Global.signInWithAppleButtonWidth, height: Global.signInWithAppleButtonHeight)
                 }
             }
             
@@ -387,6 +390,7 @@ struct IntroView: View {
             }
             
         } else if self.mode == 5 {
+            
             // loading indicator
             ZStack {
                 ProgressView()
@@ -880,6 +884,31 @@ struct IntroView: View {
                         self.mode = 2
                     }
                 } else {
+                    /*
+                     if let email = UserDefaults.standard.string(forKey: "USER_EMAIL") {
+                     if email.contains("privaterelay.appleid.com") {
+                     // show UI
+                     withAnimation {
+                     self.mode = 2
+                     }
+                     } else {
+                     Global.userId = id
+                     
+                     // pass
+                     withAnimation {
+                     self.mode = 3
+                     }
+                     }
+                     } else {
+                     Global.userId = id
+                     
+                     // pass
+                     withAnimation {
+                     self.mode = 3
+                     }
+                     }
+                     */
+                    
                     Global.userId = id
                     
                     // pass

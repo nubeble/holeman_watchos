@@ -35,6 +35,7 @@ struct CourseListView: View {
     
     var body: some View {
         if self.mode == 0 {
+            
             // loading indicator
             ZStack {
                 ProgressView()
@@ -415,7 +416,7 @@ struct CourseListView: View {
                                 // ToDo: 2022-04-18 check if hlds == 0
                                 let c = self.courses[self.selectedCourseIndex]
                                 if c.hlds == 0 {
-                                    self.textMessage3 = "해당 골프장은 홀맨을\n지원하지 않네요. 😱\n연락 주시면 72시간 내\n추가해 드리겠습니다!"
+                                    self.textMessage3 = "해당 골프장은 아직 홀맨을\n지원하지 않네요. 관계자분의\n연락을 기다릴게요. 💕"
                                     
                                     withAnimation {
                                         self.mode = 71
@@ -593,6 +594,7 @@ struct CourseListView: View {
                     }
                 }
             } else {
+                
                 // loading indicator
                 ProgressView()
                     .scaleEffect(1.2, anchor: .center)

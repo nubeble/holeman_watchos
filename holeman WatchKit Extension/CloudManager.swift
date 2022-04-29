@@ -411,8 +411,30 @@ struct CloudManager {
         }
     }
     
-    static func getSensor(_ groupId: Int64, _ holeNumber: Int64, onCompletion: @escaping (_ record: CKRecord?) -> Void) {
-        let rid = "sensor-" + String(groupId) + "-" + String(holeNumber)
+    /*
+     static func getSensor(_ groupId: Int64, _ holeNumber: Int64, onCompletion: @escaping (_ record: CKRecord?) -> Void) {
+     let rid = "sensor-" + String(groupId) + "-" + String(holeNumber)
+     let recordID = CKRecord.ID.init(recordName: rid)
+     
+     CKContainer(identifier: Static.containerId).publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
+     if let error = error {
+     print("Cloud Query Error: \(error)")
+     
+     return
+     }
+     
+     if let record = record {
+     // print("#function", record)
+     
+     DispatchQueue.main.async {
+     onCompletion(record)
+     }
+     }
+     }
+     }
+     */
+    static func getPin(_ groupId: Int64, _ holeNumber: Int64, onCompletion: @escaping (_ record: CKRecord?) -> Void) {
+        let rid = "pin-" + String(groupId) + "-" + String(holeNumber)
         let recordID = CKRecord.ID.init(recordName: rid)
         
         CKContainer(identifier: Static.containerId).publicCloudDatabase.fetch(withRecordID: recordID) { (record, error) in
@@ -456,9 +478,9 @@ struct CloudManager {
      }
      */
     
-    static func getSensors(_ groupId: Int64, onCompletion: @escaping (_ records:[CKRecord]?) -> Void) {
+    static func getPins(_ groupId: Int64, onCompletion: @escaping (_ records:[CKRecord]?) -> Void) {
         let p = NSPredicate(format: "id = %d", groupId)
-        let query = CKQuery(recordType: "Sensor", predicate: p)
+        let query = CKQuery(recordType: "Pin", predicate: p)
         query.sortDescriptors = [NSSortDescriptor(key: "holeNumber", ascending: true)]
         
         let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
@@ -560,12 +582,12 @@ struct CloudManager {
      }
      */
     
-    static func subscribeToSensors(_ groupId: Int64) {
+    static func subscribeToPins(_ groupId: Int64) {
         // check UserDefaults
-        let subId = UserDefaults.standard.string(forKey: "SUBSCRIPTION_SENSORS_SUB_ID")
+        let subId = UserDefaults.standard.string(forKey: "SUBSCRIPTION_PINS_SUB_ID")
         if subId != nil {
             // print("subscription ID", subId)
-            let courseId = UserDefaults.standard.integer(forKey: "SUBSCRIPTION_SENSORS_COURSE_ID")
+            let courseId = UserDefaults.standard.integer(forKey: "SUBSCRIPTION_PINS_COURSE_ID")
             // print("course id", courseId)
             if courseId == Int(groupId) {
                 // skip saving
@@ -578,18 +600,18 @@ struct CloudManager {
                 })
                 
                 // 2. save db
-                CloudManager.saveSubscription("Sensor", groupId) { id in
+                CloudManager.saveSubscription("Pin", groupId) { id in
                     // 3. update ud (subId & courseId)
-                    UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_SENSORS_SUB_ID")
-                    UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_SENSORS_COURSE_ID") // course id
+                    UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_PINS_SUB_ID")
+                    UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_PINS_COURSE_ID")
                 }
             }
         } else {
             // 2. save db
-            CloudManager.saveSubscription("Sensor", groupId) { id in
+            CloudManager.saveSubscription("Pin", groupId) { id in
                 // 3. update ud (subId & courseId)
-                UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_SENSORS_SUB_ID")
-                UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_SENSORS_COURSE_ID") // course id
+                UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_PINS_SUB_ID")
+                UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_PINS_COURSE_ID")
             }
         }
     }
@@ -931,6 +953,8 @@ struct CloudManager {
     }
     
     static func checkFreeTrialCount(_ userId: String, onCompletion: @escaping ((_ freeTrialCount: Int64) -> Void)) { // get & update
+        print(#function, userId)
+        
         let recordID = CKRecord.ID.init(recordName: userId)
         
         let db = CKContainer(identifier: Static.containerId).publicCloudDatabase

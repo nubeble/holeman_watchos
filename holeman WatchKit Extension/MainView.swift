@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension Notification.Name {
-    static let sensorUpdated = Notification.Name("SensorUpdated")
+    static let pinUpdated = Notification.Name("PinUpdated")
 }
 
 struct MainView: View {
@@ -18,7 +18,7 @@ struct MainView: View {
     
     let altitudeDiff: Double = 46 // ToDo: 안드로이드와의 차이 (m)
     
-    let sensorUpdatedNotification = NotificationCenter.default.publisher(for: .sensorUpdated)
+    let pinUpdatedNotification = NotificationCenter.default.publisher(for: .pinUpdated)
     
     @State var textHoleTitle: String = "별우(STAR) 9TH"
     @State var textPar: String = "PAR 4"
@@ -38,10 +38,22 @@ struct MainView: View {
     
     var distance: String {
         if let location = self.locationManager.lastLocation {
-            if self.latitude == nil || self.longitude == nil { return "0" }
+            if self.latitudes == nil || self.longitudes == nil { return "0" }
             
             let coordinate1 = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            let coordinate2 = CLLocation(latitude: self.latitude!, longitude: self.longitude!)
+            
+            // let coordinate2 = CLLocation(latitude: self.latitude!, longitude: self.longitude!)
+            var coordinate2 = CLLocation(latitude: 0, longitude: 0)
+            
+            if self.latitudes!.count == 1 {
+                coordinate2 = CLLocation(latitude: self.latitudes![0], longitude: self.latitudes![0])
+            } else {
+                if self.greenDirection == 100 {
+                    coordinate2 = CLLocation(latitude: self.latitudes![0], longitude: self.latitudes![0])
+                } else if self.greenDirection == 200 {
+                    coordinate2 = CLLocation(latitude: self.latitudes![1], longitude: self.latitudes![1])
+                }
+            }
             
             let distance = coordinate1.distance(from: coordinate2) // result is in meters
             
@@ -67,13 +79,24 @@ struct MainView: View {
     
     var height: String {
         if let location = self.locationManager.lastLocation {
-            if MainView.elevationDiff == nil || self.elevation == nil { return "0" }
+            if MainView.elevationDiff == nil || self.elevations == nil { return "0" }
             
             let altitude = location.altitude + self.altitudeDiff
             // print(#function, "altitude", altitude)
             
             let height = altitude + MainView.elevationDiff!
-            let d = self.elevation! - height
+            
+            // let d = self.elevation! - height
+            var d: Double = 0
+            if self.elevations?.count == 1 {
+                d = self.elevations![0] - height
+            } else { // 2
+                if self.greenDirection == 100 {
+                    d = self.elevations![0] - height
+                } else if self.greenDirection == 200 {
+                    d = self.elevations![1] - height
+                }
+            }
             
             // var returnValue: Double = 0
             var returnValue: Int = 0
@@ -101,11 +124,24 @@ struct MainView: View {
             if let heading = self.locationManager.heading {
                 // print(#function, heading)
                 
-                if self.latitude == nil || self.longitude == nil { return 0 }
+                if self.latitudes == nil || self.longitudes == nil { return 0 }
                 
-                // calc bearing
-                // let bearing = Util.getBearing(self.latitude!, self.longitude!, location.coordinate.latitude, location.coordinate.longitude)
-                let bearing = Util.getBearing(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
+                /*
+                 // let bearing = Util.getBearing(self.latitude!, self.longitude!, location.coordinate.latitude, location.coordinate.longitude)
+                 let bearing = Util.getBearing(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
+                 */
+                
+                var bearing: Double = 0
+                
+                if self.latitudes?.count == 1 {
+                    bearing = Util.getBearing(location.coordinate.latitude, location.coordinate.longitude, self.latitudes![0], self.longitudes![0])
+                } else { // 2
+                    if self.greenDirection == 100 {
+                        bearing = Util.getBearing(location.coordinate.latitude, location.coordinate.longitude, self.latitudes![0], self.longitudes![0])
+                    } else if self.greenDirection == 200 {
+                        bearing = Util.getBearing(location.coordinate.latitude, location.coordinate.longitude, self.latitudes![1], self.longitudes![1])
+                    }
+                }
                 
                 var angle = heading + bearing
                 // angle = (angle + 360) % 360
@@ -142,10 +178,11 @@ struct MainView: View {
     @State var greenDirection: Int? // 100: left green, 200: right green
     @State var holeNumber: Int? // current hole number
     @State var distanceUnit: Int = -1 // 0: meter, 1: yard
-    @State var sensors: [SensorModel] = []
-    @State var latitude: Double? // hole latitude
-    @State var longitude: Double? // hole longitude
-    @State var elevation: Double? // hole elevation
+    // @State var sensors: [SensorModel] = []
+    @State var pins: [Pin] = []
+    @State var latitudes: [Double]? // hole latitudes
+    @State var longitudes: [Double]? // hole longitudes
+    @State var elevations: [Double]? // hole elevations
     // 3.
     @State var userElevation: Double? // user elevation (meter)
     
@@ -672,12 +709,14 @@ struct MainView: View {
                     }
                 }
                 
-                // if self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!].distances.count == 1 {
-                if Util.getTeeingGroundDistancesLength((self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds)!, self.teeingGroundName!) == 1 {
-                    self.showGreenButton = false
-                } else {
-                    self.showGreenButton = true
-                }
+                /*
+                 // if self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!].distances.count == 1 {
+                 if Util.getTeeingGroundDistancesLength((self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds)!, self.teeingGroundName!) == 1 {
+                 self.showGreenButton = false
+                 } else {
+                 self.showGreenButton = true
+                 }
+                 */
                 
                 // update UI
                 self.textHoleTitle = self.teeingGroundInfo?.holes[self.holeNumber! - 1].title ?? ""
@@ -695,14 +734,14 @@ struct MainView: View {
                 setTeeDistance()
                 
                 // set hole distance
-                if self.sensors.count == 0 {
-                    // get sensors (& subscribe)
+                if self.pins.count == 0 {
+                    // get pins (& subscribe)
                     
                     let groupId = self.course?.id
                     
-                    CloudManager.subscribeToSensors(groupId!)
+                    CloudManager.subscribeToPins(groupId!)
                     
-                    getSensors(groupId!) {
+                    getPins(groupId!) {
                         /*
                          for sensor in self.sensors {
                          if sensor.holeNumber == self.holeNumber! {
@@ -718,12 +757,32 @@ struct MainView: View {
                         
                         // print("1 hole number", self.holeNumber, "sensor count", self.sensors.count)
                         
-                        if self.holeNumber! - 1 < self.sensors.count {
-                            let sensor = self.sensors[self.holeNumber! - 1]
+                        if self.holeNumber! - 1 < self.pins.count {
+                            let pin = self.pins[self.holeNumber! - 1]
+                            /*
+                             self.latitude = sensor.location.coordinate.latitude + Static.__lat
+                             self.longitude = sensor.location.coordinate.longitude + Static.__lon
+                             self.elevation = sensor.elevation
+                             */
+                            var latitudes = [Double]()
+                            var longitudes = [Double]()
                             
-                            self.latitude = sensor.location.coordinate.latitude + Static.__lat
-                            self.longitude = sensor.location.coordinate.longitude + Static.__lon
-                            self.elevation = sensor.elevation
+                            for location in pin.locations {
+                                latitudes.append(location.coordinate.latitude + Static.__lat)
+                                longitudes.append(location.coordinate.longitude + Static.__lon)
+                            }
+                            
+                            self.latitudes = latitudes
+                            self.longitudes = longitudes
+                            
+                            self.elevations = pin.elevations
+                            
+                            // show or hide green direction buttons
+                            if self.latitudes!.count == 2 {
+                                self.showGreenButton = true
+                            } else {
+                                self.showGreenButton = false
+                            }
                         }
                     }
                 } else {
@@ -742,12 +801,32 @@ struct MainView: View {
                     
                     // print("2 hole number", self.holeNumber, "sensor count", self.sensors.count)
                     
-                    if self.holeNumber! - 1 < self.sensors.count {
-                        let sensor = self.sensors[self.holeNumber! - 1]
+                    if self.holeNumber! - 1 < self.pins.count {
+                        let pin = self.pins[self.holeNumber! - 1]
+                        /*
+                         self.latitude = sensor.location.coordinate.latitude + Static.__lat
+                         self.longitude = sensor.location.coordinate.longitude + Static.__lon
+                         self.elevation = sensor.elevation
+                         */
+                        var latitudes = [Double]()
+                        var longitudes = [Double]()
                         
-                        self.latitude = sensor.location.coordinate.latitude + Static.__lat
-                        self.longitude = sensor.location.coordinate.longitude + Static.__lon
-                        self.elevation = sensor.elevation
+                        for location in pin.locations {
+                            latitudes.append(location.coordinate.latitude + Static.__lat)
+                            longitudes.append(location.coordinate.longitude + Static.__lon)
+                        }
+                        
+                        self.latitudes = latitudes
+                        self.longitudes = longitudes
+                        
+                        self.elevations = pin.elevations
+                        
+                        // show or hide green direction buttons
+                        if self.latitudes!.count == 2 {
+                            self.showGreenButton = true
+                        } else {
+                            self.showGreenButton = false
+                        }
                     }
                 }
                 
@@ -769,17 +848,17 @@ struct MainView: View {
                 self.timer1?.invalidate()
                 self.timer2?.invalidate()
             }
-            .onReceive(sensorUpdatedNotification) { notification in
+            .onReceive(pinUpdatedNotification) { notification in
                 print(#function, notification)
                 
-                let s: SensorModel = notification.object as! SensorModel
+                let pin = notification.object as! Pin
                 
-                // let id = s.id
-                let holeNumber = s.holeNumber
-                let location = s.location
-                let elevation = s.elevation
-                let timestamp = s.timestamp
-                let battery = s.battery
+                // let id = pin.id
+                let holeNumber = pin.holeNumber
+                let locations = pin.locations
+                let elevations = pin.elevations
+                let timestamp = pin.timestamp
+                let battery = pin.battery
                 
                 /*
                  for (index, item) in self.sensors.enumerated() {
@@ -799,16 +878,45 @@ struct MainView: View {
                  }
                  }
                  */
+                /*
+                 let index = Int(holeNumber) - 1
+                 self.sensors[index].location = location
+                 self.sensors[index].elevation = elevation
+                 self.sensors[index].timestamp = timestamp
+                 self.sensors[index].battery = battery
+                 
+                 if self.holeNumber! == holeNumber {
+                 self.latitude = location.coordinate.latitude + Static.__lat
+                 self.longitude = location.coordinate.longitude + Static.__lon
+                 self.elevation = elevation
+                 
+                 if self.mode == 1 {
+                 // show notice
+                 withAnimation {
+                 self.mode = 8
+                 }
+                 }
+                 }
+                 */
                 let index = Int(holeNumber) - 1
-                self.sensors[index].location = location
-                self.sensors[index].elevation = elevation
-                self.sensors[index].timestamp = timestamp
-                self.sensors[index].battery = battery
+                self.pins[index].locations = locations
+                self.pins[index].elevations = elevations
+                self.pins[index].timestamp = timestamp
+                self.pins[index].battery = battery
                 
                 if self.holeNumber! == holeNumber {
-                    self.latitude = location.coordinate.latitude + Static.__lat
-                    self.longitude = location.coordinate.longitude + Static.__lon
-                    self.elevation = elevation
+                    var latitudes = [Double]()
+                    var longitudes = [Double]()
+                    
+                    for location in locations {
+                        latitudes.append(location.coordinate.latitude + Static.__lat)
+                        longitudes.append(location.coordinate.longitude + Static.__lon)
+                    }
+                    
+                    self.latitudes = latitudes
+                    self.longitudes = longitudes
+                    
+                    self.elevations = elevations
                     
                     if self.mode == 1 {
                         // show notice
@@ -825,7 +933,7 @@ struct MainView: View {
                      // backup
                      __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundName: self.teeingGroundName,
                      __greenDirection: self.greenDirection, /*__holeNumber: self.holeNumber,*/ __distanceUnit: self.distanceUnit,
-                     __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
+                     __pins: self.pins, __latitudes: self.latitudes, __longitudes: self.longitudes, __elevations: self.elevations,
                      __userElevation: self.userElevation
             )
             
@@ -835,7 +943,7 @@ struct MainView: View {
                     // backup
                     __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, /*__teeingGroundIndex: self.teeingGroundIndex,*/
                     __greenDirection: self.greenDirection, __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
-                    __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
+                    __pins: self.pins, __latitudes: self.latitudes, __longitudes: self.longitudes, __elevations: self.elevations,
                     __userElevation: self.userElevation
             )
             
@@ -845,7 +953,7 @@ struct MainView: View {
                 // backup
                 __course: self.course, __teeingGroundInfo: self.teeingGroundInfo, __teeingGroundName: self.teeingGroundName,
                 __greenDirection: self.greenDirection, __holeNumber: self.holeNumber, __distanceUnit: self.distanceUnit,
-                __sensors: self.sensors, __latitude: self.latitude, __longitude: self.longitude, __elevation: self.elevation,
+                __pins: self.pins, __latitudes: self.latitudes, __longitudes: self.longitudes, __elevations: self.elevations,
                 __userElevation: self.userElevation
             )
             
@@ -1002,25 +1110,25 @@ struct MainView: View {
         // self.selectedIndex = self.teeingGroundIndex
     }
     
-    func getSensors(_ groupId: Int64, onCompletion: @escaping () -> Void) {
-        print("getSensors", groupId)
+    func getPins(_ groupId: Int64, onCompletion: @escaping () -> Void) {
+        print(#function, groupId)
         
-        CloudManager.getSensors(groupId) { records in
+        CloudManager.getPins(groupId) { records in
             if let records = records {
                 print(#function, "record count", records.count)
                 
                 for record in records {
                     // let id = record["id"] as! Int64
                     let holeNumber = record["holeNumber"] as! Int64
-                    let elevation = record["elevation"] as! Double
-                    let location = record["location"] as! CLLocation
+                    let elevations = record["elevations"] as! [Double]
+                    let locations = record["locations"] as! [CLLocation]
                     let battery = record["battery"] as! Int64
                     let timestamp = record["timestamp"] as! Int64
                     
-                    let sensor = SensorModel(id: groupId, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
-                    print(#function, sensor)
+                    let pin = Pin(id: groupId, holeNumber: holeNumber, elevations: elevations, locations: locations, battery: battery, timestamp: timestamp)
+                    print(#function, pin)
                     
-                    self.sensors.append(sensor)
+                    self.pins.append(pin)
                     
                     onCompletion()
                 }
@@ -1028,7 +1136,7 @@ struct MainView: View {
                 // N/A
             }
         }
-    } // getSensors()
+    }
     
     func setTeeDistance() {
         // let teeingGround = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[self.teeingGroundIndex!]
@@ -1088,10 +1196,14 @@ struct MainView: View {
         
         var distance = 0
         if let distances = teeingGround?.distances {
-            if self.greenDirection == 100 {
+            if distances.count == 1 {
                 distance = distances[0]
-            } else if self.greenDirection == 200 {
-                distance = distances[1]
+            } else {
+                if self.greenDirection == 100 {
+                    distance = distances[0]
+                } else if self.greenDirection == 200 {
+                    distance = distances[1]
+                }
             }
         }
         
@@ -1356,8 +1468,24 @@ struct MainView: View {
         self.timer2 = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in // 1 sec
             if let location = self.locationManager.lastLocation {
                 DispatchQueue.main.async {
-                    if self.latitude != nil && self.longitude != nil {
-                        checkHolePass(location.coordinate.latitude, location.coordinate.longitude, self.latitude!, self.longitude!)
+                    if self.latitudes != nil && self.longitudes != nil {
+                        var lat: Double = 0
+                        var lon: Double = 0
+                        
+                        if self.latitudes?.count == 1 {
+                            lat = self.latitudes![0]
+                            lon = self.longitudes![0]
+                        } else { // 2
+                            if self.greenDirection == 100 {
+                                lat = self.latitudes![0]
+                                lon = self.longitudes![0]
+                            } else if self.greenDirection == 200 {
+                                lat = self.latitudes![1]
+                                lon = self.longitudes![1]
+                            }
+                        }
+                        
+                        checkHolePass(location.coordinate.latitude, location.coordinate.longitude, lat, lon)
                     }
                 }
             } else {
@@ -1579,9 +1707,19 @@ struct MainView: View {
     
     func inHole(_ index: Int, _ coordinate: CLLocation) -> Bool {
         // get distance
-        let sensor = self.sensors[index]
+        let pin = self.pins[index]
         
-        let coordinate2 = CLLocation(latitude: sensor.location.coordinate.latitude + Static.__lat, longitude: sensor.location.coordinate.longitude + Static.__lon)
+        var coordinate2 = CLLocation(latitude: 0, longitude: 0)
+        
+        if pin.locations.count == 1 {
+            coordinate2 = CLLocation(latitude: pin.locations[0].coordinate.latitude + Static.__lat, longitude: pin.locations[0].coordinate.longitude + Static.__lon)
+        } else {
+            if self.greenDirection == 100 {
+                coordinate2 = CLLocation(latitude: pin.locations[0].coordinate.latitude + Static.__lat, longitude: pin.locations[0].coordinate.longitude + Static.__lon)
+            } else if self.greenDirection == 200 {
+                coordinate2 = CLLocation(latitude: pin.locations[1].coordinate.latitude + Static.__lat, longitude: pin.locations[1].coordinate.longitude + Static.__lon)
+            }
+        }
         
         let distance = coordinate.distance(from: coordinate2) // result is in meters
         
@@ -1619,13 +1757,13 @@ struct MainView: View {
     func findHole(_ coordinate: CLLocation) -> Int {
         let number = self.holeNumber!
         
-        let count = self.sensors.count
+        let count = self.pins.count
         
         for i in 0..<count {
             var index = number + i // 다음 홀 index
             
-            if index >= self.sensors.count {
-                index = index - self.sensors.count
+            if index >= self.pins.count {
+                index = index - self.pins.count
             }
             
             if inHole(index, coordinate) == true {

@@ -23,10 +23,11 @@ struct TeeView: View {
     var __greenDirection: Int?
     var __holeNumber: Int?
     var __distanceUnit: Int?
-    var __sensors: [SensorModel]?
-    var __latitude: Double?
-    var __longitude: Double?
-    var __elevation: Double?
+    // var __sensors: [SensorModel]?
+    var __pins: [Pin]?
+    var __latitudes: [Double]?
+    var __longitudes: [Double]?
+    var __elevations: [Double]?
     var __userElevation: Double?
     
     var body: some View {
@@ -127,10 +128,18 @@ struct TeeView: View {
             let tgs = (self.__teeingGroundInfo?.holes[self.__holeNumber! - 1].teeingGrounds)!
             let teeingGroundName = Util.getName(tgs[self.selectedIndex])
             
+            /*
+             MainView(mode: 1,
+             course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundName: teeingGroundName,
+             greenDirection: self.__greenDirection, holeNumber: self.__holeNumber, distanceUnit: self.__distanceUnit!,
+             sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
+             userElevation: self.__userElevation
+             )
+             */
             MainView(mode: 1,
                      course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundName: teeingGroundName,
                      greenDirection: self.__greenDirection, holeNumber: self.__holeNumber, distanceUnit: self.__distanceUnit!,
-                     sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
+                     pins: self.__pins!, latitudes: self.__latitudes, longitudes: self.__longitudes, elevations: self.__elevations,
                      userElevation: self.__userElevation
             )
             

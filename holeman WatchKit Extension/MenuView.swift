@@ -20,10 +20,11 @@ struct MenuView: View {
     var __greenDirection: Int?
     var __holeNumber: Int?
     var __distanceUnit: Int?
-    var __sensors: [SensorModel]?
-    var __latitude: Double?
-    var __longitude: Double?
-    var __elevation: Double?
+    // var __sensors: [SensorModel]?
+    var __pins: [Pin]?
+    var __latitudes: [Double]?
+    var __longitudes: [Double]?
+    var __elevations: [Double]?
     var __userElevation: Double?
     
     var body: some View {
@@ -58,10 +59,11 @@ struct MenuView: View {
                                     // .fixedSize(horizontal: false, vertical: true)
                                     // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("라운드를 종료하고 코스 선택으로 돌아갑니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
+                                    Text("라운드를 종료하고\n코스 선택으로 돌아갑니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
                                     // .fixedSize(horizontal: false, vertical: true)
                                     // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
+                                        .multilineTextAlignment(.leading)
                                 }
                             }
                         }
@@ -122,10 +124,11 @@ struct MenuView: View {
                                     // .fixedSize(horizontal: false, vertical: true)
                                     // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("로그아웃 후 계정 정보를 삭제합니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
+                                    Text("로그아웃 후\n계정 정보를 삭제합니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
                                     // .fixedSize(horizontal: false, vertical: true)
                                     // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
+                                        .multilineTextAlignment(.leading)
                                 }
                             }
                         }
@@ -217,6 +220,7 @@ struct MenuView: View {
             }
             
         } else if self.mode == 4 {
+            
             // loading indicator
             ZStack {
                 ProgressView()
@@ -252,11 +256,12 @@ struct MenuView: View {
                         
                     }
                     
-                    // SUBSCRIPTION_SENSORS 는 그냥 둔다.
+                    // SUBSCRIPTION_PINS 는 그냥 둔다.
                     
                     print(#function, "finished removing UserDefaults")
                 }
             }
+            
         } else if self.mode == 5 { // back to IntroView
             
             IntroView(mode: 2)
@@ -266,6 +271,7 @@ struct MenuView: View {
             CourseView()
             
         } else if self.mode == 9 { // back to MainView
+            
             /*
              MainView(mode: 1,
              course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundIndex: self.__teeingGroundIndex,
@@ -274,10 +280,18 @@ struct MenuView: View {
              userElevation: self.__userElevation
              )
              */
+            /*
+             MainView(mode: 1,
+             course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundName: self.__teeingGroundName,
+             greenDirection: self.__greenDirection, holeNumber: self.__holeNumber, distanceUnit: self.__distanceUnit!,
+             sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
+             userElevation: self.__userElevation
+             )
+             */
             MainView(mode: 1,
                      course: self.__course, teeingGroundInfo: self.__teeingGroundInfo, teeingGroundName: self.__teeingGroundName,
                      greenDirection: self.__greenDirection, holeNumber: self.__holeNumber, distanceUnit: self.__distanceUnit!,
-                     sensors: self.__sensors!, latitude: self.__latitude, longitude: self.__longitude, elevation: self.__elevation,
+                     pins: self.__pins!, latitudes: self.__latitudes, longitudes: self.__longitudes, elevations: self.__elevations,
                      userElevation: self.__userElevation
             )
             

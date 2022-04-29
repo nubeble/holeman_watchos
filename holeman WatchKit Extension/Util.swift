@@ -84,19 +84,19 @@ struct Util {
         if hlds == 100 {
             return name + "에는\nHLDS™가 설치되어 있어요.\n홀맨이 정확한 거리를 알려드릴게요."
         }
-        
-        if hlds == 200 { // 그린
-            return name + "에는\nHLDS™가 미설치되어 있어요.\n하지만 홀맨이 그린 중앙을\n기준으로 거리를 알려드릴게요."
-        }
-        
-        if hlds == 300 { // 좌그린
-            return name + "에는\nHLDS™가 미설치되어 있어요.\n하지만 홀맨이 좌그린 중앙을\n기준으로 거리를 알려드릴게요."
-        }
-        
-        if hlds == 400 { // 우그린
-            return name + "에는\nHLDS™가 미설치되어 있어요.\n하지만 홀맨이 우그린 중앙을\n기준으로 거리를 알려드릴게요."
-        }
-        
+        /*
+         if hlds == 200 { // 그린
+         return name + "에는\nHLDS™가 미설치되어 있어요.\n하지만 홀맨이 그린 중앙을\n기준으로 거리를 알려드릴게요."
+         }
+         
+         if hlds == 300 { // 좌그린
+         return name + "에는\nHLDS™가 미설치되어 있어요.\n하지만 홀맨이 좌그린 중앙을\n기준으로 거리를 알려드릴게요."
+         }
+         
+         if hlds == 400 { // 우그린
+         return name + "에는\nHLDS™가 미설치되어 있어요.\n하지만 홀맨이 우그린 중앙을\n기준으로 거리를 알려드릴게요."
+         }
+         */
         return name + "에는\nHLDS™가 미설치되어 있어요.\n하지만 홀맨이 그린 중앙을\n기준으로 거리를 알려드릴게요."
     }
     
@@ -336,6 +336,8 @@ struct Util {
     }
     
     static func checkLastPurchasedCourse(_ id: Int64) -> Bool {
+        print(#function, id)
+        
         let time = UserDefaults.standard.string(forKey: "LAST_PURCHASED_COURSE_TIME")
         if let time = time {
             // get current time

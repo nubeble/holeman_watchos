@@ -622,7 +622,7 @@ struct HoleSearchView: View {
                 
                 let startHoleNumber = item.range[0]
                 
-                getSensor(groupId, Int64(startHoleNumber)) {
+                getPin(groupId, Int64(startHoleNumber)) {
                     // onGetSensor
                     
                     if self.startHoles.count == courses?.count {
@@ -739,18 +739,18 @@ struct HoleSearchView: View {
             let number = courses![0].range[0]
             
             
-            CloudManager.getSensor(groupId!, Int64(number)) { record in
+            CloudManager.getPin(groupId!, Int64(number)) { record in
                 if let record = record {
                     // let id = record["id"] as! Int64
                     // let holeNumber = record["holeNumber"] as! Int64
                     // let elevation = record["elevation"] as! Double
-                    let location = record["location"] as! CLLocation
+                    let locations = record["locations"] as! [CLLocation]
                     // let battery = record["battery"] as! Int64
                     // let timestamp = record["timestamp"] as! Int64
                     
                     self.startHoleNumber = number
-                    self.startHoleLatitude = location.coordinate.latitude
-                    self.startHoleLongitude = location.coordinate.longitude
+                    self.startHoleLatitude = locations[0].coordinate.latitude
+                    self.startHoleLongitude = locations[0].coordinate.longitude
                     
                     checkDistance(self.startHoleNumber!, self.startHoleLatitude!, self.startHoleLongitude!, latitude, longitude)
                 }
@@ -798,24 +798,52 @@ struct HoleSearchView: View {
         }
     }
     
-    func getSensor(_ groupId: Int64, _ holeNumber: Int64, onCompletion: @escaping () -> Void) {
-        print("getSensor", groupId, holeNumber)
+    /*
+     func getSensor(_ groupId: Int64, _ holeNumber: Int64, onCompletion: @escaping () -> Void) {
+     print("getSensor", groupId, holeNumber)
+     
+     CloudManager.getSensor(groupId, holeNumber) { record in
+     if let record = record {
+     // print(#function, record)
+     
+     // let id = record["id"] as! Int64
+     // let holeNumber = record["holeNumber"] as! Int64
+     let elevation = record["elevation"] as! Double
+     let location = record["location"] as! CLLocation
+     let battery = record["battery"] as! Int64
+     let timestamp = record["timestamp"] as! Int64
+     
+     let sensor = SensorModel(id: groupId, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
+     print("sensor", sensor)
+     
+     let startHole = StartHole(title: getHoleTitle(Int(holeNumber)), number: Int(holeNumber), latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+     
+     self.startHoles.append(startHole)
+     
+     onCompletion()
+     }
+     }
+     } // getHole()
+     */
+    
+    func getPin(_ groupId: Int64, _ holeNumber: Int64, onCompletion: @escaping () -> Void) {
+        print("getPin", groupId, holeNumber)
         
-        CloudManager.getSensor(groupId, holeNumber) { record in
+        CloudManager.getPin(groupId, holeNumber) { record in
             if let record = record {
                 // print(#function, record)
                 
                 // let id = record["id"] as! Int64
                 // let holeNumber = record["holeNumber"] as! Int64
-                let elevation = record["elevation"] as! Double
-                let location = record["location"] as! CLLocation
+                let elevations = record["elevations"] as! [Double]
+                let locations = record["locations"] as! [CLLocation]
                 let battery = record["battery"] as! Int64
                 let timestamp = record["timestamp"] as! Int64
                 
-                let sensor = SensorModel(id: groupId, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
-                print("sensor", sensor)
+                let pin = Pin(id: groupId, holeNumber: holeNumber, elevations: elevations, locations: locations, battery: battery, timestamp: timestamp)
+                print("pin", pin)
                 
-                let startHole = StartHole(title: getHoleTitle(Int(holeNumber)), number: Int(holeNumber), latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                let startHole = StartHole(title: getHoleTitle(Int(holeNumber)), number: Int(holeNumber), latitude: locations[0].coordinate.latitude, longitude: locations[0].coordinate.longitude)
                 
                 self.startHoles.append(startHole)
                 

@@ -88,8 +88,10 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                             
                             let id = record["id"] as! Int64
                             let holeNumber = record["holeNumber"] as! Int64
-                            let location = record["location"] as! CLLocation
-                            let elevation = record["elevation"] as! Double
+                            // let location = record["location"] as! CLLocation
+                            // let elevation = record["elevation"] as! Double
+                            let locations = record["locations"] as! [CLLocation]
+                            let elevations = record["elevations"] as! [Double]
                             let timestamp = record["timestamp"] as! Int64
                             let battery = record["battery"] as! Int64
                             
@@ -105,8 +107,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                              */
                             
                             DispatchQueue.main.async {
-                                let sensor = SensorModel(id: id, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
-                                NotificationCenter.default.post(name: .sensorUpdated, object: sensor)
+                                /*
+                                 let sensor = SensorModel(id: id, holeNumber: holeNumber, elevation: elevation, location: location, battery: battery, timestamp: timestamp)
+                                 NotificationCenter.default.post(name: .sensorUpdated, object: sensor)
+                                 */
+                                let pin = Pin(id: id, holeNumber: holeNumber, elevations: elevations, locations: locations, battery: battery, timestamp: timestamp)
+                                NotificationCenter.default.post(name: .pinUpdated, object: pin)
                             }
                         }
                     }
