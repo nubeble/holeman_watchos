@@ -14,8 +14,8 @@ struct Static {
     static let productId = "com.nubeble.holeman.iap.course"
     
     // ToDo: !!!
-    static let buildMode = "공식"
     // static let buildMode = "개발"
+    static let buildMode = "공식"
     
     /*
      static let productIDs = [

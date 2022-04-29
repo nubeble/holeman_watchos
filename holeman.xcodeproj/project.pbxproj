@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6D1964B9CB1B3F298DDA6D09 /* Pods_holeman_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5292857C5D6C05E66F95BBC5 /* Pods_holeman_WatchKit_App.framework */; };
 		75F565A472792D5BC1C03446 /* Pods_holeman_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D7FDA89E2D64FA64417793 /* Pods_holeman_WatchKit_Extension.framework */; };
-		B91AB1E325C4E44A0050B157 /* SensorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91AB1E225C4E44A0050B157 /* SensorModel.swift */; };
 		B91AB1FD25CA85EC0050B157 /* TeeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91AB1FC25CA85EC0050B157 /* TeeView.swift */; };
 		B923CCB62546AC3400E09B40 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B923CCB52546AC3400E09B40 /* CloudKit.framework */; };
 		B923CCD82547E1B500E09B40 /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B923CCD72547E1B500E09B40 /* CloudManager.swift */; };
@@ -108,7 +107,6 @@
 		B0DF725CA6FF565437AAEB9B /* Pods-holeman WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-holeman WatchKit Extension.release.xcconfig"; path = "Target Support Files/Pods-holeman WatchKit Extension/Pods-holeman WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
 		B908DDD925E40290005DB11F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.2.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		B912E90626076C1600D61969 /* holeman WatchKit ExtensionRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "holeman WatchKit ExtensionRelease.entitlements"; sourceTree = "<group>"; };
-		B91AB1E225C4E44A0050B157 /* SensorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorModel.swift; sourceTree = "<group>"; };
 		B91AB1FC25CA85EC0050B157 /* TeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeeView.swift; sourceTree = "<group>"; };
 		B923CCB12546AC0800E09B40 /* holeman WatchKit ExtensionDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "holeman WatchKit ExtensionDebug.entitlements"; sourceTree = "<group>"; };
 		B923CCB52546AC3400E09B40 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.0.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -278,7 +276,6 @@
 				B92A41DC25D4C5840067F39B /* MenuView.swift */,
 				B92A31282813DF170014AECB /* Pin.swift */,
 				B9AD0F9925CE21A500CE247B /* ProgressBar.swift */,
-				B91AB1E225C4E44A0050B157 /* SensorModel.swift */,
 				B99531122581BE76001D5FBF /* SplashView.swift */,
 				B9E5249225F3569A00C93741 /* Static.swift */,
 				B95C909425E3C0FC00315DF2 /* StoreManager.swift */,
@@ -530,7 +527,6 @@
 				B9AA29F92535BA2B0057FA8D /* holemanApp.swift in Sources */,
 				B9AA29F72535BA2B0057FA8D /* ContentView.swift in Sources */,
 				B956D2F625609A0E0056007B /* LocationManager.swift in Sources */,
-				B91AB1E325C4E44A0050B157 /* SensorModel.swift in Sources */,
 				B98FF39825536D4E00CA1ECA /* ExtensionDelegate.swift in Sources */,
 				B975BC0A25B8E7F800EFD939 /* Util.swift in Sources */,
 				B92DB505256409E100511383 /* CompassHeading.swift in Sources */,
@@ -721,7 +717,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -751,7 +747,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -776,7 +772,7 @@
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -801,7 +797,7 @@
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				IBSC_MODULE = holeman_WatchKit_Extension;
 				INFOPLIST_FILE = "holeman WatchKit App/Info.plist";
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -823,7 +819,7 @@
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is required to calculate the distance.";
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman;
 				PRODUCT_NAME = Holeman;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -842,7 +838,7 @@
 				DEVELOPMENT_TEAM = 5L8B8J2A48;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is required to calculate the distance.";
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nubeble.holeman;
 				PRODUCT_NAME = Holeman;
 				PROVISIONING_PROFILE_SPECIFIER = "";

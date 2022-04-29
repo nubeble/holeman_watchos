@@ -16,7 +16,7 @@ struct MainView: View {
     
     // var save: Bool?
     
-    let altitudeDiff: Double = 46 // ToDo: 안드로이드와의 차이 (m)
+    let ALTITUDE_ALPHA: Double = 46 // ToDo: 안드로이드와의 차이 (m)
     
     let pinUpdatedNotification = NotificationCenter.default.publisher(for: .pinUpdated)
     
@@ -81,7 +81,7 @@ struct MainView: View {
         if let location = self.locationManager.lastLocation {
             if MainView.elevationDiff == nil || self.elevations == nil { return "0" }
             
-            let altitude = location.altitude + self.altitudeDiff
+            let altitude = location.altitude + self.ALTITUDE_ALPHA
             // print(#function, "altitude", altitude)
             
             let height = altitude + MainView.elevationDiff!
@@ -1285,7 +1285,7 @@ struct MainView: View {
                     
                     let lat = location.coordinate.latitude
                     let lon = location.coordinate.longitude
-                    let alt = location.altitude + self.altitudeDiff
+                    let alt = location.altitude + self.ALTITUDE_ALPHA
                     
                     getUserElevation(String(lat), String(lon), alt)
                     
@@ -1305,7 +1305,7 @@ struct MainView: View {
                         
                         let lat2 = location.coordinate.latitude
                         let lon2 = location.coordinate.longitude
-                        let alt2 = location.altitude + self.altitudeDiff
+                        let alt2 = location.altitude + self.ALTITUDE_ALPHA
                         
                         getUserElevation(String(lat2), String(lon2), alt2)
                         
@@ -1336,7 +1336,7 @@ struct MainView: View {
                     self.timer1 = Timer.scheduledTimer(withTimeInterval: 60.0 * 30, repeats: true) { _ in // 30 min
                         let lat2 = location.coordinate.latitude
                         let lon2 = location.coordinate.longitude
-                        let alt2 = location.altitude + self.altitudeDiff
+                        let alt2 = location.altitude + self.ALTITUDE_ALPHA
                         
                         getUserElevation(String(lat2), String(lon2), alt2)
                         
