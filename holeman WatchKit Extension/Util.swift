@@ -82,7 +82,7 @@ struct Util {
     
     static func getCourseDescription(_ name: String, _ hlds: Int64) -> String {
         if hlds == 100 {
-            return name + "에는\nHLDS™가 설치되어 있어요.\n홀맨이 정확한 거리를 알려드릴게요."
+            return name + "에는 HLDS™가 설치되어 있어요. 홀맨이 정확한 거리를 알려드릴게요."
         }
         /*
          if hlds == 200 { // 그린
@@ -97,7 +97,7 @@ struct Util {
          return name + "에는\nHLDS™가 미설치되어 있어요.\n하지만 홀맨이 우그린 중앙을\n기준으로 거리를 알려드릴게요."
          }
          */
-        return name + "에는\nHLDS™가 미설치되어 있어요.\n하지만 홀맨이 그린 중앙을\n기준으로 거리를 알려드릴게요."
+        return name + "에는 HLDS™가 미설치되어 있어요. 하지만 홀맨이 그린 중앙을 기준으로 거리를 알려드릴게요."
     }
     
     static func getBearing(_ lat1: Double, _ lon1: Double, _ lat2: Double, _ lon2: Double) -> Double {
@@ -169,19 +169,19 @@ struct Util {
         
         switch num {
         case 0:
-            return "근처에 스타트 홀을\n찾고 있습니다."
+            return "근처에 스타트 홀을 찾고 있습니다."
             
         case 1:
-            return "스타트 홀로 가시면\n자동으로 시작됩니다."
+            return "스타트 홀로 가시면 자동으로 시작됩니다."
             
         case 2:
-            return "스타트 홀이 멀리\n떨어져 있네요."
+            return "스타트 홀이 멀리 떨어져 있네요."
             
         case 3:
-            return "스타트 홀 근처로\n이동해주세요."
+            return "스타트 홀 근처로 이동해주세요."
             
         default:
-            return "스타트 홀로 가시면\n자동으로 시작됩니다."
+            return "스타트 홀로 가시면 자동으로 시작됩니다."
         }
     }
     
@@ -195,16 +195,16 @@ struct Util {
             return "잠시만 기다려주세요."
             
         case 2:
-            return "실내에서는 GPS가\n잡히지 않아요. 😥"
+            return "실내에서는 GPS가 잡히지 않아요. 😥"
             
         case 3:
-            return "클럽하우스 밖으로\n나와주세요."
+            return "클럽하우스 밖으로 나와주세요."
             
         case 4:
-            return "위치 정보를 확인할 수\n 없습니다. 👀"
+            return "위치 정보를 확인할 수 없습니다. 👀"
             
         case 5:
-            return "가만히 있지 마시고\n움직여주세요."
+            return "가만히 있지 마시고 움직여주세요."
             
         default:
             return "잠시만 기다려주세요."
@@ -639,71 +639,34 @@ struct Util {
         return tg.name + " (" + tg.color + ")" // REGULAR-2 (WHITE)
     }
     
-    static func checkTips(_ str: String) -> String { // 전방 끝 카트도로 좌측 끝부분을 겨냥하세요. 티샷이 짧거나 벙커로 들어가면 그린이 보이지 않아요. 세컨샷 지점에서 그린까지 내리막이에요.
-        var result = ""
+    static func getSentenceCount(_ str: String) -> Int {
+        var count = 0
         
-        let length = str.count
         var i = 0
         
-        var count = 0
-        var startOffset = 0
-        var endOffset = 0
-        
-        while i < length {
-            if count >= 17 { // '하'
-                let startIndex = str.index(str.startIndex, offsetBy: startOffset)
-                let endIndex = str.index(str.startIndex, offsetBy: endOffset)
-                let range = startIndex..<endIndex
-                
-                let sub = String(str[range])
-                
-                if result == "" {
-                    result = sub
+        while i < str.count {
+            let index = str.index(str.startIndex, offsetBy: i)
+            let ch = str[index]
+            
+            let unicodeVal = UnicodeScalar(String(ch))?.value
+            if let value = unicodeVal {
+                if (value < 0xAC00 || value > 0xD7A3) {
+                    // 한글 아님
+                    count += 1
                 } else {
-                    result = result + "\n" + sub
+                    // 한글
+                    count += 2
                 }
-                
-                startOffset = endOffset + 1
-                count = i - endOffset
             } else {
-                let index = str.index(str.startIndex, offsetBy: i)
-                
-                let ch = str[index]
-                if ch == " " {
-                    endOffset = i // 2, 4, 9, 12, 17
-                }
-                
-                count += 1
+                return 5 // 5줄
             }
             
             i += 1
         }
         
-        if count != 0 {
-            let startIndex = str.index(str.startIndex, offsetBy: startOffset)
-            let range = startIndex..<str.endIndex
-            
-            let sub = String(str[range])
-            
-            if result == "" {
-                result = sub
-            } else {
-                result = result + "\n" + sub
-            }
-        }
+        let returnValue = (count / 34) + 1 // 한 줄에 34자
+        // print(#function, returnValue)
         
-        return result
-    }
-    
-    static func getSentenceCount(_ str: String) -> Int {
-        var count = 1
-        for c in str {
-            if c == "\n" {
-                count += 1
-            }
-            
-        }
-        
-        return count
+        return returnValue
     }
 }

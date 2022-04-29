@@ -16,7 +16,8 @@ struct MainView: View {
     
     // var save: Bool?
     
-    let ALTITUDE_ALPHA: Double = 46 // ToDo: 안드로이드와의 차이 (m)
+    // let ALTITUDE_ALPHA: Double = 46 // ToDo: 안드로이드와의 차이 (m)
+    let ALTITUDE_ALPHA: Double = 0
     
     let pinUpdatedNotification = NotificationCenter.default.publisher(for: .pinUpdated)
     
@@ -46,16 +47,17 @@ struct MainView: View {
             var coordinate2 = CLLocation(latitude: 0, longitude: 0)
             
             if self.latitudes!.count == 1 {
-                coordinate2 = CLLocation(latitude: self.latitudes![0], longitude: self.latitudes![0])
+                coordinate2 = CLLocation(latitude: self.latitudes![0], longitude: self.longitudes![0])
             } else {
                 if self.greenDirection == 100 {
-                    coordinate2 = CLLocation(latitude: self.latitudes![0], longitude: self.latitudes![0])
+                    coordinate2 = CLLocation(latitude: self.latitudes![0], longitude: self.longitudes![0])
                 } else if self.greenDirection == 200 {
-                    coordinate2 = CLLocation(latitude: self.latitudes![1], longitude: self.latitudes![1])
+                    coordinate2 = CLLocation(latitude: self.latitudes![1], longitude: self.longitudes![1])
                 }
             }
             
             let distance = coordinate1.distance(from: coordinate2) // result is in meters
+            print(#function, distance)
             
             var returnValue: Int = 0
             if self.distanceUnit == 0 {
@@ -447,6 +449,7 @@ struct MainView: View {
                     }
                     
                 }
+                
             }
             .onAppear {
                 if let tips = self.teeingGroundInfo?.holes[self.holeNumber! - 1].tips {
@@ -459,7 +462,7 @@ struct MainView: View {
                         }
                     }
                     
-                    self.tips = Util.checkTips(str)
+                    self.tips = str
                 }
             }
             
@@ -475,7 +478,7 @@ struct MainView: View {
                 }
                 
                 VStack {
-                    Text("홀컵 위치가 이동하여\n거리를 다시 계산했어요.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text("홀컵 위치가 이동하여 거리를 다시 계산했어요.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 // next button

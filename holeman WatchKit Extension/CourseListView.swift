@@ -157,7 +157,7 @@ struct CourseListView: View {
                 VStack {
                     // let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
                     // let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - '\(name)' - '앱을 사용하는 동안' 선택"
-                    let text = "iPhone에서 설정 앱을 열고\n\"개인 정보 보호\" >\n\"위치 서비스\" > \"홀맨\" >\n'앱을 사용하는 동안' 선택"
+                    let text = "iPhone에서 설정 앱을 열고 \"개인 정보 보호\" > \"위치 서비스\" > \"홀맨\" > '앱을 사용하는 동안' 선택"
                     Text(text).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
@@ -416,7 +416,7 @@ struct CourseListView: View {
                                 // ToDo: 2022-04-18 check if hlds == 0
                                 let c = self.courses[self.selectedCourseIndex]
                                 if c.hlds == 0 {
-                                    self.textMessage3 = "해당 골프장은 아직 홀맨을\n지원하지 않네요. 관계자분의\n연락을 기다릴게요. 💕"
+                                    self.textMessage3 = "해당 골프장은 아직 홀맨을 지원하지 않네요. 관계자분의 연락을 기다릴게요. 💕"
                                     
                                     withAnimation {
                                         self.mode = 71
@@ -541,7 +541,7 @@ struct CourseListView: View {
                                 .padding(.top, Global.textPaddingTop)
                             
                             // Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + " 18홀의 정확한 거리 측정 서비스를 1,000원에 이용하세요.")
-                            Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + "의\n정확한 거리 측정 서비스를\n1,000원에 이용하세요.")
+                            Text(Util.getCourseName(self.courses[self.selectedCourseIndex].name) + "의 정확한 거리 측정 서비스를 1,000원에 이용하세요.")
                                 .font(.system(size: Global.text4Size))
                             // .fontWeight(.light)
                                 .fontWeight(.medium)
@@ -1133,9 +1133,9 @@ struct CourseListView: View {
                 if freeTrialCount < 10 {
                     let n = 10 - freeTrialCount
                     if n == 10 {
-                        self.textMessage2 = "새로운 골프 경험의 시작, 홀맨을\n10회까지 무료로 이용 가능해요."
+                        self.textMessage2 = "새로운 골프 경험의 시작, 홀맨을 10회까지 무료로 이용 가능해요."
                     } else {
-                        self.textMessage2 = "새로운 골프 경험의 시작, 홀맨을\n10회까지 무료로 이용 가능해요.\n(" + String(n) + "회 남았습니다.)"
+                        self.textMessage2 = "새로운 골프 경험의 시작, 홀맨을 10회까지 무료로 이용 가능해요. (" + String(n) + "회 남았습니다.)"
                     }
                     
                     let c = self.courses[self.selectedCourseIndex]
@@ -1145,7 +1145,7 @@ struct CourseListView: View {
                         self.mode = 60
                     }
                 } else {
-                    self.textMessage2 = "새로운 골프 경험의 시작, 홀맨을\n10회까지 무료로 이용 가능해요.\n(모두 사용하셨습니다.)"
+                    self.textMessage2 = "새로운 골프 경험의 시작, 홀맨을 10회까지 무료로 이용 가능해요. (모두 사용하셨습니다.)"
                     
                     withAnimation {
                         self.mode = 61
@@ -1194,7 +1194,7 @@ struct CourseListView: View {
                                         }
                                     } else {
                                         let d = Int(distance / 1000) // km
-                                        self.textMessage3 = "선택하신 골프장은\n" + String(d) + " km 떨어져 있어요."
+                                        self.textMessage3 = "선택하신 골프장은 " + String(d) + " km 떨어져 있어요."
                                         
                                         withAnimation {
                                             self.mode = 71

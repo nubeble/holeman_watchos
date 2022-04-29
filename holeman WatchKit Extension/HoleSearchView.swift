@@ -10,7 +10,7 @@ import SwiftUI
 struct HoleSearchView: View {
     @State var mode: Int = 0
     
-    @State var textMessage: String = "스타트 홀로 가시면\n자동으로 시작됩니다."
+    @State var textMessage: String = "스타트 홀로 가시면 자동으로 시작됩니다."
     @State var findStartHoleCounter = 0
     @State var getLastLocationCounter = 0
     
@@ -157,7 +157,7 @@ struct HoleSearchView: View {
                     if from == 100 {
                         if let search = self.search {
                             if search == true {
-                                self.textMessage = "그늘집에서 잘 쉬셨죠?\n스타트 홀로 가시면\n자동으로 시작됩니다."
+                                self.textMessage = "그늘집에서 잘 쉬셨죠? 스타트 홀로 가시면 자동으로 시작됩니다."
                                 
                                 // ToDo: test timer
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
@@ -184,7 +184,7 @@ struct HoleSearchView: View {
                     } else if from == 200 {
                         // 전반 종료. 앱이 계속 떠 있는 상태에서 홀 근처로 가면 후반 시작
                         
-                        self.textMessage = "전반 9홀이 끝났습니다.\n그늘집에서 푹 쉬신 후\n스타트 홀에서 만나요."
+                        self.textMessage = "전반 9홀이 끝났습니다. 그늘집에서 푹 쉬신 후 스타트 홀에서 만나요."
                         
                         // self.showIcon = 1 // beer
                         self.showIcon = 100 // rest
@@ -203,7 +203,7 @@ struct HoleSearchView: View {
                     } else if from == 300 {
                         // 후반 종료. move to CourseView
                         
-                        self.textMessage = "라운드가 끝났네요.\n수고하셨습니다."
+                        self.textMessage = "라운드가 끝났네요. 수고하셨습니다."
                         
                         // self.showIcon = 0 // not show
                         self.showIcon = 200 // end
@@ -214,7 +214,7 @@ struct HoleSearchView: View {
                             }
                         }
                     } else if from == 500 {
-                        self.textMessage = "스타트 홀로 가시면\n자동으로 시작됩니다."
+                        self.textMessage = "스타트 홀로 가시면 자동으로 시작됩니다."
                         
                         calcDistance()
                     }
@@ -310,7 +310,7 @@ struct HoleSearchView: View {
                 VStack {
                     // let name = Locale.current.languageCode == "ko" ? "홀맨" : "Holeman"
                     // let text = "iPhone에서 설정 앱을 열고 '개인 정보 보호' - '위치 서비스' - '\(name)' - '앱을 사용하는 동안' 선택"
-                    let text = "iPhone에서 설정 앱을 열고\n\"개인 정보 보호\" >\n\"위치 서비스\" > \"홀맨\" >\n'앱을 사용하는 동안' 선택"
+                    let text = "iPhone에서 설정 앱을 열고 \"개인 정보 보호\" > \"위치 서비스\" > \"홀맨\" > '앱을 사용하는 동안' 선택"
                     Text(text).font(.system(size: Global.text4Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
@@ -675,7 +675,7 @@ struct HoleSearchView: View {
         if self.findStartHoleCounter == 10 {
             self.findStartHoleCounter = 0
             
-            self.textMessage = "스타트 홀을 찾을 수\n없네요. 계속 찾을까요?"
+            self.textMessage = "스타트 홀을 찾을 수 없네요. 계속 찾을까요?"
             
             withAnimation {
                 self.mode = 11
@@ -703,7 +703,7 @@ struct HoleSearchView: View {
                     timer2.invalidate()
                     
                     withAnimation(.linear(duration: 0.5)) {
-                        self.textMessage = "잠시 후에 다시\n시도해주세요."
+                        self.textMessage = "잠시 후에 다시 시도해주세요."
                     }
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
@@ -888,7 +888,7 @@ struct HoleSearchView: View {
         if self.findStartHoleCounter == 10 {
             self.findStartHoleCounter = 0
             
-            self.textMessage = "스타트 홀을 찾을 수\n없네요. 계속 찾을까요?"
+            self.textMessage = "스타트 홀을 찾을 수 없네요. 계속 찾을까요?"
             
             withAnimation {
                 self.mode = 11
@@ -992,7 +992,7 @@ struct HoleSearchView: View {
                                     timer2.invalidate()
                                     
                                     withAnimation(.linear(duration: 0.5)) {
-                                        self.textMessage = "잠시 후에 다시\n시도해주세요."
+                                        self.textMessage = "잠시 후에 다시 시도해주세요."
                                     }
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {

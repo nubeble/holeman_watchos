@@ -38,7 +38,7 @@ struct MenuView: View {
                         
                         // item 1
                         Button(action: {
-                            self.textMessage = "플레이 중인 라운드를\n종료하시겠어요?"
+                            self.textMessage = "플레이 중인 라운드를 종료하시겠어요?"
                             
                             withAnimation {
                                 self.mode = 1
@@ -59,7 +59,7 @@ struct MenuView: View {
                                     // .fixedSize(horizontal: false, vertical: true)
                                     // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("라운드를 종료하고\n코스 선택으로 돌아갑니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
+                                    Text("라운드를 종료하고 코스 선택으로 돌아갑니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
                                     // .fixedSize(horizontal: false, vertical: true)
                                     // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -103,7 +103,7 @@ struct MenuView: View {
                         
                         // item 3
                         Button(action: {
-                            self.textMessage = "정말 로그아웃을\n하시겠어요?"
+                            self.textMessage = "정말 로그아웃을 하시겠어요?"
                             
                             withAnimation {
                                 self.mode = 3
@@ -124,7 +124,7 @@ struct MenuView: View {
                                     // .fixedSize(horizontal: false, vertical: true)
                                     // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("로그아웃 후\n계정 정보를 삭제합니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
+                                    Text("로그아웃 후 계정 정보를 삭제합니다.").font(.system(size: Global.text6Size)).foregroundColor(Color.gray)
                                     // .fixedSize(horizontal: false, vertical: true)
                                     // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
