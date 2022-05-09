@@ -191,6 +191,33 @@ struct CourseListView: View {
             
             CourseView()
             
+        } else if self.mode == 11 { // no coures in country
+            
+            ZStack {
+                VStack {
+                    Text("현재 국가에 골프장을 찾을 수 없어요.").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                }
+                
+                VStack(alignment: HorizontalAlignment.center) {
+                    Spacer().frame(maxHeight: .infinity)
+                    
+                    Image("nocoursesincountry")
+                        .resizable()
+                        .frame(width: Global.icon7Size, height: Global.icon7Size)
+                        .padding(.bottom, Global.buttonPaddingBottom3)
+                }
+                .frame(maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+            }
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    // back to CourseView
+                    withAnimation {
+                        self.mode = 10
+                    }
+                }
+            }
+            
         } else if self.mode == 20 { // move to next (HoleSearchView)
             
             let c = self.courses[self.selectedCourseIndex]
@@ -972,26 +999,31 @@ struct CourseListView: View {
                 // call timer again
                 getCountryCodeTimer()
             } else {
-                findNearbyCourse(location)
+                findAllCourses(location)
             }
         })
     }
     
-    func findNearbyCourse(_ location: CLLocation) {
+    func findAllCourses(_ location: CLLocation) {
         findAllCourses() { result in
             if result == false {
-                // no course nearby. try again in 3 secs
+                // try again in 3 secs
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                     if self.findNearbyCourseCounter == 10 {
-                        withAnimation(.linear(duration: 0.5)) {
-                            self.textMessage = "잠시 후 다시 시도해주세요."
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                            // back to CourseView
-                            withAnimation {
-                                self.mode = 10
-                            }
+                        /*
+                         withAnimation(.linear(duration: 0.5)) {
+                         self.textMessage = "잠시 후 다시 시도해주세요."
+                         }
+                         
+                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                         // back to CourseView
+                         withAnimation {
+                         self.mode = 10
+                         }
+                         }
+                         */
+                        withAnimation {
+                            self.mode = 11 // no courses in country
                         }
                         
                         return
@@ -1003,7 +1035,7 @@ struct CourseListView: View {
                     }
                     self.findNearbyCourseCounter += 1
                     
-                    findNearbyCourse(location)
+                    findAllCourses(location)
                 }
             }
         }

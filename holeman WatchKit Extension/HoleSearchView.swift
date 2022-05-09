@@ -499,7 +499,7 @@ struct HoleSearchView: View {
                         let decodedData = try JSONDecoder().decode(HoleData.self, from: data)
                         // print(decodedData)
                         
-                        tg.name = decodedData.name
+                        tg.name = decodedData.name.uppercased()
                         tg.par = decodedData.par
                         tg.handicap = decodedData.handicap
                         tg.tips = decodedData.tips

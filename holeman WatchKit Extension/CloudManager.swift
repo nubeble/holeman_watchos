@@ -244,7 +244,7 @@ struct CloudManager {
      */
     
     static func fetchNearbyLocations(_ countryCode: String, _ location: CLLocation, onCompletion: @escaping (_ records: [CKRecord]?) -> Void) {
-        print(#function)
+        print(#function, countryCode)
         
         let radiusInKilometers = 3 // 3 km
         

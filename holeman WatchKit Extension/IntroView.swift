@@ -348,8 +348,8 @@ struct IntroView: View {
                     })
                     // .signInWithAppleButtonStyle(.black) // black button
                     // .signInWithAppleButtonStyle(.white) // white button
-                    .signInWithAppleButtonStyle(.whiteOutline) // white with border
-                    .frame(width: Global.signInWithAppleButtonWidth, height: Global.signInWithAppleButtonHeight)
+                        .signInWithAppleButtonStyle(.whiteOutline) // white with border
+                        .frame(width: Global.signInWithAppleButtonWidth, height: Global.signInWithAppleButtonHeight)
                 }
             }
             
@@ -362,12 +362,9 @@ struct IntroView: View {
             ZStack {
                 VStack {
                     let str1 = self.name ?? "홀맨 회원"
-                    let str2 = "오늘도 홀맨과 함께"
-                    let str3 = "즐거운 라운드 되세요."
+                    let str2 = "오늘도 홀맨과 함께 즐거운 라운드 되세요."
                     
-                    Text(str1 + "님,").font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
-                    Text(str2).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
-                    Text(str3).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
+                    Text(str1 + "님,\n" + str2).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
                 
                 VStack(alignment: HorizontalAlignment.center) {
