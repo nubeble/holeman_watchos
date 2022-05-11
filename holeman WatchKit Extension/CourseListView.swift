@@ -191,7 +191,7 @@ struct CourseListView: View {
             
             CourseView()
             
-        } else if self.mode == 11 { // no coures in country
+        } else if self.mode == 11 { // no courses in country
             
             ZStack {
                 VStack {

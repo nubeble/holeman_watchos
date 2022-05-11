@@ -289,7 +289,7 @@ struct CourseSearchView: View {
             
             CourseView()
             
-        } else if self.mode == 11 { // no coures nearby
+        } else if self.mode == 11 { // no courses nearby
             
             ZStack {
                 VStack {
@@ -1098,7 +1098,7 @@ struct CourseSearchView: View {
                          }
                          */
                         withAnimation {
-                            self.mode = 11 // no coures nearby
+                            self.mode = 11 // no courses nearby
                         }
                         
                         return

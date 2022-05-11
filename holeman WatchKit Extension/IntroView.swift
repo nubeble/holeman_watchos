@@ -362,7 +362,7 @@ struct IntroView: View {
             ZStack {
                 VStack {
                     let str1 = self.name ?? "홀맨 회원"
-                    let str2 = "오늘도 홀맨과 함께 즐겁고 완벽한 라운드 되세요."
+                    let str2 = "오늘도 홀맨과 함께\n즐거운 라운드 되세요."
                     
                     Text(str1 + "님,\n" + str2).font(.system(size: Global.text2Size)).fontWeight(.medium).multilineTextAlignment(.center)
                 }
