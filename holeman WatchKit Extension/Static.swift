@@ -28,40 +28,13 @@ struct Static {
      ]
      */
     
-    // debug (현재 좌표 - 골프장 좌표)
-    // (골드그린 from 매탄동)
-    // static let __lat = 1.753586614270796
-    // static let __lon = -2.033034733589
-    
-    // (신안 from 매탄동)
-    // static let __lat = 0.16496653122842
-    // static let __lon = -0.20835852071767
-    
-    // (이천실크밸리 from 매탄동)
-    // static let __lat = 0.18166362940429
-    // static let __lon = -0.53033352453059
-    
-    // (용원 from 매탄동)
-    // static let __lat = 2.148933074033644
-    // static let __lon = -1.78062070655674
-    
-    // (아난티중앙 from 매탄동)
-    // static let __lat = 0.323004315571045
-    // static let __lon = -0.29435637277493
-    
-    // (골드그린 from 정관)
-    // static let __lat = -0.18721253449693
-    // static let __lon = 0.12623824341983
-    
-    // (기흥 from 매탄동)
-    // static let __lat = 0.071106522737821
-    // static let __lon = -0.10368265607794
-    
-    // (스카이72 하늘코스 from 매탄동)
-    // static let __lat = -0.18453440281145
-    // static let __lon = 0.55975353068125
-    
     // ToDo: !!!
+    // debug (현재 좌표 - 골프장 좌표)
+    
+    // 이천 마이다스
+    // static let __lat = 37.2624 - 37.17688146301917
+    // static let __lon = 127.0429 - 127.52354644196289
+    
     static let __lat = 0.0
     static let __lon = 0.0
 }

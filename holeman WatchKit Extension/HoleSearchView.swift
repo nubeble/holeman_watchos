@@ -534,27 +534,21 @@ struct HoleSearchView: View {
                             let c1 = Util.getColorName(key1)
                             let c2 = Util.getColorName(key2)
                             
-                            if c1 == "blue" && c2 == "black" { return false }
-                            if c1 == "white" && c2 == "blue" { return false }
-                            if c1 == "yellow" && c2 == "white" { return false }
-                            if c1 == "red" && c2 == "yellow" { return false }
-                            if c1 == "red" && c2 == "white" { return false }
-                            if c1 == "yellow" && c2 == "blue" { return false }
-                            if c1 == "red" && c2 == "blue" { return false }
-                            if c1 == "white" && c2 == "black" { return false }
-                            if c1 == "yellow" && c2 == "black" { return false }
-                            if c1 == "red" && c2 == "black" { return false }
+                            if c1 == "blue" && c2 == "black" { return true }
+                            if c1 == "white" && c2 == "blue" { return true }
+                            if c1 == "yellow" && c2 == "white" { return true }
+                            if c1 == "red" && c2 == "yellow" { return true }
+                            if c1 == "red" && c2 == "white" { return true }
+                            if c1 == "yellow" && c2 == "blue" { return true }
+                            if c1 == "red" && c2 == "blue" { return true }
+                            if c1 == "white" && c2 == "black" { return true }
+                            if c1 == "yellow" && c2 == "black" { return true }
+                            if c1 == "red" && c2 == "black" { return true }
                             
-                            if c1 == "black" && c2 == "black" { return false }
-                            if c1 == "blue" && c2 == "blue" { return false }
-                            if c1 == "white" && c2 == "white" { return false }
-                            if c1 == "yellow" && c2 == "yellow" { return false }
-                            if c1 == "red" && c2 == "red" { return false }
-                            
-                            return true
+                            return false
                         }
                         
-                        print(#function, sorted)
+                        // print(#function, sorted)
                         
                         for (key, value) in sorted {
                             // get name, color
@@ -775,7 +769,7 @@ struct HoleSearchView: View {
             backTee = Int(x.rounded())
         }
         
-        let diff = distance - (Double(backTee) + 30) // (나와 홀 사이 거리) - 전장(백티 + 30)
+        let diff = distance - (Double(backTee) + 50) // 나와 핀 사이 거리 - 전장(백티 + 50 m)
         print(#function, "diff:", diff, distance, backTee)
         
         // 20 m
@@ -953,7 +947,7 @@ struct HoleSearchView: View {
                                         
                                         // print(#function, startHole.number, backTee, distance)
                                         
-                                        let diff = distance - (Double(backTee) + 30) // (나와 홀 사이 거리) - 전장(백티 + 30)
+                                        let diff = distance - (Double(backTee) + 50) // 나와 핀 사이 거리 - 전장(백티 + 50 m)
                                         print(#function, "diff:", diff, distance, backTee)
                                         
                                         // 20 m

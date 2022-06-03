@@ -664,7 +664,14 @@ struct Util {
             i += 1
         }
         
-        let returnValue = (count / 34) + 1 // 한 줄에 34자
+        // let returnValue = (count / 34) + 1 // 한 줄에 34자
+        
+        var returnValue = 4
+        
+        if count > 123 {
+            returnValue = 5
+        }
+        
         // print(#function, returnValue)
         
         return returnValue

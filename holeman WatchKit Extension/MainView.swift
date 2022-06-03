@@ -57,7 +57,7 @@ struct MainView: View {
             }
             
             let distance = coordinate1.distance(from: coordinate2) // result is in meters
-            print(#function, distance)
+            // print(#function, distance)
             
             var returnValue: Int = 0
             if self.distanceUnit == 0 {
@@ -1691,17 +1691,7 @@ struct MainView: View {
         
         // print(#function, "full back tee distance (meter)", backTee!, distance)
         
-        /*
-         backTee = backTee! + 30 // full back tee + 30 m
-         
-         if Double(backTee!) - distance < 0 {
-         return false
-         }
-         
-         return true
-         */
-        
-        if Double(backTee) + 30 - distance >= 0 {
+        if Double(backTee) + 50 - distance >= 0 { // 50 m
             return true
         } else {
             return false
@@ -1740,17 +1730,7 @@ struct MainView: View {
         
         // print(#function, "full back tee distance (meter)", backTee!)
         
-        /*
-         backTee = backTee! + 30 // full back tee + 30 m
-         
-         if Double(backTee!) - distance < 0 {
-         return false
-         }
-         
-         return true
-         */
-        
-        if Double(backTee) + 30 - distance >= 0 {
+        if Double(backTee) + 50 - distance >= 0 { // 50 m
             return true
         } else {
             return false
