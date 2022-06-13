@@ -769,7 +769,7 @@ struct HoleSearchView: View {
             backTee = Int(x.rounded())
         }
         
-        let diff = distance - (Double(backTee) + 50) // 나와 핀 사이 거리 - 전장(백티 + 50 m)
+        let diff = distance - (Double(backTee) + 40) // 나와 핀 사이 거리 - 전장(백티 + 40 m)
         print(#function, "diff:", diff, distance, backTee)
         
         // 20 m
@@ -947,7 +947,7 @@ struct HoleSearchView: View {
                                         
                                         // print(#function, startHole.number, backTee, distance)
                                         
-                                        let diff = distance - (Double(backTee) + 50) // 나와 핀 사이 거리 - 전장(백티 + 50 m)
+                                        let diff = distance - (Double(backTee) + 40) // 나와 핀 사이 거리 - 전장(백티 + 40 m)
                                         print(#function, "diff:", diff, distance, backTee)
                                         
                                         // 20 m

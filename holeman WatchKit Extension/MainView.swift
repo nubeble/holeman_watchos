@@ -1691,7 +1691,7 @@ struct MainView: View {
         
         // print(#function, "full back tee distance (meter)", backTee!, distance)
         
-        if Double(backTee) + 50 - distance >= 0 { // 50 m
+        if Double(backTee) + 40 - distance >= 0 { // 40 m
             return true
         } else {
             return false
