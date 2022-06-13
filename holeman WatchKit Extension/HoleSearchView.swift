@@ -769,11 +769,11 @@ struct HoleSearchView: View {
             backTee = Int(x.rounded())
         }
         
-        let diff = distance - (Double(backTee) + 40) // 나와 핀 사이 거리 - 전장(백티 + 40 m)
+        let diff = distance - (Double(backTee) + 30) // 나와 핀 사이 거리 - 전장(백티 + 30 m)
         print(#function, "diff:", diff, distance, backTee)
         
-        // 20 m
-        if diff <= 20 { // 20미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
+        // 50 m
+        if diff <= 50 { // 50미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
             self.holeNumber = number
             
             moveNext()
@@ -947,11 +947,11 @@ struct HoleSearchView: View {
                                         
                                         // print(#function, startHole.number, backTee, distance)
                                         
-                                        let diff = distance - (Double(backTee) + 40) // 나와 핀 사이 거리 - 전장(백티 + 40 m)
+                                        let diff = distance - (Double(backTee) + 30) // 나와 핀 사이 거리 - 전장(백티 + 30 m)
                                         print(#function, "diff:", diff, distance, backTee)
                                         
-                                        // 20 m
-                                        if diff <= 20 { // 20미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
+                                        // 50 m
+                                        if diff <= 50 { // 50미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
                                             list.append(startHole.number)
                                         }
                                     }

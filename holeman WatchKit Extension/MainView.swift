@@ -1691,7 +1691,11 @@ struct MainView: View {
         
         // print(#function, "full back tee distance (meter)", backTee!, distance)
         
-        if Double(backTee) + 40 - distance >= 0 { // 40 m
+        let diff = distance - (Double(backTee) + 30) // 나와 핀 사이 거리 - 전장(백티 + 30 m)
+        print(#function, "diff:", diff, distance, backTee)
+        
+        // 50 m
+        if diff <= 50 { // 50미터 안으로 들어오면 해당 홀에 있다고 간주한다.
             return true
         } else {
             return false
@@ -1730,7 +1734,11 @@ struct MainView: View {
         
         // print(#function, "full back tee distance (meter)", backTee!)
         
-        if Double(backTee) + 50 - distance >= 0 { // 50 m
+        let diff = distance - (Double(backTee) + 30) // 나와 핀 사이 거리 - 전장(백티 + 30 m)
+        print(#function, "diff:", diff, distance, backTee)
+        
+        // 50 m
+        if diff <= 50 { // 50미터 안으로 들어오면 해당 홀에 있다고 간주한다.
             return true
         } else {
             return false
