@@ -1677,7 +1677,6 @@ struct MainView: View {
     }
     
     func stillInCurrentHole(_ distance: Double) -> Bool {
-        // var backTee = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distance
         var backTee = 0
         if let distances = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distances {
             backTee = Util.getMaxValue(distances)
@@ -1688,8 +1687,6 @@ struct MainView: View {
             let x = Double(backTee) * 0.9144
             backTee = Int(x.rounded())
         }
-        
-        // print(#function, "full back tee distance (meter)", backTee!, distance)
         
         let diff = distance - (Double(backTee) + 30) // 나와 핀 사이 거리 - 전장(백티 + 30 m)
         print(#function, "diff:", diff, distance, backTee)
@@ -1702,8 +1699,33 @@ struct MainView: View {
         }
     }
     
-    func inHole(_ index: Int, _ coordinate: CLLocation) -> Bool {
-        // get distance
+    func inHole(_ index1: Int, _ index2: Int, _ coordinate: CLLocation) -> Int {
+        // 핀과 나 사이 거리
+        let distance1 = getDistance(index1, coordinate)
+        
+        let backTee1 = getBackTee(index1 + 1)
+        
+        let diff = distance1 - (Double(backTee1) + 30) // 나와 핀 사이 거리 - 전장(백티 + 30 m)
+        print(#function, "diff:", diff, distance1, backTee1)
+        
+        if diff <= 50 { // 50미터 안으로 들어오면 해당 홀에 있다고 간주한다.
+            let distance2 = getDistance(index2, coordinate)
+            
+            let backTee2 = getBackTee(index2 + 1)
+            
+            if distance2 > (Double(backTee2) + 30) {
+                // index1
+                return index1 + 1
+            } else {
+                // index2
+                return index2 + 2
+            }
+        } else {
+            return 0
+        }
+    }
+    
+    func getDistance(_ index: Int, _ coordinate: CLLocation) -> Double {
         let pin = self.pins[index]
         
         var coordinate2 = CLLocation(latitude: 0, longitude: 0)
@@ -1720,9 +1742,12 @@ struct MainView: View {
         
         let distance = coordinate.distance(from: coordinate2) // result is in meters
         
-        // var backTee = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distance
+        return distance
+    }
+    
+    func getBackTee(_ holeNumber: Int) -> Int {
         var backTee = 0
-        if let distances = self.teeingGroundInfo?.holes[self.holeNumber! - 1].teeingGrounds[0].distances {
+        if let distances = self.teeingGroundInfo?.holes[holeNumber - 1].teeingGrounds[0].distances {
             backTee = Util.getMaxValue(distances)
         }
         
@@ -1732,17 +1757,7 @@ struct MainView: View {
             backTee = Int(x.rounded())
         }
         
-        // print(#function, "full back tee distance (meter)", backTee!)
-        
-        let diff = distance - (Double(backTee) + 30) // 나와 핀 사이 거리 - 전장(백티 + 30 m)
-        print(#function, "diff:", diff, distance, backTee)
-        
-        // 50 m
-        if diff <= 50 { // 50미터 안으로 들어오면 해당 홀에 있다고 간주한다.
-            return true
-        } else {
-            return false
-        }
+        return backTee
     }
     
     func findHole(_ coordinate: CLLocation) -> Int {
@@ -1751,18 +1766,22 @@ struct MainView: View {
         let count = self.pins.count
         
         for i in 0..<count {
-            var index = number + i // 다음 홀 index
+            var index1 = number + i // 다음 홀 index
+            var index2 = index1 + 1 // 다음 다음 홀 index
             
-            if index >= self.pins.count {
-                index = index - self.pins.count
+            if index1 >= count {
+                index1 = index1 - count
             }
             
-            if inHole(index, coordinate) == true {
-                let n = index + 1 // 다음 홀 number
+            if index2 >= count {
+                index2 = index2 - count
+            }
+            
+            let holeNumber = inHole(index1, index2, coordinate)
+            if holeNumber != 0 {
+                print(#function, "hole number", holeNumber)
                 
-                print(#function, "hole number", n)
-                
-                return n
+                return holeNumber
             }
         }
         
