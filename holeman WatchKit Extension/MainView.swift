@@ -1708,17 +1708,18 @@ struct MainView: View {
         let diff = distance1 - (Double(backTee1) + 30) // 나와 핀 사이 거리 - 전장(백티 + 30 m)
         print(#function, "diff:", diff, distance1, backTee1)
         
+        // 50 m
         if diff <= 50 { // 50미터 안으로 들어오면 해당 홀에 있다고 간주한다.
             let distance2 = getDistance(index2, coordinate)
             
             let backTee2 = getBackTee(index2 + 1)
             
-            if distance2 > (Double(backTee2) + 30) {
+            if distance2 > (Double(backTee2) + 30) { // 해당 홀의 다음 홀과 나 사이의 거리 비교
                 // index1
                 return index1 + 1
             } else {
                 // index2
-                return index2 + 2
+                return index2 + 1
             }
         } else {
             return 0
