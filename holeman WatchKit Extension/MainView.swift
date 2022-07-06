@@ -1692,7 +1692,7 @@ struct MainView: View {
         print(#function, "diff:", diff, distance, backTee)
         
         // 50 m
-        if diff <= 50 { // 50미터 안으로 들어오면 해당 홀에 있다고 간주한다.
+        if diff <= 50 { // 50미터 이하면 해당 홀에 있다고 간주한다.
             return true
         } else {
             return false
@@ -1709,7 +1709,7 @@ struct MainView: View {
         print(#function, "diff:", diff, distance1, backTee1)
         
         // 50 m
-        if diff <= 50 { // 50미터 안으로 들어오면 해당 홀에 있다고 간주한다.
+        if diff <= 50 { // 50미터 이하면 해당 홀에 있다고 간주한다.
             let distance2 = getDistance(index2, coordinate)
             
             let backTee2 = getBackTee(index2 + 1)
