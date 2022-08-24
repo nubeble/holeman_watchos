@@ -103,7 +103,8 @@ struct MenuView: View {
                         
                         // item 3
                         Button(action: {
-                            self.textMessage = "정말 로그아웃을 하시겠어요?"
+                            // self.textMessage = "정말 로그아웃을 하시겠어요?"
+                            self.textMessage = "정말 계정을 삭제하시겠어요?"
                             
                             withAnimation {
                                 self.mode = 3
@@ -120,7 +121,7 @@ struct MenuView: View {
                                 }
                                 
                                 VStack(spacing: Global.buttonSpacing1) {
-                                    Text("로그아웃").font(.system(size: Global.text3Size))
+                                    Text("계정 삭제").font(.system(size: Global.text3Size))
                                     // .fixedSize(horizontal: false, vertical: true)
                                     // .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)

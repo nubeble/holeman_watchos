@@ -776,7 +776,7 @@ struct CloudManager {
             if let record = record {
                 // print(#function, "success on updating user.")
                 
-                let valid: Int64 = 200 // 100: valid, 200: invalid (logout)
+                let valid: Int64 = 200 // 100: valid, 200: invalid (logout or account deletion)
                 record["valid"] = valid as Int64
                 
                 // save
