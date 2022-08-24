@@ -35,6 +35,12 @@ struct Static {
     // static let __lat = 37.2624 - 37.17688146301917
     // static let __lon = 127.0429 - 127.52354644196289
     
+    // 이천 실크밸리 (from 우면동)
+    // static let __lat = 37.465130 - 37.081710
+    // static let __lon = 127.024759 - 127.572754
+    
+    
+    
     static let __lat = 0.0
     static let __lon = 0.0
 }
