@@ -616,7 +616,7 @@ struct CloudManager {
         }
     }
     
-    static func saveUser(_ id: String, _ name: String, _ email: String) {
+    static func saveUser(_ code: String, _ id: String, _ name: String, _ email: String) {
         /*
          let record = CKRecord(recordType: "User", recordID: CKRecord.ID.init(recordName: id))
          record["id"] = id as String
@@ -648,6 +648,7 @@ struct CloudManager {
                 // create user
                 
                 let record = CKRecord(recordType: "User", recordID: CKRecord.ID.init(recordName: id))
+                record["authorizationCode"] = code as String
                 record["id"] = id as String
                 record["name"] = name as String
                 record["email"] = email as String
@@ -686,7 +687,8 @@ struct CloudManager {
                 
                 // update user
                 
-                // record["id"] = id as String
+                record["authorizationCode"] = code as String
+                record["id"] = id as String
                 if name != "noname" { record["name"] = name as String }
                 if email != "noemail" { record["email"] = email as String }
                 let valid: Int64 = 100 // 100: valid, 200: invalid (logout)

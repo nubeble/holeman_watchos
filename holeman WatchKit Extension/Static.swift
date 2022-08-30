@@ -14,8 +14,8 @@ struct Static {
     static let productId = "com.nubeble.holeman.iap.course"
     
     // ToDo: !!!
-    // static let buildMode = "개발"
-    static let buildMode = "공식"
+    static let buildMode = "개발"
+    //static let buildMode = "공식"
     
     /*
      static let productIDs = [
@@ -31,9 +31,9 @@ struct Static {
     // ToDo: !!!
     // debug (현재 좌표 - 골프장 좌표)
     
-    // 이천 마이다스
-    // static let __lat = 37.2624 - 37.17688146301917
-    // static let __lon = 127.0429 - 127.52354644196289
+    // 이천 마이다스 (from 매탄동)
+    static let __lat = 37.2624 - 37.17688146301917
+    static let __lon = 127.0429 - 127.52354644196289
     
     // 이천 실크밸리 (from 우면동)
     // static let __lat = 37.465130 - 37.081710
@@ -41,6 +41,6 @@ struct Static {
     
     
     
-    static let __lat = 0.0
-    static let __lon = 0.0
+    //static let __lat = 0.0
+    //static let __lon = 0.0
 }

@@ -239,21 +239,33 @@ struct IntroView: View {
                         case .success(let authResults):
                             print("Authorization successful", authResults)
                             
-                            guard let credential = authResults.credential as? ASAuthorizationAppleIDCredential, let identityToken = credential.identityToken, let identityTokenString = String(data: identityToken, encoding: .utf8) else { return }
+                            guard let credential = authResults.credential as? ASAuthorizationAppleIDCredential,
+                                  
+                                  let authorizationCode = credential.authorizationCode,
+                                  let identityToken = credential.identityToken,
+                                  
+                                  let authorizationCodeString = String(data: authorizationCode, encoding: .utf8),
+                                  let identityTokenString = String(data: identityToken, encoding: .utf8)
+                            else { return }
+                            
+                            // print("authorizationCode", authorizationCode)
+                            // print("identityToken", identityToken)
+                            print("authorizationCodeString", authorizationCodeString)
+                            print("identityTokenString", identityTokenString)
                             
                             let body = ["appleIdentityToken": identityTokenString]
                             guard let jsonData = try? JSONEncoder().encode(body) else { return }
                             
-                            print(#function, "credential", credential, "json data", jsonData)
+                            print("credential", credential, "appleIdentityToken json data", jsonData)
                             // This is where you'd fire an API request to your server to authenticate with the identity token attached in the request headers.
                             
                             // get fullName, email
                             let userIdentifier = credential.user
-                            print(#function, "user", userIdentifier)
+                            print("userIdentifier", userIdentifier)
                             
                             var name: String = "noname"
                             if let fullName = credential.fullName {
-                                print(#function, "fullName", fullName)
+                                // print("fullName", fullName)
                                 
                                 let firstName = fullName.givenName ?? ""
                                 let lastName = fullName.familyName ?? ""
@@ -286,10 +298,12 @@ struct IntroView: View {
                                 }
                             }
                             
+                            print("name", name)
+                            
                             // self.name = name
                             
                             let email: String = credential.email ?? "noemail"
-                            print(#function, "email", email)
+                            print("email", email)
                             
                             if name == "noname" { // sign in again
                                 // load from DB
@@ -318,7 +332,7 @@ struct IntroView: View {
                             } else {
                                 self.name = name
                                 
-                                CloudManager.saveUser(userIdentifier, name, email)
+                                CloudManager.saveUser(authorizationCodeString, userIdentifier, name, email)
                                 
                                 UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
                                 // UserDefaults.standard.set(email, forKey: "USER_EMAIL")

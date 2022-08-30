@@ -231,10 +231,12 @@ struct MenuView: View {
             .onAppear {
                 // remove DB & UserDefaults
                 
-                let id = UserDefaults.standard.string(forKey: "USER_ID")
-                if let id = id {
+                // 1. user id
+                
+                let userId = UserDefaults.standard.string(forKey: "USER_ID")
+                if let userId = userId {
                     // update DB
-                    CloudManager.removeUser(id) { result in
+                    CloudManager.removeUser(userId) { result in
                         Global.halftime = 1
                         
                         // go to IntroView (Sign in with Apple)
@@ -247,20 +249,36 @@ struct MenuView: View {
                     UserDefaults.standard.removeObject(forKey: "USER_ID")
                     
                     // LAST_PURCHASED_COURSE, LAST_PLAYED_HOLE
-                    let defaults = UserDefaults.standard
-                    let dictionary = defaults.dictionaryRepresentation()
+                    let dictionary = UserDefaults.standard.dictionaryRepresentation()
                     dictionary.keys.forEach { key in
                         
                         if key.hasPrefix("LAST_PURCHASED_COURSE") || key.hasPrefix("LAST_PLAYED_HOLE") {
-                            defaults.removeObject(forKey: key)
+                            UserDefaults.standard.removeObject(forKey: key)
                         }
                         
                     }
                     
                     // SUBSCRIPTION_PINS 는 그냥 둔다.
                     
-                    print(#function, "finished removing UserDefaults")
+                    
+                    // print(#function, "finished removing UserDefaults")
                 }
+                
+                // 2. sub id
+                /*
+                let subId = UserDefaults.standard.string(forKey: "SUBSCRIPTION_PINS_SUB_ID")
+                if let subId = subId {
+                    // 1. delete db
+                    let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
+                    db.delete(withSubscriptionID: subId!, completionHandler: { id, error in
+                        // N/A
+                    })
+
+                    // 2. delete ud (subId & courseId)
+                    UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_PINS_SUB_ID")
+                    UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_PINS_COURSE_ID")
+                }
+                 */
             }
             
         } else if self.mode == 5 { // back to IntroView
