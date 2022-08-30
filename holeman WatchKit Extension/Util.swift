@@ -677,6 +677,46 @@ struct Util {
         return returnValue
     }
     
+    static func generateToken(_ id: String, _ code: String) {
+        let url = "https://asia-northeast1-holeman-4070a.cloudfunctions.net/generate_token"
+        
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "POST"
+        
+        let params = ["id":id, "code":code] as Dictionary<String, String>
+        request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            // print(#function, response!)
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!) as! Dictionary<String, AnyObject>
+                print(#function, json)
+                
+                let status = json["status"] as! String
+                if status == "OK" {
+                    let results = json["results"] as! [[String:Any]]
+                    print(#function, results)
+                    /*
+                    let results = json["results"] as! [[String:Any]]
+                    if let elevation = results[0]["elevation"] as? Double {
+                        // self.userElevation = elevation
+                        
+                        // MainView.elevationDiff = elevation - alt
+                    }
+                     */
+                }
+            } catch {
+                print(#function, "error")
+            }
+        })
+        
+        task.resume()
+    }
+    
     static func deleteAccount(_ code: String) {
         let url = "https://asia-northeast1-holeman-4070a.cloudfunctions.net/delete_account"
         
