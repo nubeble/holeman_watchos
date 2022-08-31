@@ -334,7 +334,7 @@ struct IntroView: View {
                                 
                                 CloudManager.saveUser(authorizationCodeString, userIdentifier, name, email)
                                 
-                                Util.generateToken(userIdentifier, authorizationCodeString)
+                                Util.generateToken(userIdentifier, authorizationCodeString) // save refreshToken
                                 
                                 UserDefaults.standard.set(userIdentifier, forKey: "USER_ID")
                                 // UserDefaults.standard.set(email, forKey: "USER_EMAIL")

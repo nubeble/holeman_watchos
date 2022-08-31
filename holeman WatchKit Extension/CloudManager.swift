@@ -764,64 +764,64 @@ struct CloudManager {
     }
     
     static func removeUser(_ id: String, onCompletion: @escaping ((Int) -> Void)) {
-        /*
-         // update: fetch + save
-         
-         // fetch
-         let recordID = CKRecord.ID.init(recordName: id)
-         
-         let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
-         db.fetch(withRecordID: recordID) { (record, error) in
-         if let error = error {
-         print(#function, error)
-         
-         return
-         }
-         
-         if let record = record {
-         // print(#function, "success on updating user.")
-         
-         let valid: Int64 = 200 // 100: valid, 200: invalid (logout or account deletion)
-         record["valid"] = valid as Int64
-         
-         // save
-         db.save(record) { (record, error) in
-         if let error = error {
-         print(#function, error)
-         
-         return
-         }
-         
-         if let _ = record {
-         print(#function, "success on saving user.")
-         
-         DispatchQueue.main.async {
-         onCompletion(1)
-         }
-         }
-         }
-         }
-         }
-         */
-        // delete
+        // update: fetch + save
+        
+        // fetch
         let recordID = CKRecord.ID.init(recordName: id)
         
         let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
-        db.delete(withRecordID: recordID) { (id, error) in
+        db.fetch(withRecordID: recordID) { (record, error) in
             if let error = error {
                 print(#function, error)
                 
                 return
             }
             
-            if let _ = id {
-                print(#function, "success on removing user.")
+            if let record = record {
+                // ToDo: revoke token here
                 
-                DispatchQueue.main.async {
-                    onCompletion(1)
+                let valid: Int64 = 200 // 100: valid, 200: invalid (logout or account deletion)
+                record["valid"] = valid as Int64
+                
+                // save
+                db.save(record) { (record, error) in
+                    if let error = error {
+                        print(#function, error)
+                        
+                        return
+                    }
+                    
+                    if let _ = record {
+                        print(#function, "success on saving user.")
+                        
+                        DispatchQueue.main.async {
+                            onCompletion(1)
+                        }
+                    }
                 }
             }
         }
+        // delete
+        /*
+         let recordID = CKRecord.ID.init(recordName: id)
+         
+         let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
+         db.delete(withRecordID: recordID) { (id, error) in
+         if let error = error {
+         print(#function, error)
+         
+         return
+         }
+         
+         if let _ = id {
+         print(#function, "success on removing user.")
+         
+         DispatchQueue.main.async {
+         onCompletion(1)
+         }
+         }
+         }
+         */
     }
     
     static func getUserName(_ userId: String, onCompletion: @escaping ((_ name: String) -> Void)) {
