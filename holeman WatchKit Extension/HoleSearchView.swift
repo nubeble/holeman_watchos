@@ -529,24 +529,28 @@ struct HoleSearchView: View {
                             // blue, black -> black, blue
                             // red, white -> white, red
                             
-                            let key1 = lhs.0
-                            let key2 = rhs.0
+                            //let key1 = lhs.0
+                            //let key2 = rhs.0
+                            let key1 = rhs.0
+                            let key2 = lhs.0
                             
                             let c1 = Util.getColorName(key1)
                             let c2 = Util.getColorName(key2)
                             
-                            if c1 == "blue" && c2 == "black" { return false }
-                            if c1 == "white" && c2 == "blue" { return false }
-                            if c1 == "yellow" && c2 == "white" { return false }
-                            if c1 == "red" && c2 == "yellow" { return false }
-                            if c1 == "red" && c2 == "white" { return false }
-                            if c1 == "yellow" && c2 == "blue" { return false }
-                            if c1 == "red" && c2 == "blue" { return false }
-                            if c1 == "white" && c2 == "black" { return false }
-                            if c1 == "yellow" && c2 == "black" { return false }
-                            if c1 == "red" && c2 == "black" { return false }
+                            print("print", c1, c2)
                             
-                            return true
+                            if c1 == "blue" && c2 == "black" { return true }
+                            if c1 == "white" && c2 == "blue" { return true }
+                            if c1 == "yellow" && c2 == "white" { return true }
+                            if c1 == "red" && c2 == "yellow" { return true }
+                            if c1 == "red" && c2 == "white" { return true }
+                            if c1 == "yellow" && c2 == "blue" { return true }
+                            if c1 == "red" && c2 == "blue" { return true }
+                            if c1 == "white" && c2 == "black" { return true }
+                            if c1 == "yellow" && c2 == "black" { return true }
+                            if c1 == "red" && c2 == "black" { return true }
+                            
+                            return false
                         }
                         
                         print("after")
@@ -953,6 +957,8 @@ struct HoleSearchView: View {
                                         print(#function, "diff:", diff, distance, backTee)
                                         
                                         // 50 m
+                                        // ToDo: !!!
+                                        // if diff <= 100 {
                                         if diff <= 50 { // 50미터 이하면 해당 홀 근처로 들어왔다고 간주한다.
                                             list.append(startHole.number)
                                         }

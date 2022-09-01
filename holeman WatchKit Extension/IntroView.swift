@@ -241,10 +241,10 @@ struct IntroView: View {
                             
                             guard let credential = authResults.credential as? ASAuthorizationAppleIDCredential,
                                   
-                                  let authorizationCode = credential.authorizationCode,
+                                    let authorizationCode = credential.authorizationCode,
                                   let identityToken = credential.identityToken,
                                   
-                                  let authorizationCodeString = String(data: authorizationCode, encoding: .utf8),
+                                    let authorizationCodeString = String(data: authorizationCode, encoding: .utf8),
                                   let identityTokenString = String(data: identityToken, encoding: .utf8)
                             else { return }
                             

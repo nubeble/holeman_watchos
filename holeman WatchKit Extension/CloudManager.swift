@@ -778,7 +778,11 @@ struct CloudManager {
             }
             
             if let record = record {
-                // ToDo: revoke token here
+                // revoke token here
+                let token = record["refreshToken"] as! String
+                if token != "" {
+                    Util.revokeToken(token)
+                }
                 
                 let valid: Int64 = 200 // 100: valid, 200: invalid (logout or account deletion)
                 record["valid"] = valid as Int64

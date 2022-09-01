@@ -266,18 +266,18 @@ struct MenuView: View {
                 
                 // 2. sub id
                 /*
-                let subId = UserDefaults.standard.string(forKey: "SUBSCRIPTION_PINS_SUB_ID")
-                if let subId = subId {
-                    // 1. delete db
-                    let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
-                    db.delete(withSubscriptionID: subId!, completionHandler: { id, error in
-                        // N/A
-                    })
-
-                    // 2. delete ud (subId & courseId)
-                    UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_PINS_SUB_ID")
-                    UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_PINS_COURSE_ID")
-                }
+                 let subId = UserDefaults.standard.string(forKey: "SUBSCRIPTION_PINS_SUB_ID")
+                 if let subId = subId {
+                 // 1. delete db
+                 let db = CKContainer(identifier: Static.containerId).publicCloudDatabase
+                 db.delete(withSubscriptionID: subId!, completionHandler: { id, error in
+                 // N/A
+                 })
+                 
+                 // 2. delete ud (subId & courseId)
+                 UserDefaults.standard.set(id, forKey: "SUBSCRIPTION_PINS_SUB_ID")
+                 UserDefaults.standard.set(groupId, forKey: "SUBSCRIPTION_PINS_COURSE_ID")
+                 }
                  */
             }
             
