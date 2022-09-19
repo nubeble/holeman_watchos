@@ -759,7 +759,7 @@ struct CloudManager {
     
     static func openURL() {
         if let url = URL(string: "https://holeman.cc") {
-            WKExtension.shared().openSystemURL(url)
+            WKApplication.shared().openSystemURL(url)
         }
     }
     

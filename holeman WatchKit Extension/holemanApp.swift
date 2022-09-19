@@ -10,7 +10,7 @@ import StoreKit
 
 @main
 struct holemanApp: App {
-    @WKExtensionDelegateAdaptor(ExtensionDelegate.self) var delegate
+    @WKApplicationDelegateAdaptor(ExtensionDelegate.self) var delegate
     
     @StateObject var storeManager = StoreManager()
     

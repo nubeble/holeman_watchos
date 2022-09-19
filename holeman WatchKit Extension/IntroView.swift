@@ -95,8 +95,6 @@ struct IntroView: View {
             
             ZStack {
                 
-                
-                
                 VStack {
                     if self.showToast == true {
                         Text(self.toastMessage).font(.system(size: Global.text5Size))
@@ -104,8 +102,6 @@ struct IntroView: View {
                     
                     Spacer()
                 }
-                
-                
                 
                 VStack {
                     Text(self.text2).font(.system(size: Global.text1Size)).fontWeight(.medium).opacity(self.text2Opacity)
@@ -167,6 +163,13 @@ struct IntroView: View {
                         
                         requestNotificationAuthorization() { result in
                             if result == true {
+                                // ToDo: !!!
+                                /*
+                                 withAnimation {
+                                 self.mode = 4
+                                 }
+                                 */
+                                
                                 // Sign in with Apple
                                 checkUserIdentifierValidation()
                             }
@@ -951,7 +954,7 @@ struct IntroView: View {
                 print("Notification Permission granted")
                 
                 DispatchQueue.main.async {
-                    WKExtension.shared().registerForRemoteNotifications()
+                    WKApplication.shared().registerForRemoteNotifications()
                 }
                 
                 onCompletion(true)

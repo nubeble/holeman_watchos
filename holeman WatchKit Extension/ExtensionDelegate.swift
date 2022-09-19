@@ -10,7 +10,7 @@ import WatchKit
 import UserNotifications
 import CloudKit
 
-class ExtensionDelegate: NSObject, WKExtensionDelegate {
+class ExtensionDelegate: NSObject, WKApplicationDelegate {
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
         
@@ -25,7 +25,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
          print("Permission granted.")
          
          DispatchQueue.main.async {
-         WKExtension.shared().registerForRemoteNotifications()
+         WKApplication.shared().registerForRemoteNotifications()
          }
          
          } else if let error = error {

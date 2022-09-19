@@ -51,7 +51,7 @@ struct SplashView: View {
                     Spacer()
                 }
                 .onAppear {
-                    print(#function, proxy.size.width)
+                    print("SplashView", proxy.size.width)
                     Global.setDeviceResolution(proxy.size.width)
                     
                     // ToDo: test (open URL)
