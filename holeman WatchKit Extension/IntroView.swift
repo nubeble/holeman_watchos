@@ -234,9 +234,11 @@ struct IntroView: View {
                     SignInWithAppleButton(.signIn,
                                           onRequest: { request in
                         request.requestedScopes = [.fullName, .email]
+                        
+                        self.mode = 5
                     },
                                           onCompletion: { result in
-                        self.mode = 5
+                        // self.mode = 5
                         
                         switch result {
                         case .success(let authResults):
