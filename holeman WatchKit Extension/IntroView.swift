@@ -234,8 +234,6 @@ struct IntroView: View {
                     SignInWithAppleButton(.signIn,
                                           onRequest: { request in
                         request.requestedScopes = [.fullName, .email]
-                        
-                        self.mode = 5
                     },
                                           onCompletion: { result in
                         // self.mode = 5
